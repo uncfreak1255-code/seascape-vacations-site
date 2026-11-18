@@ -15,7 +15,10 @@ const aiFaq = fs.readFileSync(path.join(projectRoot, "src", "ai", "faq.json.njk"
 const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
 const fallbackCatalog = require(path.join(projectRoot, "src", "_data", "properties-fallback.json"));
 const { applyStayFacts } = require(path.join(projectRoot, "src", "_data", "stayFacts"));
-const staysTemplate = fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8");
+const staysTemplate = [
+  fs.readFileSync(path.join(projectRoot, "src", "stays", "stays.njk"), "utf8"),
+  fs.readFileSync(path.join(projectRoot, "src", "_includes", "partials", "stay-itemlist-jsonld.njk"), "utf8")
+].join("\n");
 const propertyPages = [
   "bradenton-pool-home",
   "dockside-dreams",
@@ -255,7 +258,7 @@ test("homepage schema advertises a real searchable website target", () => {
 test("homepage brand signals stay consistent on title, visible hero copy, and website schema", () => {
   assert.match(
     homepage,
-    /<title>Seascape Vacations \| Bradenton &amp; Sarasota Vacation Rentals Near Anna Maria Island<\/title>/
+    /<title>Private-Pool Vacation Homes in Bradenton &amp; Sarasota \| Seascape Vacations<\/title>/
   );
   assert.match(
     homepage,

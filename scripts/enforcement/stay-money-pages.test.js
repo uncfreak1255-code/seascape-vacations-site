@@ -166,7 +166,7 @@ test("best-time guide uses its valid seasonal hero and current article metadata"
     false,
     "the guide should not replace the shared Anna Maria Island image"
   );
-  assert.match(source, /"dateModified": "2026-07-28"/);
+  assert.match(source, /"dateModified": "2026-10-22"/);
 
   for (const filename of ["anna-maria-island-og.jpg", seasonalHero]) {
     const image = fs.readFileSync(path.join(projectRoot, "images", filename));

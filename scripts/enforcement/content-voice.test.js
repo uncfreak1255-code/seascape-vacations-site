@@ -327,7 +327,7 @@ function getBuiltPublicContentPath(relativePath, source) {
   }
 
   if (relativePath === "src/stays/stays.njk") {
-    return path.join("_site", "stays", "bradenton-vacation-rentals-near-beaches", "index.html");
+    return path.join("_site", "stays", "bradenton-vacation-rentals", "index.html");
   }
 
   const route = getCurrentRoute(relativePath, source).split(/[?#]/)[0];

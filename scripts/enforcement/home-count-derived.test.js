@@ -6,6 +6,8 @@ const {
   TOTAL_COUNT_PATTERNS,
   catalogHomeCountHeading,
   catalogHomeCountWord,
+  homeOperator,
+  indefiniteArticle,
   numberWord
 } = require("./home-count-word");
 
@@ -27,6 +29,15 @@ test("numberWord accepts 0-12 and rejects anything else", () => {
   assert.throws(() => numberWord(13), /0 to 12/);
   assert.throws(() => numberWord("7"), /0 to 12/);
   assert.throws(() => numberWord(), /0 to 12/);
+});
+
+test("homeOperator uses an before vowel-sound count words", () => {
+  assert.equal(indefiniteArticle("eight"), "an");
+  assert.equal(indefiniteArticle("eleven"), "an");
+  assert.equal(indefiniteArticle("one"), "a");
+  assert.equal(indefiniteArticle("seven"), "a");
+  assert.equal(homeOperator("eight"), "an eight-home operator");
+  assert.equal(homeOperator("seven"), "a seven-home operator");
 });
 
 test("portfolio-size patterns catch leftover total-count shapes and spare subset facts", () => {
@@ -62,4 +73,6 @@ test("the property-management page states the catalog size it is built from", ()
   assert.match(html, new RegExp(`${catalogHomeCountHeading().replace(".", "\\.")}`));
   assert.match(html, new RegExp(`See all ${word} homes`));
   assert.match(html, new RegExp(`our own ${word} homes`));
+  assert.match(html, new RegExp(`Why ${homeOperator(word)}`));
+  assert.doesNotMatch(html, /Why a eight-home operator/);
 });

@@ -71,6 +71,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <article><a href="/properties/coastal-stay/">The Coastal</a></article>
       <article><a href="/properties/relaxing-oasis/">Relaxing Oasis</a></article>
       <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
+      <a class="g-header-owners" href="/property-management/">Owners</a>
     </main>
   `;
 
@@ -87,6 +88,11 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
     location: null,
     body: currentPropertiesBody.replace('<p class="g-card-source">Ratings from Airbnb</p>', "")
   }), /missing current live marker\(s\): <p class="g-card-source">Ratings from Airbnb<\/p>/);
+  assert.throws(() => smoke.validateTargetResponse(target, {
+    statusCode: 200,
+    location: null,
+    body: currentPropertiesBody.replace('class="g-header-owners"', 'class="g-header-x"')
+  }), /g-header-owners/);
   assert.equal(currentPropertiesBody.includes("View Details"), false);
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,
@@ -120,6 +126,7 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
           <article>Dockside Dreams</article>
           <article>The Oasis</article>
           <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
+          <a class="g-header-owners" href="/property-management/">Owners</a>
         </main>
       `
     });
@@ -218,6 +225,7 @@ test("stays smoke locks the customer-facing stay-collection hub", () => {
       <section>
         <h2>Destination collections</h2>
         <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+        <a href="/stays/bradenton-vacation-rentals/">Bradenton Vacation Rentals</a>
         <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
       </section>
       <a href="/properties/">Browse Direct-Book Homes</a>
@@ -245,6 +253,7 @@ test("Sarasota pool stay smoke locks resolved occupancy and heat copy", () => {
       <p>St. Armands Circle is also reached by car</p>
       <p>are reached by car from Sarasota Luxe</p>
       <p>plus a hot tub (confirm heat terms when booking).</p>
+      <a href="/properties/sarasota-luxe/#booking">Check dates at Sarasota Luxe</a>
     </main>
   `;
 
@@ -255,6 +264,26 @@ test("Sarasota pool stay smoke locks resolved occupancy and heat copy", () => {
       body: currentSarasotaStayBody
     });
   });
+});
+
+test("Sarasota pool stay smoke rejects an intro without the date-panel link", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/sarasota-vacation-rentals-with-pool/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <h2>Private pool, sleeps 12</h2>
+          <p>St. Armands Circle is also reached by car</p>
+          <p>are reached by car from Sarasota Luxe</p>
+          <p>plus a hot tub (confirm heat terms when booking).</p>
+        </main>
+      `
+    });
+  }, /missing current live marker/);
 });
 
 test("Sarasota pool stay smoke rejects stale included-heat copy", () => {
@@ -271,6 +300,7 @@ test("Sarasota pool stay smoke rejects stale included-heat copy", () => {
           <p>St. Armands Circle is also reached by car</p>
           <p>are reached by car from Sarasota Luxe</p>
           <p>plus a hot tub included all year.</p>
+          <a href="/properties/sarasota-luxe/#booking">Check dates at Sarasota Luxe</a>
         </main>
       `
     });
@@ -292,6 +322,7 @@ test("stays smoke rejects leaked internal hub copy", () => {
           <section>
             <h2>Destination collections</h2>
             <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+            <a href="/stays/bradenton-vacation-rentals/">Bradenton Vacation Rentals</a>
             <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
           </section>
           <a href="/properties/">Browse Direct-Book Homes</a>
@@ -424,4 +455,5 @@ test("homepage smoke validates the rendered home journey and rejects missing tri
   const body=fs.readFileSync(path.join(projectRoot,"_site/index.html"),"utf8");
   assert.doesNotThrow(()=>smoke.validateTargetResponse(target,{statusCode:200,body}));
   assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/data-guest-trip-form/g,"removed-control")}));
+  assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/g-header-owners/g,"g-header-x")}), /g-header-owners/);
 });
