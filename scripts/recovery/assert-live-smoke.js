@@ -196,7 +196,8 @@ function validateTargetResponse(target, response) {
       "St. Armands Circle is also reached by car",
       "are reached by car from Sarasota Luxe",
       "Private pool, sleeps 12",
-      "hot tub (confirm heat terms when booking)"
+      "hot tub (confirm heat terms when booking)",
+      "Check dates at Sarasota Luxe"
     ]);
     requireExcludes(target.path, response.body, [
       "short drive or walk",

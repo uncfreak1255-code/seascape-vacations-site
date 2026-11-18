@@ -245,6 +245,7 @@ test("Sarasota pool stay smoke locks resolved occupancy and heat copy", () => {
       <p>St. Armands Circle is also reached by car</p>
       <p>are reached by car from Sarasota Luxe</p>
       <p>plus a hot tub (confirm heat terms when booking).</p>
+      <a href="/properties/sarasota-luxe/#booking">Check dates at Sarasota Luxe</a>
     </main>
   `;
 
@@ -255,6 +256,26 @@ test("Sarasota pool stay smoke locks resolved occupancy and heat copy", () => {
       body: currentSarasotaStayBody
     });
   });
+});
+
+test("Sarasota pool stay smoke rejects an intro without the date-panel link", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/sarasota-vacation-rentals-with-pool/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <h2>Private pool, sleeps 12</h2>
+          <p>St. Armands Circle is also reached by car</p>
+          <p>are reached by car from Sarasota Luxe</p>
+          <p>plus a hot tub (confirm heat terms when booking).</p>
+        </main>
+      `
+    });
+  }, /missing current live marker/);
 });
 
 test("Sarasota pool stay smoke rejects stale included-heat copy", () => {
@@ -271,6 +292,7 @@ test("Sarasota pool stay smoke rejects stale included-heat copy", () => {
           <p>St. Armands Circle is also reached by car</p>
           <p>are reached by car from Sarasota Luxe</p>
           <p>plus a hot tub included all year.</p>
+          <a href="/properties/sarasota-luxe/#booking">Check dates at Sarasota Luxe</a>
         </main>
       `
     });

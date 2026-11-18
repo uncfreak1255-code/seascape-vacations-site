@@ -744,7 +744,7 @@
         "sarasota-arts-culture-vacation-rentals",
         "vacation-rentals-near-restaurants-florida"
       ],
-      "geoIntro": "<p>Sarasota Luxe is a downtown Sarasota home with a private pool and screened lanai. Downtown restaurants, shops, galleries, beach visits, and St. Armands Circle require a drive. Confirm current travel times and property details before booking.</p>"
+      "geoIntro": "<p><a href=\"/properties/sarasota-luxe/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"sarasota-luxe\" data-placement=\"stay_intro\"><strong>Check dates at Sarasota Luxe</strong></a> — {sleeps-phrase:sarasota-luxe}, downtown with a private pool.</p><p>Downtown restaurants, shops, galleries, beach visits, and St. Armands Circle require a drive. Confirm current travel times and property details before booking.</p>"
     },
     {
       "slug": "downtown-sarasota-vacation-rentals",
