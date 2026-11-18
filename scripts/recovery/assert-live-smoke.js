@@ -84,6 +84,7 @@ function validateTargetResponse(target, response) {
   }
 
   if (target.path === "/") {
+    requireIncludes(target.path, response.body, ['Private-Pool Vacation Homes in Bradenton &amp; Sarasota | Seascape Vacations', 'Private-pool vacation homes in Bradenton and Sarasota.', 'Private-pool vacation homes in Bradenton &amp; Sarasota.']);
     if (!response.body.includes("Dockside Dreams") || !response.body.includes("/properties/dockside-dreams/")) {
       throw new Error("homepage is missing stable featured property markup");
     }

@@ -255,7 +255,7 @@ test("homepage schema advertises a real searchable website target", () => {
 test("homepage brand signals stay consistent on title, visible hero copy, and website schema", () => {
   assert.match(
     homepage,
-    /<title>Seascape Vacations \| Bradenton &amp; Sarasota Vacation Rentals Near Anna Maria Island<\/title>/
+    /<title>Private-Pool Vacation Homes in Bradenton &amp; Sarasota \| Seascape Vacations<\/title>/
   );
   assert.match(
     homepage,

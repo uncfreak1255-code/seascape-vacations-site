@@ -2,7 +2,7 @@
 layout: layouts/guest.njk
 permalink: /
 guestHome: true
-pageTitle: "Seascape Vacations | Bradenton & Sarasota Vacation Rentals Near Anna Maria Island"
+pageTitle: "Private-Pool Vacation Homes in Bradenton & Sarasota | Seascape Vacations"
 pageDescription: "Private-pool vacation homes in Bradenton and Sarasota. Compare homes, plan with your group, and book direct with Seascape Vacations."
 pageStylesheet: "/css/trip-sheet.css"
 pageScript: "/assets/js/trip-sheet.js"
@@ -12,7 +12,7 @@ pageScript: "/assets/js/trip-sheet.js"
 {% set sceneCount = sceneSlugs | length %}
 <div class="g-home">
   <section class="g-arrival" aria-labelledby="home-heading" data-home-scenes>
-    <div class="g-arrival-copy"><p class="g-label">Private-pool homes · Bradenton & Sarasota</p><h1 id="home-heading">Your people.<br><em>Your place.</em></h1><p>A Gulf Coast home to call your own.<br>And a local team who knows it.</p></div>
+    <div class="g-arrival-copy"><p class="g-label">Private-pool homes · Bradenton & Sarasota</p><h1 id="home-heading">Your people.<br><em>Your place.</em></h1><p>Private-pool vacation homes in Bradenton and Sarasota.<br>And a local team who knows them.</p></div>
     <div class="g-scenes">
       {% for slug in sceneSlugs %}{% set home = properties | propertyBySlug(slug) %}{% set photo = home.photography.photos[0] %}
       <div class="g-scene" id="scene-{{ home.slug }}" data-scene="{{ home.slug }}"{% if not loop.first %} hidden{% endif %}>
@@ -38,7 +38,7 @@ pageScript: "/assets/js/trip-sheet.js"
       <button class="ts-chip" type="button" data-ts-filter="bradenton" aria-pressed="false">Near AMI</button>
       <button class="ts-chip" type="button" data-ts-filter="sarasota" aria-pressed="false">Sarasota</button>
     </div>
-    <p class="ts-status" role="status" data-ts-status>{{ properties | length }} homes</p>
+    <p class="ts-status">Private-pool vacation homes in Bradenton &amp; Sarasota.<br><span role="status" data-ts-status>{{ properties | length }} homes</span></p>
     <p class="g-card-source">Ratings from Airbnb</p>
     <div class="hd-deck" data-home-deck><button class="hd-back" type="button" data-deck-back hidden>Back to focused deck</button><div class="g-postcards" id="home-deck-stage">{% for home in properties %}{% set photos = home.photography.photos.slice(0, 5) %}{% set cardTokens = ((home.amenities or []) | join('|') ~ '|' ~ ((home.marketing_amenities or []) | join('|')) ~ '|' ~ home.destination ~ '|' ~ home.city) | lower %}<article class="g-postcard" data-ts-card data-filters="{{ cardTokens }}"><a href="{{ home.pageUrl }}" data-trip-link><div class="g-postcard-photo"><div class="ts-strip" data-ts-strip><img data-property-photo="{{ home.slug }}" src="{{ home.photography.photos[0].src }}" srcset="{{ home.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ home.photography.photos[0].src }} 1400w" sizes="(min-width: 701px) 420px, calc(100vw - 56px)" alt="{{ home.photography.photos[0].alt }}" width="1400" height="933" loading="{{ 'eager' if loop.first else 'lazy' }}">{# The first home photo is the phone LCP image; it loads without waiting for layout. #}{% for photo in photos %}{% if not loop.first %}<img class="ts-extra" src="{{ photo.src | replace('.webp', '-800.webp') }}" width="{{ photo.width }}" height="{{ photo.height }}" alt="" loading="lazy" decoding="async">{% endif %}{% endfor %}</div><span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span><div class="ts-overlay" aria-hidden="true"><span class="ts-count" data-ts-count data-n="1" data-of="{{ photos | length }}"></span><span class="ts-dots">{% for photo in photos %}<i{% if loop.first %} class="on"{% endif %}></i>{% endfor %}</span></div></div><p class="g-label">{{ home.city }} · Up to {{ home.guests }} guests</p>{% set rating = home.listingId | airbnbRating %}<div class="g-card-name"><h3>{{ home.cardName or home.name }}</h3>{% set ratingPart = "line" %}{% include "partials/card-rating.njk" %}</div>{% set ratingPart = "spoken" %}{% include "partials/card-rating.njk" %}</a><p>{{ home.guestFacts.tagline }}</p><a class="hd-explore" data-deck-explore href="{{ home.pageUrl }}" data-trip-link>Explore this home <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a></article>{% endfor %}</div>{% include "partials/home-deck-controls.njk" %}</div>
     <div class="g-collection-end"><p>Every home has a private pool.<br>Which one feels like your vacation?</p><a class="g-button btn-brand" href="/properties/" data-trip-link>Compare our homes <span aria-hidden="true">{{ uiIcon('arrow-up-right') }}</span></a></div>
