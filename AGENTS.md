@@ -67,6 +67,20 @@ Gmail is prohibited.
   Missing analytics limits measurement and impact claims and still permits an
   authorized bug fix, local prototype, or reversible capability trial with
   independent source and behavior proof.
+- Standing SEO authority (Sawyer, 2026-11-18, #1008): agents own SEO and AEO
+  fixes to existing pages end to end, with no preview or merge approval from
+  Sawyer. Pick from evidence, build, pass the PR class's review and required
+  checks, merge, let the daily publish ship it, verify it live, and revert it
+  through a PR if it hurts. Simulated phone checks count. Each shipped fix
+  freezes its baseline and gets a keep-or-revert date, so it is a tracked fix,
+  not a new live experiment. Write the verdict on its date; Sawyer gets one
+  weekly note of what shipped, what each change did and what was reverted.
+  Sawyer still decides: anything sent outside the business, Seascape fee,
+  rental-price and legal wording, new pages, spending outside
+  `docs/process/openseo.md` -> Cost Boundary, Hostaway, the Google Business
+  Profile, early publishes, and the held guides (weather, best time to visit,
+  Anna Maria vs Siesta Key, shelling) until their measurement ends. Visual
+  redesigns follow `docs/process/design-review-workflow.md`.
 - For an AI-workflow or product-improvement request, propose one concrete
   improvement with its upside and cost of inaction, prefer an existing
   capability, and test it locally; an old toolchain freeze is not a permanent
