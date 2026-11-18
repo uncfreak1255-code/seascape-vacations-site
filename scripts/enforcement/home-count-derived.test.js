@@ -65,6 +65,19 @@ test("no template or guide hardcodes the portfolio size", () => {
   assert.deepEqual(offenders, [], "Use the numberWord filter on the properties list, or drop the number");
 });
 
+// src/llms.txt is copied as-is, so it cannot use the numberWord filter and the
+// template scan above skips it. Any portfolio size it states must match the catalog.
+test("llms.txt states the catalog home count", () => {
+  const text = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
+  const count = require("../../src/_data/properties-fallback.json").length;
+  const word = catalogHomeCountWord();
+  for (const pattern of TOTAL_COUNT_PATTERNS) {
+    const match = text.match(pattern);
+    if (!match) continue;
+    assert.match(match[0], new RegExp(`\\b(?:${word}|${count})\\b`, "i"), `src/llms.txt says "${match[0]}"; the catalog has ${word} homes`);
+  }
+});
+
 test("the property-management page states the catalog size it is built from", () => {
   const built = path.join(projectRoot, "_site", "property-management", "index.html");
   assert.ok(fs.existsSync(built), "run npm run build first; _site/property-management/index.html is missing");
