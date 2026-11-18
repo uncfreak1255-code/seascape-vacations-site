@@ -13,7 +13,7 @@
 - proof source: the live weather guide table and quick answer (NOAA 1991–2020 normals, station USW00012871; Port Manatee water proxy 8726384); Search Console task evidence 9,109 impressions / 17 clicks / 0.2% CTR in 28 days; #985 owns the best-time month answer
 - required internal links: /guides/best-time-visit-anna-maria-island/, /stays/anna-maria-island-vacation-rentals/
 - CTA target: existing stay collection and `guide_book_direct_click` links; no CTA change
-- anti-claims: no on-island Seascape home; no May-or-November "best time" steal from `/guides/best-time-visit-anna-maria-island/`; no unverifiable crowd, price, or "best beach weather" guarantee; no fee-range; no invented water-temp station
+- anti-claims: no on-island Seascape home; no May-or-November "best time" steal from `/guides/best-time-visit-anna-maria-island/`; no unverifiable crowd, price, or "best beach weather" guarantee; no fee-range; no invented water-temp station; snippet water temps must be identified as the nearby Port Manatee proxy, not island surf readings
 - hypothesis: a snippet that names NOAA monthly air, rain, water, and the milder Nov–April window earns more clicks at similar position; ranking or booking lift is unproven
 - primary event: Search Console clicks for weather-by-month queries on this URL
 - guardrail event: average position for those queries and `guide_book_direct_click` on this route
@@ -49,7 +49,7 @@
 | Query variants inspected | anna maria island weather by month; anna maria island weather; anna maria island water temperature |
 | SERP source | Public web search results on 2026-11-18; no paid OpenSEO lookup |
 | Competitor URLs inspected | https://seascape-vacations.com/guides/anna-maria-island-weather/ ; https://anna-maria-island.org/weather/ ; https://annamariaisland.com/planning-your-trip/weather ; https://www.amiexplorer.com/plan/when ; https://annamariaislandbeachrentals.com/weather |
-| Content gap and Seascape answer | Name monthly air, rain, Gulf water, milder Nov–April, and summer-warmest water. State that Seascape homes sit on mainland Bradenton. |
+| Content gap and Seascape answer | Name monthly air, rain, Port Manatee Gulf water proxy, milder Nov–April, and summer-warmest water. State that Seascape homes sit on mainland Bradenton. |
 | Design/format strategy | No layout, CSS, H1, table, or plot change. |
 | Seascape proof available | Existing NOAA table and quick answer on this page; property catalog for mainland Bradenton homes |
 | Tools/plugins used | Repo source, public web search, content gate. No paid lookup. No Hostaway write. |
