@@ -54,6 +54,8 @@ test('weekly no-JS fallback and FAQ preserve useful content', async ({ page, con
 });
 
 test('weekly submit reaches only the intercepted listing with dates, party and lineage', async ({ page }) => {
+  const events = [];
+  await page.exposeFunction('__recordWeeklyHandoff', event => { events.push(event); });
   await visit(page, '?guests=10&utm_source=guide-test&utm_campaign=weekly-demo');
   await page.route('https://book.seascape-vacations.com/**', route => route.fulfill({ status: 200, contentType: 'text/html', body: '<h1>Fixture listing only</h1>' }));
   await page.locator('[data-weekly-open]').click();
@@ -61,6 +63,7 @@ test('weekly submit reaches only the intercepted listing with dates, party and l
   await page.getByRole('button', { name: 'Make it a week · 7 nights' }).click();
   const guideClick = new URL(await page.locator('[data-weekly-handoff]').getAttribute('href')).searchParams.get('sv_guide_click_id');
   expect(guideClick).toMatch(/^svg_[a-zA-Z_-]+$/);
+  await page.evaluate(() => { window.seascapeTrackEvent = (name, payload) => window.__recordWeeklyHandoff({ name, payload }); });
   await page.getByRole('button', { name: 'Continue to direct booking', exact: true }).click();
   await expect(page).toHaveURL(/book\.seascape-vacations\.com\/listings\/206016/);
   const url = new URL(page.url());
@@ -70,6 +73,12 @@ test('weekly submit reaches only the intercepted listing with dates, party and l
   expect(url.searchParams.get('utm_source')).toBe('guide-test');
   expect(url.searchParams.get('property_slug')).toBe('dockside-dreams');
   expect(url.searchParams.get('sv_guide_click_id')).toBe(guideClick);
+  const names = events.map(item => item.name);
+  expect(names).toContain('guide_property_check_dates_click');
+  expect(names).toContain('booking_engine_handoff');
+  const click = events.find(item => item.name === 'guide_property_check_dates_click');
+  expect(click.payload.placement).toBe('weekly_booking_dialog');
+  expect(click.payload.property_slug).toBe('dockside-dreams');
 });
 
 test('weekly phone/tablet reflow and reduced motion stay bounded', async ({ page }) => {

@@ -10,6 +10,7 @@ test('weekly guide binds the approved real photo, scoped enhancement and no-JS b
   assert.match(html, /data-weekly-guide/);
   assert.match(html, /\/images\/homes\/dockside-dreams\/02\.webp/);
   assert.match(html, /href="https:\/\/book\.seascape-vacations\.com\/listings\/206016"[^>]+data-weekly-open/);
+  assert.match(html, /data-weekly-handoff[^>]*data-track-event="guide_property_check_dates_click"[^>]*data-placement="weekly_booking_dialog"/);
   assert.match(html, /4 bedrooms · Up to 12 guests/);
   assert.match(html, /Make room for beach days and pool days/);
   assert.match(html, /<dialog[^>]+data-max-guests="12"/);
@@ -21,6 +22,7 @@ test('weekly guide binds the approved real photo, scoped enhancement and no-JS b
 test('weekly booking uses existing tracking, trip state and capacity guard, never claims live availability', () => {
   const js = read('src/assets/js/stay-weekly.js');
   assert.match(js, /buildBookingEngineHandoffUrl/);
+  assert.match(js, /handoff\.click\(\)/);
   assert.match(js, /rememberTrip/);
   assert.match(js, /Number\(guests\.value\) > maxGuests/);
   assert.match(js, /event\.stopPropagation\(\)/);
