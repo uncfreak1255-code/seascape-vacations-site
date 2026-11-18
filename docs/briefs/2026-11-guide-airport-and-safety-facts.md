@@ -19,17 +19,18 @@ The wrong case is a page with a corrected table but old 25-minute SRQ FAQ or an 
 
 ## Source Files Changed
 
-- src/guides/how-to-get-to-anna-maria-island.html
-- src/guides/srq-airport-to-anna-maria-island.html
-- src/guides/flights-to-anna-maria-island/index.html
-- src/guides/siesta-key-vs-anna-maria-island-families.html
-- src/guides/dolphins-manatees-bradenton.html
-- src/guides/things-to-do-bradenton-fl.html
-- src/guides/holmes-beach.html
-- src/guides/siesta-key-beach-guide.html
-- src/guides/family-vacation-anna-maria-island.html
-- src/guides/anna-maria-island-vs-clearwater-beach.html
-- Focused regression test and this brief.
+- Source files changed in this batch:
+  - src/guides/how-to-get-to-anna-maria-island.html
+  - src/guides/srq-airport-to-anna-maria-island.html
+  - src/guides/flights-to-anna-maria-island/index.html
+  - src/guides/siesta-key-vs-anna-maria-island-families.html
+  - src/guides/dolphins-manatees-bradenton.html
+  - src/guides/things-to-do-bradenton-fl.html
+  - src/guides/holmes-beach.html
+  - src/guides/siesta-key-beach-guide.html
+  - src/guides/family-vacation-anna-maria-island.html
+  - src/guides/anna-maria-island-vs-clearwater-beach.html
+  - scripts/enforcement/guide-fact-repairs.test.js and this brief
 
 ## Scope and evaluation
 
