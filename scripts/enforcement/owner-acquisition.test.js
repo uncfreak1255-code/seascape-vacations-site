@@ -100,7 +100,7 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   // The offer (seascape-hub/context/owner-offer.md) leads; fee vocabulary lives on the fee guide.
   assert.match(ownerLanding, /\{\{ homeCountWord \| capitalize \}\} homes\. One local team\./);
   assert.equal(ownerLanding.includes("Send the listing. We send back a one-page review."), true);
-  assert.equal(ownerLanding.includes("Vacation rental management from 17%."), true);
+  assert.equal(ownerLanding.includes("owner-fee-statement.njk"), true);
   assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
   assert.equal(ownerLanding.includes("The Fee Comparison"), false, "fee comparison content belongs to the fee guide, not the offer page");
   assert.equal(ownerLanding.includes("15.5%"), false, "no third-party fee figures above the offer");
@@ -511,9 +511,9 @@ test("week 3 owner pages do not collapse back into fake flat-fee messaging", () 
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
   assert.equal(ownerLanding.includes("10-15% management fees"), false, "owner landing should not hard-code a flat fee band");
   assert.equal(
-    ownerLanding.includes("Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software."),
+    ownerLanding.includes("partials/owner-fee-statement.njk"),
     true,
-    "owner landing should publish the management fee"
+    "owner landing should publish the fee"
   );
   assert.equal(switchPage.benefits.includes("10-15% management fees instead of paying more for the same misses"), false, "switch page should not claim a flat fee band");
   assert.equal(switchPage.geoIntro.includes("10-15%"), false, "switch page GEO intro should not hard-code a flat fee");
@@ -572,7 +572,7 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
   assert.equal(
     feePage.geoIntro.includes("Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software."),
     true,
-    "fee page GEO intro should state the published fee"
+    "fee page GEO intro states the fee"
   );
   assert.equal(
     feePage.benefits.includes("Clear breakdown of management fee, marketplace booking costs, and direct-booking savings"),

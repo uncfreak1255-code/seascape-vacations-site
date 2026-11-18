@@ -68,6 +68,7 @@ Inventory of links each changed page already carries; not an enforced link map.
 ## Source files changed in this batch
 
 - `src/_includes/partials/owner-management-faq.njk`
+- `src/_includes/partials/owner-fee-statement.njk`
 - `src/_includes/partials/owner-evaluation-form.njk`
 - `src/property-management/index.njk`
 - `src/_data/seoPages.json`
