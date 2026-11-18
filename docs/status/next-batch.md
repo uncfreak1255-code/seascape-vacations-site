@@ -278,7 +278,6 @@ rewrite, expansion or redirect repair was authorized by it.
 Proof (GSC domain property, all page rows, 2026-08-21–2026-09-17 vs 2026-09-18–2026-10-15):
 - Money pages: the supplied group had clicks 14 → 7 and impressions 675 → 370. The claim that it contains seven observed GSC URLs is **(unverified — needs receipt)**; attach the exact URL list and aggregation method. The source scope is eight routes: seven property-detail routes plus the `/properties/` catalogue; do not assign these totals to all eight without that receipt. The Oasis 197 → 41 impressions; Sarasota Luxe 198 → 45.
 - Winner guide: `/guides/anna-maria-island-vs-siesta-key/` (all variants) clicks 51 → 29, impressions 6,712 → 5,002 (≥30% click decline trigger).
-- Site overall rose (400 → 428 clicks; guides 327 → 363), so the decline is concentrated.
 Rescue briefs: `docs/briefs/2026-10-property-pages-rescue.md`, `docs/briefs/2026-10-ami-vs-siesta-key-rescue.md`. Both remain research until actual SERP competitors and inspected URLs are recorded and every Gate 0 field, including the nine attack fields, is complete. A SERP read alone does not complete the gate.
 
 ## Truth Remediation Before Expansion — Pool Heat

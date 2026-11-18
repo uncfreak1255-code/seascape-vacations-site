@@ -38,10 +38,9 @@ not add or enable any schedule.
 
 ## Claude And Codex Differences
 
-- Codex also has `~/.agents/skills/seascape-seo-improvement-loop`, a
-  Codex-only runner that walks one improvement from OpenSEO evidence to an
-  Analytics decision. It follows this map and `docs/process/openseo.md`; Claude
-  runs the same loop through the search-operator role and the steps above.
+- Both Codex and Claude have the `seascape-seo-improvement-loop` skill in their
+  respective skill sets. It walks one improvement from OpenSEO evidence to an
+  Analytics decision and follows this map and `docs/process/openseo.md`.
 - Codex's global `ai-seo` skill (`~/.codex/skills/ai-seo`) is generic
   marketing background and is not a local skill in this repo. For Seascape AEO, the
   `docs/process/aeo-citability-rubric.md` and `content-quality-rubric` govern.
