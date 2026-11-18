@@ -156,8 +156,10 @@ eleventyComputed:
                         "numberOfBathroomsTotal": {{ property.bathrooms }},
                         "occupancy": { "@type": "QuantitativeValue", "value": {{ property.guests }} }
                     },
+                    {% if property.latitude and property.longitude %}
                     "latitude": {{ property.latitude }},
                     "longitude": {{ property.longitude }},
+                    {% endif %}
                     {% include "partials/stay-property-address-json.njk" %}{% if property.price > 0 %},
                     "offers": {
                         "@type": "Offer",

@@ -77,6 +77,14 @@ test("Bradenton head-term copy keeps The Coastal pool-heat exception", () => {
   assert.match(heatFaq.answer, /late-day requests or mid-stay requests on an approved long-stay rate/);
 });
 
+test("stay ItemList schema omits empty coordinates instead of emitting invalid JSON", () => {
+  const template = fs.readFileSync(path.join(__dirname, "..", "..", "src", "stays", "stays.njk"), "utf8");
+  assert.match(
+    template,
+    /\{% if property\.latitude and property\.longitude %\}\s*"latitude": \{\{ property\.latitude \}\}/
+  );
+});
+
 test("Bradenton donor guides and related stay pages point at the head-term URL", () => {
   const donors = [
     ["src/guides/bradenton-area-guide/index.html", 'href="/stays/bradenton-vacation-rentals/"'],
