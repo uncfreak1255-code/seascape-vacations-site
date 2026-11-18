@@ -1,12 +1,12 @@
 {
   "routes": {
     "/": {
-      "script": 93608,
-      "stylesheet": 89893
+      "script": 94182,
+      "stylesheet": 89475
     },
     "/properties/": {
-      "script": 107996,
-      "stylesheet": 85260
+      "script": 108639,
+      "stylesheet": 85522
     },
     "/property-management/": {
       "script": 91543,
@@ -1745,6 +1745,30 @@
       "to": 53619,
       "reason": "Measured 562 stylesheet bytes in motion.css (appended to every Waterline bundle) for the one-pass hover glint on the property booking button, picked by Sawyer on 2026-11-15. CSS only; no script, request or layout change.",
       "date": "2026-11-15"
+    },
+    {
+      "route": "/",
+      "metric": "script",
+      "from": 93608,
+      "to": 94182,
+      "reason": "Defer ts-extra photos until a card strip is swiped, so later covers load first and the 800 KB image budget can be enforced.",
+      "date": "2026-11-18"
+    },
+    {
+      "route": "/properties/",
+      "metric": "script",
+      "from": 107996,
+      "to": 108639,
+      "reason": "Defer ts-extra photos until a card strip is swiped, so later covers load first and the 800 KB image budget can be enforced.",
+      "date": "2026-11-18"
+    },
+    {
+      "route": "/properties/",
+      "metric": "stylesheet",
+      "from": 85260,
+      "to": 85522,
+      "reason": "Defer ts-extra photos until a card strip is swiped, so later covers load first and the 800 KB image budget can be enforced.",
+      "date": "2026-11-18"
     }
   ]
 }
