@@ -9,7 +9,7 @@ tracks acknowledgement, source/release evidence and evaluation separately.
 
 - `docs/status/next-batch.md` is the only canonical reread handoff surface.
 - Every reread update must write exactly one `Reread status` line and exactly one `Concrete next move` line in `Latest Execution Read`.
-- Reread updates should be generated from a `seascape-analytics` next-batch decision receipt with `node scripts/enforcement/sync-next-batch-from-analytics-receipt.js --receipt <path>`.
+- Reread updates use the Analytics decision receipt sync; see [the freshness runbook](../runbooks/stale-analytics-receipt.md) for its required source and verification arguments.
 - Every hold names the missing observation or data, its numeric/observable
   clearance threshold, one accountable owner and a dated next review. Include
   named checks already performed; waiting without a condition that would break
@@ -47,6 +47,8 @@ Run date: 2026-11-09.
 
 The targeted joined operator read was executed in `seascape-analytics` and
 rendered here from its machine-readable next-batch decision receipt.
+
+- Historical receipt: unverified. Do not use the numeric claims in this read as current decision evidence; the separate guide correction is documented in [Site #938](https://github.com/uncfreak1255-code/seascape-vacations-site/pull/938).
 
 - Requested last-7-complete-day window: 2026-11-01 to 2026-11-07.
 - Latest BigQuery GSC `data_date`: 2026-11-07.
@@ -186,6 +188,11 @@ reread. The synced next-move line points here when the owner cluster is
 sub-gate; this section does not restate it, and it adds no second reread-status
 or next-move line of its own.
 
+## Founder Exception — Bradenton Head Term
+
+Sawyer approved 2026-11-17 9:04 PM ET: ship `/stays/bradenton-vacation-rentals/`
+for `bradenton vacation rentals`. Other expansion URLs stay held.
+
 ## Corrected SEO Decision Notes
 
 - Authority order for this dispute: enforcement tests, rendered build output, live GSC/analytics, then agent opinion. `scripts/enforcement/owner-proof-clean.test.js` settles the AMI income guide: keep `src/guides/vacation-rental-income-anna-maria.html` noindexed and keep owner-income intent routed to `/research/owner-fee-revenue-leak-benchmark-2026/`.
@@ -276,7 +283,6 @@ rewrite, expansion or redirect repair was authorized by it.
 Proof (GSC domain property, all page rows, 2026-08-21–2026-09-17 vs 2026-09-18–2026-10-15):
 - Money pages: the supplied group had clicks 14 → 7 and impressions 675 → 370. The claim that it contains seven observed GSC URLs is **(unverified — needs receipt)**; attach the exact URL list and aggregation method. The source scope is eight routes: seven property-detail routes plus the `/properties/` catalogue; do not assign these totals to all eight without that receipt. The Oasis 197 → 41 impressions; Sarasota Luxe 198 → 45.
 - Winner guide: `/guides/anna-maria-island-vs-siesta-key/` (all variants) clicks 51 → 29, impressions 6,712 → 5,002 (≥30% click decline trigger).
-- Site overall rose (400 → 428 clicks; guides 327 → 363), so the decline is concentrated.
 Rescue briefs: `docs/briefs/2026-10-property-pages-rescue.md`, `docs/briefs/2026-10-ami-vs-siesta-key-rescue.md`. Both remain research until actual SERP competitors and inspected URLs are recorded and every Gate 0 field, including the nine attack fields, is complete. A SERP read alone does not complete the gate.
 
 ## Truth Remediation Before Expansion — Pool Heat

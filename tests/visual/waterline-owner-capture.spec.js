@@ -14,11 +14,21 @@ async function fillSignup(page) {
 
 test('owners have a navigation path and a homepage path to the existing review form', async ({ page, isMobile }) => {
   await visit(page);
+  const headerOwners = page.locator('.g-header-owners');
   if (isMobile) {
+    await expect(headerOwners).toBeVisible();
+    await expect(headerOwners).toHaveAttribute('href', '/property-management/');
+    const phone = await page.locator('.g-header-phone').boundingBox();
+    const owners = await headerOwners.boundingBox();
+    const menu = await page.getByRole('button', { name: 'Open menu', exact: true }).boundingBox();
+    expect(owners.x).toBeGreaterThan(phone.x + phone.width);
+    expect(menu.x).toBeGreaterThan(owners.x + owners.width - 1);
+    expect(owners.height).toBeGreaterThanOrEqual(44);
     await page.getByRole('button', { name: 'Open menu', exact: true }).click();
     await expect(page.locator('#guest-menu a[href="/property-management/"]')).toBeVisible();
     await expect(page.locator('#guest-menu a[href="/property-management/"]')).toHaveAttribute('data-track-event', 'owner_primary_cta_click');
   } else {
+    await expect(headerOwners).toBeHidden();
     await expect(page.locator('.g-nav a[href="/property-management/"]')).toBeVisible();
   }
   const owner = page.locator('.g-home-owners');
@@ -35,6 +45,48 @@ test('owners have a navigation path and a homepage path to the existing review f
   // The existing first step is the listing field; retain the flow into the owner context step.
   await form.getByRole('button', { name: 'Get my review', exact: true }).click();
   await expect(form.locator('[name="what_feels_off"]')).toBeVisible();
+});
+
+test('phone owner band sits after the stacked homes and before reviews, guides and signup', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'phone order');
+  await visit(page);
+  const cards = page.locator('.g-postcard');
+  await expect(cards).toHaveCount(8);
+  const lastCard = await cards.last().boundingBox();
+  const compare = await page.locator('.g-collection-end').boundingBox();
+  const owners = await page.locator('.g-home-owners').boundingBox();
+  const reviews = await page.locator('.g-home-reviews').boundingBox();
+  const guides = await page.locator('.g-local').boundingBox();
+  const signup = await page.locator('.g-home-signup').boundingBox();
+  expect(compare.y).toBeGreaterThan(lastCard.y);
+  expect(owners.y).toBeGreaterThan(compare.y);
+  expect(reviews.y).toBeGreaterThan(owners.y);
+  expect(guides.y).toBeGreaterThan(owners.y);
+  expect(signup.y).toBeGreaterThan(owners.y);
+});
+
+test('owner hub keeps Revenue Review and does not duplicate Owners in the header', async ({ page, isMobile }) => {
+  await registerStableNetwork(page);
+  await page.goto('/property-management/', { waitUntil: 'networkidle' });
+  await expect(page.locator('.g-header-owners')).toHaveCount(0);
+  const headerCta = page.locator('.g-header-actions a.g-button');
+  if (isMobile) {
+    await expect(headerCta).toBeVisible();
+    await expect(headerCta).toContainText('Revenue Review');
+  }
+});
+
+test('phone catalog keeps Owners next to Menu without sideways overflow', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'phone header');
+  await registerStableNetwork(page);
+  await page.goto('/properties/', { waitUntil: 'networkidle' });
+  const headerOwners = page.locator('.g-header-owners');
+  await expect(headerOwners).toBeVisible();
+  await expect(page.locator('.g-header-actions a.g-button')).toBeHidden();
+  const menu = await page.getByRole('button', { name: 'Open menu', exact: true }).boundingBox();
+  const viewport = page.viewportSize();
+  expect(menu.x + menu.width).toBeLessThanOrEqual(viewport.width);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
 test('owner intake requires and records submitter authority while keeping the statement upload optional', async ({ page }) => {

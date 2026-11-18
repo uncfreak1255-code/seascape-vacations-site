@@ -237,8 +237,8 @@ test("retired Bradenton money slug 301s to the current canonical stay page", () 
   for (const redirectRule of [
     // 2026-07-24: targets slash-terminated so the 301 lands in one hop instead
     // of chaining through Netlify's trailing-slash redirect.
-    "/stays/vacation-rentals-bradenton-florida  /stays/bradenton-vacation-rentals-near-beaches/  301",
-    "/stays/vacation-rentals-bradenton-florida/  /stays/bradenton-vacation-rentals-near-beaches/  301"
+    "/stays/vacation-rentals-bradenton-florida  /stays/bradenton-vacation-rentals/  301",
+    "/stays/vacation-rentals-bradenton-florida/  /stays/bradenton-vacation-rentals/  301"
   ]) {
     assert.equal(redirects.includes(redirectRule), true, `Expected redirects to include ${redirectRule}`);
   }

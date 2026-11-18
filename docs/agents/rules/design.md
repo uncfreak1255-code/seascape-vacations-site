@@ -17,7 +17,9 @@ Claude loads it when it reads a file matching `paths:` above, through the
 
 - For site design work, use the design craft skill your harness has: `emil-design` in Codex, `emil-design-eng` in Claude. If neither is available, name the gap; do not claim it was used.
 - `DESIGN.md` is the visual law: read it before UI work and use only its
-  colors, fonts, spacing, radius, shadows, and component styles. Figma, Stitch,
+  colors, fonts, spacing, radius, shadows, and component styles in production.
+  Isolated, explicitly labeled explorations may propose new geometry and motion
+  under the component catalog; they do not change production defaults. Figma, Stitch,
   and other outside tools are donors; a new direction from any tool lands as a
   `DESIGN.md` change first. Claude Design is the approved mock surface only
   while synced by `npm run design:sync`.
@@ -32,6 +34,10 @@ Claude loads it when it reads a file matching `paths:` above, through the
   show two or three rendered variants (deploy-preview links or screenshots),
   each anchored to a named reference site from `npm run design:donors`, and ask
   only "which one" or "keep X, lose Y".
+- In assigned visual work, use the [component catalog](../../design/component-patterns.md)
+  to identify a weak treatment, render distinct alternatives, and recommend one.
+  Read the relevant Emil design, animation and mobile guidance; record what was
+  actually used. A donor scan or installed skill is not evidence of invocation.
 - Keep UI lean: cut marketing filler and repeated labels; keep accessible
   names, essential instructions, errors, and required disclosures.
 - Treat any edit to a shared header, footer or nav partial as an SEO change as

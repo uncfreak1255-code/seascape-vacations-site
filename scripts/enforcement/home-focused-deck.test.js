@@ -16,3 +16,18 @@ test('deck controls are manual, scoped and progressively enhanced', () => {
   assert.match(js, /ts-filtered/);
   assert.match(js, /ResizeObserver/);
 });
+test('homepage postcard extras defer src until strip interaction', () => {
+  const source = fs.readFileSync('src/index.njk', 'utf8');
+  assert.match(source, /<img class="ts-extra" data-src="/);
+  assert.doesNotMatch(source, /<img class="ts-extra"[^>]*\ssrc="/);
+  assert.match(source, /loading="\{\{ 'eager' if loop.first else 'lazy' \}\}"/);
+  const home = fs.readFileSync('_site/index.html', 'utf8');
+  const extras = [...home.matchAll(/<img class="ts-extra"[^>]*>/g)].map((match) => match[0]);
+  assert.equal(extras.length, 32);
+  extras.forEach((tag) => {
+    assert.match(tag, /\sdata-src="/);
+    assert.doesNotMatch(tag, /\ssrc="/);
+  });
+  assert.match(home, /<img data-property-photo="dockside-dreams"[^>]*\ssrc="/);
+  assert.match(home, /<img data-property-photo="dockside-dreams"[^>]*loading="eager"/);
+});

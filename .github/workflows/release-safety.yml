@@ -25,6 +25,10 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          filter: blob:none
+
+      - name: Prefetch page-date history
+        run: bash scripts/enforcement/prefetch-page-history.sh
 
       - name: Set up Node.js
         uses: actions/setup-node@v7

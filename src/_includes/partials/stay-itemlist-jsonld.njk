@@ -1,0 +1,55 @@
+    {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].pageUrl and false %}
+    {% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "name": {{ seoPage.h1 | json | safe }},
+        "description": {{ seoPage.description | json | safe }},
+        "numberOfItems": {{ seoPage.matchingProperties | length }},
+        "itemListElement": [
+            {% for matchingSlug in seoPage.matchingProperties %}
+            {% set listPosition = loop.index %}
+            {% set isLastMatch = loop.last %}
+            {% for property in properties %}
+            {% if property.slug == matchingSlug %}
+            {
+                "@type": "ListItem",
+                "position": {{ listPosition }},
+                "item": {
+                    "@type": "VacationRental",
+                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
+                    "identifier": {{ property.schemaIdentifier | json | safe }},
+                    "name": {{ property.name | json | safe }},
+                    "description": {{ property.description | json | safe }},
+                    "url": "{{ site.url }}{{ property.pageUrl }}",
+                    "image": [{{ (property.image | imgProxy(1200)) | json | safe }}],
+                    "containsPlace": {
+                        "@type": "Accommodation",
+                        "numberOfBedrooms": {{ property.bedrooms }},
+                        "numberOfBathroomsTotal": {{ property.bathrooms }},
+                        "occupancy": { "@type": "QuantitativeValue", "value": {{ property.guests }} }
+                    },
+                    {% if property.latitude and property.longitude %}
+                    "latitude": {{ property.latitude }},
+                    "longitude": {{ property.longitude }},
+                    {% endif %}
+                    {% include "partials/stay-property-address-json.njk" %}{% if property.price > 0 %},
+                    "offers": {
+                        "@type": "Offer",
+                        "price": {{ property.price | json | safe }},
+                        "priceCurrency": "USD",
+                        "unitText": "NIGHT",
+                        "availability": "https://schema.org/InStock",
+                        "url": "{{ property.bookingUrl }}"
+                    }{% endif %}
+                }
+            }{% if not isLastMatch %},{% endif %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        ]
+    }
+    </script>
+    {% elif properties and properties | length %}
+    {% endif %}

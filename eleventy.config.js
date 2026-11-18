@@ -235,6 +235,10 @@ module.exports = function(eleventyConfig) {
         fs.copyFileSync(source, target);
       }
     }
+    fs.appendFileSync(
+      path.join(root, "_site", "_redirects"),
+      "\n" + fs.readFileSync(path.join(root, "scripts", "redirects", "owner-aliases"), "utf8")
+    );
     require("./scripts/enforcement/listing-id-owned").writeGeneratedClientListingIdMap(root);
     const guestSrc = path.join(root, "src", "css", "guest.css");
     const guestOut = path.join(root, "_site", "css", "guest.css");
@@ -257,6 +261,7 @@ module.exports = function(eleventyConfig) {
   // Simple title filter - just appends site name if not already there
   eleventyConfig.addFilter("propertySchemaAmenities", require("./scripts/regenerate-property-surfaces").renderSchemaAmenityLabels);
   eleventyConfig.addFilter("numberWord", require("./scripts/enforcement/home-count-word").numberWord);
+  eleventyConfig.addFilter("homeOperator", require("./scripts/enforcement/home-count-word").homeOperator);
   eleventyConfig.addFilter("airbnbRating", (listingId) => require("./scripts/enforcement/airbnb-rating").airbnbRatingLabel(listingId));
   eleventyConfig.addFilter("propertyBySlug", (properties, slug) => {
     const property = properties.find((entry) => entry.slug === slug);

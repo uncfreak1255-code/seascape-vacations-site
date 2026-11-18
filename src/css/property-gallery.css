@@ -16,3 +16,17 @@
 .g-gallery-photo img.g-gallery-fade{opacity:0}
 .g-gallery-photo img.g-gallery-fade.is-loaded{opacity:1;transition:opacity 200ms cubic-bezier(.23,1,.32,1)}
 }
+
+.g-book-caption{display:none}
+@media not all and (min-width:900px){.inpage-book{display:none}}
+
+@media(min-width:900px){
+.g-gallery{grid-template-columns:1fr 1fr;grid-template-rows:auto;gap:0;padding:24px max(32px,calc((100% - 1120px)/2));background:var(--g-soft);height:auto;margin-bottom:0}
+.g-gallery .g-gallery-photo{display:block;background:var(--g-paper);padding:12px;aspect-ratio:auto;border-radius:4px}
+.g-gallery .g-gallery-photo:first-child{grid-column:auto;grid-row:auto}
+.g-gallery .g-gallery-photo:nth-child(n+3){display:none}
+.g-gallery .g-gallery-photo img{aspect-ratio:3/2;height:auto;object-fit:contain;transform:none}
+.g-gallery .g-book-caption{display:flex;justify-content:space-between;gap:12px;font-size:12px;color:var(--g-muted);padding-top:10px}
+.g-gallery-frame:not(.has-booklet)::before{content:"Explore the home";display:flex;align-items:center;height:56px;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--g-muted)}
+.g-gallery-frame:not(.has-booklet)::after{content:"";display:block;height:116px}
+}
