@@ -86,7 +86,14 @@ That includes:
    - responsive, accessibility, performance, and implementation risks
    Use `docs/process/seascape-design-studio.md` when the task needs a fuller
    reusable intake and output packet before implementation.
-4. For meaningful visual changes, run the repo-local
+4. For assigned component exploration, consult the shelf in
+   `docs/design/component-patterns.md`, name what feels weak, and use relevant
+   Emil guidance before rendering. Report the actual skill and references read,
+   not just those discovered. Show distinct alternatives with one recommendation
+   and desktop/mobile behavior; preserve the existing specialist/critic gates.
+   Exploration is not selection or permission to migrate other pages.
+
+   For meaningful visual changes, run the repo-local
    `seascape-design-specialist` skill before implementation. It should run
    `seascape-design-critic` and return a reviewable direction set or approved
    implementation brief, not just verbal styling advice.
