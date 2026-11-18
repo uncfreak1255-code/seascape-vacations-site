@@ -12,6 +12,7 @@ Source: `docs/status/next-batch.md`, Latest Execution Read, run 2026-10-18.
 - Reread status: `fresh but below threshold`. Report recommendation: `hold-and-reread`.
 - Allowed now: bounded rescue of a confirmed winner or money-page regression (`docs/process/ranking-regression-rescue.md`), truth fixes, tests, readbacks, drafts.
 - **Expansion blocked** by `seascape-hub/decisions/2026-05-16-truth-remediation-before-seo-expansion.md` until the open pool-heat truth defects in §5 are closed and covered by `scripts/enforcement/property-truth-invariants.test.js`, and Analytics supplies a receipt opening the next batch.
+- **Founder exception (2026-11-17 9:04 PM ET):** `/stays/bradenton-vacation-rentals/` is authorized. The Analytics reread is unchanged. No other expansion URL is opened.
 
 ## 2. Business evidence
 
@@ -61,7 +62,8 @@ published pages rather than reapplying the obsolete blanket rule:
   and `scripts/enforcement/recovery-smoke.test.js` cover the cap and exceptions.
 - Confirm the normal published revision and visible copy on the pool/hot-tub
   stay page, Dockside Dreams and The Coastal before claiming live completion.
-- Expansion still requires an Analytics receipt opening the next batch;
+- Expansion still requires an Analytics receipt opening the next batch,
+  except Sawyer's 2026-11-17 authorization of `/stays/bradenton-vacation-rentals/`;
   source corrections alone do not clear that gate.
 
 Verify-only: Hub's historical River House no-pool report needs current live-page

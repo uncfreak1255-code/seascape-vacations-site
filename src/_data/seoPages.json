@@ -1,6 +1,97 @@
 {
   "vacationer": [
     {
+      "slug": "bradenton-vacation-rentals",
+      "destination": "bradenton",
+      "title": "Bradenton Vacation Rentals",
+      "h1": "Bradenton Vacation Rentals",
+      "description": "Compare Seascape Vacations' mainland Bradenton vacation rentals, then check dates on each home.",
+      "datePublished": "2026-11-17",
+      "intro": "Seascape Vacations manages {matching} mainland Bradenton vacation rentals. These homes are in Bradenton, not on Anna Maria Island. Compare the listings and check dates for your group.",
+      "faqs": [
+        {
+          "question": "Are Seascape's Bradenton vacation rentals on Anna Maria Island?",
+          "answer": "No. Seascape Vacations manages mainland Bradenton homes. Plan to drive to Anna Maria Island beaches from the house. Check each listing's map before you book."
+        },
+        {
+          "question": "Which Bradenton homes does Seascape Vacations manage?",
+          "answer": "The current Bradenton listings are Dockside Dreams, The Oasis, River House, Bradenton Pool Home, Pickleball Pool Home Retreat, The Coastal, and Relaxing Oasis. Sarasota Luxe is a Sarasota home and is not on this page."
+        },
+        {
+          "question": "How many guests do the Bradenton homes sleep?",
+          "answer": "The current Bradenton listings sleep {sleeps-matching} across {br-matching} bedrooms. Check the selected home's guest limit, including visitors. Parties and events are not permitted."
+        },
+        {
+          "question": "Do the Bradenton homes have private pools?",
+          "answer": "Yes. Each listed Bradenton home has a private pool. Dockside Dreams is the only waterfront home, with a canal dock. Confirm amenities on the property page before you book."
+        },
+        {
+          "question": "What does pool heat cost?",
+          "answer": "Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Individual nights cannot be selected. Approved long-stay flat rates still apply, and inclusions already confirmed in your reservation messages are honored. Contact us to confirm the nights, total charge, payment instructions and heating start time. For late-day requests or mid-stay requests on an approved long-stay rate, we confirm the billable nights and price individually before payment. A request alone does not turn on the heat. Water temperature depends on the weather."
+        },
+        {
+          "question": "How do I check dates on a Bradenton vacation rental?",
+          "answer": "Open the home you want and use its date panel. Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms."
+        }
+      ],
+      "matchingProperties": [
+        "dockside-dreams",
+        "the-oasis",
+        "river-house",
+        "bradenton-pool-home",
+        "blue-house",
+        "coastal-stay",
+        "relaxing-oasis"
+      ],
+      "decisionHighlights": [
+        {
+          "label": "Mainland Bradenton",
+          "value": "These homes are in Bradenton, not on Anna Maria Island. Plan to drive to island beaches from the house."
+        },
+        {
+          "label": "Room for {sleeps-matching}",
+          "value": "Current Bradenton listings sleep {sleeps-matching} across {br-matching} bedrooms. Check the selected home's guest limit."
+        },
+        {
+          "label": "Check dates on each home",
+          "value": "Use the date panel on each property page, or open every Bradenton listing in one view."
+        }
+      ],
+      "geoIntro": "<p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> \u2014 {sleeps-phrase:dockside-dreams}, the only waterfront home, with a canal dock.</p><p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> \u2014 {sleeps-phrase:the-oasis}, with two hot tubs and a putting green.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> \u2014 {sleeps-phrase:river-house}, with a private pool and spa, near the Warner Bayou boat ramp.</p><p><a href=\"/properties/bradenton-pool-home/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"bradenton-pool-home\" data-placement=\"stay_intro\"><strong>Check dates at Bradenton Pool Home</strong></a> \u2014 {sleeps-phrase:bradenton-pool-home}, the closest Seascape home to IMG Academy.</p><p><a href=\"/properties/blue-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"blue-house\" data-placement=\"stay_intro\"><strong>Check dates at Pickleball Pool Home Retreat</strong></a> \u2014 {sleeps-phrase:blue-house}, with a private pool, pickleball court, and no hot tub.</p><p><a href=\"/properties/coastal-stay/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"coastal-stay\" data-placement=\"stay_intro\"><strong>Check dates at The Coastal</strong></a> \u2014 {sleeps-phrase:coastal-stay}. There is no charge for pool heat at The Coastal.</p><p><a href=\"/properties/relaxing-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"relaxing-oasis\" data-placement=\"stay_intro\"><strong>Check dates at Relaxing Oasis</strong></a> \u2014 {sleeps-phrase:relaxing-oasis}, with an above-ground pool, putting green, and game room.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
+      "collectionCtaTitle": "Want every Bradenton listing in one view?",
+      "collectionCtaBody": "Open every Bradenton listing when you want to scan the same mainland homes by dates and guest count.",
+      "collectionCtaHref": "/properties/?area=bradenton",
+      "collectionCtaLabel": "Open Bradenton homes",
+      "relatedGuideLinks": [
+        {
+          "href": "/guides/bradenton-area-guide/",
+          "title": "Bradenton area guide",
+          "copy": "Read the area guide for Riverwalk, IMG, and the mainland neighborhoods around these homes."
+        },
+        {
+          "href": "/guides/things-to-do-bradenton-fl/",
+          "title": "Things to do in Bradenton",
+          "copy": "Match things to do with a mainland Bradenton home, not an island address."
+        },
+        {
+          "href": "/guides/bradenton-vs-sarasota/",
+          "title": "Bradenton vs Sarasota",
+          "copy": "Compare Bradenton and Sarasota, then pick from the Bradenton homes Seascape manages."
+        }
+      ],
+      "relatedStaySlugs": [
+        "bradenton-vacation-rentals-near-beaches",
+        "bradenton-waterfront-vacation-rentals",
+        "large-group-vacation-rentals-bradenton",
+        "bradenton-vacation-rentals-with-hot-tub",
+        "fishing-vacation-rentals-bradenton"
+      ],
+      "longContent": "<p>Need a tighter filter? Compare <a href=\"/stays/bradenton-vacation-rentals-near-beaches/\">Bradenton homes near the beaches</a>, the <a href=\"/stays/bradenton-waterfront-vacation-rentals/\">waterfront home</a>, <a href=\"/stays/large-group-vacation-rentals-bradenton/\">large-group layouts</a>, or <a href=\"/stays/bradenton-vacation-rentals-with-hot-tub/\">homes with a hot tub</a>.</p>",
+      "driveTimeLabel": "Plan to drive to island beaches",
+      "introHeading": "Stay in mainland Bradenton",
+      "reviewTrustLabel": "Mainland Bradenton homes"
+    },
+    {
       "slug": "anna-maria-island-homes-with-pool",
       "destination": "anna-maria-island",
       "title": "Vacation Rentals Near Anna Maria Island with Private Pools",
@@ -119,6 +210,7 @@
       ],
       "geoIntro": "<p><strong>Dockside Dreams</strong> sits on a canal that connects toward the Manatee River, Tampa Bay, and the Gulf. Guests can confirm current dock-use details with the team before booking. The nearest Gulf sand at Bradenton Beach is 2.9 miles away, about 10 minutes, so the home is a mainland stay rather than a beachfront address.</p><p>Bradenton puts Anna Maria Island west and Sarasota south. AMI beaches run from Bradenton Beach through Holmes Beach and Coquina; Sarasota's Ringling Museum, Siesta Key, and downtown dining are farther south. Review current travel times and listing details for your dates.</p><p><strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across 4 bedrooms with a private pool, hot tub {heat:dockside-dreams}, and arcade inside. It is pet-friendly. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
+        "bradenton-vacation-rentals",
         "canal-homes-with-boat-dock",
         "fishing-vacation-rentals-bradenton",
         "golf-vacation-rentals-bradenton",
@@ -183,6 +275,7 @@
       ],
       "geoIntro": "<p>A Bradenton rental with both a private heated pool and a hot tub means you don't trade daytime swimming for an evening soak. Dockside Dreams and The Oasis both have the combination, in a fenced private yard about 10\u201315 minutes from the Gulf beaches on Anna Maria Island.</p><p>The pool handles the afternoons with the kids; the hot tub handles the quiet part of the night. <strong>The Oasis</strong> goes further with two hot tubs and a putting green; <strong>Dockside Dreams</strong> adds a private dock on the canal. Dockside {sleeps-phrase:dockside-dreams}, The Oasis up to {sleeps:the-oasis}.</p><p>Compare the same dates and complete checkout total across channels. Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Approved long-stay flat rates and inclusions confirmed in your reservation messages still apply. Contact us to confirm the charge and heating start time. Hot tub heat has no extra nightly charge year-round.</p>",
       "relatedStaySlugs": [
+        "bradenton-vacation-rentals",
         "bradenton-waterfront-vacation-rentals",
         "canal-homes-with-boat-dock",
         "fishing-vacation-rentals-bradenton",
@@ -275,6 +368,7 @@
       ],
       "geoIntro": "<p><strong>Bringing {sleeps:dockside-dreams} and want a private dock?</strong> <a href=\"/properties/dockside-dreams/\">Dockside Dreams</a> sleeps up to {sleeps:dockside-dreams} in {br:dockside-dreams} bedrooms and has a private pool and waterfront dock. Dockside Dreams may welcome a dog with prior approval; pets are not permitted at The Oasis.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
       "relatedStaySlugs": [
+        "bradenton-vacation-rentals",
         "vacation-rentals-near-anna-maria-island",
         "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-game-room",
@@ -609,6 +703,7 @@
       ],
       "geoIntro": "<p>Bradenton sits near productive Gulf Coast fishing water, and Dockside Dreams gives Seascape guests the cleanest private-dock fit in the current listing set. Use the home for boat days or nearby charters from Cortez Village, Holmes Beach, and the Manatee River area. The dock is for boat access, not fishing.</p><p>This page is scoped to Dockside Dreams because it is the Seascape property with private dock access.</p><p>Plan your bait, tackle and charter costs alongside the home\u2019s complete checkout total.</p>",
       "relatedStaySlugs": [
+        "bradenton-vacation-rentals",
         "golf-vacation-rentals-bradenton",
         "gulf-coast-vacation-homes-with-dock",
         "kayaking-vacation-rentals-bradenton",
@@ -1567,6 +1662,7 @@
       "collectionCtaHref": "/properties/?area=anna-maria-island",
       "collectionCtaLabel": "Open Bradenton + AMI Homes",
       "relatedStaySlugs": [
+        "bradenton-vacation-rentals",
         "book-direct-anna-maria-island",
         "bradenton-waterfront-vacation-rentals",
         "affordable-vacation-rentals-florida-gulf-coast",

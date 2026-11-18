@@ -225,6 +225,7 @@ test("stays smoke locks the customer-facing stay-collection hub", () => {
       <section>
         <h2>Destination collections</h2>
         <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+        <a href="/stays/bradenton-vacation-rentals/">Bradenton Vacation Rentals</a>
         <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
       </section>
       <a href="/properties/">Browse Direct-Book Homes</a>
@@ -321,6 +322,7 @@ test("stays smoke rejects leaked internal hub copy", () => {
           <section>
             <h2>Destination collections</h2>
             <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+            <a href="/stays/bradenton-vacation-rentals/">Bradenton Vacation Rentals</a>
             <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
           </section>
           <a href="/properties/">Browse Direct-Book Homes</a>

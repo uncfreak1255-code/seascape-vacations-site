@@ -215,7 +215,7 @@ function applyStayFacts(value, catalog, page = value) {
   return value;
 }
 
-const SKIP_KEYS = new Set(["slug", "file", "pageUrl", "bookingUrl", "href", "image", "relatedStaySlugs", "matchingProperties"]);
+const SKIP_KEYS = new Set(["slug", "file", "pageUrl", "bookingUrl", "href", "image", "relatedStaySlugs", "matchingProperties", "datePublished"]);
 
 function visitStrings(value, visit, key) {
   if (typeof value === "string") {
