@@ -88,6 +88,7 @@
 
 - src/_data/seoPages.json
 - src/stays/stays.njk
+- src/_includes/partials/stay-article-jsonld.njk
 - src/_redirects
 - src/guides/bradenton-area-guide/index.html
 - src/guides/things-to-do-bradenton-fl.html

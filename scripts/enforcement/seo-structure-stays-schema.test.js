@@ -15,7 +15,13 @@ test("stays template can noindex weak template pages and avoids empty inventory 
   assert.equal(staysTemplate.includes("data: staysPages"), true);
   assert.equal(staysTemplate.includes("seoGovernance.staysNoindexSlugs.indexOf(seoPage.slug) === -1"), true);
   assert.equal(staysTemplate.includes("noindex, follow"), true);
+  assert.equal(staysTemplate.includes('{% include "partials/stay-article-jsonld.njk" %}'), true);
   assert.equal(staysTemplate.includes('{% include "partials/stay-itemlist-jsonld.njk" %}'), true);
+  const articlePartial = fs.readFileSync(
+    path.join(projectRoot, "src", "_includes", "partials", "stay-article-jsonld.njk"),
+    "utf8"
+  );
+  assert.equal(articlePartial.includes("seoPage.datePublished | default('2025-01-22')"), true);
   assert.equal(
     itemListPartial.includes("{% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}"),
     true

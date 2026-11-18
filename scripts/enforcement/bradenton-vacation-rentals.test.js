@@ -89,6 +89,18 @@ test("stay ItemList schema omits empty coordinates instead of emitting invalid J
   );
 });
 
+test("Bradenton head-term Article schema uses the November 2026 publication date", () => {
+  const page = pages.vacationer.find((item) => item.slug === SLUG);
+  assert.equal(page.datePublished, "2026-11-18");
+  const template = fs.readFileSync(
+    path.join(__dirname, "..", "..", "src/_includes/partials/stay-article-jsonld.njk"),
+    "utf8"
+  );
+  assert.match(template, /seoPage\.datePublished \| default\('2025-01-22'\)/);
+  const sibling = pages.vacationer.find((item) => item.slug === "bradenton-vacation-rentals-near-beaches");
+  assert.equal(sibling.datePublished, undefined);
+});
+
 test("Bradenton head-term page is on the settle ledger before publication", () => {
   const entry = ledger.pages.find((page) => page.route === "/stays/bradenton-vacation-rentals/");
   assert.ok(entry, "page-ledger.json must include the new head-term route");

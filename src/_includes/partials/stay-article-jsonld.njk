@@ -1,0 +1,18 @@
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": {{ seoPage.title | json | safe }},
+        "description": {{ seoPage.description | json | safe }},
+        "url": "{{ site.url }}/stays/{{ seoPage.slug }}/",
+        "image": {% if heroImage and heroImage[0] == '/' %}"{{ site.url }}{{ heroImage }}"{% else %}{{ (heroImage | imgProxy(1200)) | json | safe }}{% endif %},
+        "datePublished": "{{ seoPage.datePublished | default('2025-01-22') }}",
+        "dateModified": "{{ pageUpdatedIso or pageUpdatedDate }}",
+        "author": { "@type": "Organization", "name": {{ site.author | json | safe }}, "url": "{{ site.url }}" },
+        "publisher": {
+            "@type": "Organization",
+            "name": {{ site.name | json | safe }},
+            "logo": { "@type": "ImageObject", "url": "{{ site.url }}/logo-optimized.png" }
+        }
+    }
+    </script>
