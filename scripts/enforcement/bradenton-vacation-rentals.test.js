@@ -78,7 +78,10 @@ test("Bradenton head-term copy keeps The Coastal pool-heat exception", () => {
 });
 
 test("stay ItemList schema omits empty coordinates instead of emitting invalid JSON", () => {
-  const template = fs.readFileSync(path.join(__dirname, "..", "..", "src", "stays", "stays.njk"), "utf8");
+  const template = fs.readFileSync(
+    path.join(__dirname, "..", "..", "src", "_includes", "partials", "stay-itemlist-jsonld.njk"),
+    "utf8"
+  );
   assert.match(
     template,
     /\{% if property\.latitude and property\.longitude %\}\s*"latitude": \{\{ property\.latitude \}\}/
