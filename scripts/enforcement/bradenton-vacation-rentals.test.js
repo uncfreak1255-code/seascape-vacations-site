@@ -74,6 +74,7 @@ test("Bradenton head-term copy keeps The Coastal pool-heat exception", () => {
   const heatFaq = resolved.faqs.find((item) => /what does pool heat cost/i.test(item.question));
   assert.ok(heatFaq);
   assert.match(heatFaq.answer, /There is no charge for pool heat at The Coastal/);
+  assert.match(heatFaq.answer, /late-day requests or mid-stay requests on an approved long-stay rate/);
 });
 
 test("Bradenton donor guides and related stay pages point at the head-term URL", () => {
