@@ -10,6 +10,8 @@ test("catalog facts and accommodation photos come from canonical property record
     assert.ok(template.includes("property." + field), "missing canonical " + field);
   }
   assert.ok(template.includes("property.photography.photos[0].src"));
+  assert.match(template, /<img class="ts-extra" data-src="/);
+  assert.doesNotMatch(template, /<img class="ts-extra"[^>]*\ssrc="/);
   assert.doesNotMatch(template, /seascape-og-default|this.src=/);
   for (const property of require("../../src/_data/properties-fallback.json")) {
     assert.ok(property.photography.photos.length >= 10, property.slug + " must include interiors");
