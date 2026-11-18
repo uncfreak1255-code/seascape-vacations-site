@@ -65,6 +65,24 @@ test("no template or guide hardcodes the portfolio size", () => {
   assert.deepEqual(offenders, [], "Use the numberWord filter on the properties list, or drop the number");
 });
 
+// src/llms.txt is copied as-is, so it cannot use the numberWord filter and the
+// template scan above skips it. It must state the portfolio size, and every
+// portfolio-size phrase in it must name the catalog count.
+test("llms.txt states the catalog home count", () => {
+  const text = fs.readFileSync(path.join(projectRoot, "src", "llms.txt"), "utf8");
+  const count = require("../../src/_data/properties-fallback.json").length;
+  const expected = new Set([catalogHomeCountWord(), String(count)]);
+  const phrases = TOTAL_COUNT_PATTERNS.flatMap((pattern) => [
+    ...text.matchAll(new RegExp(pattern.source, `${pattern.flags}g`))
+  ].map((match) => match[0]));
+  assert.ok(phrases.length > 0, "src/llms.txt no longer states the portfolio size in a form the count patterns recognise");
+  for (const phrase of phrases) {
+    // The count is the first number in the phrase once a leading "one of" is set aside.
+    const stated = phrase.replace(/^one of\s+/i, "").match(/\b(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)\b/i);
+    assert.ok(stated && expected.has(stated[0].toLowerCase()), `src/llms.txt says "${phrase}"; the catalog has ${count} homes`);
+  }
+});
+
 test("the property-management page states the catalog size it is built from", () => {
   const built = path.join(projectRoot, "_site", "property-management", "index.html");
   assert.ok(fs.existsSync(built), "run npm run build first; _site/property-management/index.html is missing");
