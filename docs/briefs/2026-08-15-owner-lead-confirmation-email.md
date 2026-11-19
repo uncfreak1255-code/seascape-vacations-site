@@ -67,7 +67,7 @@ Status: ACTIVE
 - source files likely to change: `src/property-management/index.njk`, `src/css/owner.css`, `src/property-management/revenue-review-requested.njk`, `netlify/functions/submission-created.js`, `netlify/functions/_owner-lead-confirmation.js`, `netlify/functions/_owner-lead-mail.js`, `scripts/enforcement/owner-lead-confirmation.test.js`, `scripts/enforcement/owner-acquisition.test.js`, `scripts/recovery/assert-live-smoke.js`, `scripts/recovery/assert-owner-funnel-routes.js`, `scripts/recovery/assert-build-output.js`, `tests/visual/waterline-owner-capture.spec.js`, `.env.example`, `docs/runbooks/owner-lead-confirmation-email.md`
 - redirect or schema work: none
 - internal-link or CTA work: preserve existing confirmation-page links to the fee and income guides
-- copy alignment: thank-you page and confirmation email both say a real person follows up within 48 hours and invite a reply with listing/address context
+- copy alignment: thank-you page and confirmation email both say a real person will follow up, usually within 48 hours, and invite a reply with listing/address context ("usually" added to the email by Sawyer's decision on agent-issues#77, Site PR #1020, 2026-11-18; it was firm "within 48 hours" before)
 - intake alignment: the form requires a property-owner or authorized-representative confirmation, records it with the submission and repeats it on the receipt; the owner statement upload stays optional
 
 ## Release Gate Checklist
