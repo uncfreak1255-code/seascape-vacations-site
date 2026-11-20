@@ -418,6 +418,13 @@ test("guides do not describe Seascape homes as pet-friendly or label the no-pets
     const text = fs.readFileSync(file, "utf8");
     const rel = path.relative(guidesDir, file);
     assert.doesNotMatch(text, /Seascape Vacations manages[^<.]*pet-friendly/i, `${rel} says Seascape manages pet-friendly homes`);
-    assert.doesNotMatch(text, /href="\/stays\/pet-friendly-vacation-rentals-bradenton\/?">Pet-Friendly[^<]*Rentals</i, `${rel} labels the no-pets collection as pet-friendly rentals`);
+    for (const match of text.matchAll(/<a\b[^>]*href="\/stays\/pet-friendly-vacation-rentals-bradenton\/?"[^>]*>([^<]*)<\/a>/gi)) {
+      assert.doesNotMatch(match[1], /pet-friendly|dog-friendly/i, `${rel} labels the no-pets collection link "${match[1]}"`);
+    }
+    for (const section of text.matchAll(/<section class="cta-section">[\s\S]*?<\/section>/gi)) {
+      if (/pet-friendly-vacation-rentals-bradenton/.test(section[0])) {
+        assert.doesNotMatch(section[0], /Book a Pet-Friendly|dog-friendly stays|Pet-Friendly Homes/i, `${rel} CTA invites booking a pet-friendly Seascape rental`);
+      }
+    }
   }
 });
