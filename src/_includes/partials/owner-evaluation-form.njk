@@ -1,5 +1,5 @@
 {% macro ownerEvaluationForm(options = {}) %}
-{% set hasFormCard = options.formTitle or options.formIntro or options.proofNote or options.detailCopy or options.confirmation %}
+{% set hasFormCard = options.formTitle %}
 <form
   class="owner-lead-form{% if hasFormCard %} owner-lead-form--editorial{% endif %}{% if options.className %} {{ options.className }}{% endif %}"
   {% if options.id %}id="{{ options.id }}"{% endif %}
@@ -38,14 +38,6 @@
     {% if options.intro %}
     <p class="owner-form-copy">{{ options.intro }}</p>
     {% endif %}
-    {% if hasFormCard %}
-    <ul class="owner-form-proof-list">
-      <li>{{ options.formIntro or "The fastest first pass comes from two things: the listing URL or address, and one line on what feels off. An owner statement or fee quote makes the review sharper." }}</li>
-      <li>{{ options.proofNote or "Source note: Send what you have. We will tell you if a statement, booking calendar, guest review, or fee quote would make the review more useful." }}</li>
-      <li><strong>{{ options.detailLabel or "What the review checks" }}</strong>{{ options.detailCopy or "The private revenue review shows what we can verify, what looks expensive, and what still needs a document before you decide whether to stay put, fix the setup, or talk about a transition." }}</li>
-      <li>{{ options.confirmation or "Got it. Seascape will read what you send and return the clearest next step: stay put, fix the current setup, or talk about a transition." }}</li>
-    </ul>
-    {% endif %}
   </div>
   {% endif %}
 
@@ -67,33 +59,30 @@
           <input type="email" name="email" autocomplete="email" placeholder="Best email for your review" required>
         </label>
         <label class="owner-form-field">
-          <span>Phone</span>
+          <span>Phone (optional)</span>
           <input type="tel" name="phone" autocomplete="tel" placeholder="Best number for text updates">
         </label>
         <label class="owner-form-field owner-form-field--wide">
           <span>{{ options.propertyFieldLabel or "Listing URL or property address" }}</span>
           <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or 'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave' }}" data-owner-context-field>
-          <small class="owner-form-help">If you do not know the street address yet, paste the Airbnb or Vrbo link and tell us what feels off.</small>
+          <small class="owner-form-help">An Airbnb or Vrbo link works in place of an address.</small>
         </label>
         {% if options.showBenchmarkFields %}
+        <input type="hidden" name="listing_url">
         <label class="owner-form-field">
-          <span>Listing URL</span>
-          <input type="url" name="listing_url" inputmode="url" placeholder="Paste the Airbnb or Vrbo listing URL" data-owner-context-field>
-        </label>
-        <label class="owner-form-field">
-          <span>Current manager or self-managed</span>
+          <span>Current manager (optional)</span>
           <input type="text" name="current_manager" placeholder="Manager name or self-managed">
         </label>
         <label class="owner-form-field">
-          <span>Current fee quote, if known</span>
+          <span>Current fee quote (optional)</span>
           <input type="text" name="current_fee_quote" placeholder="15%, 20%, 25%, or fee terms">
         </label>
         <label class="owner-form-field owner-form-field--wide">
-          <span>What feels off right now?</span>
+          <span>What feels off right now? (optional)</span>
           <textarea name="what_feels_off" rows="3" placeholder="Example: owner payout feels light, booking-site fees look high, reporting is hard to trust, or the current manager setup feels off" data-owner-context-field></textarea>
         </label>
         <label class="owner-form-field owner-form-field--wide owner-form-field--file">
-          <span>Upload owner statement, optional</span>
+          <span>Upload owner statement (optional)</span>
           <input type="file" name="owner_statement" accept="{{ options.fileAccept or '.pdf,.csv,.xls,.xlsx,.png,.jpg,.jpeg,.webp' }}">
           <small class="owner-form-help">{{ options.fileHelp or "PDF, spreadsheet, or screenshot. You can submit the form without an upload." }}</small>
         </label>

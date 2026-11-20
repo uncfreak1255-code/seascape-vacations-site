@@ -10,12 +10,15 @@ function loadSmokeModule() {
   return require(smokeScriptPath);
 }
 
-test("live smoke rejects stale pet approval at Oasis and River House", () => {
+test("live smoke rejects stale pet approval at Oasis, River House, Dockside Dreams and Sarasota Luxe", () => {
   const smoke = loadSmokeModule();
-  for (const route of ["/properties/the-oasis/", "/properties/river-house/"]) {
+  for (const route of ["/properties/the-oasis/", "/properties/river-house/", "/properties/dockside-dreams/", "/properties/sarasota-luxe/"]) {
     const target = smoke.targets.find(entry => entry.path === route);
     assert.ok(target);
-    const body = "Pets are not permitted at this home. Service animals are welcome without a pet fee";
+    const poolHeat = route === "/properties/dockside-dreams/"
+      ? " $40 per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. Approved long-stay flat rates still apply."
+      : "";
+    const body = "Pets are not permitted at this home. Service animals are welcome without a pet fee" + poolHeat;
     assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body }));
     assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: "Ask us to confirm pet approval" }), /missing current live marker/);
     assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: body + ' <option value="pet approval">Bringing a dog</option>' }), /stale live marker/);
@@ -40,9 +43,10 @@ test("pool-heat smoke requires the cap in page copy, not just FAQ schema", () =>
   for (const route of ["/properties/dockside-dreams/", "/stays/vacation-rentals-with-pool-and-hot-tub/"]) {
     const target = smoke.targets.find((entry) => entry.path === route);
     assert.ok(target);
-    assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body: `<p>${cap}. ${exceptions}</p>` }));
+    const pets = route === "/properties/dockside-dreams/" ? "<p>Pets are not permitted at this home. Service animals are welcome without a pet fee.</p>" : "";
+    assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body: `${pets}<p>${cap}. ${exceptions}</p>` }));
     assert.throws(() => smoke.validateTargetResponse(target, {
-      statusCode: 200, body: `<script type="application/ld+json">"${cap}"</script><p>${exceptions}</p>`
+      statusCode: 200, body: `${pets}<script type="application/ld+json">"${cap}"</script><p>${exceptions}</p>`
     }), /missing current live marker/);
   }
 });
@@ -71,6 +75,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <article><a href="/properties/coastal-stay/">The Coastal</a></article>
       <article><a href="/properties/relaxing-oasis/">Relaxing Oasis</a></article>
       <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
+      <a class="g-header-owners" href="/property-management/">Owners</a>
     </main>
   `;
 
@@ -87,6 +92,11 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
     location: null,
     body: currentPropertiesBody.replace('<p class="g-card-source">Ratings from Airbnb</p>', "")
   }), /missing current live marker\(s\): <p class="g-card-source">Ratings from Airbnb<\/p>/);
+  assert.throws(() => smoke.validateTargetResponse(target, {
+    statusCode: 200,
+    location: null,
+    body: currentPropertiesBody.replace('class="g-header-owners"', 'class="g-header-x"')
+  }), /g-header-owners/);
   assert.equal(currentPropertiesBody.includes("View Details"), false);
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,
@@ -120,6 +130,7 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
           <article>Dockside Dreams</article>
           <article>The Oasis</article>
           <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
+          <a class="g-header-owners" href="/property-management/">Owners</a>
         </main>
       `
     });
@@ -218,6 +229,7 @@ test("stays smoke locks the customer-facing stay-collection hub", () => {
       <section>
         <h2>Destination collections</h2>
         <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+        <a href="/stays/bradenton-vacation-rentals/">Bradenton Vacation Rentals</a>
         <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
       </section>
       <a href="/properties/">Browse Direct-Book Homes</a>
@@ -245,6 +257,7 @@ test("Sarasota pool stay smoke locks resolved occupancy and heat copy", () => {
       <p>St. Armands Circle is also reached by car</p>
       <p>are reached by car from Sarasota Luxe</p>
       <p>plus a hot tub (confirm heat terms when booking).</p>
+      <a href="/properties/sarasota-luxe/#booking">Check dates at Sarasota Luxe</a>
     </main>
   `;
 
@@ -255,6 +268,26 @@ test("Sarasota pool stay smoke locks resolved occupancy and heat copy", () => {
       body: currentSarasotaStayBody
     });
   });
+});
+
+test("Sarasota pool stay smoke rejects an intro without the date-panel link", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/sarasota-vacation-rentals-with-pool/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <h2>Private pool, sleeps 12</h2>
+          <p>St. Armands Circle is also reached by car</p>
+          <p>are reached by car from Sarasota Luxe</p>
+          <p>plus a hot tub (confirm heat terms when booking).</p>
+        </main>
+      `
+    });
+  }, /missing current live marker/);
 });
 
 test("Sarasota pool stay smoke rejects stale included-heat copy", () => {
@@ -271,6 +304,7 @@ test("Sarasota pool stay smoke rejects stale included-heat copy", () => {
           <p>St. Armands Circle is also reached by car</p>
           <p>are reached by car from Sarasota Luxe</p>
           <p>plus a hot tub included all year.</p>
+          <a href="/properties/sarasota-luxe/#booking">Check dates at Sarasota Luxe</a>
         </main>
       `
     });
@@ -292,6 +326,7 @@ test("stays smoke rejects leaked internal hub copy", () => {
           <section>
             <h2>Destination collections</h2>
             <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+            <a href="/stays/bradenton-vacation-rentals/">Bradenton Vacation Rentals</a>
             <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
           </section>
           <a href="/properties/">Browse Direct-Book Homes</a>
@@ -444,4 +479,5 @@ test("homepage smoke validates the rendered home journey and rejects missing tri
   const body=fs.readFileSync(path.join(projectRoot,"_site/index.html"),"utf8");
   assert.doesNotThrow(()=>smoke.validateTargetResponse(target,{statusCode:200,body}));
   assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/data-guest-trip-form/g,"removed-control")}));
+  assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/g-header-owners/g,"g-header-x")}), /g-header-owners/);
 });

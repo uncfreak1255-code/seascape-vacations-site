@@ -84,24 +84,7 @@ eleventyComputed:
     }
     </script>
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        "headline": {{ seoPage.title | json | safe }},
-        "description": {{ seoPage.description | json | safe }},
-        "url": "{{ site.url }}/stays/{{ seoPage.slug }}/",
-        "image": {% if heroImage and heroImage[0] == '/' %}"{{ site.url }}{{ heroImage }}"{% else %}{{ (heroImage | imgProxy(1200)) | json | safe }}{% endif %},
-        "datePublished": "2025-01-22",
-        "dateModified": "{{ pageUpdatedIso or pageUpdatedDate }}",
-        "author": { "@type": "Organization", "name": {{ site.author | json | safe }}, "url": "{{ site.url }}" },
-        "publisher": {
-            "@type": "Organization",
-            "name": {{ site.name | json | safe }},
-            "logo": { "@type": "ImageObject", "url": "{{ site.url }}/logo-optimized.png" }
-        }
-    }
-    </script>
+    {% include "partials/stay-article-jsonld.njk" %}
 
     {% if hasFaqs %}
     <script type="application/ld+json">
@@ -124,63 +107,12 @@ eleventyComputed:
     </script>
     {% endif %}
 
-    {% if seoPage.propertyFacts and seoPage.propertyFacts.length > 0 and seoPage.propertyFacts[0].pageUrl and false %}
-    {% elif properties and properties | length and seoPage.matchingProperties and seoPage.matchingProperties.length > 0 %}
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "name": {{ seoPage.h1 | json | safe }},
-        "description": {{ seoPage.description | json | safe }},
-        "numberOfItems": {{ seoPage.matchingProperties | length }},
-        "itemListElement": [
-            {% for matchingSlug in seoPage.matchingProperties %}
-            {% set listPosition = loop.index %}
-            {% set isLastMatch = loop.last %}
-            {% for property in properties %}
-            {% if property.slug == matchingSlug %}
-            {
-                "@type": "ListItem",
-                "position": {{ listPosition }},
-                "item": {
-                    "@type": "VacationRental",
-                    "@id": "{{ site.url }}{{ property.pageUrl }}#vacation-rental",
-                    "identifier": {{ property.schemaIdentifier | json | safe }},
-                    "name": {{ property.name | json | safe }},
-                    "description": {{ property.description | json | safe }},
-                    "url": "{{ site.url }}{{ property.pageUrl }}",
-                    "image": [{{ (property.image | imgProxy(1200)) | json | safe }}],
-                    "containsPlace": {
-                        "@type": "Accommodation",
-                        "numberOfBedrooms": {{ property.bedrooms }},
-                        "numberOfBathroomsTotal": {{ property.bathrooms }},
-                        "occupancy": { "@type": "QuantitativeValue", "value": {{ property.guests }} }
-                    },
-                    "latitude": {{ property.latitude }},
-                    "longitude": {{ property.longitude }},
-                    {% include "partials/stay-property-address-json.njk" %}{% if property.price > 0 %},
-                    "offers": {
-                        "@type": "Offer",
-                        "price": {{ property.price | json | safe }},
-                        "priceCurrency": "USD",
-                        "unitText": "NIGHT",
-                        "availability": "https://schema.org/InStock",
-                        "url": "{{ property.bookingUrl }}"
-                    }{% endif %}
-                }
-            }{% if not isLastMatch %},{% endif %}
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
-        ]
-    }
-    </script>
-    {% elif properties and properties | length %}
-    {% endif %}
+    {% include "partials/stay-itemlist-jsonld.njk" %}
 
 
 <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
 <link rel="stylesheet" href="/css/stay-collection.css">
+{% if seoPage.weeklyFeature %}<link rel="stylesheet" href="/css/stay-weekly.css">{% endif %}
 {% if seoPage.heroBookingAction %}
 <link rel="stylesheet" href="/css/stay-group.css">
 {% endif %}
@@ -190,7 +122,7 @@ eleventyComputed:
 <link rel="stylesheet" href="/css/stay-family.css">
 {% endif %}
 </head>
-<body class="guest-site stay-collection{% if isFamilyBrowse %} stay-flow flow-browse{% endif %}">
+<body class="guest-site stay-collection{% if seoPage.weeklyFeature %} weekly-photo-guide{% endif %}{% if isFamilyBrowse %} stay-flow flow-browse{% endif %}">
     {% set navButtonHref = seoPage.collectionCtaHref or "/properties/" %}
     {% set navButtonAttributes = 'data-track-event="catalog_book_direct_click" data-placement="stay_nav" data-track-label="' ~ seoPage.slug ~ '"' %}
     {% include "partials/guest-header.njk" %}
@@ -212,13 +144,7 @@ eleventyComputed:
             </ol>
         </nav>
 
-        <section class="hero{% if seoPage.heroBookingAction %} hero--group{% endif %}" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
-            {% include "partials/stay-hero-content.njk" %}
-            {% if isFamilyBrowse %}
-            <p class="flow-guide-answer">{{ seoPage.intro }}</p>
-            {% include "partials/catalog-trip.njk" %}
-            {% endif %}
-        </section>
+        {% include "partials/stay-main-hero.njk" %}
         {% if isFamilyBrowse %}{% include "partials/stay-family-homes.njk" %}{% endif %}
 
         <section class="stats-bar" aria-label="Seascape stay highlights">
@@ -421,24 +347,7 @@ eleventyComputed:
         </section>
         {% endif %}
 
-        {% if hasFaqs %}
-        <section class="section faq-section" id="faq">
-            <div class="container">
-                <div class="section-header">
-                    <p class="section-tag">Common questions</p>
-                    <h2 class="section-title">Frequently asked questions</h2>
-                </div>
-                <div class="faq-list">
-                    {% for faq in seoPage.faqs %}
-                    <article class="faq-item">
-                        <h3 class="faq-question">{{ faq.question or faq.q }}</h3>
-                        <p class="faq-answer">{{ faq.answer or faq.a }}</p>
-                    </article>
-                    {% endfor %}
-                </div>
-            </div>
-        </section>
-        {% endif %}
+        {% include "partials/stay-faq-section.njk" %}
 
         {% if seoPage.longContent %}
         <section class="section">
@@ -527,5 +436,6 @@ eleventyComputed:
     {% include "partials/guest-footer.njk" %}
 
     {% include "partials/stay-scripts.njk" %}
+    {% if seoPage.weeklyFeature %}<script defer src="/assets/js/stay-weekly.js"></script>{% endif %}
 </body>
 </html>

@@ -6,8 +6,10 @@
 .g-lander-crumbs a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;color:var(--g-ink);text-decoration:underline;text-underline-offset:4px}
 
 /* Hero: a real managed home under the ink scrim, as on the owner hub. The photo,
-   scrim, paper type and caption come from .g-owner-hero in owner.css; this only
-   widens the measure for longer page claims and puts the CTA in citron. */
+   and paper type come from owner.css; landers strengthen the scrim for longer
+   text and label nearby portfolio photos before the location headline. */
+.g-lander-hero::before{background:linear-gradient(to top,color-mix(in srgb,var(--g-ink) 92%,transparent),color-mix(in srgb,var(--g-ink) 76%,transparent))}
+.guest-site .g-lander-nearby-photo{margin:0 0 12px;text-transform:none;letter-spacing:normal}
 .g-lander-hero-copy{max-width:760px}
 .guest-site .g-lander-hero h1{max-width:16ch;font-size:clamp(44px,5.4vw,80px);line-height:1}
 .guest-site .g-lander-hero .g-owner-lede{max-width:56ch}
@@ -74,9 +76,6 @@
 .guest-site .g-lander .owner-form-eyebrow{margin:0;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:var(--g-rule)}
 .guest-site .g-lander .owner-form-title{margin:0;color:var(--g-paper);font-size:clamp(34px,4vw,56px);line-height:1.04}
 .guest-site .g-lander .owner-form-copy{margin:0;max-width:52ch;font-size:16px;line-height:1.6;color:var(--g-paper)}
-.g-lander .owner-form-proof-list{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid color-mix(in srgb,var(--g-paper) 28%,transparent);font-size:14px;color:var(--g-rule)}
-.g-lander .owner-form-proof-list li{padding:12px 0;border-bottom:1px solid color-mix(in srgb,var(--g-paper) 28%,transparent)}
-.g-lander .owner-form-proof-list strong{display:block;margin-bottom:4px;color:var(--g-paper);font-weight:500}
 .g-lander .owner-form-card{background:var(--g-paper);color:var(--g-ink);padding:32px}
 .guest-site .g-lander .owner-form-card-title{margin:0 0 20px;font:400 30px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.03em;color:var(--g-ink)}
 .g-lander .owner-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}

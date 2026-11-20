@@ -1,0 +1,17 @@
+<dialog class="sv-dialog" aria-labelledby="weekly-book-title" data-weekly-dialog data-booking-url="{{ weeklyHome.bookingUrl }}" data-max-guests="{{ weeklyHome.guests }}" data-property-slug="{{ weeklyHome.slug }}">
+  <div class="sv-dialog-header"><div><p class="sv-eyebrow">Your waterfront week</p><h2 id="weekly-book-title">Stay at {{ weeklyHome.name }}.</h2></div><button type="button" class="sv-close" aria-label="Close booking dates" data-weekly-close>{{ uiIcon("close") }}</button></div>
+  <p>Choose your trip, then check current availability and the full price on our direct-booking page.</p>
+  <form action="{{ weeklyHome.bookingUrl }}" method="get" data-weekly-form>
+    <div class="sv-book-grid">
+      <label for="weekly-arrive">Arrival<input type="date" name="start" id="weekly-arrive" required></label>
+      <label for="weekly-depart">Departure<input type="date" name="end" id="weekly-depart" required></label>
+      <label class="sv-guest" for="weekly-guests">Your group size<select name="numberOfGuests" id="weekly-guests" required aria-describedby="weekly-capacity">{% for count in range(1, 18) %}<option value="{{ count }}">{% if count == 17 %}More than 16 guests{% else %}{{ count }} {% if count == 1 %}guest{% else %}guests{% endif %}{% endif %}{% if count > weeklyHome.guests %} · compare homes{% endif %}</option>{% endfor %}</select><span id="weekly-capacity">This home hosts up to {{ weeklyHome.guests }}. Larger groups can compare all homes.</span></label>
+    </div>
+    <button class="sv-preset" type="button" data-weekly-seven>Make it a week · 7 nights</button>
+    <p class="sv-status" role="status" data-weekly-status>Select your arrival and departure.</p>
+    <a href="/properties/" data-weekly-alternatives hidden>Compare homes for your group</a>
+    <button class="sv-cta" type="submit">Continue to direct booking <span aria-hidden="true">{{ uiIcon("arrow-up-right") }}</span></button>
+    <a hidden data-weekly-handoff href="{{ weeklyHome.bookingUrl }}" data-track-event="guide_property_check_dates_click" data-placement="weekly_booking_dialog" data-property-slug="{{ weeklyHome.slug }}">Continue to {{ weeklyHome.name }} direct booking</a>
+    <p class="sv-disclosure">Minimum stays, availability, total price and cancellation terms are confirmed on the booking page. No reservation or payment happens here.</p>
+  </form>
+</dialog>

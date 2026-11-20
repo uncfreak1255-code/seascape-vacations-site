@@ -86,7 +86,7 @@ test("winner guide metadata and conversion markers stay decision-forward", () =>
   assert.equal(amiContract.head.title, "Anna Maria Island vs Siesta Key: Where to Stay");
   assert.equal(
     amiContract.head.description,
-    "Compare AMI, Bradenton near AMI beaches, and Siesta Key area stays after choosing between quieter beach days and famous quartz sand."
+    "Anna Maria Island or Siesta Key? Compare quieter Old Florida beaches with Siesta's famous quartz sand, plus Bradenton homes near AMI."
   );
   assert.equal(amiContract.head.ogTitle, amiContract.head.title);
   assert.equal(amiContract.head.ogDescription, amiContract.head.description);

@@ -1,8 +1,8 @@
 # Homepage rental-offer clarity
 
-- lifecycle: active
-- task scope: Prepare the existing homepage opening and title for Sawyer's review; production publication requires his approval. Magister item 27237de4-52a6-4c35-bdc8-de2be30e0bba.
-- completion or successor: Draft phase; no merge or production publication yet.
+- lifecycle: completed
+- task scope: Clarify the existing homepage opening and title, preserving the existing phone layout. Magister item 27237de4-52a6-4c35-bdc8-de2be30e0bba. Sawyer approved publication of PR #994 on November 17, 2026.
+- completion or successor: PR #994 merged as 55b3c74f2a7007c578a987ed5333f591883b5af6; published and verified November 17, 2026 at 21:05 Eastern. Production revision 9f8e369ac327cd1db91840d4ea035e71b97efae9 contains the merge.
 - source files likely to change: `src/index.njk`, `scripts/recovery/assert-live-smoke.js`, `scripts/enforcement/ai-discovery-schema.test.js`; existing title assertion follows the requested title.
 
 ## Content Gate Inputs
@@ -70,4 +70,14 @@ The pre-existing mobile-home baseline mismatch, screenshot-baseline regeneration
 
 ## Release Dependency Readback — November 17, 2026
 
-Sawyer requested clearing the separate owner-fee evidence blocker and finishing release checks. PR #989 is merged as 1ccb3e082d168f88d9cf4fadd16f7d2a4a19a2d5 and issue #990 is closed. Integrate that verified main revision; the owner-proof freshness check now passes. Homepage source, styles and both homepage screenshot baselines are unchanged by the integration. Publication approval for PR #994 remains pending. The explicit source-file heading above lets the content gate identify this brief when the merge temporarily includes upstream briefs.
+Sawyer requested clearing the separate owner-fee evidence blocker and finishing release checks. PR #989 merged as 1ccb3e082d168f88d9cf4fadd16f7d2a4a19a2d5 and issue #990 closed. That verified main revision was integrated, and the owner-proof freshness check passed. Homepage source, styles and both homepage screenshot baselines were unchanged by that integration. Publication approval was pending at that checkpoint and was subsequently granted. The explicit source-file heading above lets the content gate identify this brief when the merge temporarily includes upstream briefs.
+
+## Publication Proof — November 17, 2026
+
+Sawyer: “Yes, publish the homepage update in PR #994 through the normal review and release workflow, then verify it on the live site.” All three required checks and current-head review passed at 17eb63764f0f52eadc492776bfce6f885ad8616c; original Voice and Spec reviews cover the unchanged material copy. The four desktop/phone before-and-after images remain embedded in PR #994.
+
+Publish Production run 44220476326 succeeded. Netlify production deploy 6afd07a37e3e3c5b3bb19690 is ready and is the site's published deploy, at 2026-11-18T02:05:34.338Z (November 17, 21:05 Eastern). Its revision 9f8e369ac327cd1db91840d4ea035e71b97efae9 contains the PR #994 merge. The consolidated release also contains separately merged #985 and #995; the latter defers extra photos until a strip is touched or scrolled. Neither removes the approved homepage wording.
+
+`verify:merge-live` exited 0. All four post-deploy commands exited 0: `verify:recovery:live`, `verify:direct-booking-events`, `verify:owner-funnel-routes` (8 routes), and `verify:recovery:entity-live` (19 routes). Direct production browser checks at 1440px, 393px and 375px read back the exact title and visible offer, with no horizontal overflow or JavaScript errors. Phone search pill, rounded filters, serif home names and clipped desktop hero remain; filters update 8 → 1 → 8 homes without deleting the offer, photo-strip extras load on interaction, the dates sheet opens/closes, and the home link reaches Dockside Dreams. Analytics requests were blocked during QA.
+
+Record November 17 as the shipped date in the existing page ledger. Exclude launch day from any later outcome comparison; commercial impact is unmeasured. No new paid research, schedule or tracking setting was added.

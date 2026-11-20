@@ -188,6 +188,11 @@ reread. The synced next-move line points here when the owner cluster is
 sub-gate; this section does not restate it, and it adds no second reread-status
 or next-move line of its own.
 
+## Founder Exception — Bradenton Head Term
+
+Sawyer approved 2026-11-17 9:04 PM ET: ship `/stays/bradenton-vacation-rentals/`
+for `bradenton vacation rentals`. Other expansion URLs stay held.
+
 ## Corrected SEO Decision Notes
 
 - Authority order for this dispute: enforcement tests, rendered build output, live GSC/analytics, then agent opinion. `scripts/enforcement/owner-proof-clean.test.js` settles the AMI income guide: keep `src/guides/vacation-rental-income-anna-maria.html` noindexed and keep owner-income intent routed to `/research/owner-fee-revenue-leak-benchmark-2026/`.

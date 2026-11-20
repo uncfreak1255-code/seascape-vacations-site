@@ -1,0 +1,9 @@
+# Weekly stay photo-card
+
+Approved by Sawyer on 2026-11-17 after rendered variants A (split photo card) and B (immersive image). A is the implementation contract for /stays/week-long-vacation-rentals-florida/ only. Independent concept critic: Approved with edge; readability and control-radius corrections accepted before approval.
+
+Preserve Waterline paper, ink, clay, citron, Instrument Serif and Poppins. The featured real Dockside dusk photo alone may use a 28px rounded frame (24px phone), printed-photo shadow and shallow pointer-follow tilt (maximum 2.5 degrees per axis, 200ms). Tilt/glare only on fine pointers at widths above 700px, off under reduced motion. No ambient animation or animation library. Primary booking actions and date/guest inputs retain 4px corners. The approved dialog keeps its seven-night shortcut as a 20px-radius pill and its 44px close control circular; these two route-scoped exceptions do not apply to other controls. All controls retain at least 44px touch targets. All facts/labels at least 12px. The date dialog may use 24px corners as the corresponding floating sheet.
+
+CTA progressively enhances a normal direct-booking listing link into a native date/guest dialog. Never imply availability has been checked. Preserve the trip and approved tracking handoff; overcapacity must not silently shrink the party. No-JS listing link remains usable. Accordion FAQ keeps every original answer and schema. No other guide inherits this exception.
+
+Concept evidence: Aside task fJTJMsoXwFLlzJ3w, guide-a-final.png and guide-a-mobile-final.png in task tmp. These are design-reference evidence, not built-source or production proof. Before release: responsive screenshots, independent rendered review, trip/keyboard/error/no-JS/reduced-motion tests and existing release/visual gates.

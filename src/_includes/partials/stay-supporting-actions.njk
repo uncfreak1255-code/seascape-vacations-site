@@ -11,7 +11,7 @@
                     <a href="#featured-homes" class="compare-link">Compare both homes</a>
                     {% else %}
                     <a
-                        href="#featured-homes"
+                        href="{% if hasMatchingHomes %}#featured-homes{% else %}/properties/{% endif %}"
                         class="btn"
                         data-track-event="catalog_book_direct_click"
                         data-placement="stay_hero"

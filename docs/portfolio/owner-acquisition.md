@@ -1,5 +1,7 @@
 # Owner Acquisition
 
+The owner hub is `/property-management/`. Guessed URLs `/owners/`, `/owner/`, and `/list-your-property/` (slashless twins included) 301 there from `scripts/redirects/owner-aliases`. Do not publish a fee percent or range on the hub.
+
 | Winner URL | Aliases / retired routes | Feeder pages | Money destination | Primary CTA | Tracked event | Success metric | Schema expectation | Sitemap state |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `/property-management/vacation-rental-management-anna-maria-island/` | no alias family should be created without an evidence-driven reason | `/property-management/`, `/guides/florida-gulf-coast-vacation-rental-market-report-2026/`, owner comparison or economics pages | this page is the AMI owner money destination | `Request Your Revenue Teardown` | `owner_primary_cta_click` | 7-day `owner_form_submits > 0`; if sessions `>= 20` and CTA clicks stay at `0`, treat as CRO failure | `Service` + `Article` + `FAQPage` + `BreadcrumbList` | canonical page stays in sitemap |

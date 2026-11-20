@@ -32,6 +32,9 @@ and then `npm run perf:ratchet` against the fresh reports from that same source.
 `verify:release` does not include these performance checks. Inspect byte growth;
 use `perf:ratchet:update -- --allow-raise "<reason>"` only for an intentional,
 measured increase. The existing commands and required CI check own this proof.
+Lighthouse collects the performance category on all eight configured routes,
+with three samples per route. The visual and dependency lanes own the separate
+axe accessibility checks.
 
 Dependency-manifest and release-workflow changes also install locked Chromium and run the complete existing accessibility spec inside `release-safety`. A failed browser result fails that required job; optional or cancelled visual results do not substitute for it. The dependency comparison fails when its Git range cannot be read.
 
@@ -42,8 +45,14 @@ reduced median full-suite time from 934.9s to 470.4s (49.7%) with identical
 tolerances stayed fixed. Local defaults remain one worker; use `--workers=2`
 to reproduce the measured concurrency. CI uploads the native JSON results as
 `visual-results` for seven days on success or failure, alongside the existing
-failure reports. Full Git history remains unchanged: the blobless checkout
-trial did not establish a repeatable benefit.
+failure reports. The visual workflow retains its existing checkout because its
+blobless trial did not establish a repeatable benefit.
+
+The hosted release and performance jobs keep full commit history for range
+checks and page dates. They defer historical file contents during checkout and
+fetch the versions Eleventy needs for per-page dates in one batch before a
+build. Documentation-only performance runs use the commit comparison without
+that extra fetch.
 
 GitHub rulesets on `main` require exactly three status checks: `build`,
 `release-safety` and `performance-budget`. Every other job is informational

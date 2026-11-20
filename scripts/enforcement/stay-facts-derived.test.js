@@ -312,7 +312,10 @@ test("replay 638: Blue House fallback capacity moves geoIntro, FAQ, highlight, I
   assert.ok(source, "pool-and-hot-tub stay must exist");
   const page = applyStayFacts(structuredClone(source), catalog);
   const visible = visibleStayText(page);
-  const stayTemplate = fs.readFileSync(path.join(projectRoot, "src/stays/stays.njk"), "utf8");
+  const stayTemplate = [
+    fs.readFileSync(path.join(projectRoot, "src/stays/stays.njk"), "utf8"),
+    fs.readFileSync(path.join(projectRoot, "src/_includes/partials/stay-itemlist-jsonld.njk"), "utf8")
+  ].join("\n");
 
   assert.match(page.geoIntro, /sleeps 99/);
   assert.match(
