@@ -80,6 +80,15 @@ brief explains why; bare `N/A` does not count.
 This is the repo's check that a fresh live SERP or completed DataForSEO-style
 competitor read happened before search-facing source edits start moving.
 
+## Audience, benefit and next step
+
+Use the existing brief when choosing copy, layout, form fields or links. Name the visitor, what they came to decide, and what might stop them. Lead with the benefit they care about. Give them a concrete reason to believe it, then make one relevant next step easy to find. Tell people what they get for sharing their details. When a claim falls short on evidence, replace it with the strongest specific benefit the sources support. Keep any material fee or condition beside the claim it qualifies.
+
+- An owner comparing managers wants to know what they will keep and what work Seascape takes off their plate. Show what the owner can see on a monthly statement and invite them to request a revenue review for their home.
+- A family researching where to stay may be choosing between two neighborhoods. Answer the comparison first, then link to homes that fit. Once they have a home and dates in mind, help them check availability. A policy or help page may fully serve its reader by answering the question.
+
+Use the page's existing measure of success. A completed owner inquiry tells us more about lead capture than a click on the inquiry button. A guest checking dates, handing off to booking, and completing a verified reservation are distinct outcomes.
+
 ## Visible Copy Lane
 
 Any PR that changes `reader copy` in `src/` must complete these editorial steps

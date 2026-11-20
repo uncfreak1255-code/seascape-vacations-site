@@ -57,6 +57,7 @@ Gmail is prohibited.
   Verify any ranking of the bottleneck (owner acquisition, direct booking)
   against the owning business or analytics source before redirecting work;
   dated holds and forecasts in status files are not current facts.
+- For visitor-facing work, apply [Audience, benefit and next step](docs/process/content-quality-gate.md#audience-benefit-and-next-step).
 - `docs/status/next-batch.md` governs measured SEO and entity expansion;
   preserve its thresholds, evidence requirements, and publication gates.
   An expansion hold still allows ranked ideas, experiment proposals and
