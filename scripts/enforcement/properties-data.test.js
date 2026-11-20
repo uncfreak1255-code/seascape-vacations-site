@@ -402,3 +402,22 @@ test("unreadable public calendar leaves The Coastal availability unknown", async
     });
   }
 });
+
+test("guides do not describe Seascape homes as pet-friendly or label the no-pets collection as pet-friendly rentals", () => {
+  const guidesDir = path.join(__dirname, "../../src/guides");
+  const files = [];
+  const walk = dir => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.(html|njk|md)$/.test(entry.name)) files.push(full);
+    }
+  };
+  walk(guidesDir);
+  for (const file of files) {
+    const text = fs.readFileSync(file, "utf8");
+    const rel = path.relative(guidesDir, file);
+    assert.doesNotMatch(text, /Seascape Vacations manages[^<.]*pet-friendly/i, `${rel} says Seascape manages pet-friendly homes`);
+    assert.doesNotMatch(text, /href="\/stays\/pet-friendly-vacation-rentals-bradenton\/?">Pet-Friendly[^<]*Rentals</i, `${rel} labels the no-pets collection as pet-friendly rentals`);
+  }
+});
