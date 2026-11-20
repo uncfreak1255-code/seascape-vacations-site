@@ -275,6 +275,8 @@ test("owner live-smoke fee-number scan fails closed on empty copy and planted fi
   const {
     assertNoPublishedFeeNumbers
   } = require("../recovery/validate-owner-live-surface");
+  const feePassage =
+    "<p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>";
   assert.throws(() => assertNoPublishedFeeNumbers(""), /empty copy/);
   assert.throws(() => assertNoPublishedFeeNumbers("   "), /empty copy/);
   assert.throws(() => assertNoPublishedFeeNumbers("<script>12%</script>"), /empty copy/);
@@ -288,6 +290,37 @@ test("owner live-smoke fee-number scan fails closed on empty copy and planted fi
   );
   assert.doesNotThrow(() =>
     assertNoPublishedFeeNumbers("<p>Seascape charges a share of your home's net rent.</p>")
+  );
+  assert.throws(
+    () =>
+      assertNoPublishedFeeNumbers(
+        `${feePassage}<script type="application/ld+json">{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does Seascape charge?","acceptedAnswer":{"@type":"Answer","text":"The management fee is 12% of net rent."}}]}</script>`
+      ),
+    /JSON-LD/
+  );
+  assert.throws(
+    () =>
+      assertNoPublishedFeeNumbers(
+        `${feePassage}<meta name="description" content="Seascape charges 12% of net rent.">`
+      ),
+    /meta description/
+  );
+  assert.throws(
+    () =>
+      assertNoPublishedFeeNumbers(
+        `${feePassage}<meta property="og:description" content="Seascape charges a $99 monthly minimum.">`
+      ),
+    /meta description/
+  );
+  assert.doesNotThrow(() =>
+    assertNoPublishedFeeNumbers(
+      `${feePassage}<p>Airbnb's own host fee is separate: Airbnb says most listings on its single-fee structure pay 15.5%.</p>`
+    )
+  );
+  assert.doesNotThrow(() =>
+    assertNoPublishedFeeNumbers(
+      `${feePassage}<script type="application/ld+json">{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What about Airbnb?","acceptedAnswer":{"@type":"Answer","text":"Airbnb's own host fee is separate: Airbnb says most listings on its single-fee structure pay 15.5%."}}]}</script>`
+    )
   );
 });
 
@@ -343,4 +376,11 @@ test("owner smoke requires the no-number fee passage and rejects a published per
     () => smoke.validateTargetResponse(target, { statusCode: 200, body: dollars }),
     /fee percentage or dollar amount/
   );
+  const schemaOnly = `${body}<script type="application/ld+json">{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much does Seascape charge to manage a vacation rental?","acceptedAnswer":{"@type":"Answer","text":"The management fee is 12% of net rent."}}]}</script>`;
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: schemaOnly }),
+    /JSON-LD/
+  );
+  const airbnbHostFee = `${body}<p>Airbnb's own host fee is separate: Airbnb says most listings on its single-fee structure pay 15.5%.</p>`;
+  assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body: airbnbHostFee }));
 });

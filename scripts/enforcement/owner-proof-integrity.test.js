@@ -134,7 +134,11 @@ test("benchmark asset and rendered HTML do not hide retired or private proof", (
     assert.equal(serializedAsset.includes(marker), false, `benchmark asset contains ${marker}`);
     assert.equal(benchmark.visibleBodyText.includes(marker), false, `benchmark body contains ${marker}`);
   }
-  assert.doesNotMatch(benchmark.visibleBodyText, /\bPatrick\b|seascape-hub|\/Users\//i);
+  assert.doesNotMatch(benchmark.visibleBodyText, /Patrick(?:'s)? portfolio|seascape-hub|\/Users\//i);
+  assert.match(
+    benchmark.visibleBodyText,
+    /Patrick quotes your exact fee after looking at your home/
+  );
 });
 
 test("research hub promotes the rescued fee guide instead of the retired benchmark", () => {

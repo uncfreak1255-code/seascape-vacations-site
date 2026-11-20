@@ -32,6 +32,15 @@ test("owner hub labels the fee section and reuses the statement partial", () => 
   assert.equal(hub.includes('{% include "partials/owner-fee-statement.njk" %}'), true);
 });
 
+test("owner-fee benchmark pricing note reuses the same statement partial", () => {
+  const benchmark = fs.readFileSync(
+    path.resolve(__dirname, "..", "..", "src", "research", "owner-fee-revenue-leak-benchmark-2026.njk"),
+    "utf8"
+  );
+  assert.equal(benchmark.includes('{% include "partials/owner-fee-statement.njk" %}'), true);
+  assert.equal(benchmark.includes("Seascape charges a share of net rent, lower for homes that earn more"), false);
+});
+
 test("owner FAQ leads with the charge question in the visible list and the FAQPage JSON-LD", () => {
   assert.equal(faq.includes("How much does Seascape charge to manage a vacation rental?"), true);
   assert.equal(faq.includes('{% include "partials/owner-fee-statement.njk" %}'), true);
