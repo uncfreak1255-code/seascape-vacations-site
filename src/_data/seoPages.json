@@ -204,11 +204,11 @@
           "value": "About 10 minutes to the nearest AMI Gulf beach via Palma Sola Causeway"
         },
         {
-          "label": "{sleeps-phrase:dockside-dreams}, pet-friendly",
+          "label": "{sleeps-phrase:dockside-dreams}",
           "value": "4 bedrooms, pool, hot tub {heat:dockside-dreams}, arcade - books direct"
         }
       ],
-      "geoIntro": "<p><strong>Dockside Dreams</strong> sits on a canal that connects toward the Manatee River, Tampa Bay, and the Gulf. Guests can confirm current dock-use details with the team before booking. The nearest Gulf sand at Bradenton Beach is 2.9 miles away, about 10 minutes, so the home is a mainland stay rather than a beachfront address.</p><p>Bradenton puts Anna Maria Island west and Sarasota south. AMI beaches run from Bradenton Beach through Holmes Beach and Coquina; Sarasota's Ringling Museum, Siesta Key, and downtown dining are farther south. Review current travel times and listing details for your dates.</p><p><strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across 4 bedrooms with a private pool, hot tub {heat:dockside-dreams}, and arcade inside. It is pet-friendly. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p><strong>Dockside Dreams</strong> sits on a canal that connects toward the Manatee River, Tampa Bay, and the Gulf. Guests can confirm current dock-use details with the team before booking. The nearest Gulf sand at Bradenton Beach is 2.9 miles away, about 10 minutes, so the home is a mainland stay rather than a beachfront address.</p><p>Bradenton puts Anna Maria Island west and Sarasota south. AMI beaches run from Bradenton Beach through Holmes Beach and Coquina; Sarasota's Ringling Museum, Siesta Key, and downtown dining are farther south. Review current travel times and listing details for your dates.</p><p><strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across 4 bedrooms with a private pool, hot tub {heat:dockside-dreams}, and arcade inside. Pets are not permitted; service animals are welcome without a pet fee. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "bradenton-vacation-rentals",
         "canal-homes-with-boat-dock",
@@ -366,7 +366,7 @@
           "value": "The Oasis is 5.1 miles from IMG - 10 minutes on a weekday morning"
         }
       ],
-      "geoIntro": "<p><strong>Bringing {sleeps:dockside-dreams} and want a private dock?</strong> <a href=\"/properties/dockside-dreams/\">Dockside Dreams</a> sleeps up to {sleeps:dockside-dreams} in {br:dockside-dreams} bedrooms and has a private pool and waterfront dock. Dockside Dreams may welcome a dog with prior approval; pets are not permitted at The Oasis.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
+      "geoIntro": "<p><strong>Bringing {sleeps:dockside-dreams} and want a private dock?</strong> <a href=\"/properties/dockside-dreams/\">Dockside Dreams</a> sleeps up to {sleeps:dockside-dreams} in {br:dockside-dreams} bedrooms and has a private pool and waterfront dock. Pets are not permitted at Dockside Dreams or The Oasis; service animals are welcome without a pet fee.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
       "relatedStaySlugs": [
         "bradenton-vacation-rentals",
         "vacation-rentals-near-anna-maria-island",
@@ -1017,7 +1017,7 @@
           "value": "{br:sarasota-luxe}BR/{sleeps:sarasota-luxe} guests with pool and included hot tub - books direct"
         }
       ],
-      "geoIntro": "<p>Sarasota runs on a scale that's easy to underestimate. The Ringling Museum is a 66-acre estate with a serious art collection, a Venetian Gothic mansion, and a circus museum on the same grounds. Marie Selby Botanical Gardens sits on a bay waterfront with one of the better orchid collections in the country. The Van Wezel, Asolo Rep, and Florida Studio Theatre all run professional seasons. First Friday gallery walks draw actual galleries. This is a real arts city that also has beaches - not a beach town with a museum.</p><p><strong>Sarasota Luxe</strong> is the Seascape home that fits a Sarasota cultural trip. It's a 4-bedroom home sleeping {sleeps:sarasota-luxe} near downtown Sarasota; dinner and galleries require a car. Lido Beach is 3 miles away (about 10 minutes). Siesta Key is 6 miles south, roughly 15-20 minutes depending on traffic. The home has a private pool, included hot tub, screened lanai, and a 2-car garage. Pet-friendly.</p><p>Anna Maria Island is 30-40 minutes north - far enough that it doesn't make sense as a daily side trip from a Sarasota base. If the AMI beaches are the priority, one of the Bradenton homes is a better starting point. If Sarasota's arts corridor and Siesta Key beach are the priority, <strong>Sarasota Luxe</strong> is the right call.</p>",
+      "geoIntro": "<p>Sarasota runs on a scale that's easy to underestimate. The Ringling Museum is a 66-acre estate with a serious art collection, a Venetian Gothic mansion, and a circus museum on the same grounds. Marie Selby Botanical Gardens sits on a bay waterfront with one of the better orchid collections in the country. The Van Wezel, Asolo Rep, and Florida Studio Theatre all run professional seasons. First Friday gallery walks draw actual galleries. This is a real arts city that also has beaches - not a beach town with a museum.</p><p><strong>Sarasota Luxe</strong> is the Seascape home that fits a Sarasota cultural trip. It's a 4-bedroom home sleeping {sleeps:sarasota-luxe} near downtown Sarasota; dinner and galleries require a car. Lido Beach is 3 miles away (about 10 minutes). Siesta Key is 6 miles south, roughly 15-20 minutes depending on traffic. The home has a private pool, included hot tub, screened lanai, and a 2-car garage. Pets are not permitted; service animals are welcome without a pet fee.</p><p>Anna Maria Island is 30-40 minutes north - far enough that it doesn't make sense as a daily side trip from a Sarasota base. If the AMI beaches are the priority, one of the Bradenton homes is a better starting point. If Sarasota's arts corridor and Siesta Key beach are the priority, <strong>Sarasota Luxe</strong> is the right call.</p>",
       "relatedStaySlugs": [
         "sarasota-vacation-rentals-with-pool",
         "vacation-rentals-near-restaurants-florida",
@@ -1092,54 +1092,44 @@
     {
       "slug": "pet-friendly-vacation-rentals-bradenton",
       "destination": "bradenton",
-      "title": "Pet-Friendly Vacation Rentals in Bradenton FL",
-      "h1": "Bradenton Pet-Friendly Vacation Homes",
-      "description": "Bring your furry friend! Pet-friendly vacation rentals in Bradenton with private yards and pools.",
-      "intro": "Dockside Dreams may welcome a dog with prior approval. Confirm the dog\u2019s size, the yard and the pet fee before booking.",
+      "title": "Pets and Seascape Vacation Rentals in Bradenton FL",
+      "h1": "Pets at Seascape Bradenton Vacation Homes",
+      "description": "No Seascape home permits pets. Service animals are welcome without a pet fee.",
+      "intro": "No Seascape home permits ordinary pets. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies.",
       "faqs": [
         {
           "question": "Which properties allow pets?",
-          "answer": "Dockside Dreams is the Bradenton option for a dog with prior approval. Sarasota Luxe is another option in Sarasota. Pets are not permitted at The Oasis or River House. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies."
+          "answer": "None of the Seascape homes permit ordinary pets. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies."
         },
         {
-          "question": "Is there a pet fee, and what does it cover?",
-          "answer": "Yes - $230 plus tax per stay, which covers the extra cleaning a dog stay needs. It's disclosed up front, with nothing added later."
+          "question": "Is there a pet fee?",
+          "answer": "Pets are not permitted, so there is no pet fee. Service animals are welcome without a pet fee."
         },
         {
           "question": "Are there dog-friendly beaches near Bradenton?",
-          "answer": "Several Gulf beaches restrict dogs on the sand, so the reliable nearby options are Robinson Preserve for trail walks and the area dog parks. Tell us your plans and we'll point you to the current dog-friendly spots."
+          "answer": "Several Gulf beaches restrict dogs on the sand, so the reliable nearby options are Robinson Preserve for trail walks and the area dog parks. Check each beach and park's current rules before you go."
         },
         {
-          "question": "Is the yard fenced for off-leash play?",
-          "answer": "Ask us to confirm the yard setup at Dockside Dreams before booking. Supervise your dog outside."
-        },
-        {
-          "question": "What pet supplies are available nearby?",
-          "answer": "Ask us about nearby pet stores and dog-walking options for your stay in Bradenton."
-        },
-        {
-          "question": "Are there breed or size restrictions?",
-          "answer": "Pet-friendly homes take one small dog under 30 pounds with prior approval. Tell us the breed, weight, and temperament when you inquire and we'll confirm."
+          "question": "What if I travel with a service animal?",
+          "answer": "Service animals are welcome without a pet fee. For other assistance-animal questions, contact us before booking; they follow applicable law and booking-platform policies."
         }
       ],
-      "matchingProperties": [
-        "dockside-dreams"
-      ],
+      "matchingProperties": [],
       "decisionHighlights": [
         {
-          "label": "Yard setup",
-          "value": "Confirm the yard setup at Dockside Dreams before booking"
+          "label": "Pet policy",
+          "value": "No ordinary pets at any Seascape home"
         },
         {
-          "label": "Walks nearby",
-          "value": "Ask us about nearby dog walks and pet stores for your stay"
+          "label": "Service animals",
+          "value": "Welcome without a pet fee; ask us about other assistance-animal questions before booking"
         },
         {
-          "label": "Room for the group",
-          "value": "Dockside Dreams has 4 bedrooms and {sleeps-phrase:dockside-dreams}; confirm your dog\u2019s approval before booking"
+          "label": "Beaches and parks",
+          "value": "Several Gulf beaches restrict dogs on the sand; check current rules before you go"
         }
       ],
-      "geoIntro": "<p><strong>Dockside Dreams</strong> is the Bradenton home to consider when you are traveling with a dog. It has 4 bedrooms, {sleeps-phrase:dockside-dreams}, and includes a private pool, hot tub and private dock. Confirm approval for your dog before booking.</p><p><strong>The Oasis</strong> and <strong>River House</strong> do not permit pets. <strong>Sarasota Luxe</strong> may welcome a dog with prior approval if Sarasota works for your trip. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies.</p><p>At homes that permit pets, the policy is one small dog under 30 lbs with prior approval and a $230 plus tax pet fee per stay. Tell us your dog\u2019s size and temperament when you inquire so we can confirm the fit.</p>",
+      "geoIntro": "<p>No Seascape home permits ordinary pets. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies.</p>",
       "relatedStaySlugs": [
         "vacation-rentals-near-anna-maria-island",
         "vacation-rentals-with-outdoor-grill",
@@ -1192,7 +1182,7 @@
         "dockside-dreams",
         "river-house"
       ],
-      "geoIntro": "<p><a href=\"/properties/bradenton-pool-home/\"><strong>Bradenton Pool Home</strong></a> has {br:bradenton-pool-home} bedrooms and {sleeps-phrase:bradenton-pool-home}, with a private pool, in-ground spa and screened outdoor dining. Its sleeping arrangements include queen beds, a king bed and a sofa bed. The pool and spa cannot be heated at the same time; there are exterior and interior steps, and pets are not permitted.</p><p><a href=\"/properties/the-oasis/\"><strong>The Oasis</strong></a> has {br:the-oasis} bedrooms and {sleeps-phrase:the-oasis}. Its private pool, two hot tubs, putting green and game room give a larger group more to do at the house. Check the bunk-bed and trundle arrangements before choosing rooms; pets are not permitted.</p><p><a href=\"/properties/dockside-dreams/\"><strong>Dockside Dreams</strong></a> has {br:dockside-dreams} bedrooms and {sleeps-phrase:dockside-dreams}, with a private pool, spa and waterfront dock. The bedrooms include king beds and a bunk room. Fishing from the dock is not permitted; ask about boat fit and dog approval before booking.</p><p><a href=\"/properties/river-house/\"><strong>River House</strong></a> has {br:river-house} bedrooms and {sleeps-phrase:river-house}, with a private pool and spa, king bedrooms with ensuite bathrooms, a queen room and a bunk room. There is an interior step, and this home does not have a private waterfront dock.</p><p>These homes are in Bradenton, on the mainland. Check the selected home's location and current bridge traffic for beach days. For a city stay farther south, compare <a href=\"/stays/sarasota-vacation-rentals-with-pool/\">Sarasota homes with private pools</a>.</p>",
+      "geoIntro": "<p><a href=\"/properties/bradenton-pool-home/\"><strong>Bradenton Pool Home</strong></a> has {br:bradenton-pool-home} bedrooms and {sleeps-phrase:bradenton-pool-home}, with a private pool, in-ground spa and screened outdoor dining. Its sleeping arrangements include queen beds, a king bed and a sofa bed. The pool and spa cannot be heated at the same time; there are exterior and interior steps, and pets are not permitted.</p><p><a href=\"/properties/the-oasis/\"><strong>The Oasis</strong></a> has {br:the-oasis} bedrooms and {sleeps-phrase:the-oasis}. Its private pool, two hot tubs, putting green and game room give a larger group more to do at the house. Check the bunk-bed and trundle arrangements before choosing rooms; pets are not permitted.</p><p><a href=\"/properties/dockside-dreams/\"><strong>Dockside Dreams</strong></a> has {br:dockside-dreams} bedrooms and {sleeps-phrase:dockside-dreams}, with a private pool, spa and waterfront dock. The bedrooms include king beds and a bunk room. Fishing from the dock is not permitted; ask about boat fit before booking; pets are not permitted.</p><p><a href=\"/properties/river-house/\"><strong>River House</strong></a> has {br:river-house} bedrooms and {sleeps-phrase:river-house}, with a private pool and spa, king bedrooms with ensuite bathrooms, a queen room and a bunk room. There is an interior step, and this home does not have a private waterfront dock.</p><p>These homes are in Bradenton, on the mainland. Check the selected home's location and current bridge traffic for beach days. For a city stay farther south, compare <a href=\"/stays/sarasota-vacation-rentals-with-pool/\">Sarasota homes with private pools</a>.</p>",
       "relatedStaySlugs": [
         "honeymoon-rentals-anna-maria-island",
         "large-group-vacation-rentals-anna-maria-island",
@@ -1481,11 +1471,11 @@
           "value": "Screened lanai, pool, and included hot tub - the beach is 10 min away when you want it"
         },
         {
-          "label": "{sleeps-phrase:sarasota-luxe}, Pet-Friendly",
-          "value": "{br:sarasota-luxe}BR, {sleeps:sarasota-luxe} guests, small dog welcome - fits a group that wants city access without splitting across two places"
+          "label": "{sleeps-phrase:sarasota-luxe}",
+          "value": "{br:sarasota-luxe}BR, {sleeps:sarasota-luxe} guests - fits a group that wants city access without splitting across two places"
         }
       ],
-      "geoIntro": "<p>Sarasota's reputation as Florida's Cultural Coast is earned: the Ringling Museum's 66-acre bayfront campus, Van Wezel Performing Arts Hall, and a downtown restaurant row that outpunches most Florida cities. What it does not always offer is large-group private-home accommodation close to all of it. Most lodging near downtown Sarasota is hotel rooms or small condos. <strong>Sarasota Luxe</strong> is the exception - a 4-bedroom home sleeping {sleeps:sarasota-luxe}, near downtown, with a private pool and hot tub; downtown destinations require driving.</p><p>Lido Beach is about 3 miles away, roughly 10 minutes by car. Siesta Key - the quartz-sand beach that earns most of the headlines - is about 6 miles, 15-20 minutes depending on bridge traffic. The distance matters: guests who want mornings at the beach and evenings at downtown restaurants will do that drive twice a day. Guests who want mostly dinner reservations, gallery walks, and a pool back home will hardly notice. Know which trip you're planning before you choose the base.</p><p><strong>Sarasota Luxe</strong> fits groups that lean toward the city side of that balance. The screened lanai, 2-car garage, and small-dog-friendly policy round out the practical details. Compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p>Sarasota's reputation as Florida's Cultural Coast is earned: the Ringling Museum's 66-acre bayfront campus, Van Wezel Performing Arts Hall, and a downtown restaurant row that outpunches most Florida cities. What it does not always offer is large-group private-home accommodation close to all of it. Most lodging near downtown Sarasota is hotel rooms or small condos. <strong>Sarasota Luxe</strong> is the exception - a 4-bedroom home sleeping {sleeps:sarasota-luxe}, near downtown, with a private pool and hot tub; downtown destinations require driving.</p><p>Lido Beach is about 3 miles away, roughly 10 minutes by car. Siesta Key - the quartz-sand beach that earns most of the headlines - is about 6 miles, 15-20 minutes depending on bridge traffic. The distance matters: guests who want mornings at the beach and evenings at downtown restaurants will do that drive twice a day. Guests who want mostly dinner reservations, gallery walks, and a pool back home will hardly notice. Know which trip you're planning before you choose the base.</p><p><strong>Sarasota Luxe</strong> fits groups that lean toward the city side of that balance. The screened lanai, 2-car garage, and no-pets policy round out the practical details. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "sarasota-arts-culture-vacation-rentals",
         "sarasota-vacation-rentals-with-pool",
@@ -1720,7 +1710,7 @@
           "value": "Bradenton Beach is 2.9 miles away - the closest of the Bradenton homes to AMI"
         }
       ],
-      "geoIntro": "<p><strong>Dockside Dreams</strong> is Seascape's only waterfront property. It sits on a Bradenton canal with bay access, and the private dock is available for guest use - you may tie up one boat during your stay. The canal connects toward the Manatee River, Tampa Bay, and the Gulf. Bradenton Beach is 2.9 miles away, about 10 minutes by car.</p><p>A few specifics to know before booking: guests may use the dock but may not use the boat lift on the property. If you're bringing your own boat, contact us with your boat's dimensions before booking so we can confirm the dock is a fit. Kayak, paddleboard, and boat rentals are available from local companies in the area - some deliver to the dock. The home does not have kayaks, paddleboards, or fishing gear of its own.</p><p><strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across {br:dockside-dreams} bedrooms with a private pool, hot tub {heat:dockside-dreams}, and arcade inside. It's pet-friendly; compare the same dates and complete checkout total across channels.</p>",
+      "geoIntro": "<p><strong>Dockside Dreams</strong> is Seascape's only waterfront property. It sits on a Bradenton canal with bay access, and the private dock is available for guest use - you may tie up one boat during your stay. The canal connects toward the Manatee River, Tampa Bay, and the Gulf. Bradenton Beach is 2.9 miles away, about 10 minutes by car.</p><p>A few specifics to know before booking: guests may use the dock but may not use the boat lift on the property. If you're bringing your own boat, contact us with your boat's dimensions before booking so we can confirm the dock is a fit. Kayak, paddleboard, and boat rentals are available from local companies in the area - some deliver to the dock. The home does not have kayaks, paddleboards, or fishing gear of its own.</p><p><strong>Dockside Dreams</strong> {sleeps-phrase:dockside-dreams} across {br:dockside-dreams} bedrooms with a private pool, hot tub {heat:dockside-dreams}, and arcade inside. Pets are not permitted; service animals are welcome without a pet fee. Compare the same dates and complete checkout total across channels.</p>",
       "relatedStaySlugs": [
         "kayaking-vacation-rentals-bradenton",
         "large-group-vacation-rentals-bradenton",

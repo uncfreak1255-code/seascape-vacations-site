@@ -16,6 +16,13 @@ module.exports = async function staysPages() {
         if (!photo) throw new Error(`Missing verified hero photo for ${page.heroBookingAction.propertySlug}`);
         resolvedPage.heroImage = photo.src;
       }
+      if (page.slug === "week-long-vacation-rentals-florida") {
+        const home = catalog.find(property => property.slug === "dockside-dreams");
+        if (!home?.photography?.photos?.[0]) throw new Error("Missing Dockside weekly hero photo");
+        resolvedPage.weeklyFeature = home;
+        resolvedPage.heroImage = home.photography.photos[0].src;
+        resolvedPage.introHeading = "Make room for beach days and pool days.";
+      }
       return resolvedPage;
     });
 };

@@ -1,0 +1,11 @@
+{% if seoPage.weeklyFeature %}
+{% include "partials/stay-weekly-hero.njk" %}
+{% else %}
+        <section class="hero{% if seoPage.heroBookingAction %} hero--group{% endif %}" style="--hero-image: url('{{ heroImage | imgProxy(1200) }}');">
+            {% include "partials/stay-hero-content.njk" %}
+            {% if isFamilyBrowse %}
+            <p class="flow-guide-answer">{{ seoPage.intro }}</p>
+            {% include "partials/catalog-trip.njk" %}
+            {% endif %}
+        </section>
+{% endif %}

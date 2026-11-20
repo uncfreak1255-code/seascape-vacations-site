@@ -355,7 +355,7 @@ function normalizeProperties(list) {
       const slug = deriveSlug(property);
       const curated = approvedProperties.find((entry) => entry.slug === slug) || {};
       const listingId = deriveListingId(property, slug);
-      const approvedNoPets = ["the-oasis", "river-house"].includes(slug)
+      const approvedNoPets = ["the-oasis", "river-house", "dockside-dreams", "sarasota-luxe"].includes(slug)
         && listingId === LISTING_ID_BY_SLUG[slug]
         && curated.guestFacts?.pets?.status === "no";
       const staticSchemaFacts = STATIC_PROPERTY_SCHEMA_FACTS_BY_SLUG[slug] || {};
