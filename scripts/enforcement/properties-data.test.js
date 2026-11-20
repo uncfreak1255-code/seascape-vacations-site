@@ -7,7 +7,7 @@ const path = require("node:path");
 const propertiesData = require("../../src/_data/properties.js");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
 
-test("Oasis and River House reject stale ordinary-pet permissions from incoming records without changing other homes", () => {
+test("Dockside Dreams, Sarasota Luxe, Oasis and River House reject stale ordinary-pet permissions from incoming records without changing other homes", () => {
   const cached = fallbackProperties.map(home => ({
     ...home,
     amenities: [...home.amenities, "pet-friendly"],
@@ -15,7 +15,7 @@ test("Oasis and River House reject stale ordinary-pet permissions from incoming 
     guestFacts: { ...home.guestFacts, pets: { status: "approval", text: "Pets allowed with approval." } }
   }));
   const normalized = propertiesData.normalizeProperties(cached);
-  for (const [slug, id] of [["the-oasis", "189511"], ["river-house", "135880"]]) {
+  for (const [slug, id] of [["the-oasis", "189511"], ["river-house", "135880"], ["dockside-dreams", "206016"], ["sarasota-luxe", "135881"]]) {
     const home = normalized.find(home => home.slug === slug);
     assert.equal(home.id, id);
     assert.equal(home.guestFacts.pets.status, "no");
@@ -24,12 +24,25 @@ test("Oasis and River House reject stale ordinary-pet permissions from incoming 
     assert.ok(!home.amenities.includes("pet-friendly"));
     assert.ok(!home.marketing_amenities.includes("pet-friendly"));
   }
-  for (const slug of ["dockside-dreams", "sarasota-luxe", "blue-house", "bradenton-pool-home", "coastal-stay"]) {
+  for (const slug of ["blue-house", "bradenton-pool-home", "coastal-stay"]) {
     const home = normalized.find(home => home.slug === slug);
     const original = cached.find(home => home.slug === slug);
     assert.deepEqual(home.amenities, original.amenities);
     assert.deepEqual(home.marketing_amenities, original.marketing_amenities);
     assert.deepEqual(home.guestFacts.pets, fallbackProperties.find(home => home.slug === slug).guestFacts.pets);
+  }
+});
+
+test("no Seascape home permits ordinary pets in canonical property truth", () => {
+  for (const home of fallbackProperties) {
+    assert.equal(home.guestFacts.pets.status, "no", home.slug);
+    assert.doesNotMatch(home.guestFacts.pets.text, /with host approval|with approval|additional pet fee|one dog/i, home.slug);
+    assert.ok(!(home.amenities || []).includes("pet-friendly"), home.slug);
+    assert.ok(!(home.marketing_amenities || []).includes("pet-friendly"), home.slug);
+  }
+  for (const slug of ["dockside-dreams", "sarasota-luxe"]) {
+    const home = fallbackProperties.find(home => home.slug === slug);
+    assert.match(home.guestFacts.pets.text, /^Pets are not permitted at this home\. Service animals are welcome without a pet fee/);
   }
 });
 
@@ -387,5 +400,31 @@ test("unreadable public calendar leaves The Coastal availability unknown", async
     ["GITHUB_ACTIONS", "SEASCAPE_DISABLE_PUBLIC_AVAILABILITY"].forEach((key, i) => {
       if (previous[i] === undefined) delete process.env[key]; else process.env[key] = previous[i];
     });
+  }
+});
+
+test("guides do not describe Seascape homes as pet-friendly or label the no-pets collection as pet-friendly rentals", () => {
+  const guidesDir = path.join(__dirname, "../../src/guides");
+  const files = [];
+  const walk = dir => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.(html|njk|md)$/.test(entry.name)) files.push(full);
+    }
+  };
+  walk(guidesDir);
+  for (const file of files) {
+    const text = fs.readFileSync(file, "utf8");
+    const rel = path.relative(guidesDir, file);
+    assert.doesNotMatch(text, /Seascape Vacations manages[^<.]*pet-friendly/i, `${rel} says Seascape manages pet-friendly homes`);
+    for (const match of text.matchAll(/<a\b[^>]*href="\/stays\/pet-friendly-vacation-rentals-bradenton\/?"[^>]*>([^<]*)<\/a>/gi)) {
+      assert.doesNotMatch(match[1], /pet-friendly|dog-friendly/i, `${rel} labels the no-pets collection link "${match[1]}"`);
+    }
+    for (const section of text.matchAll(/<section class="cta-section">[\s\S]*?<\/section>/gi)) {
+      if (/pet-friendly-vacation-rentals-bradenton/.test(section[0])) {
+        assert.doesNotMatch(section[0], /Book a Pet-Friendly|dog-friendly stays|Pet-Friendly Homes/i, `${rel} CTA invites booking a pet-friendly Seascape rental`);
+      }
+    }
   }
 });
