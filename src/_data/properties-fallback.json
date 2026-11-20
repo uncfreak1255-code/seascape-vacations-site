@@ -32,7 +32,6 @@
       "game-room",
       "outdoor-kitchen",
       "fast-wifi",
-      "pet-friendly",
       "single-level",
       "outdoor-living"
     ],
@@ -142,8 +141,8 @@
         "Bedroom 4: one king bed"
       ],
       "pets": {
-        "status": "approval",
-        "text": "One dog under 30 lb may stay with host approval and an additional pet fee. Dogs may not toilet on the turf."
+        "status": "no",
+        "text": "Pets are not permitted at this home. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies."
       },
       "considerations": [
         "The dock is for access, not fishing. No fishing from the dock, jet skis, or guest use of the boat lift. One boat maximum.",
@@ -404,7 +403,6 @@
       "hot-tub-spa",
       "outdoor-kitchen",
       "fast-wifi",
-      "pet-friendly",
       "downtown",
       "single-level",
       "grill",
@@ -510,8 +508,8 @@
         "Bedroom 4: three queen beds in a bunk configuration"
       ],
       "pets": {
-        "status": "approval",
-        "text": "One dog under 30 lb may stay with host approval and an additional pet fee. Dogs may not toilet on the turf."
+        "status": "no",
+        "text": "Pets are not permitted at this home. Service animals are welcome without a pet fee; other assistance-animal questions follow applicable law and booking-platform policies."
       },
       "considerations": [
         "Planning for 9–12 guests? Confirm the group size with us before booking.",

@@ -14,6 +14,7 @@ const targets = [
   { path: "/properties/", status: 200 },
   { path: "/properties/the-oasis/", status: 200 },
   { path: "/properties/river-house/", status: 200 },
+  { path: "/properties/sarasota-luxe/", status: 200 },
   { path: "/properties/dockside-dreams/", status: 200 },
   { path: "/property-management/", status: 200 },
   { path: "/guides/", status: 200 },
@@ -81,7 +82,7 @@ function validateTargetResponse(target, response) {
       "Approved long-stay flat rates still apply"
     ]);
   }
-  if (["/properties/the-oasis/", "/properties/river-house/"].includes(target.path)) {
+  if (["/properties/the-oasis/", "/properties/river-house/", "/properties/dockside-dreams/", "/properties/sarasota-luxe/"].includes(target.path)) {
     requireIncludes(target.path, response.body, ["Pets are not permitted at this home.", "Service animals are welcome without a pet fee"]);
     requireExcludes(target.path, response.body, ["One dog under 30 lb may stay", "Ask us to confirm pet approval", "Dog approval, boat size", 'value="pet approval"']);
   }

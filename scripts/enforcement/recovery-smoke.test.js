@@ -10,12 +10,15 @@ function loadSmokeModule() {
   return require(smokeScriptPath);
 }
 
-test("live smoke rejects stale pet approval at Oasis and River House", () => {
+test("live smoke rejects stale pet approval at Oasis, River House, Dockside Dreams and Sarasota Luxe", () => {
   const smoke = loadSmokeModule();
-  for (const route of ["/properties/the-oasis/", "/properties/river-house/"]) {
+  for (const route of ["/properties/the-oasis/", "/properties/river-house/", "/properties/dockside-dreams/", "/properties/sarasota-luxe/"]) {
     const target = smoke.targets.find(entry => entry.path === route);
     assert.ok(target);
-    const body = "Pets are not permitted at this home. Service animals are welcome without a pet fee";
+    const poolHeat = route === "/properties/dockside-dreams/"
+      ? " $40 per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. Approved long-stay flat rates still apply."
+      : "";
+    const body = "Pets are not permitted at this home. Service animals are welcome without a pet fee" + poolHeat;
     assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body }));
     assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: "Ask us to confirm pet approval" }), /missing current live marker/);
     assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: body + ' <option value="pet approval">Bringing a dog</option>' }), /stale live marker/);
@@ -40,9 +43,10 @@ test("pool-heat smoke requires the cap in page copy, not just FAQ schema", () =>
   for (const route of ["/properties/dockside-dreams/", "/stays/vacation-rentals-with-pool-and-hot-tub/"]) {
     const target = smoke.targets.find((entry) => entry.path === route);
     assert.ok(target);
-    assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body: `<p>${cap}. ${exceptions}</p>` }));
+    const pets = route === "/properties/dockside-dreams/" ? "<p>Pets are not permitted at this home. Service animals are welcome without a pet fee.</p>" : "";
+    assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body: `${pets}<p>${cap}. ${exceptions}</p>` }));
     assert.throws(() => smoke.validateTargetResponse(target, {
-      statusCode: 200, body: `<script type="application/ld+json">"${cap}"</script><p>${exceptions}</p>`
+      statusCode: 200, body: `${pets}<script type="application/ld+json">"${cap}"</script><p>${exceptions}</p>`
     }), /missing current live marker/);
   }
 });

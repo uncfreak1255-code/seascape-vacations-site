@@ -5,7 +5,7 @@ pageScript: "/assets/js/property-gallery.js"
 ---
 {% if propertyDetails %}{% set property = propertyDetails %}{% else %}{% set property = properties | propertyBySlug(propertySlug) %}{% endif %}
 {% set facts = property.guestFacts %}
-{% set noOrdinaryPets = property.id == "189511" or property.id == "135880" or property.id == "607228" %}
+{% set noOrdinaryPets = property.id == "189511" or property.id == "135880" or property.id == "206016" or property.id == "135881" or property.id == "607228" %}
 {% include "partials/property-schema.njk" %}
 {{ content | safe }}
 <div class="g-property g-wrap" data-property-page="{{ property.slug }}" data-capacity="{{ property.guests }}">
