@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { spawnSync } = require("child_process");
 const { withWorktreeLock } = require("./worktree-lock");
+const { assertNodeRuntime } = require("./node-runtime-preflight");
 
 function parseBuildArgs(argv = []) {
   return {
@@ -9,7 +10,8 @@ function parseBuildArgs(argv = []) {
 }
 
 function eleventyArgs(options = {}) {
-  return options.serve ? ["@11ty/eleventy", "--serve"] : ["@11ty/eleventy"];
+  // --no: fail instead of letting npx fetch eleventy when node_modules is missing.
+  return options.serve ? ["--no", "@11ty/eleventy", "--serve"] : ["--no", "@11ty/eleventy"];
 }
 
 function run(command, args, options = {}) {
@@ -35,6 +37,7 @@ function buildSite(options = {}) {
 
 function main(argv = process.argv.slice(2)) {
   const options = parseBuildArgs(argv);
+  assertNodeRuntime();
   withWorktreeLock({ name: "repo-build" }, () => {
     buildSite(options);
   });

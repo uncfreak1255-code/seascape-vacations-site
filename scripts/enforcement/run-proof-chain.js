@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { withWorktreeLock } = require("./worktree-lock");
+const { assertNodeRuntime } = require("./node-runtime-preflight");
 
 const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
 const DEFAULT_COMMANDS = Object.freeze([
@@ -101,6 +102,7 @@ function runProofChain({
 
 if (require.main === module) {
   try {
+    assertNodeRuntime();
     runProofChain();
   } catch (error) {
     console.error(error.message);
