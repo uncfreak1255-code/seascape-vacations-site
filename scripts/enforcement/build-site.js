@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { spawnSync } = require("child_process");
 const { withWorktreeLock } = require("./worktree-lock");
+const { assertNodeRuntime, ELEVENTY_CLI } = require("./node-runtime-preflight");
 
 function parseBuildArgs(argv = []) {
   return {
@@ -9,7 +10,9 @@ function parseBuildArgs(argv = []) {
 }
 
 function eleventyArgs(options = {}) {
-  return options.serve ? ["@11ty/eleventy", "--serve"] : ["@11ty/eleventy"];
+  // Run the locked local Eleventy with this Node. `npx` (even `npx --no`) hangs
+  // on a registry lookup or runs a cached copy when node_modules is missing.
+  return options.serve ? [ELEVENTY_CLI, "--serve"] : [ELEVENTY_CLI];
 }
 
 function run(command, args, options = {}) {
@@ -27,7 +30,7 @@ function buildSite(options = {}) {
   const serve = Boolean(options.serve);
   fs.rmSync("_site", { recursive: true, force: true });
   run(process.execPath, ["scripts/cache/sync-hostaway-build-cache.js"]);
-  run("npx", eleventyArgs({ serve }));
+  run(process.execPath, eleventyArgs({ serve }));
   if (!serve) {
     run(process.execPath, ["scripts/enforcement/validate-properties-availability-output.js"]);
   }
@@ -35,6 +38,7 @@ function buildSite(options = {}) {
 
 function main(argv = process.argv.slice(2)) {
   const options = parseBuildArgs(argv);
+  assertNodeRuntime();
   withWorktreeLock({ name: "repo-build" }, () => {
     buildSite(options);
   });
