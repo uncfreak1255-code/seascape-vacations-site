@@ -23,7 +23,8 @@ test("property-management smoke follows the current Waterline owner offer hub", 
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <p><strong>Vacation rental management from 17%.</strong> Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software.</p>
+      <p class="g-label">How our management fee works</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -55,7 +56,8 @@ test("property-management smoke accepts the live minified single-quoted form nam
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <p><strong>Vacation rental management from 17%.</strong> Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software.</p>
+      <p class="g-label">How our management fee works</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
       <a href="#owner-cta">Get my review</a>
       <form name='owner-revenue-teardown' method='POST'></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -92,7 +94,8 @@ test("property-management smoke rejects Five homes on a eight-row catalog (#705)
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <p><strong>Vacation rental management from 17%.</strong> Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software.</p>
+      <p class="g-label">How our management fee works</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -134,7 +137,8 @@ test("property-management smoke rejects the Why a eight-home typo", () => {
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <p><strong>Vacation rental management from 17%.</strong> Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software.</p>
+      <p class="g-label">How our management fee works</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -161,7 +165,8 @@ test("property-management smoke rejects a duplicate Owners header link", () => {
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <p><strong>Vacation rental management from 17%.</strong> Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software.</p>
+      <p class="g-label">How our management fee works</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -221,7 +226,8 @@ test("property-management smoke fails when the owner form name is missing", () =
       <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
-      <p><strong>Vacation rental management from 17%.</strong> Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software.</p>
+      <p class="g-label">How our management fee works</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
           <a href="#owner-cta">Get my review</a>
           <h2>What we do for your home</h2>
           <h2>Why an eight-home operator</h2>
@@ -265,13 +271,40 @@ test("owner smoke rejects a missing local-alternative answer and tracked action"
   }
 });
 
-test("owner smoke requires the published management fee on the owner hub", () => {
-  const fs = require("fs");
+test("owner smoke requires the no-number fee passage and rejects a published percentage", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find(entry => entry.path === "/property-management/");
-  const body = fs.readFileSync(path.join(projectRoot, "_site/property-management/index.html"), "utf8");
-  assert.equal(body.includes("Vacation rental management from 17%"), true);
+  const body = `
+    <main>
+      <h2>Is Seascape a local alternative to Vacasa or Evolve?</h2>
+      <p>Seascape Vacations is an owner-operated vacation rental manager</p>
+      <a href="#owner-cta" data-placement="local-alternative">Request your 48-hour revenue review</a>
+      <h1>Know what your home earned <em>and what needs attention.</em></h1>
+      <p>Eight homes. One local team.</p>
+      <p class="g-label">How our management fee works</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <a href="#owner-cta">Get my review</a>
+      <form name="owner-revenue-teardown" method="POST"></form>
+      <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
+      I confirm I am the property owner or an authorized representative for this property.
+      Owner statement, optional
+      <h2>What we do for your home</h2>
+      <h2>Why an eight-home operator</h2>
+      <h2>The homes we manage</h2>
+    </main>
+  `;
   assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body }));
-  const stale = body.split("Vacation rental management from 17%").join("Vacation rental management");
-  assert.throws(() => smoke.validateTargetResponse(target, { statusCode: 200, body: stale }), /management fee/);
+  const missingLabel = body.replace("How our management fee works", "Pricing");
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: missingLabel }),
+    /management fee/
+  );
+  const numbered = body.replace(
+    "Patrick quotes your exact fee after looking at your home.",
+    "Vacation rental management from 17%. Patrick quotes your exact fee after looking at your home."
+  );
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: numbered }),
+    /stale live marker/
+  );
 });

@@ -28,8 +28,16 @@ module.exports = function validateOwnerLiveSurface(body, { requireIncludes, requ
       "g-header-owners"
     ]);
     requireIncludes("/property-management/ management fee", body, [
+      "How our management fee works",
+      "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum.",
+      "Patrick quotes your exact fee after looking at your home."
+    ]);
+    requireExcludes("/property-management/", body, [
       "Vacation rental management from 17%",
-      "17–20% of net rent, plus $85 a month"
+      "17–20% of net rent",
+      "17-20% of net rent",
+      "$85 a month",
+      "most homes are 20%"
     ]);
     requireIncludes("/property-management/ local-alternative", body, [
       "Is Seascape a local alternative to Vacasa or Evolve?",

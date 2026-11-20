@@ -570,9 +570,9 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
     "fee page should explain pricing as tailored"
   );
   assert.equal(
-    feePage.geoIntro.includes("Our fee is 17–20% of net rent, plus $85 a month for booking and accounting software."),
+    feePage.geoIntro.includes("Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum."),
     true,
-    "fee page GEO intro states the fee"
+    "fee page GEO intro explains the fee without a published number"
   );
   assert.equal(
     feePage.benefits.includes("Clear breakdown of management fee, marketplace booking costs, and direct-booking savings"),
