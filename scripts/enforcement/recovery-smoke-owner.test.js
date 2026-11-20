@@ -293,6 +293,8 @@ test("owner fee publication check rejects admin wording in each public surface",
   const { assertNoPublishedOwnerAdminFee } = require("../recovery/validate-owner-live-surface");
   const bad = [
     ["<p>Seascape charges a share of net rent and a monthly minimum.</p>", /visible/],
+    ["<p>Airbnb charges a monthly minimum, and our administrative fee is separate.</p>", /visible/],
+    ["<script type='application/ld+json'>"+JSON.stringify({"description":"Airbnb charges a monthly minimum, and our administrative fee is separate."})+"</script>", /JSON-LD/],
     ["<script type='application/ld+json'>{\"description\":\"Our administrative fee is separate.\"}</script>", /JSON-LD/],
     ["<meta property='og:description' content='Seascape charges a monthly admin fee.'>", /meta/]
   ];

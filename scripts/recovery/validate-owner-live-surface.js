@@ -168,13 +168,13 @@ function assertNoPublishedOwnerAdminFee(body, path = "/property-management/") {
   for (const [label, texts] of surfaces) {
     for (const text of texts) {
       for (const sentence of text.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s+/)) {
-        const match = OWNER_ADMIN_FEE_RE.exec(sentence);
-        if (!match) continue;
-        const before = sentence.slice(0, match.index);
-        const namedThirdParty = THIRD_PARTY_OWNER_RE.test(before);
-        const ownFee = /\b(?:seascape|we|our|net rent)\b/i.test(before);
-        if (namedThirdParty && !ownFee) continue;
-        throw new Error(path + " still publishes an administrative fee or monthly minimum in " + label);
+        for (const match of sentence.matchAll(new RegExp(OWNER_ADMIN_FEE_RE.source, "gi"))) {
+          const before = sentence.slice(0, match.index);
+          const thirdPartyAt = lastIndex(before, THIRD_PARTY_OWNER_RE);
+          const ownFeeAt = lastIndex(before, /\b(?:seascape|we|our|net rent)\b/i);
+          if (thirdPartyAt > ownFeeAt) continue;
+          throw new Error(path + " still publishes an administrative fee or monthly minimum in " + label);
+        }
       }
     }
   }
