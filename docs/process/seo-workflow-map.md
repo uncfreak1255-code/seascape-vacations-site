@@ -3,18 +3,26 @@
 One map of Seascape's SEO and AEO workflows, shared by Claude and Codex. It
 names what runs on its own, what an agent runs on request, and which skill or
 role owns each step. Process detail lives in the linked docs; this page only
-routes. Verified 2026-10-25; re-verify the scheduled rows before relying on
+routes. Verified 2026-11-20; re-verify the scheduled rows before relying on
 them.
 
-## Local SEO Jobs
+## Recurring SEO Jobs
 
 | Job | Where | What it does | Re-verify |
 | --- | --- | --- | --- |
 | Local OpenSEO app | launchd `com.sawbeck.open-seo-review` on Sawyer's Mac | Serves the OpenSEO app and MCP at `http://localhost:3001/mcp` | `launchctl list com.sawbeck.open-seo-review` |
-| OpenSEO scheduler tick | launchd `com.sawbeck.open-seo-review-scheduler`, every 15 minutes | Runs OpenSEO's own scheduled work (saved rank trackers, AI-visibility schedules). Paid schedules exist only when Sawyer approved them | `launchctl list com.sawbeck.open-seo-review-scheduler` |
+| OpenSEO scheduler tick | launchd `com.sawbeck.open-seo-review-scheduler`, every 15 minutes | Runs OpenSEO's own scheduled work: the saved weekly rank tracker and the weekly AI-visibility tracker (ChatGPT, Gemini, Google AI Overviews). Paid schedules exist only when Sawyer approved them | `launchctl print gui/501/com.sawbeck.open-seo-review-scheduler`; `get_rank_tracker` and `get_ai_visibility_tracker` show `scheduleInterval` and `nextCheckAt` |
 | Weekly search drop check | launchd `com.seascape.seo-weekly-drop-check`, Mondays 07:47 Eastern; plist owned by `seascape-ops`, script owned by `seascape-analytics` | Compares the last 28 days of Search Console clicks with the 28 days before for each page with 10+ prior clicks. A page down 30% or more puts one card on Sawyer's docket and replaces the prior week's card | `launchctl print gui/501/com.seascape.seo-weekly-drop-check` |
+| Weekly index coverage check | Claude Desktop scheduled task `weekly-index-coverage-check`, Mondays 10:13 local time | Free, read-only `inspect_urls` pass over every `/stays/` and `/guides/` address in the live sitemap. Files or comments on one open "Index check:" issue in this repo when a page is not indexed, has a canonical mismatch, or the check cannot run. Never requests indexing | Claude Desktop scheduled-tasks list; the latest comment on the open "Index check:" issue |
+| Weekly SEO verdicts | Claude scheduled task `Weekly SEO verdicts (Site ledger)`, Sundays 18:37 Eastern (agent-issues #80) | Judges due entries in `docs/status/page-ledger.json` with free Search Console reads and lands one "SEO verdicts" PR; a harm verdict on a held guide or new page becomes a ready-for-human issue instead of a revert | Claude scheduled-task list; the latest "SEO verdicts" PR |
 
-This table covers local SEO jobs, not every Site or GitHub schedule. The
+This table covers recurring SEO jobs, not every Site or GitHub schedule.
+One-time rechecks (for example a single page's index recheck) are Claude
+Desktop or Claude scheduled tasks that disable themselves after firing; list
+them there rather than recording them here. Codex automations held no SEO job
+on 2026-11-20. Retired Claude Desktop SEO tasks (the March 2026 content,
+audit and patrol set, and the old `indexation-health-monitor`) are disabled on
+purpose; do not re-enable them. The
 Analytics weekly operator report (`scripts/weekly-search-operator-report.sh`)
 runs on request and needs the BigQuery CLI. Site workflows under
 `.github/workflows/` separately test, preview, publish, and check live pages;
