@@ -570,7 +570,7 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
     "fee page should explain pricing as tailored"
   );
   assert.equal(
-    feePage.geoIntro.includes("Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum."),
+    feePage.geoIntro.includes("Seascape charges a share of your home's net rent, with a lower rate for homes that earn more."),
     true,
     "fee page GEO intro explains the fee without a published number"
   );

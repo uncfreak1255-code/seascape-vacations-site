@@ -288,3 +288,32 @@ test("owner smoke requires the no-number fee passage and rejects a published per
     /missing current live marker|stale live marker/
   );
 });
+
+test("owner fee publication check rejects admin wording in each public surface", () => {
+  const { assertNoPublishedOwnerAdminFee } = require("../recovery/validate-owner-live-surface");
+  const bad = [
+    ["<p>Seascape charges a share of net rent and a monthly minimum.</p>", /visible/],
+    ["<script type='application/ld+json'>{\"description\":\"Our administrative fee is separate.\"}</script>", /JSON-LD/],
+    ["<meta property='og:description' content='Seascape charges a monthly admin fee.'>", /meta/]
+  ];
+  for (const [html, error] of bad) assert.throws(() => assertNoPublishedOwnerAdminFee(html), error);
+  assert.doesNotThrow(() => assertNoPublishedOwnerAdminFee(
+    "<p>Airbnb charges a monthly minimum. You get a monthly statement and nightly minimum stays may apply.</p>"
+  ));
+});
+
+test("all affected rendered owner routes omit Seascape administrative fee wording", () => {
+  const fs = require("fs");
+  const { assertNoPublishedOwnerAdminFee } = require("../recovery/validate-owner-live-surface");
+  for (const route of [
+    "property-management",
+    "property-management/vacation-rental-management-fees-florida",
+    "property-management/vacation-rental-management-anna-maria-island",
+    "property-management/airbnb-management-services-sarasota",
+    "research/owner-fee-revenue-leak-benchmark-2026"
+  ]) {
+    const html = fs.readFileSync(path.join(projectRoot, "_site", route, "index.html"), "utf8");
+    assert.match(html, /share of your home(?:'|&#39;)s net rent/i, route);
+    assertNoPublishedOwnerAdminFee(html, "/" + route + "/");
+  }
+});
