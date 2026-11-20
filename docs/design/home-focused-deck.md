@@ -16,7 +16,7 @@ The approval reference is the saved in-context After A desktop/phone preview.
   10–11px labels. Long names may increase the active-card height.
 
 Source: `src/assets/js/home-deck.js`, `src/css/home-deck.css`, homepage template.
-Proof: `home-focused-deck.test.js` and `home-focused-deck.spec.js`.
+Proof: `scripts/enforcement/home-focused-deck.test.js` (phone stacked list, required `release-safety`) and `tests/visual/home-focused-deck.spec.js` (informational visual).
 Rollback: revert this bounded change to restore base ada10a34; after approval, this A
 revision becomes the rollback baseline for any later motion branch. No feature flags.
 
