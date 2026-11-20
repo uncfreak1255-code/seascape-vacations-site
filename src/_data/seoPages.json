@@ -3979,8 +3979,8 @@
           "a": "We review revenue potential, location, home quality, and how much operational work the property requires. Better-fit, higher-performing homes with stronger economics can justify leaner pricing than homes that need more hands-on operational work to produce the same outcome."
         },
         {
-          "q": "What does professional property management typically cost, and is it worth the investment?",
-          "a": "We do not charge the same management fee for every home. The structure depends on revenue potential, location, home quality, and how much operational work the property requires. Higher-performing homes can qualify for lower fees. After we review the property, we will show you the exact structure and whether it makes sense for both sides."
+          "q": "How much does Seascape charge to manage a vacation rental?",
+          "a": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you."
         },
         {
           "q": "What happens if I already have high-season bookings on the calendar?",
@@ -4296,11 +4296,11 @@
       "destination": null,
       "title": "Florida Vacation Rental Management Fees: What Owners Keep",
       "h1": "Vacation Rental Management Fees in Florida: What Owners Actually Pay",
-      "description": "See Florida vacation rental management fees, marketplace booking costs, and when a lower percentage still leaves owners with less income.",
-      "intro": "Most owners compare 15% versus 20% and still cannot tell what they actually keep. Start with one decision view: management percentage, booking-source costs, and execution misses, then use the 48-hour review to see whether switching changes your payout.",
+      "description": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote each owner after looking at the home.",
+      "intro": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. Then look at booking-source costs and execution misses before you decide whether switching changes your payout.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
-        "Fee comparison grounded in what the owner actually keeps instead of headline percentages",
+        "Fee comparison grounded in what the owner actually keeps, not a canned public figure",
         "Clear breakdown of management fees, booking-platform costs, card processing, and included services",
         "Property-specific pricing instead of a fake one-size-fits-all promise",
         "Explanation of why higher-performing homes can qualify for lower fees",
@@ -4331,13 +4331,13 @@
       ],
       "marketReality": {
         "tag": "Fee Reality",
-        "title": "The cheapest percentage is often the most expensive operating choice",
-        "body": "<p>Owners get trapped when they compare management fees in isolation. A lower headline fee can still leave the owner behind if pricing stays soft, marketplace dependence stays high, and the operator keeps missing the execution details that protect reviews and pricing.</p><p>The real question is what the owner keeps after management fee, booking costs, concessions, and preventable operating misses. That is why the fee page has to be a math page first and a sales page second.</p>"
+        "title": "The cheapest-looking fee is often the most expensive operating choice",
+        "body": "<p>Owners get trapped when they compare management fees in isolation. A cheaper-looking fee can still leave the owner behind if pricing stays soft, marketplace dependence stays high, and the operator keeps missing the execution details that protect reviews and pricing.</p><p>The real question is what the owner keeps after management fee, booking costs, concessions, and preventable operating misses. That is why the fee page has to be a math page first and a sales page second.</p>"
       },
       "switchReasons": [
         {
           "title": "Flat pricing hides the fact that homes do not perform equally",
-          "body": "A high-revenue home with strong fit can justify a lower percentage than a high-touch home that takes more work to operate well."
+          "body": "A high-revenue home with strong fit can qualify for a lower rate than a high-touch home that takes more work to operate well."
         },
         {
           "title": "Marketplace-heavy managers can look cheaper than they really are",
@@ -4383,7 +4383,7 @@
         "items": [
           {
             "title": "Current cost map",
-            "body": "We separate management percentage, booking costs, payment costs, and unknowns so you can see what is proven versus assumed."
+            "body": "We separate the management fee, booking costs, payment costs, and unknowns so you can see what is proven versus assumed."
           },
           {
             "title": "Booking-source read",
@@ -4420,20 +4420,20 @@
       },
       "objections": [
         {
-          "question": "What do Florida vacation rental managers usually charge?",
-          "answer": "The useful answer is a range, not a fake universal number. Most full-service managers land within a band, but the right fee depends on the home, revenue potential, service burden, and whether the operator can actually protect owner income."
+          "question": "How much does Seascape charge to manage a vacation rental?",
+          "answer": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you."
         },
         {
           "question": "Why is the cheapest fee not automatically the best deal?",
-          "answer": "Because owner income is shaped by more than the management percentage. Underpricing, marketplace dependence, and weak operations can cost more than the fee points you think you saved."
+          "answer": "Because owner income is shaped by more than the management fee. Underpricing, marketplace dependence, and weak operations can cost more than a cheaper-looking fee."
         },
         {
           "question": "Can higher-performing homes really qualify for lower fees?",
-          "answer": "Yes. Better-fit homes with stronger revenue potential and lower-friction operating profiles can justify a lower percentage than homes that require more support and still produce less."
+          "answer": "Yes. Better-fit homes with stronger revenue potential and lower-friction operating profiles can qualify for a lower rate than homes that require more support and still produce less."
         },
         {
           "question": "How should I compare Seascape against Vacasa, Evolve, or a local manager?",
-          "answer": "Compare what the owner actually keeps, not just management fee. That means management percentage, marketplace booking costs, direct-booking potential, clarity of reporting, and the quality of local execution."
+          "answer": "Compare what the owner actually keeps, not just the management fee. That means the management fee, marketplace booking costs, direct-booking potential, clarity of reporting, and the quality of local execution."
         },
         {
           "question": "What does Seascape review before quoting a fee?",
@@ -4443,16 +4443,16 @@
       "cta": "Request Your Revenue Review",
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We map your current fee structure, booking costs, and execution gaps so you can decide whether switching is worth it.",
-      "ctaNote": "Useful if you want the real fee comparison, not another flat-percentage pitch.",
-      "geoIntro": "<p>We do not use one flat management fee for every home. Most full-service properties fall within a defined range based on revenue potential, location, home quality, and day-to-day operational demands. Higher-performing homes can qualify for lower fees. After we review your property, we will show you the exact structure and whether the fit makes sense on both sides.</p><p>That matters because fee comparisons get distorted fast when owners ignore booking channels and operating quality. A manager with a lower headline number can still leave the owner behind if the home stays too dependent on marketplace commissions or the local execution keeps hurting reviews and pricing.</p><p>The right fee conversation is not about finding the smallest percentage on the page. It is about understanding what the owner keeps after management fee, marketplace costs, and the hidden cost of weak execution are all accounted for.</p>",
+      "ctaNote": "Useful if you want the real fee comparison, not another canned pitch.",
+      "geoIntro": "<p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p><p>Fee comparisons get distorted fast when owners ignore booking channels and operating quality. A cheaper-looking manager can still leave the owner behind if the home stays too dependent on marketplace commissions or the local execution keeps hurting reviews and pricing.</p><p>The useful fee conversation is what the owner keeps after the management fee, marketplace costs, and the hidden cost of weak execution, not a canned public figure.</p>",
       "faqs": [
         {
-          "q": "What do Florida vacation rental managers usually charge?",
-          "a": "There is no honest one-number answer. Most full-service managers operate within a range, but the right fee depends on revenue potential, location, home quality, amenities, and the day-to-day operational load tied to the property."
+          "q": "How much does Seascape charge to manage a vacation rental?",
+          "a": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you."
         },
         {
           "q": "Why is the cheapest fee not automatically the best deal?",
-          "a": "Because owner income depends on more than the management percentage. Cheap management paired with weak pricing, marketplace dependence, or poor operations can leave the owner worse off than a higher-fee operator with better execution."
+          "a": "Because owner income depends on more than the management fee. Cheap management paired with weak pricing, marketplace dependence, or poor operations can leave the owner worse off than a higher-fee operator with better execution."
         },
         {
           "q": "Can a stronger home qualify for a lower management fee?",
@@ -4646,7 +4646,7 @@
       "faqs": [
         {
           "q": "How much does Airbnb management cost in Sarasota?",
-          "a": "It depends on the home, so we do not publish one rate. After we look at your listing and a recent statement, we quote a share of net rent for your home, and we put the basis, the included services and any separate charges in writing. Airbnb's own host fee is separate: Airbnb says most listings on its single-fee structure pay 15.5%, and its pricing page has the current terms."
+          "a": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you. Airbnb's own host fee is separate: Airbnb says most listings on its single-fee structure pay 15.5%, and its pricing page has the current terms."
         },
         {
           "q": "What does Seascape do on a Sarasota Airbnb it manages?",

@@ -100,7 +100,7 @@ test("owner landing page keeps the owner revenue review close to the sales argum
   // The offer (seascape-hub/context/owner-offer.md) leads; fee vocabulary lives on the fee guide.
   assert.match(ownerLanding, /\{\{ homeCountWord \| capitalize \}\} homes\. One local team\./);
   assert.equal(ownerLanding.includes("Send the listing. We send back a one-page review."), true);
-  assert.equal(ownerLanding.includes("We do not have one fee for every home."), true);
+  assert.equal(ownerLanding.includes("owner-fee-statement.njk"), true);
   assert.equal(ownerLanding.includes("proven cost, likely cost, and missing information"), false);
   assert.equal(ownerLanding.includes("The Fee Comparison"), false, "fee comparison content belongs to the fee guide, not the offer page");
   assert.equal(ownerLanding.includes("15.5%"), false, "no third-party fee figures above the offer");
@@ -511,9 +511,9 @@ test("week 3 owner pages do not collapse back into fake flat-fee messaging", () 
   assert.ok(sarasotaPage, "Sarasota owner page should exist");
   assert.equal(ownerLanding.includes("10-15% management fees"), false, "owner landing should not hard-code a flat fee band");
   assert.equal(
-    ownerLanding.includes("we quote a share of net rent that fits what the home can earn, and we put the basis, the included services and any separate charges in writing."),
+    ownerLanding.includes("partials/owner-fee-statement.njk"),
     true,
-    "owner landing should explain the property-specific pricing model"
+    "owner landing should publish the fee"
   );
   assert.equal(switchPage.benefits.includes("10-15% management fees instead of paying more for the same misses"), false, "switch page should not claim a flat fee band");
   assert.equal(switchPage.geoIntro.includes("10-15%"), false, "switch page GEO intro should not hard-code a flat fee");
@@ -570,9 +570,9 @@ test("owner hub restores the fee page and keeps pricing framed as tailored", () 
     "fee page should explain pricing as tailored"
   );
   assert.equal(
-    feePage.geoIntro.includes("We do not use one flat management fee for every home."),
+    feePage.geoIntro.includes("Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum."),
     true,
-    "fee page GEO intro should explain the tailored pricing model"
+    "fee page GEO intro explains the fee without a published number"
   );
   assert.equal(
     feePage.benefits.includes("Clear breakdown of management fee, marketplace booking costs, and direct-booking savings"),
