@@ -1,6 +1,38 @@
 const { catalogHomeCountWord } = require("../enforcement/home-count-word");
 
-module.exports = function validateOwnerLiveSurface(body, { requireIncludes, requireExcludes }) {
+const FEE_PASSAGE_INCLUDES = [
+  "How our management fee works",
+  "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum.",
+  "Patrick quotes your exact fee after looking at your home."
+];
+
+const FEE_PASSAGE_EXCLUDES = [
+  "Vacation rental management from 17%",
+  "17–20% of net rent",
+  "17-20% of net rent",
+  "$85 a month",
+  "most homes are 20%",
+  "headline fee"
+];
+
+function visibleText(body) {
+  return String(body)
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ");
+}
+
+function assertNoPublishedFeeNumbers(body) {
+  const text = visibleText(body).replace(/\s+/g, " ").trim();
+  if (!text) {
+    throw new Error("/property-management/ live-smoke fee scan received empty copy");
+  }
+  if (/\d+(?:\.\d+)?\s*%/.test(text) || /\$\d/.test(text)) {
+    throw new Error("/property-management/ still publishes a fee percentage or dollar amount");
+  }
+}
+
+function validateOwnerLiveSurface(body, { requireIncludes, requireExcludes }) {
     const homeCountWord = catalogHomeCountWord();
     const hasOwnerOfferSurface = require("./owner-offer-surface")(body, homeCountWord);
 
@@ -27,18 +59,9 @@ module.exports = function validateOwnerLiveSurface(body, { requireIncludes, requ
       "Average Guest Rating",
       "g-header-owners"
     ]);
-    requireIncludes("/property-management/ management fee", body, [
-      "How our management fee works",
-      "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum.",
-      "Patrick quotes your exact fee after looking at your home."
-    ]);
-    requireExcludes("/property-management/", body, [
-      "Vacation rental management from 17%",
-      "17–20% of net rent",
-      "17-20% of net rent",
-      "$85 a month",
-      "most homes are 20%"
-    ]);
+    requireIncludes("/property-management/ management fee", body, FEE_PASSAGE_INCLUDES);
+    requireExcludes("/property-management/", body, FEE_PASSAGE_EXCLUDES);
+    assertNoPublishedFeeNumbers(body);
     requireIncludes("/property-management/ local-alternative", body, [
       "Is Seascape a local alternative to Vacasa or Evolve?",
       "Seascape Vacations is an owner-operated vacation rental manager",
@@ -46,4 +69,10 @@ module.exports = function validateOwnerLiveSurface(body, { requireIncludes, requ
     if (!/data-placement=["\']local-alternative["\']/.test(body)) {
       throw new Error("property-management local-alternative action is missing tracking");
     }
-};
+}
+
+validateOwnerLiveSurface.FEE_PASSAGE_INCLUDES = FEE_PASSAGE_INCLUDES;
+validateOwnerLiveSurface.FEE_PASSAGE_EXCLUDES = FEE_PASSAGE_EXCLUDES;
+validateOwnerLiveSurface.assertNoPublishedFeeNumbers = assertNoPublishedFeeNumbers;
+
+module.exports = validateOwnerLiveSurface;

@@ -1,8 +1,8 @@
 # Brief: Explain the owner management fee without a published number
 
 - lifecycle: active
-- task scope: Sawyer, 2026-11-20: the site must never show a management-fee percentage, a range, or a monthly minimum dollar amount. Replace the 2026-11-18 "from 17%" copy on the existing owner-hub pricing block, owner FAQ / FAQPage JSON-LD, fees-page GEO/FAQ, AMI and Sarasota cost FAQs, and the owner-fee benchmark pricing note with one liftable "How our management fee works" passage. No new URL, title, meta or template. Never merge this PR; never touch `production`.
-- completion or successor: PR #970 on `seo/owner-fees-quote-drivers`; keep draft until Sawyer says otherwise. A merge may deploy per `AGENTS.md` Deploy.
+- task scope: Sawyer, 2026-11-20: the site must never show a management-fee percentage, a range, or a monthly minimum dollar amount. Replace the 2026-11-18 "from 17%" copy on the existing owner-hub pricing block, owner FAQ / FAQPage JSON-LD, fees-page GEO/FAQ, AMI and Sarasota cost FAQs, and the owner-fee benchmark pricing note with one liftable "How our management fee works" passage. Fees-page description/OG/JSON-LD use that passage (title stays). No new URL or template. Never merge this PR; never touch `production`.
+- completion or successor: PR #970 on `seo/owner-fees-quote-drivers`, ready for review. Sawyer, 2026-11-20 10:23 AM ET: keep net rent and "monthly minimum" with no dollar amount. A merge may deploy per `AGENTS.md` Deploy.
 
 ## Content Gate Inputs
 
@@ -10,7 +10,7 @@
 - primary keyword: vacation rental management fees Bradenton Sarasota
 - secondary keywords: how much does Seascape charge to manage a vacation rental, what does full-service vacation rental management include
 - audience pattern: owners and AI answer engines ask for a fee number; the quotable answer states the basis, the cover list, and who quotes, without a published figure
-- proof source: current source (`src/property-management/index.njk` "What we do for your home" rows); seascape-hub origin/main `context/owner-offer.md` sections 2, 3 and 7 and `decisions/2026-11-18-owner-by-owner-fee-rule.md` (fee is a share of net rent, never gross); Sawyer 2026-11-20 site rule (no published percentage, range, or dollar minimum)
+- proof source: current source (`src/property-management/index.njk` "What we do for your home" rows); seascape-hub origin/main `context/owner-offer.md` sections 2, 3 and 7 and `decisions/2026-11-18-owner-by-owner-fee-rule.md` (fee is a share of net rent, never gross); Sawyer 2026-11-20 site rule (no published percentage, range, or dollar minimum); Sawyer 2026-11-20 10:23 AM ET confirmation to keep "net rent" and "monthly minimum" with no dollar amount
 - offer claim: seascape-hub/context/owner-offer.md section 3, fee basis only: a share of net rent, a monthly charge, owner-by-owner quote after Seascape sees the home. Public copy does not publish the 2026-11-18 figures (17–20%, $85, "from 17%", "most homes are 20%").
 - required internal links: /property-management/vacation-rental-management-fees-florida/, /research/owner-fee-revenue-leak-benchmark-2026/
 - CTA target: existing `#owner-cta` on /property-management/
@@ -20,7 +20,7 @@
 
 - Sawyer decided on 2026-11-20 that the live site must never show a management-fee percentage, a range, or a monthly minimum dollar amount. That withdraws the 2026-11-18 "publish from 17%" instruction for public copy.
 - Hub AEO citation plan (2026-11-04, section 2) still wants a quotable fee answer. The answer is now the basis and the cover list, not a number.
-- Waits: Hub rewrite of `context/owner-offer.md` section 3's "published range" paragraph; fees-page title/meta changes; new owner URLs. Expansion stays held per `docs/status/next-batch.md`.
+- Waits: Hub rewrite of `context/owner-offer.md` section 3's "published range" paragraph; fees-page title changes; new owner URLs. Expansion stays held per `docs/status/next-batch.md`. Description/OG/JSON-LD now match the no-number passage.
 
 ## Experiment And Readback Contract
 

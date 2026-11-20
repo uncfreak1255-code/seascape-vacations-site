@@ -271,6 +271,26 @@ test("owner smoke rejects a missing local-alternative answer and tracked action"
   }
 });
 
+test("owner live-smoke fee-number scan fails closed on empty copy and planted figures", () => {
+  const {
+    assertNoPublishedFeeNumbers
+  } = require("../recovery/validate-owner-live-surface");
+  assert.throws(() => assertNoPublishedFeeNumbers(""), /empty copy/);
+  assert.throws(() => assertNoPublishedFeeNumbers("   "), /empty copy/);
+  assert.throws(() => assertNoPublishedFeeNumbers("<script>12%</script>"), /empty copy/);
+  assert.throws(
+    () => assertNoPublishedFeeNumbers("<p>The management fee is 12% of net rent.</p>"),
+    /fee percentage or dollar amount/
+  );
+  assert.throws(
+    () => assertNoPublishedFeeNumbers("<p>There is a $99 monthly minimum.</p>"),
+    /fee percentage or dollar amount/
+  );
+  assert.doesNotThrow(() =>
+    assertNoPublishedFeeNumbers("<p>Seascape charges a share of your home's net rent.</p>")
+  );
+});
+
 test("owner smoke requires the no-number fee passage and rejects a published percentage", () => {
   const smoke = loadSmokeModule();
   const target = smoke.targets.find(entry => entry.path === "/property-management/");
@@ -306,5 +326,21 @@ test("owner smoke requires the no-number fee passage and rejects a published per
   assert.throws(
     () => smoke.validateTargetResponse(target, { statusCode: 200, body: numbered }),
     /stale live marker/
+  );
+  const percent = body.replace(
+    "Patrick quotes your exact fee after looking at your home.",
+    "The management fee is 12% of net rent. Patrick quotes your exact fee after looking at your home."
+  );
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: percent }),
+    /fee percentage or dollar amount/
+  );
+  const dollars = body.replace(
+    "Patrick quotes your exact fee after looking at your home.",
+    "There is a $99 monthly minimum. Patrick quotes your exact fee after looking at your home."
+  );
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: dollars }),
+    /fee percentage or dollar amount/
   );
 });

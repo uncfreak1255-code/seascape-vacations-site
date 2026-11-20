@@ -8,6 +8,11 @@ const {
   validateRenderedCheckout
 } = require("./live-smoke-rendered-checks");
 const validateOwnerLiveSurface = require("./validate-owner-live-surface");
+const {
+  FEE_PASSAGE_INCLUDES,
+  FEE_PASSAGE_EXCLUDES,
+  assertNoPublishedFeeNumbers
+} = validateOwnerLiveSurface;
 
 const targets = [
   { path: "/", status: 200 },
@@ -157,6 +162,9 @@ function validateTargetResponse(target, response) {
 
   if (target.path === "/property-management/") {
     validateOwnerLiveSurface(response.body, { requireIncludes, requireExcludes });
+    requireIncludes("/property-management/ live-smoke fee passage", response.body, FEE_PASSAGE_INCLUDES);
+    requireExcludes("/property-management/ live-smoke fee numbers", response.body, FEE_PASSAGE_EXCLUDES);
+    assertNoPublishedFeeNumbers(response.body);
   }
 
   if (target.path === "/research/gulf-coast-vacation-booking-trends-2026/") {

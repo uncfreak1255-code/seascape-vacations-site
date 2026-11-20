@@ -4296,11 +4296,11 @@
       "destination": null,
       "title": "Florida Vacation Rental Management Fees: What Owners Keep",
       "h1": "Vacation Rental Management Fees in Florida: What Owners Actually Pay",
-      "description": "See Florida vacation rental management fees, marketplace booking costs, and when a lower headline fee still leaves owners with less income.",
-      "intro": "A headline management fee alone does not tell you what you actually keep. Start with one decision view: the management fee, booking-source costs, and execution misses, then use the 48-hour review to see whether switching changes your payout.",
+      "description": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes each owner after looking at the home.",
+      "intro": "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home. Then look at booking-source costs and execution misses before you decide whether switching changes your payout.",
       "proofAssetKey": "gulf-coast-owner-benchmark-2026",
       "benefits": [
-        "Fee comparison grounded in what the owner actually keeps instead of a headline fee",
+        "Fee comparison grounded in what the owner actually keeps, not a canned public figure",
         "Clear breakdown of management fees, booking-platform costs, card processing, and included services",
         "Property-specific pricing instead of a fake one-size-fits-all promise",
         "Explanation of why higher-performing homes can qualify for lower fees",
@@ -4331,13 +4331,13 @@
       ],
       "marketReality": {
         "tag": "Fee Reality",
-        "title": "The cheapest percentage is often the most expensive operating choice",
-        "body": "<p>Owners get trapped when they compare management fees in isolation. A lower headline fee can still leave the owner behind if pricing stays soft, marketplace dependence stays high, and the operator keeps missing the execution details that protect reviews and pricing.</p><p>The real question is what the owner keeps after management fee, booking costs, concessions, and preventable operating misses. That is why the fee page has to be a math page first and a sales page second.</p>"
+        "title": "The cheapest-looking fee is often the most expensive operating choice",
+        "body": "<p>Owners get trapped when they compare management fees in isolation. A cheaper-looking fee can still leave the owner behind if pricing stays soft, marketplace dependence stays high, and the operator keeps missing the execution details that protect reviews and pricing.</p><p>The real question is what the owner keeps after management fee, booking costs, concessions, and preventable operating misses. That is why the fee page has to be a math page first and a sales page second.</p>"
       },
       "switchReasons": [
         {
           "title": "Flat pricing hides the fact that homes do not perform equally",
-          "body": "A high-revenue home with strong fit can justify a lower percentage than a high-touch home that takes more work to operate well."
+          "body": "A high-revenue home with strong fit can qualify for a lower rate than a high-touch home that takes more work to operate well."
         },
         {
           "title": "Marketplace-heavy managers can look cheaper than they really are",
@@ -4383,7 +4383,7 @@
         "items": [
           {
             "title": "Current cost map",
-            "body": "We separate management percentage, booking costs, payment costs, and unknowns so you can see what is proven versus assumed."
+            "body": "We separate the management fee, booking costs, payment costs, and unknowns so you can see what is proven versus assumed."
           },
           {
             "title": "Booking-source read",
@@ -4425,15 +4425,15 @@
         },
         {
           "question": "Why is the cheapest fee not automatically the best deal?",
-          "answer": "Because owner income is shaped by more than the management percentage. Underpricing, marketplace dependence, and weak operations can cost more than the fee points you think you saved."
+          "answer": "Because owner income is shaped by more than the management fee. Underpricing, marketplace dependence, and weak operations can cost more than a cheaper-looking fee."
         },
         {
           "question": "Can higher-performing homes really qualify for lower fees?",
-          "answer": "Yes. Better-fit homes with stronger revenue potential and lower-friction operating profiles can justify a lower percentage than homes that require more support and still produce less."
+          "answer": "Yes. Better-fit homes with stronger revenue potential and lower-friction operating profiles can qualify for a lower rate than homes that require more support and still produce less."
         },
         {
           "question": "How should I compare Seascape against Vacasa, Evolve, or a local manager?",
-          "answer": "Compare what the owner actually keeps, not just management fee. That means management percentage, marketplace booking costs, direct-booking potential, clarity of reporting, and the quality of local execution."
+          "answer": "Compare what the owner actually keeps, not just the management fee. That means the management fee, marketplace booking costs, direct-booking potential, clarity of reporting, and the quality of local execution."
         },
         {
           "question": "What does Seascape review before quoting a fee?",
@@ -4444,7 +4444,7 @@
       "primaryCta": "Request Your Revenue Review",
       "ctaSubcopy": "We map your current fee structure, booking costs, and execution gaps so you can decide whether switching is worth it.",
       "ctaNote": "Useful if you want the real fee comparison, not another canned pitch.",
-      "geoIntro": "<p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home. That covers listing on Airbnb, Vrbo and our own booking site; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with county taxes remitted.</p><p>That matters because fee comparisons get distorted fast when owners ignore booking channels and operating quality. A manager with a lower headline number can still leave the owner behind if the home stays too dependent on marketplace commissions or the local execution keeps hurting reviews and pricing.</p><p>The right fee conversation is not about finding the smallest headline fee on the page. It is about understanding what the owner keeps after management fee, marketplace costs, and the hidden cost of weak execution are all accounted for.</p>",
+      "geoIntro": "<p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home. That covers listing on Airbnb, Vrbo and our own booking site; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with county taxes remitted.</p><p>Fee comparisons get distorted fast when owners ignore booking channels and operating quality. A cheaper-looking manager can still leave the owner behind if the home stays too dependent on marketplace commissions or the local execution keeps hurting reviews and pricing.</p><p>The useful fee conversation is what the owner keeps after the management fee, marketplace costs, and the hidden cost of weak execution, not a canned public figure.</p>",
       "faqs": [
         {
           "q": "How much does Seascape charge to manage a vacation rental?",
@@ -4452,7 +4452,7 @@
         },
         {
           "q": "Why is the cheapest fee not automatically the best deal?",
-          "a": "Because owner income depends on more than the management percentage. Cheap management paired with weak pricing, marketplace dependence, or poor operations can leave the owner worse off than a higher-fee operator with better execution."
+          "a": "Because owner income depends on more than the management fee. Cheap management paired with weak pricing, marketplace dependence, or poor operations can leave the owner worse off than a higher-fee operator with better execution."
         },
         {
           "q": "Can a stronger home qualify for a lower management fee?",
