@@ -16,6 +16,6 @@ test("npm start uses the build-site wrapper, not raw Eleventy", () => {
 test("parseBuildArgs and eleventyArgs share the same serve path as npm start", () => {
   assert.deepEqual(parseBuildArgs([]), { serve: false });
   assert.deepEqual(parseBuildArgs(["--serve"]), { serve: true });
-  assert.deepEqual(eleventyArgs({ serve: false }), ["--no", "@11ty/eleventy"]);
-  assert.deepEqual(eleventyArgs({ serve: true }), ["--no", "@11ty/eleventy", "--serve"]);
+  assert.deepEqual(eleventyArgs({ serve: false }), ["node_modules/@11ty/eleventy/cmd.cjs"]);
+  assert.deepEqual(eleventyArgs({ serve: true }), ["node_modules/@11ty/eleventy/cmd.cjs", "--serve"]);
 });

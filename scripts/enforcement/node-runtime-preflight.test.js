@@ -5,6 +5,7 @@ const os = require("node:os");
 const path = require("node:path");
 
 const {
+  ELEVENTY_CLI,
   checkNodeRuntime,
   assertNodeRuntime
 } = require("./node-runtime-preflight");
@@ -15,8 +16,8 @@ function fixtureRepo({ nvmrc = "24.22.2", withEleventy = true } = {}) {
     fs.writeFileSync(path.join(dir, ".nvmrc"), `${nvmrc}\n`);
   }
   if (withEleventy) {
-    fs.mkdirSync(path.join(dir, "node_modules", ".bin"), { recursive: true });
-    fs.writeFileSync(path.join(dir, "node_modules", ".bin", "eleventy"), "");
+    fs.mkdirSync(path.join(dir, "node_modules", "@11ty", "eleventy"), { recursive: true });
+    fs.writeFileSync(path.join(dir, ELEVENTY_CLI), "");
   }
   return dir;
 }
@@ -41,6 +42,10 @@ test("a different Node major only warns in CI or on Netlify", () => {
     const result = checkNodeRuntime({ projectRootDir: dir, nodeVersion: "22.22.0", env });
     assert.equal(result.errors.length, 0);
     assert.equal(result.warnings.length, 1);
+  }
+  for (const env of [{ CI: "false" }, { CI: "0" }]) {
+    const result = checkNodeRuntime({ projectRootDir: dir, nodeVersion: "22.22.0", env });
+    assert.equal(result.errors.length, 1, `CI=${env.CI} is not CI`);
   }
 });
 
@@ -75,8 +80,10 @@ test("this repo's build and proof chain run the preflight before any work", () =
   }
 });
 
-test("the build never lets npx fetch a missing eleventy", () => {
+test("the build runs the locked local eleventy, never npx", () => {
   const { eleventyArgs } = require("./build-site");
-  assert.equal(eleventyArgs()[0], "--no");
-  assert.equal(eleventyArgs({ serve: true })[0], "--no");
+  assert.equal(eleventyArgs()[0], ELEVENTY_CLI);
+  assert.equal(eleventyArgs({ serve: true })[0], ELEVENTY_CLI);
+  const source = fs.readFileSync(path.join(__dirname, "build-site.js"), "utf8");
+  assert.doesNotMatch(source, /run\("npx"/);
 });
