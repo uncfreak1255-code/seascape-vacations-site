@@ -1,5 +1,5 @@
 {
-  "about": "Pages settling after a published SEO change. While an entry is inside its settle window, scripts/enforcement/page-settle-gate.js fails a release range that edits its sources unless a commit carries a 'Settle-Override: <reason>' trailer. Add an entry in the PR that ships a title, meta, heading or body change meant to move rankings; the gate reads this file at the range base, so the shipping PR is not blocked by its own entry. Remove an entry once its window has passed and the readback is recorded.",
+  "about": "Pages settling after a published SEO change. While an entry is inside its settle window, scripts/enforcement/page-settle-gate.js fails a release range that edits its sources unless a commit carries a 'Settle-Override: <reason>' trailer. Add an entry in the PR that ships a title, meta, heading or body change meant to move rankings; the gate reads this file at the range base, so the shipping PR is not blocked by its own entry. Remove an entry once its window has passed and the readback is recorded. Verdict tracking (Sawyer, 2026-11-20, agent-issues #80): each entry also carries kind, baseline, verdictDue (rounded up to a Monday; the Monday verdict task judges it), optional finalVerdictDue, and verdict (null until written: keep, keep-no-lift, revert, or replaced). A revert needs evidence of harm, such as the brief's position-loss limit or zero clicks above its impression floor; no lift means keep-no-lift. One verdict per page: a later change on the same route replaces the earlier entry's verdict. A harm verdict on a held guide or new page goes to Sawyer as a proposal. shipped and live are the America/New_York date of the first production publish that contains the change; shipped is the settle-gate switch; leave it null for shared source files and put the live date in live. Fact fixes are in liveChecks, which the gate does not read.",
   "settleDays": 28,
   "pages": [
     {
@@ -9,7 +9,13 @@
       "pr": 1002,
       "shipped": null,
       "targetQuery": "bradenton vacation rentals",
-      "brief": "docs/briefs/2026-11-bradenton-vacation-rentals.md"
+      "brief": "docs/briefs/2026-11-bradenton-vacation-rentals.md",
+      "kind": "new-page",
+      "live": "2026-11-19",
+      "baseline": "None: no Search Console rows before launch (brief)",
+      "verdictDue": "2026-12-07",
+      "verdict": null,
+      "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. New page: a harm verdict goes to Sawyer."
     },
     {
       "route": "/",
@@ -27,9 +33,12 @@
       ],
       "change": "Restored the pre-#607 title and meta description (Gate 0 rescue)",
       "pr": 807,
-      "shipped": "2026-10-25",
+      "shipped": "2026-10-26",
       "targetQuery": "anna maria island vs siesta key",
-      "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md"
+      "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md",
+      "kind": "search-text",
+      "verdict": "replaced",
+      "verdictNote": "Replaced by #984 on the same route (one verdict per page); its 28-day window after publication includes #984's publish on 2026-11-19."
     },
     {
       "route": "/guides/anna-maria-island-vs-siesta-key/",
@@ -37,10 +46,16 @@
         "src/guides/anna-maria-island-vs-siesta-key.html"
       ],
       "change": "Rewrote the search description for comparison-query CTR; title and body unchanged",
-      "pr": null,
-      "shipped": null,
+      "pr": 984,
+      "shipped": "2026-11-19",
       "targetQuery": "anna maria island vs siesta key",
-      "brief": "docs/briefs/2026-11-ami-vs-siesta-snippet-rescue.md"
+      "brief": "docs/briefs/2026-11-ami-vs-siesta-snippet-rescue.md",
+      "kind": "search-text",
+      "baseline": "2026-10-18 to 2026-11-14: URL 7,855 impressions / 5 clicks; 'anna maria island vs siesta key' 74 impressions / 0 clicks at position 9.6; the comparison family about 150 impressions (brief)",
+      "verdictDue": "2026-11-30",
+      "finalVerdictDue": "2026-12-21",
+      "verdict": null,
+      "note": "Held guide (AGENTS.md): a harm verdict goes to Sawyer as a proposal, no automatic revert. keep-no-lift (2026-11-20 rule) supersedes the brief's 28-day revert on insufficient evidence."
     },
     {
       "route": "/stays/family-vacation-rentals-anna-maria-island/",
@@ -60,9 +75,14 @@
       ],
       "change": "Replaced 'Luxury Beach Homes' title/meta with downtown private-pool snippet",
       "pr": 996,
-      "shipped": null,
+      "shipped": "2026-11-19",
       "targetQuery": "sarasota vacation rentals",
-      "brief": "docs/briefs/2026-11-sarasota-area-guide-truth.md"
+      "brief": "docs/briefs/2026-11-sarasota-area-guide-truth.md",
+      "kind": "search-text",
+      "baseline": "Position about 42 for 'sarasota vacation rentals'; no CTR recorded before the change (brief, PR #996 body)",
+      "verdictDue": "2026-11-30",
+      "finalVerdictDue": "2026-12-21",
+      "verdict": null
     },
     {
       "route": "/property-management/airbnb-management-services-sarasota/",
@@ -81,10 +101,16 @@
         "src/guides/best-time-visit-anna-maria-island.html"
       ],
       "change": "Corrected the visible and Article freshness date; title and descriptions now state the existing month answer (Gate 0 rescue)",
-      "pr": null,
-      "shipped": null,
+      "pr": 985,
+      "shipped": "2026-11-17",
       "targetQuery": "best time to visit anna maria island",
-      "brief": "docs/briefs/2026-11-best-time-ami-rescue.md"
+      "brief": "docs/briefs/2026-11-best-time-ami-rescue.md",
+      "kind": "search-text",
+      "baseline": "Family (13 'best time' query rows): Oct 25-31 about 108 impressions / 6 clicks at position about 1-2; Nov 1-7 about 99 impressions / 2 clicks at position about 3. Page: Nov 1-7 11 clicks, 1,166 impressions, position 4.5-5.6 (brief)",
+      "verdictDue": "2026-11-30",
+      "finalVerdictDue": "2026-12-21",
+      "verdict": null,
+      "note": "Held guide (AGENTS.md): a harm verdict goes to Sawyer as a proposal, no automatic revert."
     },
     {
       "route": "/guides/anna-maria-island-weather/",
@@ -93,9 +119,19 @@
       ],
       "change": "Rewrote title/meta to name NOAA monthly air, rain, water, and milder Nov–April (CTR repair)",
       "pr": 998,
-      "shipped": null,
+      "shipped": "2026-11-19",
       "targetQuery": "anna maria island weather by month",
-      "brief": "docs/briefs/2026-11-ami-weather-ctr.md"
+      "brief": "docs/briefs/2026-11-ami-weather-ctr.md",
+      "kind": "search-text",
+      "baseline": "9,109 impressions, 17 clicks, 0.2% CTR before the change (PR #998 body)",
+      "verdictDue": "2026-11-30",
+      "finalVerdictDue": "2026-12-21",
+      "verdict": null,
+      "note": "Held guide (AGENTS.md): a harm verdict goes to Sawyer as a proposal, no automatic revert."
     }
+  ],
+  "liveChecks": [
+    {"pr": 1010, "kind": "fact-fix", "change": "Airport travel times and removed guarantees across ten guides", "live": "2026-11-19", "brief": "docs/briefs/2026-11-guide-airport-and-safety-facts.md", "baseline": "Search Console clicks and impressions for the ten routes, 2026-10-22 to 2026-11-18 (brief)", "verdictDue": "2026-12-21", "verdict": null, "note": "Accuracy repair: the Dec traffic read is for information; a drop leads to rewording, never restoring old claims."},
+    {"pr": 1014, "kind": "fact-fix", "change": "llms.txt home count corrected to eight", "live": "2026-11-19", "brief": "docs/briefs/2026-11-llms-home-count.md", "baseline": "Live /llms.txt read 2026-11-18T21:18Z said 'manages seven homes' (brief)", "verdict": "keep", "verdictNote": "Live https://seascape-vacations.com/llms.txt read 2026-11-20 says 'manages eight homes'."}
   ]
 }
