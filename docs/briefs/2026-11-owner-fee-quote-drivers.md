@@ -2,7 +2,7 @@
 
 - lifecycle: active
 - task scope: Sawyer, 2026-11-20: the site must never show a management-fee percentage, a range, or a monthly minimum dollar amount. Replace the 2026-11-18 "from 17%" copy on the existing owner-hub pricing block, owner FAQ / FAQPage JSON-LD, fees-page GEO/FAQ, AMI and Sarasota cost FAQs, and the owner-fee benchmark pricing note with one liftable "How our management fee works" passage. Fees-page description/OG/JSON-LD use that passage (title stays). No new URL or template. Never merge this PR; never touch `production`.
-- completion or successor: PR #970 on `seo/owner-fees-quote-drivers`, ready for review. Sawyer, 2026-11-20 10:23 AM ET: keep net rent and "monthly minimum" with no dollar amount. A merge may deploy per `AGENTS.md` Deploy.
+- completion or successor: PR #970 on `seo/owner-fees-quote-drivers`, ready for review. Sawyer, 2026-11-20 10:23 AM ET: keep net rent and "monthly minimum" with no dollar amount. Sawyer and Patrick, 2026-11-20 11:24 AM ET: channels include Google and the direct site; never name Patrick in fee copy; taxes are tourism and sales taxes remitted for you. A merge may deploy per `AGENTS.md` Deploy.
 
 ## Content Gate Inputs
 
@@ -81,15 +81,17 @@ Inventory of links each changed page already carries; not an enforced link map.
 ## Copy and review contract
 
 Draft, remove internal wording, then check voice and specificity. Approved public
-copy (Sawyer, 2026-11-20, net-rent basis from Hub DEC-2026-11-18): section label
-"How our management fee works"; body "Seascape charges a share of your home's
-net rent, with a lower rate for homes that earn more and a monthly minimum.
-Patrick quotes your exact fee after looking at your home. That covers listing
-on Airbnb, Vrbo and our own booking site; setting and adjusting nightly rates
-as demand moves; screening and messaging guests from Bradenton; coordinating
-cleaning and maintenance, with a note before you have to ask; and paying you
-monthly with a statement of what your home earned and spent, with county taxes
-remitted." The same body appears in the owner FAQ (visible text and FAQPage
-JSON-LD match exactly), the owner pricing block, the fees page, the AMI and
-Sarasota cost FAQs, and the benchmark pricing note. Cover list is the five jobs
-already on `/property-management/`. `src/llms.txt` is unchanged.
+copy (Sawyer and Patrick, 2026-11-20 11:24 AM ET, net-rent basis from Hub
+DEC-2026-11-18): section label "How our management fee works"; body "Seascape
+charges a share of your home's net rent, with a lower rate for homes that earn
+more and a monthly minimum. We quote your exact fee after looking at your home.
+That covers listing on Airbnb, Vrbo, Google, our direct website and more;
+setting and adjusting nightly rates as demand moves; screening and messaging
+guests from Bradenton; coordinating cleaning and maintenance, with a note
+before you have to ask; and paying you monthly with a statement of what your
+home earned and spent, with tourism and sales taxes remitted for you." Fees-page
+description uses the opener plus "We quote each owner after looking at the
+home." The same body appears in the owner FAQ (visible text and FAQPage JSON-LD
+match exactly), the owner pricing block, the fees page, the AMI and Sarasota
+cost FAQs, and the benchmark pricing note. Never name Patrick in fee copy.
+`src/llms.txt` is unchanged.

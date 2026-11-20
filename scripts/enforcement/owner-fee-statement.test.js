@@ -13,9 +13,9 @@ const hub = fs.readFileSync(
 );
 
 const OPENER =
-  "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.";
+  "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home.";
 const COVER =
-  "That covers listing on Airbnb, Vrbo and our own booking site; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with county taxes remitted.";
+  "That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.";
 const PASSAGE = `${OPENER} ${COVER}`;
 const BANNED_PUBLISHED_FEE = /from 17%|17–20%|17-20%|\$85 a month|most homes are 20%|\b17%\b|\b20%\b of net/i;
 
@@ -25,6 +25,7 @@ test("owner fee statement answers the charge question in the first 40 words with
   const words = OPENER.trim().split(/\s+/);
   assert.ok(words.length <= 40, `opener is ${words.length} words`);
   assert.equal(BANNED_PUBLISHED_FEE.test(statement), false);
+  assert.equal(statement.includes("Patrick"), false);
 });
 
 test("owner hub labels the fee section and reuses the statement partial", () => {
@@ -46,6 +47,7 @@ test("owner FAQ leads with the charge question in the visible list and the FAQPa
   assert.equal(faq.includes('{% include "partials/owner-fee-statement.njk" %}'), true);
   assert.equal(faq.includes(`"text": "${PASSAGE}"`), true);
   assert.equal(BANNED_PUBLISHED_FEE.test(faq), false);
+  assert.equal(faq.includes("Patrick quotes"), false);
 });
 
 test("owner fee copy rejects a planted published percentage or dollar minimum", () => {

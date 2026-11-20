@@ -3,7 +3,9 @@ const { catalogHomeCountWord } = require("../enforcement/home-count-word");
 const FEE_PASSAGE_INCLUDES = [
   "How our management fee works",
   "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum.",
-  "Patrick quotes your exact fee after looking at your home."
+  "We quote your exact fee after looking at your home.",
+  "listing on Airbnb, Vrbo, Google, our direct website and more",
+  "tourism and sales taxes remitted for you"
 ];
 
 const FEE_PASSAGE_EXCLUDES = [
@@ -12,7 +14,10 @@ const FEE_PASSAGE_EXCLUDES = [
   "17-20% of net rent",
   "$85 a month",
   "most homes are 20%",
-  "headline fee"
+  "headline fee",
+  "Patrick quotes",
+  "listing on Airbnb, Vrbo and our own booking site",
+  "with county taxes remitted"
 ];
 
 const FIGURE_RE = /\d+(?:\.\d+)?\s*%|\$\d+(?:,\d{3})*(?:\.\d+)?/g;
@@ -20,7 +25,7 @@ const THIRD_PARTY_OWNER_RE = /\b(?:airbnb|vrbo|stripe|booking\.com)\b/i;
 const SEASCAPE_OWNER_RE = /\bseascape\b/i;
 const THIRD_PARTY_FEE_RE = /host service fee/i;
 const SEASCAPE_FEE_RE =
-  /\b(?:management fee|net rent|monthly minimum|we charge|our fee|patrick quotes|how our management fee works)\b/i;
+  /\b(?:management fee|net rent|monthly minimum|we charge|our fee|we quote|how our management fee works)\b/i;
 
 function visibleText(body) {
   return String(body)

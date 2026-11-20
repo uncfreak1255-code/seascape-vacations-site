@@ -24,7 +24,7 @@ test("property-management smoke follows the current Waterline owner offer hub", 
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
       <p class="g-label">How our management fee works</p>
-      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -57,7 +57,7 @@ test("property-management smoke accepts the live minified single-quoted form nam
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
       <p class="g-label">How our management fee works</p>
-      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>
       <a href="#owner-cta">Get my review</a>
       <form name='owner-revenue-teardown' method='POST'></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -95,7 +95,7 @@ test("property-management smoke rejects Five homes on a eight-row catalog (#705)
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
       <p class="g-label">How our management fee works</p>
-      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -138,7 +138,7 @@ test("property-management smoke rejects the Why a eight-home typo", () => {
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
       <p class="g-label">How our management fee works</p>
-      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -166,7 +166,7 @@ test("property-management smoke rejects a duplicate Owners header link", () => {
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
       <p class="g-label">How our management fee works</p>
-      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -227,7 +227,7 @@ test("property-management smoke fails when the owner form name is missing", () =
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
       <p class="g-label">How our management fee works</p>
-      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>
           <a href="#owner-cta">Get my review</a>
           <h2>What we do for your home</h2>
           <h2>Why an eight-home operator</h2>
@@ -276,7 +276,7 @@ test("owner live-smoke fee-number scan fails closed on empty copy and planted fi
     assertNoPublishedFeeNumbers
   } = require("../recovery/validate-owner-live-surface");
   const feePassage =
-    "<p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>";
+    "<p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>";
   assert.throws(() => assertNoPublishedFeeNumbers(""), /empty copy/);
   assert.throws(() => assertNoPublishedFeeNumbers("   "), /empty copy/);
   assert.throws(() => assertNoPublishedFeeNumbers("<script>12%</script>"), /empty copy/);
@@ -335,7 +335,7 @@ test("owner smoke requires the no-number fee passage and rejects a published per
       <h1>Know what your home earned <em>and what needs attention.</em></h1>
       <p>Eight homes. One local team.</p>
       <p class="g-label">How our management fee works</p>
-      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes your exact fee after looking at your home.</p>
+      <p>Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote your exact fee after looking at your home. That covers listing on Airbnb, Vrbo, Google, our direct website and more; setting and adjusting nightly rates as demand moves; screening and messaging guests from Bradenton; coordinating cleaning and maintenance, with a note before you have to ask; and paying you monthly with a statement of what your home earned and spent, with tourism and sales taxes remitted for you.</p>
       <a href="#owner-cta">Get my review</a>
       <form name="owner-revenue-teardown" method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
@@ -353,24 +353,24 @@ test("owner smoke requires the no-number fee passage and rejects a published per
     /management fee/
   );
   const numbered = body.replace(
-    "Patrick quotes your exact fee after looking at your home.",
-    "Vacation rental management from 17%. Patrick quotes your exact fee after looking at your home."
+    "We quote your exact fee after looking at your home.",
+    "Vacation rental management from 17%. We quote your exact fee after looking at your home."
   );
   assert.throws(
     () => smoke.validateTargetResponse(target, { statusCode: 200, body: numbered }),
     /stale live marker/
   );
   const percent = body.replace(
-    "Patrick quotes your exact fee after looking at your home.",
-    "The management fee is 12% of net rent. Patrick quotes your exact fee after looking at your home."
+    "We quote your exact fee after looking at your home.",
+    "The management fee is 12% of net rent. We quote your exact fee after looking at your home."
   );
   assert.throws(
     () => smoke.validateTargetResponse(target, { statusCode: 200, body: percent }),
     /fee percentage or dollar amount/
   );
   const dollars = body.replace(
-    "Patrick quotes your exact fee after looking at your home.",
-    "There is a $99 monthly minimum. Patrick quotes your exact fee after looking at your home."
+    "We quote your exact fee after looking at your home.",
+    "There is a $99 monthly minimum. We quote your exact fee after looking at your home."
   );
   assert.throws(
     () => smoke.validateTargetResponse(target, { statusCode: 200, body: dollars }),
@@ -383,4 +383,28 @@ test("owner smoke requires the no-number fee passage and rejects a published per
   );
   const airbnbHostFee = `${body}<p>Airbnb's own host fee is separate: Airbnb says most listings on its single-fee structure pay 15.5%.</p>`;
   assert.doesNotThrow(() => smoke.validateTargetResponse(target, { statusCode: 200, body: airbnbHostFee }));
+  const namedQuote = body.replace(
+    "We quote your exact fee after looking at your home.",
+    "We quote your exact fee after looking at your home. Patrick quotes your exact fee after looking at your home."
+  );
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: namedQuote }),
+    /stale live marker/
+  );
+  const oldChannels = body.replace(
+    "listing on Airbnb, Vrbo, Google, our direct website and more",
+    "listing on Airbnb, Vrbo and our own booking site"
+  );
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: oldChannels }),
+    /missing current live marker|stale live marker/
+  );
+  const oldTaxes = body.replace(
+    "tourism and sales taxes remitted for you",
+    "county taxes remitted"
+  );
+  assert.throws(
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: oldTaxes }),
+    /missing current live marker|stale live marker/
+  );
 });

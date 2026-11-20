@@ -208,11 +208,11 @@ test("priority owner money-page metadata stays non-empty and query-aligned", () 
   assert.equal(feePage.title, "Florida Vacation Rental Management Fees: What Owners Keep");
   assert.equal(
     feePage.description,
-    "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. Patrick quotes each owner after looking at the home."
+    "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum. We quote each owner after looking at the home."
   );
   assert.match(feePage.description, /share of your home's net rent/i);
   assert.match(feePage.description, /monthly minimum/i);
-  assert.equal(/\d+\s*%|\$\d|headline fee/i.test(feePage.description), false);
+  assert.equal(/\d+\s*%|\$\d|headline fee|Patrick/i.test(feePage.description), false);
 
   assert.match(licensingPage.title, /DBPR/i);
   assert.equal(licensingPage.title, "Florida Vacation Rental License Rules: DBPR + County Risk");

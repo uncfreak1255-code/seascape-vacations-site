@@ -137,8 +137,9 @@ test("benchmark asset and rendered HTML do not hide retired or private proof", (
   assert.doesNotMatch(benchmark.visibleBodyText, /Patrick(?:'s)? portfolio|seascape-hub|\/Users\//i);
   assert.match(
     benchmark.visibleBodyText,
-    /Patrick quotes your exact fee after looking at your home/
+    /We quote your exact fee after looking at your home/
   );
+  assert.doesNotMatch(benchmark.visibleBodyText, /Patrick quotes/);
 });
 
 test("research hub promotes the rescued fee guide instead of the retired benchmark", () => {
