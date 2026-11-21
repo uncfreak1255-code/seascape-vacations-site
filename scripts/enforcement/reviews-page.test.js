@@ -86,7 +86,7 @@ test("inbound reviews links land on homepage intro, footer, and About Us", () =>
   const home = read("src", "index.njk");
   const footer = read("src", "_includes", "partials", "guest-footer.njk");
   const about = read("src", "about-us", "index.njk");
-  const redirects = read("src", "_redirects");
+  const redirects = read("scripts", "redirects", "reviews-canonical");
 
   assert.match(home, /id="home-reviews-heading"/);
   assert.match(home, /href="\/reviews\/">See all reviews<\/a>/);
@@ -165,6 +165,7 @@ test("built reviews page is indexable, quotes first-party reviews, and omits agg
 
   const sitemap = read("_site", "sitemap.xml");
   assert.match(sitemap, /https:\/\/seascape-vacations\.com\/reviews\//);
+  assert.match(read("_site", "_redirects"), /\/reviews\s+\/reviews\/\s+301/);
 
   const blocks = jsonLdBlocks(html);
   const types = blocks.flatMap((block) => [].concat(block["@type"] || []));

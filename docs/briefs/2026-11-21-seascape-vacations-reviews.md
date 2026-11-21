@@ -87,7 +87,8 @@
   - src/_data/site.json
   - src/llms.txt
   - src/ai/summary.json.njk
-  - src/_redirects
+  - scripts/redirects/reviews-canonical
+  - eleventy.config.js
   - docs/briefs/2026-11-21-seascape-vacations-reviews.md
   - docs/status/page-ledger.json
   - scripts/enforcement/reviews-page.test.js

@@ -17,6 +17,12 @@ const {
   formatPerformanceClaimReport
 } = require("./performance-claim-scan");
 const { allowEmptyState, refuseSkip } = require("./fail-closed");
+const {
+  ALWAYS_SCANNED_PUBLIC_COPY_DATA_FILES,
+  ALWAYS_SCANNED_PUBLIC_COPY_PATH_PATTERNS,
+  OWNER_CONTENT_PATTERNS,
+  PUBLIC_CONTENT_PATTERNS
+} = require("./content-voice-paths");
 const { applyStayFacts } = require("../../src/_data/stayFacts");
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
 
@@ -180,28 +186,6 @@ const LEAKED_INTERNAL_READER_PATTERNS = [
 ];
 
 const FIRST_PARAGRAPH_PROOF_PATTERNS = [/\bobserved\b/i, /\bscenario\b/i, /\bmethodology\b/i];
-
-const PUBLIC_CONTENT_PATTERNS = [
-  /^src\/guides\/.+\.(html|njk)$/i,
-  /^src\/research\/.+\.njk$/i,
-  /^src\/property-management\/.+\.njk$/i,
-  /^src\/stays\/.+\.njk$/i,
-  /^src\/index\.njk$/i,
-  /^src\/reviews\/.+\.njk$/i
-];
-
-const ALWAYS_SCANNED_PUBLIC_COPY_PATH_PATTERNS = [
-  ...PUBLIC_CONTENT_PATTERNS,
-  /^src\/properties\/.+\.njk$/i
-];
-
-const ALWAYS_SCANNED_PUBLIC_COPY_DATA_FILES = [path.join("src", "_data", "seoPages.json")];
-
-const OWNER_CONTENT_PATTERNS = [
-  /^src\/property-management\/.+\.njk$/i,
-  /^src\/research\/owner-.+\.njk$/i,
-  /^src\/research\/.+owner.+\.njk$/i
-];
 
 function read(relativePath) {
   return fs.readFileSync(path.join(projectRoot, relativePath), "utf8");

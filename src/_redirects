@@ -1,6 +1,5 @@
 # Canonicalize common trailing-slash variants
 /about-us   /about-us/   301
-/reviews   /reviews/   301
 /properties   /properties/   301
 /stays/hurricane-preparedness-guide   /guides/hurricane-preparedness-florida-vacation/   301
 /stays/hurricane-preparedness-guide/   /guides/hurricane-preparedness-florida-vacation/   301
