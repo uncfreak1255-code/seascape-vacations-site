@@ -149,7 +149,7 @@
     if (typeof URL !== "function") return "";
 
     try {
-      var url = new URL(String(value), window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+      var url = new URL(String(value), currentPageHref());
       if (url.protocol !== "https:" && url.protocol !== "http:") return "";
       Array.from(url.searchParams.keys()).forEach(function (key) {
         var paramValue = url.searchParams.get(key) || "";
@@ -233,12 +233,21 @@
     return (params.get(key) || "").trim();
   }
 
+  function currentPageHref() {
+    return window.location && typeof window.location.href === "string"
+      ? window.location.href
+      : "https://seascape-vacations.com/";
+  }
+
+  function isBookingEngineHost(url) {
+    return Boolean(url && url.hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST);
+  }
+
   function isBookingEngineUrl(href) {
     if (!href || typeof URL !== "function") return false;
 
     try {
-      return new URL(href, window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/")
-        .hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST;
+      return isBookingEngineHost(new URL(href, currentPageHref()));
     } catch (_error) {
       return false;
     }
@@ -351,9 +360,7 @@
     if (!href || typeof URL !== "function") return href || "";
     if (href.charAt(0) === "#") return href;
 
-    var currentHref = window.location && typeof window.location.href === "string"
-      ? window.location.href
-      : "https://seascape-vacations.com/";
+    var currentHref = currentPageHref();
     var url;
 
     try {
@@ -362,7 +369,7 @@
       return href;
     }
 
-    var isBookingEngine = url.hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST;
+    var isBookingEngine = isBookingEngineHost(url);
     if (!isBookingEngine && !isSameOriginUrl(url, currentHref)) {
       return href;
     }
@@ -401,9 +408,7 @@
   function buildBookingEngineHandoffUrl(href, node) {
     if (!href || typeof URL !== "function") return href || "";
 
-    var currentHref = window.location && typeof window.location.href === "string"
-      ? window.location.href
-      : "https://seascape-vacations.com/";
+    var currentHref = currentPageHref();
     var locationSearch = window.location && typeof window.location.search === "string"
       ? window.location.search
       : "";
@@ -418,7 +423,7 @@
       return href;
     }
 
-    if (url.hostname.replace(/^www\./, "").toLowerCase() !== BOOKING_ENGINE_HOST) {
+    if (!isBookingEngineHost(url)) {
       return url.toString();
     }
 
@@ -740,12 +745,12 @@
     if (!href || typeof URL !== "function") return context;
 
     try {
-      var url = new URL(href, window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+      var url = new URL(href, currentPageHref());
       if (isSameOriginUrl(url, window.location.href)) {
         context.guideDirectClickId = (url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM) || "").trim();
         return context;
       }
-      if (url.hostname.replace(/^www\./, "").toLowerCase() !== BOOKING_ENGINE_HOST) return context;
+      if (!isBookingEngineHost(url)) return context;
 
       context.handoffId = (url.searchParams.get("sv_handoff_id") || "").trim();
       context.sessionId = (url.searchParams.get("sv_session_id") || "").trim();
