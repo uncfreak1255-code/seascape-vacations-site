@@ -321,10 +321,10 @@
       "faqs": [
         {
           "question": "What's the largest group you can accommodate?",
-          "answer": "The Oasis {sleeps-phrase:the-oasis} across 5 bedrooms. Dockside Dreams {sleeps-phrase:dockside-dreams} across 4 bedrooms. Those are the {matching} large-group options. For groups larger than {sleeps:the-oasis}, we can talk through coordinating nearby properties, but that's not our standard offering."
+          "answer": "Seascape Vacations has {matching} Bradenton large-group homes. The Oasis {sleeps-phrase:the-oasis} across 5 bedrooms. Dockside Dreams {sleeps-phrase:dockside-dreams} across 4 bedrooms. Those are the {matching} large-group options. For groups larger than {sleeps:the-oasis}, we can talk through coordinating nearby properties, but that's not our standard offering."
         },
         {
-          "question": "Which Seascape home fits a {sleeps:dockside-dreams}-person group versus a {sleeps:the-oasis}-person group?",
+          "question": "Which Seascape Vacations home fits a {sleeps:dockside-dreams}-person group versus a {sleeps:the-oasis}-person group?",
           "answer": "For {sleeps:the-oasis} guests, The Oasis is the clear call - it has the bedrooms, the two-hot-tub setup, and the extra outdoor zones. For {sleeps:dockside-dreams} guests, it comes down to what matters more: if your group wants a dock and the shortest drive to Bradenton Beach, go with Dockside Dreams. If they want the biggest layout and the game room, The Oasis still works at {sleeps:dockside-dreams}."
         },
         {
@@ -366,7 +366,7 @@
           "value": "The Oasis is 5.1 miles from IMG - 10 minutes on a weekday morning"
         }
       ],
-      "geoIntro": "<p><strong>Bringing {sleeps:dockside-dreams} and want a private dock?</strong> <a href=\"/properties/dockside-dreams/\">Dockside Dreams</a> sleeps up to {sleeps:dockside-dreams} in {br:dockside-dreams} bedrooms and has a private pool and waterfront dock. Pets are not permitted at Dockside Dreams or The Oasis; service animals are welcome without a pet fee.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
+      "geoIntro": "<p><strong>Bringing {sleeps:dockside-dreams} and want a private dock?</strong> Seascape Vacations' <a href=\"/properties/dockside-dreams/\">Dockside Dreams</a> sleeps up to {sleeps:dockside-dreams} in {br:dockside-dreams} bedrooms and has a private pool and waterfront dock. Pets are not permitted at Dockside Dreams or The Oasis; service animals are welcome without a pet fee.</p><p>Compare the same dates and complete checkout total across channels before booking.</p>",
       "relatedStaySlugs": [
         "bradenton-vacation-rentals",
         "vacation-rentals-near-anna-maria-island",
@@ -1263,7 +1263,7 @@
       "introHeading": "Plan a stay near Anna Maria Island",
       "driveTimeLabel": "Drive from Bradenton to AMI beaches",
       "reviewTrustLabel": "Review each home\u2019s guest feedback",
-      "intro": "These mainland Bradenton homes offer a private pool and room to spread out between Anna Maria Island beach days. Plan to drive to the island, and check the selected home’s beach route, parking and current bridge traffic before setting out.",
+      "intro": "Seascape Vacations' mainland Bradenton homes offer a private pool and room to spread out between Anna Maria Island beach days. Plan to drive to the island, and check the selected home’s beach route, parking and current bridge traffic before setting out.",
       "faqs": [
         {
           "question": "How far are your homes from Anna Maria Island?",

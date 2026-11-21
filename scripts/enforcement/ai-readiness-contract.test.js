@@ -14,7 +14,7 @@ const AI_PRIORITY_ROUTES = [
   {
     sourcePath: "src/guides/best-vacation-rental-companies-ami.html",
     answerMarkers: [
-      /the real question is not who has the most listings/i,
+      /Seascape Vacations is a locally managed Bradenton and Sarasota option with mainland homes near the island — not the biggest listing count/i,
       /<strong>Direct answer:<\/strong>/i
     ],
     proofMarkers: [
