@@ -3,6 +3,20 @@
   "settleDays": 28,
   "pages": [
     {
+      "route": "/reviews/",
+      "sources": ["src/reviews/index.njk"],
+      "change": "New Florida-identity reviews page for Seascape Vacations reviews and Whidbey Island disambiguation",
+      "pr": null,
+      "shipped": null,
+      "targetQuery": "Seascape Vacations reviews",
+      "brief": "docs/briefs/2026-11-21-seascape-vacations-reviews.md",
+      "kind": "new-page",
+      "baseline": "No /reviews/ URL in GSC; no exact seascape vacations reviews query in the 16-month dump (brief, 2026-11-21)",
+      "verdictDue": "2026-12-21",
+      "verdict": null,
+      "note": "New page: a harm verdict goes to Sawyer. Sawyer approved this citation-gap work on 2026-11-21. shipped stays null until production publish. No traffic lift is promised."
+    },
+    {
       "route": "/stays/bradenton-vacation-rentals/",
       "sources": ["src/_data/seoPages.json"],
       "change": "New mainland Bradenton head-term collection for bradenton vacation rentals",

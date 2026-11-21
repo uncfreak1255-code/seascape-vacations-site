@@ -235,10 +235,12 @@ module.exports = function(eleventyConfig) {
         fs.copyFileSync(source, target);
       }
     }
-    fs.appendFileSync(
-      path.join(root, "_site", "_redirects"),
-      "\n" + fs.readFileSync(path.join(root, "scripts", "redirects", "owner-aliases"), "utf8")
-    );
+    for (const fragment of ["owner-aliases", "reviews-canonical"]) {
+      fs.appendFileSync(
+        path.join(root, "_site", "_redirects"),
+        "\n" + fs.readFileSync(path.join(root, "scripts", "redirects", fragment), "utf8")
+      );
+    }
     require("./scripts/enforcement/listing-id-owned").writeGeneratedClientListingIdMap(root);
     const guestSrc = path.join(root, "src", "css", "guest.css");
     const guestOut = path.join(root, "_site", "css", "guest.css");

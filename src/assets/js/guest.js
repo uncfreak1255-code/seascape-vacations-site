@@ -55,7 +55,7 @@
     // real navigation and hold the click ~800ms.
     if (rawHref.charAt(0) === '#') return;
     var url = new URL(rawHref, location.href);
-    if (url.origin === location.origin && (link.hasAttribute('data-trip-link') || /^(?:\/(?:properties|guides|stays)\/|\/about-us\/|\/$)/.test(url.pathname))) originalLinks.set(link, rawHref);
+    if (url.origin === location.origin && (link.hasAttribute('data-trip-link') || /^(?:\/(?:properties|guides|stays|reviews)\/|\/about-us\/|\/$)/.test(url.pathname))) originalLinks.set(link, rawHref);
   });
   function label(value) { return new Intl.DateTimeFormat('en-US', {month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(value+'T12:00:00Z')); }
   function summary() { return (trip.arrive ? label(trip.arrive)+' – '+label(trip.depart) : 'Flexible dates') + (trip.guests ? ' · '+(trip.guests === '17' ? 'more than 16' : trip.guests)+' guests' : ''); }
