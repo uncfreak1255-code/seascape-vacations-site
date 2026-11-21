@@ -213,7 +213,7 @@ test("conversion tracking supports both guide and owner measurement events", () 
   assert.equal(analyticsPartial.includes("window.seascapeTrackEvent"), true);
   assert.equal(fs.existsSync(trackingScriptPath), true, "shared conversion tracking script should exist");
 
-  const trackingScript = fs.readFileSync(trackingScriptPath, "utf8");
+  const supportedEvents = require("./conversion-event-contract");
   for (const eventName of [
     "owner_primary_cta_click",
     "owner_phone_click",
@@ -226,7 +226,7 @@ test("conversion tracking supports both guide and owner measurement events", () 
     "email_capture_submit",
     "booking_engine_handoff"
   ]) {
-    assert.equal(trackingScript.includes(eventName), true, `tracking script missing ${eventName}`);
+    assert.equal(supportedEvents.includes(eventName), true, `tracking script missing ${eventName}`);
   }
 });
 

@@ -115,6 +115,7 @@ test("guide lineage survives guide, stay, property, and explicit booking-engine 
     const guideUrl = new URL(guideLink.href);
     const clickId = guideUrl.searchParams.get("sv_guide_click_id");
     assert.match(clickId, /^svg_/);
+    assert.equal(window.dataLayer[0].payload.guide_direct_click_id, clickId);
     assert.equal(guideUrl.searchParams.get("utm_source"), "google");
 
     setLocation(window, guideUrl.toString());
@@ -183,7 +184,7 @@ test("same-page catalog links do not create false booking handoffs", () => {
 });
 
 test("direct guide-to-property links start guide lineage", () => {
-  withTrackingRuntime(({ click }) => {
+  withTrackingRuntime(({ click, window }) => {
     const propertyLink = trackedLink(
       "guide_property_check_dates_click",
       "/properties/sarasota-luxe/#check-availability"
@@ -193,6 +194,14 @@ test("direct guide-to-property links start guide lineage", () => {
     const propertyUrl = new URL(propertyLink.href);
     assert.match(propertyUrl.searchParams.get("sv_guide_click_id"), /^svg_/);
     assert.equal(propertyUrl.hash, "#check-availability");
+    const clickId = propertyUrl.searchParams.get("sv_guide_click_id");
+    assert.equal(window.dataLayer[0].payload.guide_direct_click_id, clickId);
+    setLocation(window, propertyUrl.toString());
+    const bookingLink = trackedLink("property_booking_page_click", "https://book.seascape-vacations.com/listings/135881");
+    click(bookingLink);
+    const handoff = window.dataLayer.find((entry) => entry.event === "property_booking_page_click");
+    assert.equal(handoff.payload.guide_direct_click_id, clickId);
+    assert.equal(new URL(bookingLink.href).searchParams.get("sv_guide_click_id"), clickId);
   });
 });
 

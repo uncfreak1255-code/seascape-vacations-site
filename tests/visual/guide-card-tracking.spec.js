@@ -63,6 +63,7 @@ test("normal same-tab guide card delivers once after navigation with the source 
   expect(destination.pathname).toBe("/properties/river-house/");
   expect(destination.hash).toBe("#check-availability");
   expect(destination.searchParams.get("sv_guide_click_id")).toMatch(/^svg_/);
+  expect(received[0].payload.guide_direct_click_id).toBe(destination.searchParams.get("sv_guide_click_id"));
   await page.reload();
   await expect(page).toHaveURL(/\/properties\/river-house\//);
   expect(received).toHaveLength(1);
@@ -87,6 +88,7 @@ test("middle-click opens the property in a new tab and tracks the same guide cli
     placement: "guide_stay_here", guide_slug: "anna-maria-island-vs-siesta-key", property_slug: "river-house"
   });
   expect(new URL(guideEvents()[0].payload.link_url).searchParams.get("sv_guide_click_id")).toBe(clickId);
+  expect(guideEvents()[0].payload.guide_direct_click_id).toBe(clickId);
 
   // Direct dispatch belongs to the guide. The new tab must not replay it.
   const guideEventCount = (tab) => tab.evaluate(() => window.dataLayer.filter(
@@ -205,4 +207,35 @@ test.describe('AMI area native navigation', () => {
     await page.goto(areaGuide);
   }
   });
+});
+
+
+test("Best-time AMI Oasis card and Hostaway handoff dispatch the same guide click ID", async ({ page, context }) => {
+  const received = await interceptGuideTracking(context);
+  await page.goto(timingGuide);
+  await page.locator(guideCard + '[data-property-slug="the-oasis"]').click();
+  await expect(page).toHaveURL(/\/properties\/the-oasis\//);
+  const clickId = new URL(page.url()).searchParams.get("sv_guide_click_id");
+  expect(clickId).toMatch(/^svg_/);
+  const cardEvents = () => received.filter(({ event }) => event === "guide_property_check_dates_click");
+  await expect.poll(cardEvents).toHaveLength(1);
+  expect(cardEvents()[0].payload).toMatchObject({
+    guide_direct_click_id: clickId,
+    guide_slug: "best-time-visit-anna-maria-island",
+    property_slug: "the-oasis",
+    placement: "guide_stay_here",
+    page_location: timingGuide
+  });
+  // Hold navigation only while observing the real booking-click handler and tag.
+  await page.evaluate(() => document.querySelectorAll('[data-track-event="property_booking_page_click"]').forEach(link => {
+    link.addEventListener("click", event => event.preventDefault());
+  }));
+  await page.locator('[data-track-event="property_booking_page_click"]').first().click();
+  const handoffs = () => received.filter(({ event }) => event === "property_booking_page_click");
+  await expect.poll(handoffs).toHaveLength(1);
+  expect(handoffs()[0].payload.guide_direct_click_id).toBe(clickId);
+  const destination = new URL(handoffs()[0].payload.link_url);
+  expect(destination.hostname).toBe("book.seascape-vacations.com");
+  expect(destination.pathname).toBe("/listings/189511");
+  expect(destination.searchParams.get("sv_guide_click_id")).toBe(clickId);
 });
