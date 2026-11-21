@@ -73,6 +73,7 @@ test("guide pages, mockups, data, lockfiles and binaries are exempt", (t) => {
   stage("src/guides/new-guide/index.njk", LIMIT * 2);
   stage("docs/mockups/2026-10-18-board/index.html", LIMIT * 2);
   stage("src/_data/seoPages.json", LIMIT * 2);
+  stage("docs/portfolio/pseo-inventory-triage.md", LIMIT * 2);
   stage("config/perf-ratchet.json", LIMIT * 2);
   stage("package-lock.json", LIMIT * 2);
   stage("photo.png", Buffer.concat([Buffer.from([0x89, 0x50, 0x4e, 0x47, 0]), Buffer.alloc(LIMIT * 2, 1)]));

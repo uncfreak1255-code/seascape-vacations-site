@@ -183,6 +183,39 @@ test("same-page catalog links do not create false booking handoffs", () => {
   });
 });
 
+test("direct guide checkout to the booking engine starts lineage", () => {
+  withTrackingRuntime(({ click, window }) => {
+    setLocation(window, "https://seascape-vacations.com/guides/booking-direct-vacation-rentals/");
+    const checkout = trackedLink(
+      "guide_book_direct_click",
+      "https://book.seascape-vacations.com/listings/487798"
+    );
+    checkout.dataset.guideSlug = "booking-direct-vacation-rentals";
+    checkout.dataset.pageSlug = "bradenton-pool-home";
+    checkout.dataset.placement = "guide_home_checkout";
+
+    click(checkout);
+
+    const bookingUrl = new URL(checkout.href);
+    const clickId = bookingUrl.searchParams.get("sv_guide_click_id");
+    assert.match(clickId, /^svg_/);
+    assert.deepEqual(
+      window.dataLayer.map((entry) => entry.event),
+      ["guide_book_direct_click", "booking_engine_handoff"]
+    );
+    assert.equal(window.dataLayer[0].payload.guide_direct_click_id, clickId);
+    assert.equal(window.dataLayer[1].payload.guide_direct_click_id, clickId);
+  });
+});
+
+test("non-booking external links do not receive guide lineage", () => {
+  withTrackingRuntime(({ click }) => {
+    const offsite = trackedLink("guide_book_direct_click", "https://www.airbnb.com/rooms/1");
+    click(offsite);
+    assert.equal(new URL(offsite.href).searchParams.get("sv_guide_click_id"), null);
+  });
+});
+
 test("direct guide-to-property links start guide lineage", () => {
   withTrackingRuntime(({ click, window }) => {
     const propertyLink = trackedLink(

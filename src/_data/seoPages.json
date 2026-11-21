@@ -84,12 +84,231 @@
         "bradenton-waterfront-vacation-rentals",
         "large-group-vacation-rentals-bradenton",
         "bradenton-vacation-rentals-with-hot-tub",
-        "fishing-vacation-rentals-bradenton"
+        "fishing-vacation-rentals-bradenton",
+        "heated-pool-vacation-rentals-bradenton",
+        "vacation-rentals-near-img-academy"
       ],
-      "longContent": "<p>Need a tighter filter? Compare <a href=\"/stays/bradenton-vacation-rentals-near-beaches/\">Bradenton homes near the beaches</a>, the <a href=\"/stays/bradenton-waterfront-vacation-rentals/\">waterfront home</a>, <a href=\"/stays/large-group-vacation-rentals-bradenton/\">large-group layouts</a>, or <a href=\"/stays/bradenton-vacation-rentals-with-hot-tub/\">homes with a hot tub</a>.</p>",
+      "longContent": "<p>Need a tighter filter? Compare <a href=\"/stays/bradenton-vacation-rentals-near-beaches/\">Bradenton homes near the beaches</a>, the <a href=\"/stays/bradenton-waterfront-vacation-rentals/\">waterfront home</a>, <a href=\"/stays/large-group-vacation-rentals-bradenton/\">large-group layouts</a>, or <a href=\"/stays/bradenton-vacation-rentals-with-hot-tub/\">homes with a hot tub</a>.</p><p>Looking for winter swimming? Compare <a href=\"/stays/heated-pool-vacation-rentals-bradenton/\">heated-pool vacation rentals in Bradenton</a>. Families visiting campus can start with <a href=\"/stays/vacation-rentals-near-img-academy/\">vacation rentals near IMG Academy</a>. To book with the local team, read <a href=\"/guides/booking-direct-vacation-rentals/\">how to book direct</a>.</p>",
       "driveTimeLabel": "Plan to drive to island beaches",
       "introHeading": "Stay in mainland Bradenton",
       "reviewTrustLabel": "Mainland Bradenton homes"
+    },
+    {
+      "slug": "heated-pool-vacation-rentals-bradenton",
+      "destination": "bradenton",
+      "title": "Heated Pool Vacation Rentals in Bradenton, FL",
+      "h1": "Heated pool vacation rentals in Bradenton, Florida",
+      "description": "Rent a Bradenton vacation home with a private heated pool. Pool heat is {pool-heat-fee} a night, capped at $280, and there is no charge at The Coastal. Book direct with a local manager.",
+      "datePublished": "2026-11-21",
+      "driveTimeLabel": "Plan to drive to island beaches",
+      "reviewTrustLabel": "Mainland Bradenton homes",
+      "introHeading": "How pool heat works at Seascape",
+      "intro": "Seascape Vacations manages private-pool homes in Bradenton, Florida, where the pool can be heated. Pool heat is {pool-heat-fee} a night, capped at $280 a stay, except at The Coastal, where there is no charge and warming turns on automatically unless you decline it.",
+      "faqs": [
+        {
+          "question": "Can I rent a vacation home with a heated pool in Bradenton?",
+          "answer": "Yes. Seascape Vacations manages {matching} private-pool homes in Bradenton where the pool can be heated. Compare dates on each home and book direct, or compare the complete checkout total on Airbnb or Vrbo."
+        },
+        {
+          "question": "How much does pool heat cost?",
+          "answer": "At most Seascape homes, pool heat is {pool-heat-fee} a night for the whole stay, capped at $280. At The Coastal, there is no charge for pool heat. Water temperature depends on the weather and is not guaranteed."
+        },
+        {
+          "question": "Can I heat the pool for only some of the nights?",
+          "answer": "No. Heat is for the whole stay, or for all remaining nights if you add it after arrival. Guests cannot pick individual nights, and heat is not a checkout toggle. Contact us to add it."
+        },
+        {
+          "question": "Are these homes on Anna Maria Island?",
+          "answer": "No. They are mainland Bradenton homes, a short drive to Anna Maria Island beaches."
+        }
+      ],
+      "matchingProperties": [
+        "the-oasis",
+        "dockside-dreams",
+        "river-house",
+        "bradenton-pool-home",
+        "blue-house",
+        "coastal-stay",
+        "relaxing-oasis"
+      ],
+      "decisionHighlights": [
+        {
+          "label": "Whole-stay add-on",
+          "value": "Pool heat is {pool-heat-fee} a night for the whole stay. The stay cap is $280. Contact us to add it. It is not a checkout toggle."
+        },
+        {
+          "label": "The Coastal exception",
+          "value": "There is no charge at The Coastal, and warming turns on automatically unless you decline it."
+        },
+        {
+          "label": "Mainland Bradenton",
+          "value": "These homes are in Bradenton, not on Anna Maria Island. Plan to drive to the beaches."
+        }
+      ],
+      "geoIntro": "<p>Heat is for the whole stay. A request after arrival covers remaining nights, still capped at $280. Water temperature is not guaranteed, especially in cool weather. Contact us to add heat; guests cannot turn it on in the booking form.</p><p>There is no charge for pool heat at The Coastal, and it turns on automatically unless you decline it. That no-charge rule is only for The Coastal. <strong>Relaxing Oasis</strong> has a private heated above-ground pool. New bookings follow the same {pool-heat-fee} nightly rule, which is capped at $280 a stay.</p><p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> \u2014 {sleeps-phrase:the-oasis}, with two hot tubs. Hot-tub warming has no extra charge.</p><p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> \u2014 {sleeps-phrase:dockside-dreams}, the only waterfront home. Hot-tub warming has no extra charge.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> \u2014 {sleeps-phrase:river-house}, with a private pool. Hot-tub warming has no extra charge.</p><p><a href=\"/properties/bradenton-pool-home/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"bradenton-pool-home\" data-placement=\"stay_intro\"><strong>Check dates at Bradenton Pool Home</strong></a> \u2014 {sleeps-phrase:bradenton-pool-home}. The spa and the pool cannot warm at the same time.</p><p><a href=\"/properties/blue-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"blue-house\" data-placement=\"stay_intro\"><strong>Check dates at Pickleball Pool Home Retreat</strong></a> \u2014 {sleeps-phrase:blue-house}, with a private pool and no verified hot tub.</p><p><a href=\"/properties/coastal-stay/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"coastal-stay\" data-placement=\"stay_intro\"><strong>Check dates at The Coastal</strong></a> \u2014 {sleeps-phrase:coastal-stay}. There is no charge for pool heat at The Coastal.</p><p><a href=\"/properties/relaxing-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"relaxing-oasis\" data-placement=\"stay_intro\"><strong>Check dates at Relaxing Oasis</strong></a> \u2014 {sleeps-phrase:relaxing-oasis}, with a private heated above-ground pool.</p><p>These {matching} homes are in Bradenton. For the Sarasota heated-pool home, see <a href=\"/stays/sarasota-vacation-rentals-with-pool/\">Sarasota vacation rentals with a pool</a>. Compare the same dates and complete checkout total across channels.</p><p>Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Individual nights cannot be selected. Approved long-stay flat rates still apply, and inclusions already confirmed in your reservation messages are honored. Contact us to confirm the nights, total charge, payment instructions and heating start time. For late-day requests or mid-stay requests on an approved long-stay rate, we confirm the billable nights and price individually before payment. A request alone does not turn on the heat. Water temperature depends on the weather.</p>",
+      "collectionCtaTitle": "Want every Bradenton listing in one view?",
+      "collectionCtaBody": "Open every Bradenton listing when you want to scan the same mainland homes by dates and guest count.",
+      "collectionCtaHref": "/properties/?area=bradenton",
+      "collectionCtaLabel": "Open Bradenton homes",
+      "relatedGuideLinks": [
+        {
+          "href": "/stays/bradenton-vacation-rentals/",
+          "title": "Bradenton vacation rentals",
+          "copy": "See every mainland Bradenton home Seascape manages, not only the heated-pool filter."
+        },
+        {
+          "href": "/stays/vacation-rentals-with-pool-and-hot-tub/",
+          "title": "Pool and hot tub homes",
+          "copy": "Compare homes that pair a private pool with a hot tub, which is a different search than heat alone."
+        },
+        {
+          "href": "/stays/anna-maria-island-homes-with-pool/",
+          "title": "Private-pool homes near AMI",
+          "copy": "Bradenton pool homes for beach days on Anna Maria Island, with a drive to the sand."
+        },
+        {
+          "href": "/stays/vacation-rentals-near-img-academy/",
+          "title": "Stays near IMG Academy",
+          "copy": "Bradenton Pool Home is the closest Seascape house to campus."
+        },
+        {
+          "href": "/guides/booking-direct-vacation-rentals/",
+          "title": "Book direct with a local manager",
+          "copy": "Compare the complete checkout total, then finish on our booking site."
+        },
+        {
+          "href": "/guides/bradenton-area-guide/",
+          "title": "Bradenton area guide",
+          "copy": "Mainland neighborhoods, Riverwalk, and the drive to Anna Maria Island."
+        }
+      ],
+      "longContent": "<p>Need a tighter filter? Compare <a href=\"/stays/vacation-rentals-with-pool-and-hot-tub/\">homes with a pool and hot tub</a>, <a href=\"/stays/bradenton-vacation-rentals/\">all Bradenton rentals</a>, or <a href=\"/stays/vacation-rentals-near-img-academy/\">homes near IMG Academy</a>. Book with the local team through the <a href=\"/guides/booking-direct-vacation-rentals/\">book-direct guide</a>.</p>",
+      "relatedStaySlugs": [
+        "bradenton-vacation-rentals",
+        "vacation-rentals-with-pool-and-hot-tub",
+        "vacation-rentals-near-img-academy",
+        "book-direct-anna-maria-island",
+        "anna-maria-island-homes-with-pool"
+      ]
+    },
+    {
+      "slug": "vacation-rentals-near-img-academy",
+      "destination": "bradenton",
+      "title": "Vacation Rentals Near IMG Academy | Bradenton Pool Homes",
+      "h1": "Vacation rentals near IMG Academy",
+      "description": "Stay in a Bradenton private-pool home near IMG Academy. About 2.6 miles away, around 7 minutes by car, Bradenton Pool Home is the closest. Book direct with Seascape Vacations.",
+      "datePublished": "2026-11-21",
+      "introHeading": "A house near campus, not a hotel",
+      "intro": "Families visiting IMG Academy can stay in a Seascape private-pool home in Bradenton instead of a hotel. About 2.6 miles from IMG Academy, around 7 minutes by car, Bradenton Pool Home is the closest. The Oasis, Dockside Dreams, and River House are also in Bradenton, a short drive to campus.",
+      "heroBookingAction": {
+        "eyebrow": "Bradenton \u00b7 near IMG Academy",
+        "heading": "Vacation rentals near IMG Academy",
+        "description": "About 2.6 miles from IMG Academy, around 7 minutes by car, Bradenton Pool Home is the closest Seascape home.",
+        "href": "/properties/bradenton-pool-home/?guests={sleeps:bradenton-pool-home}#booking",
+        "propertySlug": "bradenton-pool-home",
+        "label": "Check dates at Bradenton Pool Home",
+        "note": "The spa and the pool cannot warm at the same time. Contact us to add pool heat; it is not a checkout toggle. Pets are not permitted.",
+        "sharingNote": "Plan to share bedrooms in this {br:bradenton-pool-home}-bedroom layout.",
+        "imageAlt": "Bradenton Pool Home \u2014 private pool",
+        "imageCaption": "Bradenton Pool Home \u00b7 Bradenton",
+        "imageDetail": "Closest Seascape home to IMG Academy",
+        "facts": [
+          {
+            "label": "Guests",
+            "value": "{sleeps:bradenton-pool-home}"
+          },
+          {
+            "label": "Bedrooms",
+            "value": "{br:bradenton-pool-home}"
+          },
+          {
+            "label": "Drive to IMG",
+            "value": "About 2.6 miles"
+          }
+        ]
+      },
+      "faqs": [
+        {
+          "question": "What is a good place to stay near IMG Academy?",
+          "answer": "A private-pool home in Bradenton. About 2.6 miles from IMG Academy, around 7 minutes by car, Bradenton Pool Home is the closest. Larger groups often look at The Oasis, about 5.1 miles away."
+        },
+        {
+          "question": "How far is Bradenton Pool Home from IMG Academy?",
+          "answer": "About 2.6 miles, or around 7 minutes by car in normal traffic."
+        },
+        {
+          "question": "Do you have official IMG Academy lodging?",
+          "answer": "No. These are independently managed vacation homes in Bradenton, not an official IMG hotel or campus dorm."
+        },
+        {
+          "question": "Can I book direct?",
+          "answer": "Yes. Choose dates on the home's page at seascape-vacations.com and complete checkout on our booking site, or compare the complete total on Airbnb or Vrbo."
+        }
+      ],
+      "matchingProperties": [
+        "bradenton-pool-home",
+        "the-oasis",
+        "dockside-dreams",
+        "river-house"
+      ],
+      "decisionHighlights": [
+        {
+          "label": "Closest home",
+          "value": "The closest listing is about 2.6 miles from IMG Academy, around 7 minutes by car. {sleeps-phrase:bradenton-pool-home}."
+        },
+        {
+          "label": "Larger groups",
+          "value": "The Oasis is about 5.1 miles away, around 10 minutes, and {sleeps-phrase:the-oasis}."
+        },
+        {
+          "label": "A whole house",
+          "value": "These are private-pool homes, not hotels and not on-campus lodging. Drive times are typical and can vary with traffic."
+        }
+      ],
+      "geoIntro": "<p>These are whole-home rentals with private pools, not on-campus lodging and not hotels. We do not claim an official IMG partnership. Drive times are typical and can vary with traffic.</p><p><a href=\"/properties/bradenton-pool-home/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"bradenton-pool-home\" data-placement=\"stay_intro\"><strong>Check dates at Bradenton Pool Home</strong></a> \u2014 {sleeps-phrase:bradenton-pool-home}. The drive is about 2.6 miles, around 7 minutes. Private heated pool and in-ground spa; the spa and the pool cannot warm at the same time. No pets.</p><p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> \u2014 {sleeps-phrase:the-oasis}. The drive is about 5.1 miles, around 10 minutes. Better for larger groups.</p><p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> \u2014 {sleeps-phrase:dockside-dreams}. The drive is about 5.6 miles, with a waterfront dock.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> \u2014 {sleeps-phrase:river-house}. The drive is about 15 minutes to IMG Academy.</p><p>Other Bradenton private-pool homes may fit your dates. We do not publish an IMG mileage for them. Compare the same dates and complete checkout total across channels.</p><p>Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Individual nights cannot be selected. Approved long-stay flat rates still apply, and inclusions already confirmed in your reservation messages are honored. Contact us to confirm the nights, total charge, payment instructions and heating start time. For late-day requests or mid-stay requests on an approved long-stay rate, we confirm the billable nights and price individually before payment. A request alone does not turn on the heat. Water temperature depends on the weather.</p>",
+      "collectionCtaTitle": "Compare Bradenton homes near campus",
+      "collectionCtaBody": "Open the Bradenton listings and check dates on the home that fits your group.",
+      "collectionCtaHref": "/properties/?area=bradenton",
+      "collectionCtaLabel": "Open Bradenton homes",
+      "relatedGuideLinks": [
+        {
+          "href": "/stays/bradenton-vacation-rentals/",
+          "title": "Bradenton vacation rentals",
+          "copy": "All mainland Bradenton homes Seascape manages, including homes without a published IMG distance."
+        },
+        {
+          "href": "/stays/large-group-vacation-rentals-bradenton/",
+          "title": "Large-group Bradenton homes",
+          "copy": "The Oasis is the large-group layout for bigger campus groups."
+        },
+        {
+          "href": "/stays/heated-pool-vacation-rentals-bradenton/",
+          "title": "Heated pool homes in Bradenton",
+          "copy": "Pool heat is {pool-heat-fee} a night, capped at $280, with no charge at The Coastal."
+        },
+        {
+          "href": "/guides/booking-direct-vacation-rentals/",
+          "title": "Book direct with a local manager",
+          "copy": "Choose dates on the home's page and finish checkout on our booking site."
+        },
+        {
+          "href": "/guides/things-to-do-bradenton-fl/",
+          "title": "Things to do in Bradenton",
+          "copy": "IMG Academy is already on the Bradenton activity list; this stay page is the lodging answer."
+        },
+        {
+          "href": "/guides/bradenton-area-guide/",
+          "title": "Bradenton area guide",
+          "copy": "Mainland neighborhoods around campus, Riverwalk, and the drive to the beaches."
+        }
+      ],
+      "longContent": "<p>A house gives you a kitchen, a private pool, and bedrooms under the same roof, which a hotel room does not. It does not add campus perks, shuttles, or official IMG access. Compare <a href=\"/stays/bradenton-vacation-rentals/\">all Bradenton rentals</a> or <a href=\"/stays/heated-pool-vacation-rentals-bradenton/\">heated-pool Bradenton homes</a> if campus distance is only one of the filters.</p>",
+      "relatedStaySlugs": [
+        "bradenton-vacation-rentals",
+        "large-group-vacation-rentals-bradenton",
+        "heated-pool-vacation-rentals-bradenton",
+        "book-direct-anna-maria-island"
+      ]
     },
     {
       "slug": "anna-maria-island-homes-with-pool",
@@ -147,7 +366,7 @@
           "value": "Review the complete total for the same home, dates, taxes, fees, and booking terms."
         }
       ],
-      "geoIntro": "<p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> — {sleeps-phrase:the-oasis}, with two hot tubs and a putting green.</p><p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> — {sleeps-phrase:dockside-dreams}, with a waterfront dock.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> — {sleeps-phrase:river-house}, near the river.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p>",
+      "geoIntro": "<p><a href=\"/properties/the-oasis/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"the-oasis\" data-placement=\"stay_intro\"><strong>Check dates at The Oasis</strong></a> \u2014 {sleeps-phrase:the-oasis}, with two hot tubs and a putting green.</p><p><a href=\"/properties/dockside-dreams/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"dockside-dreams\" data-placement=\"stay_intro\"><strong>Check dates at Dockside Dreams</strong></a> \u2014 {sleeps-phrase:dockside-dreams}, with a waterfront dock.</p><p><a href=\"/properties/river-house/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"river-house\" data-placement=\"stay_intro\"><strong>Check dates at River House</strong></a> \u2014 {sleeps-phrase:river-house}, near the river.</p><p>Compare the same dates and complete checkout total across channels, including fees, taxes, and booking terms.</p><p>Bradenton heated-pool terms, including The Coastal exception, are on <a href=\"/stays/heated-pool-vacation-rentals-bradenton/\">heated-pool vacation rentals in Bradenton</a>.</p>",
       "relatedStaySlugs": [
         "anna-maria-island-vacation-rentals",
         "bean-point-luxury-rentals",
@@ -155,7 +374,8 @@
         "family-vacation-rentals-anna-maria-island",
         "honeymoon-rentals-anna-maria-island",
         "large-group-vacation-rentals-anna-maria-island",
-        "romantic-getaway-anna-maria-island"
+        "romantic-getaway-anna-maria-island",
+        "heated-pool-vacation-rentals-bradenton"
       ]
     },
     {
@@ -273,14 +493,15 @@
           "value": "Dockside {sleeps-phrase:dockside-dreams} with a dock; The Oasis up to {sleeps:the-oasis} with two hot tubs and a putting green."
         }
       ],
-      "geoIntro": "<p>A Bradenton rental with both a private heated pool and a hot tub means you don't trade daytime swimming for an evening soak. Dockside Dreams and The Oasis both have the combination, in a fenced private yard about 10\u201315 minutes from the Gulf beaches on Anna Maria Island.</p><p>The pool handles the afternoons with the kids; the hot tub handles the quiet part of the night. <strong>The Oasis</strong> goes further with two hot tubs and a putting green; <strong>Dockside Dreams</strong> adds a private dock on the canal. Dockside {sleeps-phrase:dockside-dreams}, The Oasis up to {sleeps:the-oasis}.</p><p>Compare the same dates and complete checkout total across channels. Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Approved long-stay flat rates and inclusions confirmed in your reservation messages still apply. Contact us to confirm the charge and heating start time. Hot tub heat has no extra nightly charge year-round.</p>",
+      "geoIntro": "<p>A Bradenton rental with both a private heated pool and a hot tub means you don't trade daytime swimming for an evening soak. Dockside Dreams and The Oasis both have the combination, in a fenced private yard about 10\u201315 minutes from the Gulf beaches on Anna Maria Island.</p><p>The pool handles the afternoons with the kids; the hot tub handles the quiet part of the night. <strong>The Oasis</strong> goes further with two hot tubs and a putting green; <strong>Dockside Dreams</strong> adds a private dock on the canal. Dockside {sleeps-phrase:dockside-dreams}, The Oasis up to {sleeps:the-oasis}.</p><p>Compare the same dates and complete checkout total across channels. Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Approved long-stay flat rates and inclusions confirmed in your reservation messages still apply. Contact us to confirm the charge and heating start time. Hot tub heat has no extra nightly charge year-round.</p><p>For pool heat itself, not only a hot tub, see <a href=\"/stays/heated-pool-vacation-rentals-bradenton/\">heated-pool vacation rentals in Bradenton</a>.</p>",
       "relatedStaySlugs": [
         "bradenton-vacation-rentals",
         "bradenton-waterfront-vacation-rentals",
         "canal-homes-with-boat-dock",
         "fishing-vacation-rentals-bradenton",
         "golf-vacation-rentals-bradenton",
-        "gulf-coast-vacation-homes-with-dock"
+        "gulf-coast-vacation-homes-with-dock",
+        "heated-pool-vacation-rentals-bradenton"
       ]
     },
     {
@@ -290,21 +511,30 @@
       "h1": "Bradenton Vacation Homes for Large Groups",
       "description": "Spacious vacation rentals in Bradenton for large groups. Sleep {sleeps-matching} guests. Private pools.",
       "heroBookingAction": {
-        "eyebrow": "Bradenton · large-group stays",
+        "eyebrow": "Bradenton \u00b7 large-group stays",
         "heading": "A Bradenton home for all {sleeps:the-oasis}.",
-        "description": "The Oasis has a private pool and two hot tubs. There’s a game room and a putting green for time together.",
+        "description": "The Oasis has a private pool and two hot tubs. There\u2019s a game room and a putting green for time together.",
         "href": "/properties/the-oasis/?guests={sleeps:the-oasis}#booking",
         "propertySlug": "the-oasis",
         "label": "Check dates for {sleeps:the-oasis} at The Oasis",
         "note": "Groups of more than 12 pay an extra charge. Enter your dates and full guest count to see the total.",
         "sharingNote": "Plan to share bedrooms and some beds.",
-        "imageAlt": "The Oasis — Pool and backyard at dusk",
-        "imageCaption": "The Oasis · Bradenton",
+        "imageAlt": "The Oasis \u2014 Pool and backyard at dusk",
+        "imageCaption": "The Oasis \u00b7 Bradenton",
         "imageDetail": "Private pool + two hot tubs",
         "facts": [
-          { "label": "Guests", "value": "{sleeps:the-oasis}" },
-          { "label": "Bedrooms", "value": "{br:the-oasis}" },
-          { "label": "Bathrooms", "value": "{ba:the-oasis}" }
+          {
+            "label": "Guests",
+            "value": "{sleeps:the-oasis}"
+          },
+          {
+            "label": "Bedrooms",
+            "value": "{br:the-oasis}"
+          },
+          {
+            "label": "Bathrooms",
+            "value": "{ba:the-oasis}"
+          }
         ]
       },
       "introHeading": "Bringing {sleeps:the-oasis} people? Start with The Oasis.",
@@ -312,9 +542,18 @@
       "sleepingFit": {
         "heading": "Will the sleeping setup work for your group?",
         "groups": [
-          { "label": "King bedrooms", "detail": "Three king beds, each in its own bedroom." },
-          { "label": "Full beds", "detail": "A pair of full beds in a separate bedroom." },
-          { "label": "Bunk room", "detail": "Two twin-over-full bunks and two twin trundles." }
+          {
+            "label": "King bedrooms",
+            "detail": "Three king beds, each in its own bedroom."
+          },
+          {
+            "label": "Full beds",
+            "detail": "A pair of full beds in a separate bedroom."
+          },
+          {
+            "label": "Bunk room",
+            "detail": "Two twin-over-full bunks and two twin trundles."
+          }
         ],
         "note": "For a group of {sleeps:the-oasis}, plan on sharing bedrooms and some beds."
       },
@@ -372,7 +611,8 @@
         "vacation-rentals-near-anna-maria-island",
         "vacation-rentals-with-outdoor-grill",
         "vacation-rentals-with-game-room",
-        "downtown-sarasota-vacation-rentals"
+        "downtown-sarasota-vacation-rentals",
+        "vacation-rentals-near-img-academy"
       ]
     },
     {
@@ -616,9 +856,10 @@
         "anna-maria-island-vacation-rentals",
         "bradenton-vacation-rentals-near-beaches",
         "anna-maria-island-homes-with-pool",
-        "family-vacation-rentals-anna-maria-island"
+        "family-vacation-rentals-anna-maria-island",
+        "heated-pool-vacation-rentals-bradenton"
       ],
-      "geoIntro": "<p>Marketplace and direct totals can differ because each channel may present fees, taxes, and booking terms differently. Use the same home and dates when you compare.</p><p>Direct booking also gives you a way to contact the local team about cancellation questions, date changes, and mid-stay issues. Review the written booking terms before paying.</p><p><strong>Seascape Vacations</strong> lists homes in Bradenton and Sarasota. None are on Anna Maria Island itself; review each property page for capacity, amenities, drive time, and current checkout total.</p>"
+      "geoIntro": "<p>Marketplace and direct totals can differ because each channel may present fees, taxes, and booking terms differently. Use the same home and dates when you compare.</p><p>Direct booking also gives you a way to contact the local team about cancellation questions, date changes, and mid-stay issues. Review the written booking terms before paying.</p><p><strong>Seascape Vacations</strong> lists homes in Bradenton and Sarasota. None are on Anna Maria Island itself; review each property page for capacity, amenities, drive time, and current checkout total.</p><p>This page stays an Anna Maria Island comparison. For the full Bradenton and Sarasota catalog, and to book with the local manager, use <a href=\"/guides/booking-direct-vacation-rentals/\">Book a vacation rental direct with a local Bradenton and Sarasota manager</a> or browse <a href=\"/properties/\">every home</a>.</p>"
     },
     {
       "slug": "spring-break-rentals-anna-maria-island",
@@ -837,9 +1078,10 @@
         "downtown-sarasota-vacation-rentals",
         "luxury-vacation-rentals-sarasota",
         "sarasota-arts-culture-vacation-rentals",
-        "vacation-rentals-near-restaurants-florida"
+        "vacation-rentals-near-restaurants-florida",
+        "heated-pool-vacation-rentals-bradenton"
       ],
-      "geoIntro": "<p><a href=\"/properties/sarasota-luxe/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"sarasota-luxe\" data-placement=\"stay_intro\"><strong>Check dates at Sarasota Luxe</strong></a> — {sleeps-phrase:sarasota-luxe}, downtown with a private pool.</p><p>Downtown restaurants, shops, galleries, beach visits, and St. Armands Circle require a drive. Confirm current travel times and property details before booking.</p>"
+      "geoIntro": "<p><a href=\"/properties/sarasota-luxe/#booking\" data-track-event=\"stay_view_property_click\" data-page-slug=\"sarasota-luxe\" data-placement=\"stay_intro\"><strong>Check dates at Sarasota Luxe</strong></a> \u2014 {sleeps-phrase:sarasota-luxe}, downtown with a private pool.</p><p>Downtown restaurants, shops, galleries, beach visits, and St. Armands Circle require a drive. Confirm current travel times and property details before booking.</p><p>For Bradenton homes with the same heat rules, see <a href=\"/stays/heated-pool-vacation-rentals-bradenton/\">heated-pool vacation rentals in Bradenton</a>.</p>"
     },
     {
       "slug": "downtown-sarasota-vacation-rentals",
@@ -1145,11 +1387,11 @@
       "title": "Family Vacation Rentals Near Anna Maria Island",
       "h1": "Family-Friendly Homes Near Anna Maria Island",
       "description": "Plan your family vacation near Anna Maria Island in spacious Bradenton/Sarasota homes with pools, games, and beach access.",
-      "intro": "Stay in mainland Bradenton for a private-pool family rental near Anna Maria Island, with beach days reached by car. Seascape Vacations’ Bradenton Pool Home has the fewest bedrooms of these options; The Oasis has the most room for a larger gathering.",
+      "intro": "Stay in mainland Bradenton for a private-pool family rental near Anna Maria Island, with beach days reached by car. Seascape Vacations\u2019 Bradenton Pool Home has the fewest bedrooms of these options; The Oasis has the most room for a larger gathering.",
       "faqs": [
         {
           "question": "Are the pools safe for children?",
-          "answer": "Ask us about the selected home’s pool barriers, door access and layout before booking, especially if you are traveling with young children. A fenced yard or screened enclosure does not tell you whether a child can reach the pool from the house. Supervise children closely whenever they are near the water."
+          "answer": "Ask us about the selected home\u2019s pool barriers, door access and layout before booking, especially if you are traveling with young children. A fenced yard or screened enclosure does not tell you whether a child can reach the pool from the house. Supervise children closely whenever they are near the water."
         },
         {
           "question": "What family activities are near Anna Maria Island?",
@@ -1161,11 +1403,11 @@
         },
         {
           "question": "How should I choose a home for my family?",
-          "answer": "Start with the sleeping arrangements and pool access, then compare the features your family will use. Bradenton Pool Home has {br:bradenton-pool-home} bedrooms and {sleeps-phrase:bradenton-pool-home}; The Oasis has {br:the-oasis} bedrooms and {sleeps-phrase:the-oasis}. Dockside Dreams adds a waterfront dock; River House has king suites and a bunk room. Ask us about the specific home’s steps, pool barriers and baby equipment before booking."
+          "answer": "Start with the sleeping arrangements and pool access, then compare the features your family will use. Bradenton Pool Home has {br:bradenton-pool-home} bedrooms and {sleeps-phrase:bradenton-pool-home}; The Oasis has {br:the-oasis} bedrooms and {sleeps-phrase:the-oasis}. Dockside Dreams adds a waterfront dock; River House has king suites and a bunk room. Ask us about the specific home\u2019s steps, pool barriers and baby equipment before booking."
         },
         {
           "question": "How far are your homes from the beach?",
-          "answer": "The Bradenton homes require a drive to Anna Maria Island beaches. Check the selected property’s location and current traffic. Compare its bedrooms, pool, parking and complete checkout total with the beachfront listings you are considering."
+          "answer": "The Bradenton homes require a drive to Anna Maria Island beaches. Check the selected property\u2019s location and current traffic. Compare its bedrooms, pool, parking and complete checkout total with the beachfront listings you are considering."
         },
         {
           "question": "Is Anna Maria Island safe for families?",
@@ -1246,12 +1488,13 @@
           "value": "72\u201377\u00b0F winters near AMI beaches, golf, the Ringling, and an active snowbird social scene."
         }
       ],
-      "geoIntro": "<p>While the north deals with ice and snow, Bradenton\u2013Sarasota runs 72\u201377\u00b0F from December through March, sunny and dry. Staying the season in a real house gives you room a condo can't.</p><p>These are full homes in quiet residential neighborhoods \u2014 multiple bedrooms for visiting family, a private pool, full-size laundry, and a garage or driveway. You're near the Anna Maria Island beaches, golf, the Ringling Museum, and farmer's markets, with an active snowbird social scene.</p><p>Stays of up to four weeks book online with the full total shown at checkout. For a month or the whole season, call 941-704-8545 or email info@seascape-vacations.com and we will quote your dates.</p>",
+      "geoIntro": "<p>While the north deals with ice and snow, Bradenton\u2013Sarasota runs 72\u201377\u00b0F from December through March, sunny and dry. Staying the season in a real house gives you room a condo can't.</p><p>These are full homes in quiet residential neighborhoods \u2014 multiple bedrooms for visiting family, a private pool, full-size laundry, and a garage or driveway. You're near the Anna Maria Island beaches, golf, the Ringling Museum, and farmer's markets, with an active snowbird social scene.</p><p>Stays of up to four weeks book online with the full total shown at checkout. For a month or the whole season, call 941-704-8545 or email info@seascape-vacations.com and we will quote your dates.</p><p>Winter swimming uses the same heat rules as the rest of the catalog. Compare <a href=\"/stays/heated-pool-vacation-rentals-bradenton/\">heated-pool vacation rentals in Bradenton</a>.</p>",
       "relatedStaySlugs": [
         "vacation-rentals-sleeps-12-florida",
         "accessible-vacation-rentals-florida",
         "vacation-rentals-with-outdoor-grill",
-        "vacation-rentals-with-pool-and-hot-tub"
+        "vacation-rentals-with-pool-and-hot-tub",
+        "heated-pool-vacation-rentals-bradenton"
       ]
     },
     {
@@ -1263,11 +1506,11 @@
       "introHeading": "Plan a stay near Anna Maria Island",
       "driveTimeLabel": "Drive from Bradenton to AMI beaches",
       "reviewTrustLabel": "Review each home\u2019s guest feedback",
-      "intro": "Seascape Vacations' mainland Bradenton homes offer a private pool and room to spread out between Anna Maria Island beach days. Plan to drive to the island, and check the selected home’s beach route, parking and current bridge traffic before setting out.",
+      "intro": "Seascape Vacations' mainland Bradenton homes offer a private pool and room to spread out between Anna Maria Island beach days. Plan to drive to the island, and check the selected home\u2019s beach route, parking and current bridge traffic before setting out.",
       "faqs": [
         {
           "question": "How far are your homes from Anna Maria Island?",
-          "answer": "These homes are in mainland Bradenton, not on Anna Maria Island. The route and drive time depend on the home, the beach and bridge traffic. Review the selected home’s location before booking."
+          "answer": "These homes are in mainland Bradenton, not on Anna Maria Island. The route and drive time depend on the home, the beach and bridge traffic. Review the selected home\u2019s location before booking."
         },
         {
           "question": "Why stay near Anna Maria Island instead of on it?",
@@ -1287,7 +1530,7 @@
         },
         {
           "question": "Are the homes good for large groups and families?",
-          "answer": "The listed homes sleep {sleeps-matching}, with different bedroom layouts and amenities. Compare the selected home’s capacity, including visitors, and parking for your group. Parties and events are not permitted."
+          "answer": "The listed homes sleep {sleeps-matching}, with different bedroom layouts and amenities. Compare the selected home\u2019s capacity, including visitors, and parking for your group. Parties and events are not permitted."
         },
         {
           "question": "What does pool heat cost?",
@@ -1536,14 +1779,15 @@
           "value": "From The Oasis's two hot tubs and putting green to Dockside's dock-side pool - Pickleball Pool Home Retreat {sleeps-phrase:blue-house}; each home is different"
         }
       ],
-      "geoIntro": "<p>{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa. Hot tub or spa heat is included at the five established homes that have one. Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Approved long-stay flat rates and inclusions confirmed in your reservation messages still apply. Contact us to confirm the charge and heating start time. Water temperature depends on the weather. Confirm the hot-tub terms for the newest Bradenton home when booking.</p><p>The setups aren't identical. <strong>The Oasis</strong> (5BR, {sleeps-phrase:the-oasis}, Bradenton) has the largest outdoor footprint - pool, two hot tubs, putting green, and a turf yard - built for big groups. <strong>Dockside Dreams</strong> (4BR, {sleeps-phrase:dockside-dreams}, Bradenton) adds a private dock and canal access to the pool and hot tub, making it the call for boaters. <strong>River House</strong> (4BR, {sleeps-phrase:river-house}, Bradenton) is a minute from a public boat ramp and has a pool and hot tub with a game room inside. <strong>Bradenton Pool Home</strong> (3BR, {sleeps-phrase:bradenton-pool-home}) is the smallest footprint and closest to IMG Academy. <strong>Sarasota Luxe</strong> (4BR, {sleeps-phrase:sarasota-luxe}, downtown Sarasota) has a screened lanai with pool and hot tub, near downtown dining, which requires driving. <strong>Pickleball Pool Home Retreat</strong> (4BR, {sleeps-phrase:blue-house}, Bradenton) pairs its private pool with a recreational pickleball court and fenced turf yard instead of a hot tub. <strong>The Coastal</strong> (3BR, {sleeps-phrase:coastal-stay}, Bradenton) adds a hot tub, pickleball court, basketball hoop, putting green and an air-conditioned game room to its private pool.</p><p>If your group's main decision is pool-and-hot-tub and you haven't narrowed beyond that, the next cut is location: Bradenton puts you 10-15 minutes from Anna Maria Island beaches; Sarasota puts you 10-15 minutes from Lido Beach and near downtown, which requires driving.</p>",
+      "geoIntro": "<p>{tub-homes} Seascape homes have both a private pool and a hot tub or spa. Pickleball Pool Home Retreat has a private pool, but no verified hot tub or spa. Hot tub or spa heat is included at the five established homes that have one. Pool heat is optional at {pool-heat-fee} per night, capped at $280 per stay. There is no charge for pool heat at The Coastal. For paid pool heat, a request before arrival covers the whole stay; a request after arrival covers all remaining nights. Approved long-stay flat rates and inclusions confirmed in your reservation messages still apply. Contact us to confirm the charge and heating start time. Water temperature depends on the weather. Confirm the hot-tub terms for the newest Bradenton home when booking.</p><p>The setups aren't identical. <strong>The Oasis</strong> (5BR, {sleeps-phrase:the-oasis}, Bradenton) has the largest outdoor footprint - pool, two hot tubs, putting green, and a turf yard - built for big groups. <strong>Dockside Dreams</strong> (4BR, {sleeps-phrase:dockside-dreams}, Bradenton) adds a private dock and canal access to the pool and hot tub, making it the call for boaters. <strong>River House</strong> (4BR, {sleeps-phrase:river-house}, Bradenton) is a minute from a public boat ramp and has a pool and hot tub with a game room inside. <strong>Bradenton Pool Home</strong> (3BR, {sleeps-phrase:bradenton-pool-home}) is the smallest footprint and closest to IMG Academy. <strong>Sarasota Luxe</strong> (4BR, {sleeps-phrase:sarasota-luxe}, downtown Sarasota) has a screened lanai with pool and hot tub, near downtown dining, which requires driving. <strong>Pickleball Pool Home Retreat</strong> (4BR, {sleeps-phrase:blue-house}, Bradenton) pairs its private pool with a recreational pickleball court and fenced turf yard instead of a hot tub. <strong>The Coastal</strong> (3BR, {sleeps-phrase:coastal-stay}, Bradenton) adds a hot tub, pickleball court, basketball hoop, putting green and an air-conditioned game room to its private pool.</p><p>If your group's main decision is pool-and-hot-tub and you haven't narrowed beyond that, the next cut is location: Bradenton puts you 10-15 minutes from Anna Maria Island beaches; Sarasota puts you 10-15 minutes from Lido Beach and near downtown, which requires driving.</p><p>If the search is a heated pool in Bradenton, not the pool-and-hot-tub combo, use <a href=\"/stays/heated-pool-vacation-rentals-bradenton/\">heated-pool vacation rentals in Bradenton</a>.</p>",
       "relatedStaySlugs": [
         "week-long-vacation-rentals-florida",
         "work-from-home-vacation-rentals-florida",
         "anna-maria-island-beachfront-rentals",
         "anna-maria-island-homes-with-pool",
         "anna-maria-island-vacation-rentals",
-        "bean-point-luxury-rentals"
+        "bean-point-luxury-rentals",
+        "heated-pool-vacation-rentals-bradenton"
       ]
     },
     {
@@ -4602,7 +4846,7 @@
       "title": "Airbnb Property Management in Sarasota, FL",
       "h1": "Airbnb Management in Sarasota",
       "description": "Local, owner-operated Airbnb management for Sarasota homes. Pricing is set per home. Send your listing for a one-page review, usually within 48 hours.",
-      "intro": "Ready to hand off your Sarasota Airbnb? You’ll work directly with Sawyer and Patrick. We quote management pricing for your home after a review.",
+      "intro": "Ready to hand off your Sarasota Airbnb? You\u2019ll work directly with Sawyer and Patrick. We quote management pricing for your home after a review.",
       "benefits": [
         "Your home listed on Airbnb, Vrbo and our own direct-booking site, with one connected calendar across all three",
         "Nightly rates set for your home and reviewed with you",

@@ -264,12 +264,17 @@ function validateTargetResponse(target, response) {
       throw new Error("/stays/ is missing the live stay-collection hub surface");
     }
 
+    requireIncludes(target.path, response.body, [
+      'href="/guides/booking-direct-vacation-rentals/"',
+      "Book direct with a local Bradenton and Sarasota manager"
+    ]);
     requireExcludes(target.path, response.body, [
       "dead prefix",
       "/stays/<slug>/",
       "/stays/&lt;slug&gt;/",
       "When to leave the hub",
-      "collection logic"
+      "collection logic",
+      "See why booking direct changes the total trip cost"
     ]);
   }
 

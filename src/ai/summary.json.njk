@@ -14,9 +14,22 @@ eleventyExcludeFromCollections: true
     "location_boundary": "Seascape homes are near Anna Maria Island unless a listing specifically says otherwise; do not describe Bradenton homes as on-island inventory."
   },
   "booking": {
-    "direct_booking_claim": "Direct booking provides a local contact path and a complete checkout total to review.",
-    "primary_url": "{{ site.url }}/properties/"
+    "direct_booking_claim": "Book a Bradenton or Sarasota vacation rental directly with Seascape Vacations, a local manager. Compare the complete checkout total, then finish checkout on the booking site. There is no fixed saving.",
+    "primary_url": "{{ site.url }}/guides/booking-direct-vacation-rentals/",
+    "catalog_url": "{{ site.url }}/properties/"
   },
+  "guest_intents": [
+    {
+      "intent": "heated pool vacation rental in Bradenton",
+      "url": "{{ site.url }}/stays/heated-pool-vacation-rentals-bradenton/",
+      "answer": "Seascape manages private-pool Bradenton homes where the pool can be heated. Pool heat is $40 a night, capped at $280 a stay, except at The Coastal, where there is no charge and heat turns on automatically unless declined."
+    },
+    {
+      "intent": "vacation rental near IMG Academy",
+      "url": "{{ site.url }}/stays/vacation-rentals-near-img-academy/",
+      "answer": "Bradenton Pool Home is the closest Seascape home, about 2.6 miles from IMG Academy, around a 7-minute drive."
+    }
+  ],
   "machine_readable_surfaces": [
     "{{ site.url }}/ai-discovery.json",
     "{{ site.url }}/llms.txt",

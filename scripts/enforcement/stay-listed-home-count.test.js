@@ -55,6 +55,39 @@ test("listed-home count helper fails when a 3-home page claims the full portfoli
   }, /Direct-book homes should be 3, got 5/);
 });
 
+test("hero compare-link copy follows matchingProperties count", () => {
+  const partial = read(path.join("src", "_includes", "partials", "stay-supporting-actions.njk"));
+  assert.match(partial, /listedHomeCount == 2/);
+  assert.match(partial, /Compare both homes/);
+  assert.match(partial, /Compare these homes/);
+
+  const imgHtml = path.join(projectRoot, "_site", "stays", "vacation-rentals-near-img-academy", "index.html");
+  assert.equal(fs.existsSync(imgHtml), true, "expected built IMG stay page");
+  const html = fs.readFileSync(imgHtml, "utf8");
+  assert.doesNotMatch(html, /Compare both homes/);
+  assert.match(html, /Compare these homes/);
+});
+
+test("heated-pool stay chips do not use default rating or beach-minute claims", () => {
+  const seoPages = JSON.parse(read(path.join("src", "_data", "seoPages.json")));
+  const page = seoPages.vacationer.find((entry) => entry.slug === "heated-pool-vacation-rentals-bradenton");
+  assert.ok(page, "missing heated-pool stay page");
+  assert.ok(page.reviewTrustLabel, "heated-pool stay needs a source-backed reviewTrustLabel");
+  assert.ok(page.driveTimeLabel, "heated-pool stay needs a source-backed driveTimeLabel");
+  assert.doesNotMatch(page.reviewTrustLabel, /Rated 5\.0/);
+  assert.doesNotMatch(page.driveTimeLabel, /10-15 minutes/);
+
+  const builtPath = path.join(projectRoot, "_site", "stays", "heated-pool-vacation-rentals-bradenton", "index.html");
+  assert.equal(fs.existsSync(builtPath), true, "expected built heated-pool stay page");
+  const html = fs.readFileSync(builtPath, "utf8");
+  const chips = html.match(/<div class="trust-chips"[^>]*>[\s\S]*?<\/div>/);
+  assert.ok(chips, "expected heated-pool stay hero chips");
+  assert.doesNotMatch(chips[0], /Rated 5\.0/);
+  assert.doesNotMatch(chips[0], /10-15 minutes to beaches/);
+  assert.match(chips[0], new RegExp(page.reviewTrustLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  assert.match(chips[0], new RegExp(page.driveTimeLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
 test("a stay leaf that lists 3 homes does not claim 5 Direct-book homes", () => {
   const seoPages = JSON.parse(read(path.join("src", "_data", "seoPages.json")));
   const stayPage = seoPages.vacationer.find((entry) => entry.slug === THREE_HOME_SLUG);

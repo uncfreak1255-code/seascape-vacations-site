@@ -231,3 +231,41 @@ test("property headings are semantic and stay pages explain fit in guest languag
     false
   );
 });
+
+test("booking-direct home-list checkout links start guide lineage", () => {
+  const source = fs.readFileSync(
+    path.join(projectRoot, "src", "guides", "booking-direct-vacation-rentals.html"),
+    "utf8"
+  );
+  const homeList = source.match(/<ul class="home-list">([\s\S]*?)<\/ul>/);
+  assert.ok(homeList, "booking-direct guide is missing the home-list");
+
+  const checkoutAnchors = [...homeList[1].matchAll(/<a\b[^>]*href="\{\{ property\.bookingUrl \}\}"[^>]*>/g)].map(
+    (match) => match[0]
+  );
+  assert.ok(checkoutAnchors.length, "booking-direct home-list has no checkout links");
+  for (const anchor of checkoutAnchors) {
+    assert.match(anchor, /data-track-event="guide_book_direct_click"/);
+    assert.match(anchor, /data-guide-slug="booking-direct-vacation-rentals"/);
+    assert.match(anchor, /data-placement="guide_home_checkout"/);
+    assert.match(anchor, /data-page-slug="\{\{ property\.slug \}\}"/);
+  }
+
+  const propertyAnchors = [...homeList[1].matchAll(/<a\b[^>]*href="\{\{ property\.pageUrl \}\}"[^>]*>/g)].map(
+    (match) => match[0]
+  );
+  assert.ok(propertyAnchors.length, "booking-direct home-list has no property-page links");
+  for (const anchor of propertyAnchors) {
+    assert.match(anchor, /data-track-event="guide_book_direct_click"/);
+    assert.match(anchor, /data-guide-slug="booking-direct-vacation-rentals"/);
+  }
+
+  const catalogAnchors = [...source.matchAll(/<a\b[\s\S]*?>/g)]
+    .map((match) => match[0])
+    .filter((tag) => tag.includes('href="/properties/"'));
+  assert.equal(catalogAnchors.length, 3, "booking-direct guide should have three catalog handoffs");
+  for (const anchor of catalogAnchors) {
+    assert.match(anchor, /data-track-event="guide_book_direct_click"/);
+    assert.match(anchor, /data-guide-slug="booking-direct-vacation-rentals"/);
+  }
+});

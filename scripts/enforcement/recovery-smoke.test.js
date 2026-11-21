@@ -233,6 +233,7 @@ test("stays smoke locks the customer-facing stay-collection hub", () => {
         <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
       </section>
       <a href="/properties/">Browse Direct-Book Homes</a>
+      <a href="/guides/booking-direct-vacation-rentals/">Book direct with a local Bradenton and Sarasota manager</a>
     </main>
   `;
 
@@ -330,10 +331,37 @@ test("stays smoke rejects leaked internal hub copy", () => {
             <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
           </section>
           <a href="/properties/">Browse Direct-Book Homes</a>
+          <a href="/guides/booking-direct-vacation-rentals/">See why booking direct changes the total trip cost</a>
         </main>
       `
     });
-  }, /stale live marker|missing the live stay-collection hub surface/);
+  }, /stale live marker|missing the live stay-collection hub surface|missing current live marker/);
+});
+
+test("stays smoke rejects the retired book-direct trip-cost link copy", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/stays/");
+
+  assert.throws(() => {
+    smoke.validateTargetResponse(target, {
+      statusCode: 200,
+      location: null,
+      body: `
+        <main>
+          <p>Stay Collections</p>
+          <h1>Compare Gulf Coast private-pool homes by area, group size, and trip priorities</h1>
+          <section>
+            <h2>Destination collections</h2>
+            <a href="/stays/anna-maria-island-vacation-rentals/">Anna Maria Island Vacation Rentals</a>
+            <a href="/stays/bradenton-vacation-rentals/">Bradenton Vacation Rentals</a>
+            <a href="/stays/bradenton-vacation-rentals-near-beaches/">Bradenton Vacation Rentals Near Beaches</a>
+          </section>
+          <a href="/properties/">Browse Direct-Book Homes</a>
+          <a href="/guides/booking-direct-vacation-rentals/">See why booking direct changes the total trip cost</a>
+        </main>
+      `
+    });
+  }, /missing current live marker|stale live marker/);
 });
 
 test("live smoke locks the refreshed AMI vs Siesta SEO markers", () => {
