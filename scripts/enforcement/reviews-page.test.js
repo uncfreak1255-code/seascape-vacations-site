@@ -98,6 +98,9 @@ test("inbound reviews links land on homepage intro, footer, and About Us", () =>
 
   assert.match(about, /href="\/reviews\/" data-trip-link>Read guest reviews<\/a>/);
   assert.match(about, /locally owned vacation rental manager in Bradenton and Sarasota, Florida/);
+  assert.match(about, /pageUpdated:\s*"2026-11-21T08:00:00-05:00"/);
+  assert.match(about, /"dateModified": "2026-11-21T08:00:00-05:00"/);
+  assert.equal(about.includes("2026-03-18"), false);
 
   assert.match(redirects, /\/reviews\s+\/reviews\/\s+301/);
 });
@@ -189,10 +192,14 @@ test("built reviews page is indexable, quotes first-party reviews, and omits agg
   assert.ok(reviews.every((review) => !review.aggregateRating));
 
   const local = blocks.find((block) => [].concat(block["@type"] || []).includes("LocalBusiness"));
+  assert.equal(local["@id"], "https://seascape-vacations.com/#organization");
   assert.equal(local.legalName, "B&T Rental Group LLC");
   assert.equal(local.address.addressLocality, "Bradenton");
   assert.equal(local.address.streetAddress, undefined);
   assert.equal(local.aggregateRating, undefined);
+  const collection = blocks.find((block) => block["@type"] === "CollectionPage");
+  assert.equal(collection.about["@id"], "https://seascape-vacations.com/#organization");
+  assert.equal(html.includes("#localbusiness"), false);
 
   const home = read("_site", "index.html");
   assert.match(home, /href="\/reviews\/" data-trip-link>See all reviews<\/a>/);
