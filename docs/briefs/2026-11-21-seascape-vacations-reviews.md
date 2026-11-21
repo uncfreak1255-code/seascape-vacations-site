@@ -95,6 +95,7 @@
   - scripts/enforcement/ai-discovery-schema.test.js
   - scripts/enforcement/content-voice.test.js
   - scripts/recovery/assert-build-output.js
+  - scripts/recovery/assert-live-smoke.js
 
 ## Page Builder Tasks
 
