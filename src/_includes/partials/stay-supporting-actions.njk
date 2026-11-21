@@ -8,7 +8,7 @@
                         data-placement="stay_hero"
                         data-track-label="{{ seoPage.heroBookingAction.label }}"
                     >{{ seoPage.heroBookingAction.label }}</a>
-                    <a href="#featured-homes" class="compare-link">Compare both homes</a>
+                    <a href="#featured-homes" class="compare-link">{% if listedHomeCount == 2 %}Compare both homes{% else %}Compare these homes{% endif %}</a>
                     {% else %}
                     <a
                         href="{% if hasMatchingHomes %}#featured-homes{% else %}/properties/{% endif %}"
