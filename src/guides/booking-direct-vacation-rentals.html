@@ -244,10 +244,10 @@ permalink: "/guides/booking-direct-vacation-rentals/"
       <ul class="home-list">
         {% for property in properties %}
         <li>
-          <a href="{{ property.pageUrl }}">{{ property.name }}</a>
+          <a href="{{ property.pageUrl }}" data-track-event="guide_book_direct_click" data-guide-slug="booking-direct-vacation-rentals" data-page-slug="{{ property.slug }}" data-placement="guide_home_list" data-track-label="{{ property.name }}">{{ property.name }}</a>
           — {{ property.bedrooms }} BR, sleeps {{ property.guests }}.
           {{ homeNotes[property.slug] }}
-          Checkout: <a href="{{ property.bookingUrl }}">book.seascape-vacations.com/listings/{{ property.listingId }}</a>.
+          Checkout: <a href="{{ property.bookingUrl }}" data-track-event="guide_book_direct_click" data-guide-slug="booking-direct-vacation-rentals" data-page-slug="{{ property.slug }}" data-placement="guide_home_checkout" data-track-label="Checkout {{ property.name }}" target="_blank" rel="noopener noreferrer">book.seascape-vacations.com/listings/{{ property.listingId }}</a>.
         </li>
         {% endfor %}
       </ul>
