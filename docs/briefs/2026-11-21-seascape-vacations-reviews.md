@@ -21,11 +21,6 @@
 - readback window: next identical OpenSEO frozen-prompt rerun after production publish, not sooner than 28 days; Analytics owns the citation receipt. No traffic lift is promised.
 - decision rule: keep the truthful Florida identity page; report insufficient evidence for citation or click lift; revert invented claims, `aggregateRating`, or homepage layout changes
 
-## Figma Handoff
-
-- Figma capture: none
-- Figma frames: none
-
 ## Why This Batch
 
 - what changed in the data: a 2026-11-21 Treg ChatGPT check answered "Seascape Vacations reviews" about Seascape Whidbey Island Vacation Rental in Oak Harbor, Washington. PR #718 machine-surface disambiguation did not reduce wrong-company brand answers on the 2026-11-09 readback. Live `/reviews/`, `/reviews`, and `/testimonials/` 404.
