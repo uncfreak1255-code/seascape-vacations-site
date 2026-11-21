@@ -362,11 +362,12 @@
       return href;
     }
 
-    if (url.hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST || !isSameOriginUrl(url, currentHref)) {
+    var isBookingEngine = url.hostname.replace(/^www\./, "").toLowerCase() === BOOKING_ENGINE_HOST;
+    if (!isBookingEngine && !isSameOriginUrl(url, currentHref)) {
       return href;
     }
 
-    if (typeof URLSearchParams === "function") {
+    if (!isBookingEngine && typeof URLSearchParams === "function") {
       var currentParams = new URLSearchParams(window.location && typeof window.location.search === "string" ? window.location.search : "");
       BOOKING_ENGINE_HANDOFF_KEYS.forEach(function (key) {
         var value = (currentParams.get(key) || "").trim();
