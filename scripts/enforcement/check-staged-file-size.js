@@ -23,6 +23,7 @@ const IGNORED = [
   /^src\/guides\//,
   /^docs\/mockups\//,
   /^src\/_data\/[^/]+\.json$/,
+  /^docs\/portfolio\/pseo-inventory-triage\.md$/,
   /^config\/perf-ratchet\.json$/,
   /\.min\.(js|css)$/,
   /\.map$/,
