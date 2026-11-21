@@ -1,8 +1,8 @@
 # Brief: Explain the owner management fee without a published number
 
 - lifecycle: active
-- task scope: Sawyer, 2026-11-20: the site must never show a management-fee percentage, a range, or a monthly minimum dollar amount. Replace the 2026-11-18 "from 17%" copy on the existing owner-hub pricing block, owner FAQ / FAQPage JSON-LD, fees-page GEO/FAQ, AMI and Sarasota cost FAQs, and the owner-fee benchmark pricing note with one liftable "How our management fee works" passage. Fees-page description/OG/JSON-LD use that passage (title stays). No new URL or template. Never merge this PR; never touch `production`.
-- completion or successor: PR #970 on `seo/owner-fees-quote-drivers`, ready for review. Sawyer, 2026-11-20 10:23 AM ET: keep net rent and "monthly minimum" with no dollar amount. Sawyer and Patrick, 2026-11-20 11:24 AM ET: channels include Google and the direct site; never name Patrick in fee copy; taxes are tourism and sales taxes remitted for you. A merge may deploy per `AGENTS.md` Deploy.
+- task scope: Sawyer, 2026-11-20: the site must never show a management-fee percentage, a range, or any mention of Seascape’s administrative fee or monthly minimum. Replace the 2026-11-18 "from 17%" copy on the existing owner-hub pricing block, owner FAQ / FAQPage JSON-LD, fees-page GEO/FAQ, AMI and Sarasota cost FAQs, and the owner-fee benchmark pricing note with one liftable "How our management fee works" passage. Fees-page description/OG/JSON-LD use that passage (title stays). No new URL or template. This correction follows merged PR #970 on one draft; no merge or publication is authorized. Never touch `production`.
+- completion or successor: Merged PR #970 is the predecessor of this correction. The later November 20 instruction, “I don’t want the admin fee in the site,” supersedes the 10:23 AM ET public monthly-minimum wording; keep net rent and individual quotes. Sawyer and Patrick, 2026-11-20 11:24 AM ET: channels include Google and the direct site; never name Patrick in fee copy; taxes are tourism and sales taxes remitted for you. A merge may deploy per `AGENTS.md` Deploy.
 
 ## Content Gate Inputs
 
@@ -10,15 +10,15 @@
 - primary keyword: vacation rental management fees Bradenton Sarasota
 - secondary keywords: how much does Seascape charge to manage a vacation rental, what does full-service vacation rental management include
 - audience pattern: owners and AI answer engines ask for a fee number; the quotable answer states the basis, the cover list, and who quotes, without a published figure
-- proof source: current source (`src/property-management/index.njk` "What we do for your home" rows); seascape-hub origin/main `context/owner-offer.md` sections 2, 3 and 7 and `decisions/2026-11-18-owner-by-owner-fee-rule.md` (fee is a share of net rent, never gross); Sawyer 2026-11-20 site rule (no published percentage, range, or dollar minimum); Sawyer 2026-11-20 10:23 AM ET confirmation to keep "net rent" and "monthly minimum" with no dollar amount
-- offer claim: seascape-hub/context/owner-offer.md section 3, fee basis only: a share of net rent, a monthly charge, owner-by-owner quote after Seascape sees the home. Public copy does not publish the 2026-11-18 figures (17–20%, $85, "from 17%", "most homes are 20%").
+- proof source: current source (`src/property-management/index.njk` "What we do for your home" rows); seascape-hub origin/main `context/owner-offer.md` sections 2, 3 and 7 and `decisions/2026-11-18-owner-by-owner-fee-rule.md` (fee is a share of net rent, never gross); Sawyer 2026-11-20 site rule (no published percentage, range, or public administrative fee or monthly minimum); Sawyer’s later November 20 instruction to omit the administrative fee from the website; the agreement and billing are unchanged
+- offer claim: seascape-hub/context/owner-offer.md section 3, fee basis only: a share of net rent and an owner-by-owner quote after Seascape sees the home. Public copy does not publish the 2026-11-18 figures (17–20%, $85, "from 17%", "most homes are 20%").
 - required internal links: /property-management/vacation-rental-management-fees-florida/, /research/owner-fee-revenue-leak-benchmark-2026/
 - CTA target: existing `#owner-cta` on /property-management/
-- anti-claims: no management-fee percentage, range, or monthly minimum dollar amount; no 17%, 20%, $85; no dollar threshold or published ladder; the qualitative line that the rate is lower for homes that earn more is required; no pool-heat inclusion; no response-time, revenue, savings or software-name claim; no competitor disparagement
+- anti-claims: no management-fee percentage, range, administrative-fee wording, or monthly-minimum wording; no 17%, 20%, $85; no dollar threshold or published ladder; the qualitative line that the rate is lower for homes that earn more is required; no pool-heat inclusion; no response-time, revenue, savings or software-name claim; no competitor disparagement
 
 ## Why This Batch
 
-- Sawyer decided on 2026-11-20 that the live site must never show a management-fee percentage, a range, or a monthly minimum dollar amount. That withdraws the 2026-11-18 "publish from 17%" instruction for public copy.
+- Sawyer decided on 2026-11-20 that the live site must never show a management-fee percentage, a range, or any mention of Seascape’s administrative fee or monthly minimum. That withdraws the 2026-11-18 "publish from 17%" instruction for public copy.
 - Hub AEO citation plan (2026-11-04, section 2) still wants a quotable fee answer. The answer is now the basis and the cover list, not a number.
 - Waits: Hub rewrite of `context/owner-offer.md` section 3's "published range" paragraph; fees-page title changes; new owner URLs. Expansion stays held per `docs/status/next-batch.md`. Description/OG/JSON-LD now match the no-number passage.
 
@@ -81,10 +81,10 @@ Inventory of links each changed page already carries; not an enforced link map.
 ## Copy and review contract
 
 Draft, remove internal wording, then check voice and specificity. Approved public
-copy (Sawyer and Patrick, 2026-11-20 11:24 AM ET, net-rent basis from Hub
-DEC-2026-11-18): section label "How our management fee works"; body "Seascape
+copy (November 20 service wording with Sawyer’s later site-only admin fee omission,
+net-rent basis from Hub DEC-2026-11-18): section label "How our management fee works"; body "Seascape
 charges a share of your home's net rent, with a lower rate for homes that earn
-more and a monthly minimum. We quote your exact fee after looking at your home.
+more. We quote your exact fee after looking at your home.
 That covers listing on Airbnb, Vrbo, Google, our direct website and more;
 setting and adjusting nightly rates as demand moves; screening and messaging
 guests from Bradenton; coordinating cleaning and maintenance, with a note
