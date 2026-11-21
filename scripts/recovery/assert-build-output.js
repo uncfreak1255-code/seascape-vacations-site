@@ -13,8 +13,7 @@ const { assertStayHubAndBradentonHeadTerm } = require("./assert-build-output-sta
 const PROPERTY_STALE_LINK_MARKERS = [
   "/stays/img-academy-vacation-rentals-bradenton/",
   "/stays/coquina-beach-vacation-rentals/",
-  "/stays/vacation-rentals-with-heated-pool/",
-  "/reviews/"
+  "/stays/vacation-rentals-with-heated-pool/"
 ];
 const PROPERTY_NAV_STALE_ROUTE_MARKERS = [
   'href="/stays/" class="nav-link">Local Guide</a>',
@@ -285,6 +284,9 @@ if (phase === "remediation") {
   expectExists("_site/images/seascape-og-default.jpg");
   expectExists("_site/images/anna-maria-island-og.jpg");
   expectContains("_site/index.html", "Seascape is owner-operated.");
+  expectContains("_site/index.html", 'href="/reviews/">See all reviews</a>');
+  expectExists("_site/reviews/index.html");
+  expectContains("_site/reviews/index.html", "<h1>Seascape Vacations reviews</h1>");
   expectContains("_site/index.html", 'href="tel:9417048545"');
   expectContains("_site/index.html", 'action="/properties/#catalog-heading" method="get"');
   for (const name of ["arrive", "depart", "guests"]) {

@@ -186,7 +186,8 @@ const PUBLIC_CONTENT_PATTERNS = [
   /^src\/research\/.+\.njk$/i,
   /^src\/property-management\/.+\.njk$/i,
   /^src\/stays\/.+\.njk$/i,
-  /^src\/index\.njk$/i
+  /^src\/index\.njk$/i,
+  /^src\/reviews\/.+\.njk$/i
 ];
 
 const ALWAYS_SCANNED_PUBLIC_COPY_PATH_PATTERNS = [

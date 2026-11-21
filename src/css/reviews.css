@@ -1,0 +1,17 @@
+/* Waterline: /reviews/. Loaded after guest.css via pageStylesheet.
+   Reuses the homepage review-grid type and rules; tokens come from guest.css. */
+.g-reviews-page .g-reviews-intro{max-width:62ch;padding:8px 0 28px;border-bottom:1px solid var(--g-rule)}
+.guest-site .g-reviews-page .g-reviews-identity{font-size:17px;margin:16px 0 0}
+.guest-site .g-reviews-page .g-reviews-intro p{max-width:62ch}
+.g-reviews-home{padding:36px 0;border-bottom:1px solid var(--g-rule)}
+.g-reviews-home h2{margin:0 0 8px}
+.g-reviews-home .g-reviews-home-links{display:flex;flex-wrap:wrap;gap:8px 28px;margin:16px 0 0}
+.g-reviews-page .g-review-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 60px;border-top:1px solid var(--g-rule);margin-top:8px}
+.g-reviews-page .g-review-grid figure{margin:0;padding:20px 0;border-bottom:1px solid var(--g-rule)}
+.g-reviews-page .g-review-grid blockquote{margin:0}
+.g-reviews-page .g-review-grid blockquote p{font:22px/1.35 'Instrument Serif',serif;color:var(--g-ink);margin:0}
+.g-reviews-page .g-review-grid figcaption{font-size:13px;color:var(--g-muted);margin-top:14px}
+.g-reviews-page .g-review-grid figcaption a{color:var(--g-muted);text-decoration:underline;text-underline-offset:3px}
+.g-reviews-page .g-reviews-cta .g-reviews-actions{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px}
+@media(max-width:700px){.g-reviews-page .g-review-grid{grid-template-columns:1fr;gap:0}
+.guest-site .g-reviews-page h1{font-size:38px}}
