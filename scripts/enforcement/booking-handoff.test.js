@@ -259,4 +259,13 @@ test("booking-direct home-list checkout links start guide lineage", () => {
     assert.match(anchor, /data-track-event="guide_book_direct_click"/);
     assert.match(anchor, /data-guide-slug="booking-direct-vacation-rentals"/);
   }
+
+  const catalogAnchors = [...source.matchAll(/<a\b[\s\S]*?>/g)]
+    .map((match) => match[0])
+    .filter((tag) => tag.includes('href="/properties/"'));
+  assert.equal(catalogAnchors.length, 3, "booking-direct guide should have three catalog handoffs");
+  for (const anchor of catalogAnchors) {
+    assert.match(anchor, /data-track-event="guide_book_direct_click"/);
+    assert.match(anchor, /data-guide-slug="booking-direct-vacation-rentals"/);
+  }
 });
