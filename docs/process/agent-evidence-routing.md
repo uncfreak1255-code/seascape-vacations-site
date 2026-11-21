@@ -79,7 +79,11 @@ QA suppression discards the pending entry. A middle-click on the property card
 adds its guide click ID before the browser opens the new tab and dispatches
 from the guide.
 
-Run `node --test scripts/enforcement/guide-card-handoff.test.js` and
+The initial guide event and property handoff must carry the same
+`guide_direct_click_id` as the destination URL's `sv_guide_click_id`. A
+URL-only ID cannot join the initial event to a later handoff.
+
+Run `node --test scripts/enforcement/guide-card-handoff.test.js scripts/enforcement/guide-funnel-lineage.test.js` and
 `npx playwright test tests/visual/guide-card-tracking.spec.js`. The browser
 fixture reproduces tag processing that calls back before its network batch and
 intercepts every request. A queued event or a callback alone does not prove a

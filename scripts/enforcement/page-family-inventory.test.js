@@ -15,10 +15,7 @@ const inventory = readPageFamilyInventory(projectRoot);
 const redirects = parseRedirects(path.join(projectRoot, "src", "_redirects"));
 const seoPages = require(path.join(projectRoot, "src", "_data", "seoPages.json"));
 const seoGovernance = require(path.join(projectRoot, "src", "_data", "seoGovernance.js"));
-const conversionTracking = fs.readFileSync(
-  path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
-  "utf8"
-);
+const supportedEvents = require("./conversion-event-contract");
 const sitemapTemplate = fs.readFileSync(path.join(projectRoot, "src", "sitemap.njk"), "utf8");
 
 function redirectFor(urlPath) {
@@ -102,10 +99,11 @@ test("portfolio winner URLs resolve through the current sitemap inputs", () => {
 
 test("portfolio tracked events are supported by the conversion tracking surface", () => {
   for (const entry of inventory) {
+    if (entry.trackedEvent === "none") continue;
     assert.equal(
-      conversionTracking.includes(`"${entry.trackedEvent}"`),
+      supportedEvents.includes(entry.trackedEvent),
       true,
-      `${entry.winnerUrl} tracks ${entry.trackedEvent}, but conversion-tracking.js does not list it`
+      `${entry.winnerUrl} tracks ${entry.trackedEvent}, but the conversion event contract does not list it`
     );
   }
 });

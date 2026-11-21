@@ -11,25 +11,6 @@
   var TRIP_MEMORY_FIELDS = ["arrive", "depart", "guests"];
   var TRIP_MEMORY_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
   var TRIP_PAGE_PATTERN = /^(?:\/(?:properties|guides|stays)(?:\/|$)|\/about-us\/|\/$)/;
-  var SUPPORTED_EVENTS = [
-    "owner_primary_cta_click",
-    "owner_phone_click",
-    "owner_form_start",
-    "owner_form_submit",
-    "guide_stay_click",
-    "guide_owner_referral_click",
-    "guide_book_direct_click",
-    "guide_property_check_dates_click",
-    "email_capture_submit",
-    "email_capture_failed",
-    "booking_engine_handoff",
-    "catalog_book_direct_click",
-    "catalog_collection_click",
-    "catalog_view_details_click",
-    "stay_view_property_click",
-    "property_check_availability_click",
-    "property_booking_page_click"
-  ];
   var AI_SOURCE_HOSTS = [
     "chatgpt.com",
     "perplexity.ai",
@@ -595,9 +576,6 @@
 
   function trackEvent(eventName, payload, options) {
     if (!eventName) return;
-    if (SUPPORTED_EVENTS.indexOf(eventName) === -1) {
-      SUPPORTED_EVENTS.push(eventName);
-    }
 
     var safePayload = Object.assign(
       {
@@ -762,6 +740,10 @@
 
     try {
       var url = new URL(href, window.location && window.location.href ? window.location.href : "https://seascape-vacations.com/");
+      if (isSameOriginUrl(url, window.location.href)) {
+        context.guideDirectClickId = (url.searchParams.get(GUIDE_DIRECT_CLICK_PARAM) || "").trim();
+        return context;
+      }
       if (url.hostname.replace(/^www\./, "").toLowerCase() !== BOOKING_ENGINE_HOST) return context;
 
       context.handoffId = (url.searchParams.get("sv_handoff_id") || "").trim();

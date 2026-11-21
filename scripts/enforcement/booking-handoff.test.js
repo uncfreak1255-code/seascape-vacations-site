@@ -38,10 +38,7 @@ test("organic referrers and existing AI source context remain available", () => 
 });
 
 test("conversion tracking supports post-guide booking handoff events", () => {
-  const trackingScript = fs.readFileSync(
-    path.join(projectRoot, "src", "assets", "js", "conversion-tracking.js"),
-    "utf8"
-  );
+  const supportedEvents = require("./conversion-event-contract");
 
   for (const eventName of [
     "catalog_book_direct_click",
@@ -52,7 +49,7 @@ test("conversion tracking supports post-guide booking handoff events", () => {
     "property_booking_page_click"
   ]) {
     assert.equal(
-      trackingScript.includes(eventName),
+      supportedEvents.includes(eventName),
       true,
       `tracking script missing ${eventName}`
     );
