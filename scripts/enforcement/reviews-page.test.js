@@ -89,14 +89,14 @@ test("inbound reviews links land on homepage intro, footer, and About Us", () =>
   const redirects = read("scripts", "redirects", "reviews-canonical");
 
   assert.match(home, /id="home-reviews-heading"/);
-  assert.match(home, /href="\/reviews\/">See all reviews<\/a>/);
+  assert.match(home, /href="\/reviews\/" data-trip-link>See all reviews<\/a>/);
   assert.match(home, /data-home-deck/);
   assert.doesNotMatch(home, /Swipe to explore the collection/);
 
-  assert.match(footer, /href="\/reviews\/">Reviews<\/a>/);
-  assert.match(footer, /href="\/guest-support\/">Guest Support<\/a><a href="\/reviews\/">Reviews<\/a>/);
+  assert.match(footer, /href="\/reviews\/" data-trip-link>Reviews<\/a>/);
+  assert.match(footer, /href="\/guest-support\/">Guest Support<\/a><a href="\/reviews\/" data-trip-link>Reviews<\/a>/);
 
-  assert.match(about, /href="\/reviews\/">Read guest reviews<\/a>/);
+  assert.match(about, /href="\/reviews\/" data-trip-link>Read guest reviews<\/a>/);
   assert.match(about, /locally owned vacation rental manager in Bradenton and Sarasota, Florida/);
 
   assert.match(redirects, /\/reviews\s+\/reviews\/\s+301/);
@@ -195,8 +195,23 @@ test("built reviews page is indexable, quotes first-party reviews, and omits agg
   assert.equal(local.aggregateRating, undefined);
 
   const home = read("_site", "index.html");
-  assert.match(home, /href="\/reviews\/">See all reviews<\/a>/);
+  assert.match(home, /href="\/reviews\/" data-trip-link>See all reviews<\/a>/);
   assert.match(home, /data-home-deck/);
+});
+
+test("reviews booking-engine exits carry tracked handoff attributes", () => {
+  const source = read("src", "reviews", "index.njk");
+  assert.match(source, /data-track-event="property_booking_page_click"/);
+  assert.match(source, /data-property-booking-link/);
+  assert.match(source, /data-placement="reviews_page"/);
+  assert.match(source, /data-track-event="booking_engine_handoff"/);
+
+  const html = read("_site", "reviews", "index.html");
+  assert.match(html, /data-track-event="property_booking_page_click"/);
+  assert.match(html, /data-placement="reviews_page"/);
+  assert.match(html, /href="https:\/\/book\.seascape-vacations\.com"[^>]*data-track-event="booking_engine_handoff"/);
+  const listingClicks = html.match(/data-track-event="property_booking_page_click"/g) || [];
+  assert.equal(listingClicks.length, fallback.length);
 });
 
 test("an empty reviews corpus would fail the built-page quote floor", () => {

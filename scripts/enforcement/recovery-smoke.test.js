@@ -423,7 +423,7 @@ test("homepage smoke validates the rendered home journey and rejects missing tri
   assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/data-guest-trip-form/g,"removed-control")}));
   assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/g-header-owners/g,"g-header-x")}), /g-header-owners/);
   assert.throws(
-    () => smoke.validateTargetResponse(target, { statusCode: 200, body: body.replace(/href="\/reviews\/">See all reviews<\/a>/g, "") }),
+    () => smoke.validateTargetResponse(target, { statusCode: 200, body: body.replace(/href="\/reviews\/" data-trip-link>See all reviews<\/a>/g, "") }),
     /See all reviews/
   );
 });

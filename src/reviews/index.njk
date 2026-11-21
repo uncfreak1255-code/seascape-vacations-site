@@ -69,10 +69,9 @@ pageStylesheet: "/css/reviews.css"
       {% endif %}
       <div class="g-reviews-home-links">
         <a class="g-inline-link" href="{{ home.pageUrl }}" data-trip-link>See {{ home.name }}</a>
-        {% if facts.sourceUrl %}
-        <a class="g-inline-link" href="{{ facts.sourceUrl }}" target="_blank" rel="noopener noreferrer">Read reviews on the booking page</a>
-        {% elif home.bookingUrl %}
-        <a class="g-inline-link" href="{{ home.bookingUrl }}" target="_blank" rel="noopener noreferrer">Read reviews on the booking page</a>
+        {% set bookingHref = facts.sourceUrl or home.bookingUrl %}
+        {% if bookingHref %}
+        <a class="g-inline-link" href="{{ bookingHref }}" data-property-slug="{{ home.slug }}" data-property-booking-link data-track-event="property_booking_page_click" data-page-slug="{{ home.slug }}" data-placement="reviews_page" target="_blank" rel="noopener noreferrer">Read reviews on the booking page</a>
         {% endif %}
       </div>
     </article>
@@ -86,7 +85,7 @@ pageStylesheet: "/css/reviews.css"
         <h2 id="reviews-book-heading">How to book or get in touch</h2>
       </div>
     </div>
-    <p>Compare dates on <a href="/properties/" data-trip-link>our homes</a>, then complete checkout on our <a href="https://book.seascape-vacations.com">direct booking site</a>. You can also book the same homes on Airbnb or Vrbo; compare the complete checkout total before you pay. For the fee math behind that comparison, see <a href="/guides/booking-direct-vacation-rentals/" data-trip-link>why guests book direct</a>.</p>
+    <p>Compare dates on <a href="/properties/" data-trip-link>our homes</a>, then complete checkout on our <a href="https://book.seascape-vacations.com" data-track-event="booking_engine_handoff" data-page-slug="reviews" data-placement="reviews_page">direct booking site</a>. You can also book the same homes on Airbnb or Vrbo; compare the complete checkout total before you pay. For the fee math behind that comparison, see <a href="/guides/booking-direct-vacation-rentals/" data-trip-link>why guests book direct</a>.</p>
     <div class="g-reviews-actions">
       <a class="g-button btn-brand" href="/properties/" data-trip-link>Browse our homes</a>
       <a class="g-inline-link" href="tel:9417048545">Call (941) 704-8545</a>

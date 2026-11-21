@@ -176,6 +176,19 @@ test("priority stay pages carry page-specific trip math and fallback routing met
   }
 });
 
+test("reviews page booking-engine exits use the property-page handoff events", () => {
+  const source = fs.readFileSync(path.join(projectRoot, "src", "reviews", "index.njk"), "utf8");
+  assert.equal(source.includes('data-track-event="property_booking_page_click"'), true);
+  assert.equal(source.includes('data-property-booking-link'), true);
+  assert.equal(source.includes('data-placement="reviews_page"'), true);
+  assert.equal(source.includes('data-track-event="booking_engine_handoff"'), true);
+
+  const html = fs.readFileSync(path.join(projectRoot, "_site", "reviews", "index.html"), "utf8");
+  assert.equal(html.includes('data-track-event="property_booking_page_click"'), true);
+  assert.equal(html.includes('data-track-event="booking_engine_handoff"'), true);
+  assert.equal(html.includes('src="/assets/js/conversion-tracking.js"'), true);
+});
+
 test("all six rendered homes carry the matching tracked booking decision", () => {
   for (const property of require("../../src/_data/properties-fallback.json")) {
     const source = fs.readFileSync(path.join(projectRoot, "src/properties", property.slug, "index.njk"), "utf8");

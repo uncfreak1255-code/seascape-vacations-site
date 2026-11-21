@@ -96,13 +96,17 @@
   - scripts/enforcement/content-voice.test.js
   - scripts/recovery/assert-build-output.js
   - scripts/recovery/assert-live-smoke.js
+  - src/assets/js/conversion-tracking.js
+  - src/assets/js/guest.js
+  - scripts/enforcement/trip-continuity.test.js
+  - scripts/enforcement/booking-handoff.test.js
 
 ## Page Builder Tasks
 
 - source files likely to change: see Source Files Changed In This Batch
 - redirect or schema work: `/reviews` → `/reviews/`; CollectionPage, LocalBusiness, FAQPage, BreadcrumbList, optional Review nodes; no `aggregateRating`; update Organization `disambiguatingDescription`, `legalName`, locality-only address
 - internal-link or CTA work: homepage reviews intro, footer Explore, About Us paragraph, `llms.txt`, `/ai/summary.json`
-- money CTA and downstream tracking event to verify: existing `/properties/` and booking-host links; no new tracked event
+- money CTA and downstream tracking event to verify: `/properties/` plus existing `property_booking_page_click` and `booking_engine_handoff` on reviews-page booking-engine exits; no new event name
 
 ## Voice Editor Checklist
 
