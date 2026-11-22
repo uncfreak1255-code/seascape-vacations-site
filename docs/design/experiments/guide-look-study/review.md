@@ -1,7 +1,8 @@
 # Guide look study: review record
 
-Nonpublic study. Base: `origin/main` at `d51e61d1`. Views reviewed at commit
-`c88d79df`. Tracking issue: #1036. Date: 2026-11-22.
+Nonpublic study. Base: `origin/main` at `d51e61d1`. The critic and the
+screenshots in `proof/` are from commit `c88d79df`; the checker output below is
+from the scripts as they are now. Tracking issue: #1036. Date: 2026-11-22.
 
 ## What the checker says
 
@@ -24,14 +25,18 @@ A pre-PR bug review of the study's scripts ran once after the critic's final
 pass. Four findings were fixed (the server now answers a malformed address
 without stopping; the checker loads every photo and fails on a broken one; view
 `a` reports a failed build as a script error; the recorder cleans up after a
-failed run). None changed how a view looks, so the screenshots and the critic's
-verdicts stand. The rest are the checker limits in `README.md` and the pull
-request's findings list.
+failed run). View `a`'s script was the only view file touched: a phone
+screenshot of its first beach section taken before and after the edit is the
+same file byte for byte, so the screenshots and the critic's verdicts stand.
+The rest are the checker limits in `README.md` and the pull request's findings
+list.
 
 ## Design critic
 
-An independent critic (the `seascape-design-critic` method, fresh context) judged
-every view against the homepage, twice.
+An independent critic (the `seascape-design-critic` method) judged every view
+against the homepage, twice. Round 1 was a fresh read. Round 2 was the same
+critic, told what had changed and given fresh screenshots, so it is weaker
+evidence than a second fresh read.
 
 | View | Round 1 | Round 2 (final) |
 | --- | --- | --- |
@@ -84,6 +89,18 @@ The fix round was capped at one pass, so these edges from round 2 are left open:
   It switches off below 900px, so 768 and 1000 look like two designs.
 - `c`: with "More about the island" open at 1440, about 300px of empty paper
   sits under "8 min read". No picture anywhere in the view.
+
+## Rendered check (`design-review`)
+
+Looked at by the study's author, at 390 and 1440: the four-view phone board, the
+top of every view at 1440, view `a`'s first beach section on a phone, and the
+whole page of `a` and `b` at 1440. Nothing looked at had a blank area, clipped
+text or a broken stack. The three findings worth acting on match the critic's: `b`'s heavy wash
+over the opening photo, sections 6 to 10 unchanged in `a` and `b`, and the empty
+paper in `c` when the island row is open at 1440.
+
+Not run: `npm run test:visual`. Its baselines cover site routes, and this study
+changes none.
 
 ## Motion
 

@@ -61,9 +61,8 @@ What the check cannot see, so a person has to look:
   any line of it shows);
 - text drawn by a stylesheet, not the page (view `a` draws its marker numbers
   that way below 1050px);
-- contrast of text over a photograph (view `b`'s desktop title; worked out by
-  hand at 1440px as about 6:1 even if the photo were white under it, and not
-  worked out at narrower widths);
+- contrast of text over a photograph (view `b`'s desktop title, judged by eye
+  only and not measured);
 - the size of the labels inside view `a`'s map drawing, which is hidden from
   screen readers and so skipped (the smallest are 12px today).
 
