@@ -116,12 +116,32 @@
     figure.append(plot, credit);
     intro.before(figure);
 
-    // A tiny locator on each beach section.
+    // On each beach: the whole island with this beach marked, beside the beach's own fact lines.
     for (var j = 1; j <= 5; j++) {
       var section = document.getElementById('pg-' + j);
-      var mk = data.markers[String(j)];
-      if (!section || !mk) continue;
-      section.insertBefore(islandSvg(data, 'a-loc', mk), section.firstChild);
+      if (!section || !data.markers[String(j)]) continue;
+      var facts = [];
+      var paras = section.querySelectorAll(':scope > p');
+      for (var p = 0; p < paras.length; p++) {
+        var lead = paras[p].firstElementChild;
+        if (lead && lead.tagName === 'STRONG' && /:\s*$/.test(lead.textContent) && paras[p].firstChild === lead) facts.push(paras[p]);
+      }
+      var panel = el('aside', 'a-panel');
+      var loc = svg('svg', { viewBox: '0 0 ' + data.width + ' ' + data.height, 'aria-hidden': 'true', focusable: 'false', 'class': 'a-loc' });
+      loc.appendChild(svg('path', { d: data.path }));
+      for (var q = 1; q <= 5; q++) {
+        var pt = data.markers[String(q)];
+        if (!pt || q === j) continue;
+        loc.appendChild(svg('circle', { 'class': 'a-loc-other', cx: pt.x, cy: pt.y, r: 34 }));
+      }
+      var own = data.markers[String(j)];
+      loc.appendChild(svg('circle', { 'class': 'a-loc-own', cx: own.x, cy: own.y, r: 80 }));
+      panel.appendChild(loc);
+      var list = el('div', 'a-facts');
+      for (var f = 0; f < facts.length; f++) list.appendChild(facts[f]);
+      panel.appendChild(list);
+      if (!facts.length) panel.classList.add('a-panel-bare');
+      section.querySelector(':scope > h2').after(panel);
     }
   }
 

@@ -36,23 +36,49 @@ elements into a new arrangement; it never retypes them. Anything a view adds
     node docs/design/experiments/guide-look-study/verify.cjs
 
 `verify.cjs` starts its own server and compares each view with today's page at
-1440, 393, 375 and 360 pixels wide. A view fails if it:
+1440, 393, 375 and 360 pixels wide, three times each: with motion on, with the
+visitor's reduced-motion setting, and with every animation switched off. Each
+page is judged at rest, with its toggles open. A view fails if it:
 
 - drops, retypes or hides any text, even behind a closed toggle;
 - adds text, a link or an image that its `strings.json` does not name;
 - changes a heading's level, a link, a form field, a tracked element, the page
   title, a meta tag or a JSON-LD block;
 - is wider than the screen, sets text under 12px, has a tap target under 44px,
-  or adds an accessibility violation that today's page does not have.
+  or adds an accessibility violation that today's page does not have;
+- needs an animation to show any of its text, or runs an animation that never
+  ends.
 
-The run first damages today's page on purpose in twelve ways (a deleted
-paragraph, a hidden one, a retagged heading and so on) and fails unless the
-check reports every one. `PROOF_DIR=<folder>` also writes screenshots.
+The run first damages today's page on purpose in fifteen ways (a deleted
+paragraph, a hidden one, a retagged heading, text that only an animation
+reveals and so on) and fails unless the check reports every one.
+`PROOF_DIR=<folder>` also writes screenshots.
+
+    node docs/design/experiments/guide-look-study/record.cjs <folder>
+
+`record.cjs` records a short clip of the moving moment in views `a` and `c` (and
+a GIF when ffmpeg is installed). A clip shows that the motion plays, not how it
+feels on a real phone.
+
+## Motion
+
+Motion was added only where it has a job, chosen with the four questions in
+Emil Kowalski's method (how often, what for, how fast, does it work without it)
+and built with CSS and browser features only. Every view is complete without it.
+
+| View | Moment | Catalog pattern |
+| --- | --- | --- |
+| `a` | The five map markers arrive once, in guide order; pointing at a name in the key grows its marker | none (new) |
+| `b` | None. A photo "settle" was built, reviewed and removed | none |
+| `c` | The paragraphs grow out of the row that was pressed, and fold back into it | Disclosure |
+
+`review.md` lists what was considered and rejected, and why.
 
 ## Files
 
 - `serve.cjs`, `switcher.css`, `switcher.js`: the local server and the view bar.
 - `contract.cjs`, `verify.cjs`: the copy contract and the checks.
+- `record.cjs`: records the motion clips in `proof/`.
 - `views/a`, `views/b`, `views/c`: one stylesheet, script and string list each.
 - `island-data.json`: the island outline and marker positions for view `a`.
 - `photos/`, `photo-sources.md`: the photos in view `b`, with source, licence
@@ -67,9 +93,15 @@ section order, "cards are separated by rules, not shadows" for photo cards, and
 always-visible paragraphs (view `c`). Picking a version narrows Sawyer's own
 2026-11-14 choice of the type-only guide frame.
 
+The motion also goes past `DESIGN.md`, which names three jobs for motion: view
+`a` plays one 300ms entrance on its map markers when the page loads.
+`docs/agents/rules/design.md` allows a labeled exploration to propose this; it
+changes no production default.
+
 Everything else holds: Waterline colors and fonts, the size and tap-target
-floors, every word, link, title, meta tag and JSON-LD block, and the booking
-box as it is.
+floors, every word, link, title, meta tag and JSON-LD block, the booking box as
+it is, no animation library, no loop, no scroll hijacking, and a complete page
+under reduced motion.
 
 ## Result
 

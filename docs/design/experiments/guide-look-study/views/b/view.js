@@ -96,32 +96,18 @@
         fig.append(ph, credit(photo));
         card.append(fig);
       } else {
+        /* No photo: a type-led card. Name and lead in one group, the rest of the prose in another. */
         card.classList.add('pgb-card-text');
+        var head = el('div', 'pgb-head');
+        var prose = el('div', 'pgb-prose');
+        var kids = Array.prototype.slice.call(text.children).filter(function (n) { return n !== dock; });
+        kids.forEach(function (n) { (n.tagName === 'P' && !n.classList.contains('pg-num') ? prose : head).append(n); });
+        text.prepend(prose);
+        text.prepend(head);
       }
       card.append(text);
       band.append(card);
     });
-
-    /* Motion pass: mark each photo frame, then release it the first time it is on screen and its
-       photo has arrived, so the settle never plays over an empty frame. */
-    if ('IntersectionObserver' in window) {
-      var watch = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return;
-          watch.unobserve(entry.target);
-          var frame = entry.target;
-          var photo = frame.querySelector('img');
-          var settle = function () { frame.classList.add('pgb-in'); };
-          if (!photo || photo.complete) return settle();
-          photo.addEventListener('load', settle, { once: true });
-          photo.addEventListener('error', settle, { once: true });
-        });
-      }, { rootMargin: '0px 0px -12% 0px' });
-      Array.prototype.forEach.call(document.querySelectorAll('.pgb-hero picture, .pgb-ph'), function (frame) {
-        frame.classList.add('pgb-settle');
-        watch.observe(frame);
-      });
-    }
   }
   document.documentElement.dataset.studyReady = '1';
 })();

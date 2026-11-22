@@ -97,10 +97,24 @@ body.study-c #pg-10 .cost-table td { border-bottom-color: var(--pg-rule); }
 }
 
 @media (min-width: 900px) {
+  /* The opening hangs from the top, so the title stays put when the island row opens. */
+  body.study-c .pg-open-grid { align-items: start; }
+  body.study-c .pg-open .guide-intro { margin-top: 38px; }
+  /* Beside the contents rail the column is narrow: lead-ins go back above their text until 1200px. */
+  body.study-c #pg-6 > ul li, body.study-c #pg-7 > ul li { padding: 20px 0; }
+  body.study-c #pg-6 > ul li > strong, body.study-c #pg-7 > ul li > strong { position: static; width: auto; margin-bottom: 4px; line-height: 1.4; }
+  body.study-c #pg-6 > ul:last-child, body.study-c #pg-7 > ul:last-child { border-bottom: 0; }
   body.study-c #pg-1, body.study-c #pg-2, body.study-c #pg-3, body.study-c #pg-4, body.study-c #pg-5 { padding: 60px 0; }
   body.study-c #pg-1 h2, body.study-c #pg-2 h2, body.study-c #pg-3 h2,
   body.study-c #pg-4 h2, body.study-c #pg-5 h2 { margin-bottom: 44px; font-size: 60px; line-height: 1.04; }
   body.study-c .sf-more > summary { font-size: 15px; }
+}
+
+@media (min-width: 1200px) {
+  body.study-c #pg-6 > ul li, body.study-c #pg-7 > ul li { padding: 24px 0 24px 300px; }
+  body.study-c #pg-6 > ul li > strong, body.study-c #pg-7 > ul li > strong {
+    position: absolute; left: 0; top: 24px; width: 272px; margin: 0; line-height: 24px;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {

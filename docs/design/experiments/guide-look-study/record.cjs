@@ -1,6 +1,6 @@
-// Records a short clip of the one moving moment in each view, for the pull request.
+// Records a short clip of the moving moment in each view that has one, for the pull request.
 //
-//   node docs/design/experiments/guide-look-study/record.cjs <out_dir> [a|b|c ...]
+//   node docs/design/experiments/guide-look-study/record.cjs <out_dir> [a|c ...]
 //
 // Writes <out_dir>/motion-<view>.webm and, when ffmpeg is installed, motion-<view>.gif.
 // A recording shows that the motion plays, not how it feels on a real phone.
@@ -43,14 +43,7 @@ const SCRIPTS = {
     await page.mouse.move(40, 600);
     await pause(page, 500);
   }],
-  // Photo cards: each photograph settles as it comes into view.
-  b: [PHONE, async (page) => {
-    await pause(page, 1000);
-    for (const id of ['#pg-1', '#pg-3']) {
-      await glide(page, await topOf(page, id), 1000);
-      await pause(page, 800);
-    }
-  }],
+  // Photo cards has no moving moment (see review.md), so it has no clip.
   // Fact strips: the paragraphs grow out of the row that was tapped, and fold back into it.
   c: [PHONE, async (page) => {
     await glide(page, await topOf(page, '#pg-1'), 800);
@@ -67,7 +60,7 @@ const SCRIPTS = {
 
 (async () => {
   const [out, ...asked] = process.argv.slice(2);
-  if (!out) throw new Error('usage: record.cjs <out_dir> [a|b|c ...]');
+  if (!out) throw new Error('usage: record.cjs <out_dir> [a|c ...]');
   fs.mkdirSync(out, { recursive: true });
   const server = await start(0);
   const browser = await chromium.launch();
