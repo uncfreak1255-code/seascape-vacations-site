@@ -146,7 +146,7 @@ function averageNightlyRate(days, fallbackPrice) {
   return fallbackPrice && fallbackPrice > 0 ? Math.round(fallbackPrice) : null;
 }
 
-function findNextAvailable(days, fallbackPrice, preferredNights) {
+function findNextAvailable(days, daysByDate, fallbackPrice, preferredNights) {
   for (let index = 0; index < days.length; index += 1) {
     const startDay = days[index];
     if (!startDay.isAvailable || startDay.closedOnArrival) continue;
@@ -163,9 +163,21 @@ function findNextAvailable(days, fallbackPrice, preferredNights) {
     const minimumStay = Math.max(1, startDay.minimumStay || 1);
     if (runLength < minimumStay) continue;
 
-    const nights = Math.max(minimumStay, Math.min(preferredNights, runLength));
+    // Checkout needs a calendar row and must be allowed that morning. The
+    // checkout date is not a stayed night and can already be occupied.
+    let nights = Math.max(minimumStay, Math.min(preferredNights, runLength));
+    let endDate;
+    for (; nights >= minimumStay; nights -= 1) {
+      const checkoutDate = addDays(startDay.date, nights);
+      const checkoutDay = daysByDate.get(checkoutDate);
+      if (checkoutDay && !checkoutDay.closedOnDeparture) {
+        endDate = checkoutDate;
+        break;
+      }
+    }
+    if (!endDate) continue;
+
     const rangeDays = days.slice(index, index + nights);
-    const endDate = addDays(startDay.date, nights);
     const rate = averageNightlyRate(rangeDays, fallbackPrice);
     const nightLabel = nights === 1 ? "night" : "nights";
 
@@ -217,7 +229,7 @@ function normalizeAvailability(calendarDays, options = {}) {
     label: month.label,
     value: days.filter((day) => day.date.startsWith(month.key) && day.isAvailable).length
   }));
-  const nextAvailable = findNextAvailable(days, fallbackPrice, preferredNights);
+  const nextAvailable = findNextAvailable(days, daysByDate, fallbackPrice, preferredNights);
 
   return {
     source: "hostaway",
