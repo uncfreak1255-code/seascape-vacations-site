@@ -45,7 +45,8 @@ evidence than a second fresh read.
 | `b` Photo cards | Needs another pass | Approved with edge |
 | `c` Fact strips | Approved with edge | Approved with edge |
 
-All three verdicts carry medium confidence.
+The critic's confidence: medium for `a` and `b`; for `c`, "Medium (low-medium on
+'looks high end')".
 
 Round 1, in the critic's words: "none of the three reaches the homepage bar.
 Each makes one strong move in the first screen ... and then falls back to the
@@ -83,8 +84,11 @@ The plan asked for "Approved" or "Approved with edge" on every view, and has it.
 The fix round was capped at one pass, so these edges from round 2 are left open:
 
 - `a`: the opening map's outline is rougher than the outline in the section
-  panels. On a phone the lit marker hangs about 14px left of the text column.
-  (The critic reported it as cut off; a full-screen render shows it whole.)
+  panels. On a phone the lit marker hangs left of the text column. The critic
+  reported it as cut off. The study's author measured the offset at about 14px
+  and saw the marker whole in a 390px full-screen render
+  (`proof/a-390-pg1-viewport.png`); that reading is the author's, not the
+  critic's.
 - `b`: the ink wash over the desktop opening photo is heavy and dulls the sky.
   It switches off below 900px, so 768 and 1000 look like two designs.
 - `c`: with "More about the island" open at 1440, about 300px of empty paper
@@ -169,8 +173,12 @@ type-only guide frame.
    `frontend-design` was not loaded.
 2. `npm run design:lane` could not run in a worktree the Claude harness pins.
    The study followed the same steps by hand.
-3. The accessibility check is "no new violation compared with today's page".
-   Today's page is clean, so the effect is the same as "zero violations".
+3. The accessibility check is narrower than the plan and than criterion 2 in
+   #1036, in two ways. It fails a view only when the view has more violations
+   of a rule than today's page, and it runs at 1440 and 393 only, not at 375 or
+   360 (`DEEP` in `verify.cjs`). Today's page is clean at both widths, so each
+   view had zero violations there. The copy and overflow checks run at all
+   four widths.
 4. The builders shared one worktree with separate write sets, not one worktree
    each.
 5. The builders' first brief banned entrance animations. The motion pass bent
@@ -205,3 +213,5 @@ type-only guide frame.
 `proof/<view>-390-top.jpg`, `-1440-top.jpg` and the `-full.jpg` files show each
 view; `c-*-open-full.jpg` shows `c` with every row open. `proof/motion-a.gif`
 and `proof/motion-c.gif` are the two moving moments.
+`proof/a-390-pg1-viewport.png` is view `a`'s first beach section on a 390px
+phone screen, the evidence for the marker note above.

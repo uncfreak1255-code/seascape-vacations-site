@@ -117,4 +117,12 @@ under reduced motion.
 
 ## Result
 
-Pending Sawyer's pick. It will be recorded here.
+Sawyer, 2026-11-22, in the session chat: "I like the map." That picks out view
+`a` (map first). He did not rule on `b` or `c`, and did not take the recommended
+mix (`b` with `c`'s fact strip and toggle).
+
+Still open on agent-issues #90: whether the map look borrows `c`'s "More about
+this beach" toggle, and what a guide that is not about places gets.
+
+Nothing here is a production rule. The recipe, the written exception to the
+type-only opening and any `src/` change wait for the Stage 2 spec.
