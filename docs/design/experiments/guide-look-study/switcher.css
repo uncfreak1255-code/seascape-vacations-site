@@ -1,0 +1,57 @@
+/* Study tooling, not part of any design: a floating bar for flipping between views.
+   It is drawn in a neutral system style on purpose so it cannot be mistaken for the page. */
+.study-bar {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  z-index: 2147483000;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: #1c1c1e;
+  color: #fff;
+  font: 500 13px/1 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .35);
+  transform: translateX(-50%);
+}
+
+.study-bar button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.study-bar button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -4px;
+}
+
+.study-bar-label {
+  min-width: 148px;
+  padding: 0 6px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.study-bar-count {
+  display: block;
+  margin-top: 5px;
+  color: #b9b9be;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .study-bar button:hover { background: #3a3a3c; }
+}
