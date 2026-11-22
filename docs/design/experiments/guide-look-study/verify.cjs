@@ -56,6 +56,22 @@ async function rest(openToggles) {
   return endless;
 }
 
+// Runs in the browser. Asks for every image now (card photos load lazily and sit far down the
+// page, so a check that never scrolls would not request them) and returns the ones that failed.
+async function unloadedImages() {
+  const images = [...document.images];
+  await Promise.all(images.map((img) => {
+    img.loading = 'eager';
+    if (img.complete) return null;
+    return new Promise((done) => {
+      img.addEventListener('load', done, { once: true });
+      img.addEventListener('error', done, { once: true });
+      setTimeout(done, 5000);
+    });
+  }));
+  return images.filter((img) => !img.naturalWidth).map((img) => new URL(img.currentSrc || img.src, location.href).pathname);
+}
+
 async function open(browser, origin, view, viewport, scale, mode) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: scale || 1, reducedMotion: mode === 'reduced' ? 'reduce' : 'no-preference' });
   // The email popup opens on a timer; it is not part of the question, so it stays shut.
@@ -90,6 +106,7 @@ async function measure(browser, origin, view, [width, height], mutate, mode = 'm
     const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
     out.axe = axe.violations.map((violation) => [violation.id, violation.nodes.length, violation.nodes[0].html.replace(/\s+/g, ' ').slice(0, 110)]);
   }
+  out.unloaded = await page.evaluate(unloadedImages); // last, so loading them cannot move what was measured above
   await context.close();
   return out;
 }
@@ -103,6 +120,7 @@ function judge(control, view, strings) {
   for (const item of fresh('outside')) fails.push(`request to an outside host: ${item}`);
   for (const item of fresh('failed')) fails.push(`request failed: ${item}`);
   for (const item of fresh('endless')) fails.push(`animation never ends: ${item}`);
+  for (const item of fresh('unloaded')) fails.push(`image did not load: ${item}`);
   if (view.overflowClosed > 0) fails.push(`page is ${view.overflowClosed}px wider than the screen`);
   const result = contract.compare(control.snap, view.snap, strings);
   fails.push(...result.fails);
@@ -138,6 +156,7 @@ const BREAKS = [
   ['copy that waits for a scroll to appear', /no longer rendered/, `(() => { const p = ${late}; p.style.cssText = "opacity:0;transition:opacity 300ms"; new IntersectionObserver((seen) => { if (seen[0].isIntersecting) p.style.opacity = 1; }).observe(p); })()`],
   ['copy that only an animation reveals', /no longer rendered/, '(() => { const s = document.createElement("style"); s.textContent = "@keyframes shown{to{opacity:1}}#pg-1 p{opacity:0;animation:shown 300ms forwards}"; document.head.append(s); })()', 'still'],
   ['an animation that never ends', /never ends/, 'void document.querySelector("#pg-1 h2").animate([{ opacity: 1 }, { opacity: .6 }], { duration: 900, iterations: Infinity })'],
+  ['a lazy photo far down the page that cannot load', /image did not load/, '(() => { const i = new Image(); i.loading = "lazy"; i.alt = ""; i.src = "/__study/photos/missing.jpg"; document.querySelector("#pg-9").append(i); })()'],
 ];
 
 async function selfTest(browser, origin, control) {

@@ -96,7 +96,11 @@ function handle(req, res) {
 // Port 0 asks the system for a free port; the promise resolves with the server once it listens.
 function start(port) {
   return new Promise((resolve, reject) => {
-    const server = http.createServer(handle);
+    // A path that cannot be decoded, or that holds a NUL byte, throws inside handle(): answer it
+    // and keep serving.
+    const server = http.createServer((req, res) => {
+      try { handle(req, res); } catch (error) { if (!res.headersSent) send(res, 400, 'Bad request'); }
+    });
     server.once('error', reject);
     server.listen(port, '127.0.0.1', () => resolve(server));
   });

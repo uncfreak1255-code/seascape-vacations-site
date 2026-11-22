@@ -47,12 +47,25 @@ page is judged at rest, with its toggles open. A view fails if it:
 - is wider than the screen, sets text under 12px, has a tap target under 44px,
   or adds an accessibility violation that today's page does not have;
 - needs an animation to show any of its text, or runs an animation that never
-  ends.
+  ends;
+- has an image that does not load, or a script error.
 
-The run first damages today's page on purpose in fifteen ways (a deleted
+The run first damages today's page on purpose in sixteen ways (a deleted
 paragraph, a hidden one, a retagged heading, text that only an animation
-reveals and so on) and fails unless the check reports every one.
-`PROOF_DIR=<folder>` also writes screenshots.
+reveals, a photo that cannot load and so on) and fails unless the check reports
+every one. `PROOF_DIR=<folder>` also writes screenshots.
+
+What the check cannot see, so a person has to look:
+
+- text that is partly cut off inside a box (it counts a paragraph as shown when
+  any line of it shows);
+- text drawn by a stylesheet, not the page (view `a` draws its marker numbers
+  that way below 1050px);
+- contrast of text over a photograph (view `b`'s desktop title; worked out by
+  hand at 1440px as about 6:1 even if the photo were white under it, and not
+  worked out at narrower widths);
+- the size of the labels inside view `a`'s map drawing, which is hidden from
+  screen readers and so skipped (the smallest are 12px today).
 
     node docs/design/experiments/guide-look-study/record.cjs <folder>
 

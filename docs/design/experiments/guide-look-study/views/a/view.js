@@ -35,10 +35,9 @@
     item.parentElement.prepend(item);
   }
 
-  function islandSvg(data, cls, dot) {
+  function islandSvg(data, cls) {
     var root = svg('svg', { viewBox: '0 0 ' + data.width + ' ' + data.height, 'aria-hidden': 'true', focusable: 'false', 'class': cls });
     root.appendChild(svg('path', { d: data.path }));
-    if (dot) root.appendChild(svg('circle', { cx: dot.x, cy: dot.y, r: 96}));
     return root;
   }
 
@@ -119,7 +118,8 @@
     // On each beach: the whole island with this beach marked, beside the beach's own fact lines.
     for (var j = 1; j <= 5; j++) {
       var section = document.getElementById('pg-' + j);
-      if (!section || !data.markers[String(j)]) continue;
+      var heading = section && section.querySelector(':scope > h2');
+      if (!heading || !data.markers[String(j)]) continue;
       var facts = [];
       var paras = section.querySelectorAll(':scope > p');
       for (var p = 0; p < paras.length; p++) {
@@ -127,8 +127,7 @@
         if (lead && lead.tagName === 'STRONG' && /:\s*$/.test(lead.textContent) && paras[p].firstChild === lead) facts.push(paras[p]);
       }
       var panel = el('aside', 'a-panel');
-      var loc = svg('svg', { viewBox: '0 0 ' + data.width + ' ' + data.height, 'aria-hidden': 'true', focusable: 'false', 'class': 'a-loc' });
-      loc.appendChild(svg('path', { d: data.path }));
+      var loc = islandSvg(data, 'a-loc');
       for (var q = 1; q <= 5; q++) {
         var pt = data.markers[String(q)];
         if (!pt || q === j) continue;
@@ -141,17 +140,20 @@
       for (var f = 0; f < facts.length; f++) list.appendChild(facts[f]);
       panel.appendChild(list);
       if (!facts.length) panel.classList.add('a-panel-bare');
-      section.querySelector(':scope > h2').after(panel);
+      heading.after(panel);
     }
   }
 
   function done() { document.documentElement.dataset.studyReady = '1'; }
+  // A failure leaves the page readable. It is thrown again out of band so verify.cjs reports a
+  // half-built view as a script error and does not pass it.
+  function report(error) { setTimeout(function () { throw error; }, 0); }
 
-  try { moveChooser(); } catch (error) { /* leave the page as it was */ }
+  try { moveChooser(); } catch (error) { report(error); }
 
   fetch('/__study/island-data.json')
     .then(function (res) { if (!res.ok) throw new Error('no map data'); return res.json(); })
     .then(buildMap)
-    .catch(function () { /* no map: the opening stays as it is */ })
+    .catch(report)
     .then(done, done);
 })();

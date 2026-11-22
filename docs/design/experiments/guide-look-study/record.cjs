@@ -61,31 +61,42 @@ const SCRIPTS = {
 (async () => {
   const [out, ...asked] = process.argv.slice(2);
   if (!out) throw new Error('usage: record.cjs <out_dir> [a|c ...]');
+  const views = asked.length ? asked : Object.keys(SCRIPTS);
+  const unknown = views.filter((view) => !SCRIPTS[view]);
+  if (unknown.length) throw new Error(`no moving moment to record for: ${unknown.join(', ')} (views with one: ${Object.keys(SCRIPTS).join(', ')})`);
   fs.mkdirSync(out, { recursive: true });
   const server = await start(0);
   const browser = await chromium.launch();
-  for (const view of asked.length ? asked : Object.keys(SCRIPTS)) {
-    const [viewport, play] = SCRIPTS[view];
-    const tmp = fs.mkdtempSync(path.join(out, 'tmp-'));
-    const context = await browser.newContext({ viewport, hasTouch: viewport === PHONE, recordVideo: { dir: tmp, size: viewport } });
-    await context.addInitScript(() => { try { localStorage.setItem('seascape_email_popup_shown', 'subscribed'); } catch (error) { /* private mode */ } });
-    await context.route('**/*', (route) => (new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort()));
-    const page = await context.newPage();
-    await page.goto(`http://127.0.0.1:${server.address().port}${GUIDE}?view=${view}&chrome=0`);
-    await play(page);
-    await context.close();
-    const webm = path.join(out, `motion-${view}.webm`);
-    fs.renameSync(path.join(tmp, fs.readdirSync(tmp)[0]), webm);
-    fs.rmSync(tmp, { recursive: true });
-    try {
-      // Small enough to sit in a pull request: 12 frames a second, 64 colours, phone clips 300px wide.
-      const filter = `fps=12,scale=${viewport === PHONE ? 300 : 640}:-1:flags=lanczos,split[x][y];[x]palettegen=max_colors=64[p];[y][p]paletteuse=dither=bayer:bayer_scale=5`;
-      execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', webm, '-vf', filter, path.join(out, `motion-${view}.gif`)]);
-    } catch (error) {
-      console.log(`no gif for ${view}: ${error.message.split('\n')[0]}`);
+  let tmp;
+  try {
+    for (const view of views) {
+      const [viewport, play] = SCRIPTS[view];
+      tmp = fs.mkdtempSync(path.join(out, 'tmp-'));
+      const context = await browser.newContext({ viewport, hasTouch: viewport === PHONE, recordVideo: { dir: tmp, size: viewport } });
+      await context.addInitScript(() => { try { localStorage.setItem('seascape_email_popup_shown', 'subscribed'); } catch (error) { /* private mode */ } });
+      await context.route('**/*', (route) => (new URL(route.request().url()).hostname === '127.0.0.1' ? route.continue() : route.abort()));
+      const page = await context.newPage();
+      await page.goto(`http://127.0.0.1:${server.address().port}${GUIDE}?view=${view}&chrome=0`);
+      await play(page);
+      await context.close();
+      const webm = path.join(out, `motion-${view}.webm`);
+      fs.renameSync(path.join(tmp, fs.readdirSync(tmp)[0]), webm);
+      try {
+        // Small enough to sit in a pull request: 12 frames a second, 64 colours, phone clips 300px wide.
+        const filter = `fps=12,scale=${viewport === PHONE ? 300 : 640}:-1:flags=lanczos,split[x][y];[x]palettegen=max_colors=64[p];[y][p]paletteuse=dither=bayer:bayer_scale=5`;
+        execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', webm, '-vf', filter, path.join(out, `motion-${view}.gif`)]);
+      } catch (error) {
+        console.log(`no gif for ${view}: ${error.message.split('\n')[0]}`);
+      }
+      console.log(`recorded ${view}`);
     }
-    console.log(`recorded ${view}`);
+  } finally {
+    // Also on a failed run, so no half-written clip folder is left beside the proof files.
+    if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
+    await browser.close();
+    server.close();
   }
-  await browser.close();
-  server.close();
-})();
+})().catch((error) => {
+  console.error(error.message);
+  process.exit(1);
+});

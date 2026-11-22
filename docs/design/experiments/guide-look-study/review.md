@@ -10,15 +10,23 @@ Nonpublic study. Base: `origin/main` at `d51e61d1`. Views reviewed at commit
     today's page: 257 text nodes, 20 headings, 65 links
     today's page at 1440: axe [clean], text under 12px 0, tap targets under 44px 0, overflow 0px
     today's page at 393: axe [clean], text under 12px 0, tap targets under 44px 0, overflow 0px
-    PASS self-test: the contract caught all 15 deliberate breaks
+    PASS self-test: the contract caught all 16 deliberate breaks
     PASS a (A · Map first) at 1440, 393, 375, 360, each with motion on, reduced and off
     PASS b (B · Photo cards) at 1440, 393, 375, 360, each with motion on, reduced and off
     PASS c (C · Fact strips) at 1440, 393, 375, 360, each with motion on, reduced and off
     PASSED
 
-The checker proves the words, links, headings, metadata, size floors and
-overflow. It does not judge how a page looks, how spacing reads, or how motion
-feels.
+The checker proves the words, links, headings, metadata, size floors, image
+loading and overflow. It does not judge how a page looks, how spacing reads, or
+how motion feels. `README.md` lists four things it cannot see.
+
+A pre-PR bug review of the study's scripts ran once after the critic's final
+pass. Four findings were fixed (the server now answers a malformed address
+without stopping; the checker loads every photo and fails on a broken one; view
+`a` reports a failed build as a script error; the recorder cleans up after a
+failed run). None changed how a view looks, so the screenshots and the critic's
+verdicts stand. The rest are the checker limits in `README.md` and the pull
+request's findings list.
 
 ## Design critic
 
