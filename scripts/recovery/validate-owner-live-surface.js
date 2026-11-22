@@ -2,7 +2,7 @@ const { catalogHomeCountWord } = require("../enforcement/home-count-word");
 
 const FEE_PASSAGE_INCLUDES = [
   "How our management fee works",
-  "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more and a monthly minimum.",
+  "Seascape charges a share of your home's net rent, with a lower rate for homes that earn more.",
   "We quote your exact fee after looking at your home.",
   "listing on Airbnb, Vrbo, Google, our direct website and more",
   "tourism and sales taxes remitted for you"
@@ -156,6 +156,30 @@ function seascapeFeeVisibleCopy(body) {
   return `${fromRegions} ${extraSentences.join(" ")}`.replace(/\s+/g, " ").trim();
 }
 
+const OWNER_ADMIN_FEE_RE = /\b(?:admin(?:istrative|istration)? fees?|monthly (?:management )?minimum(?: charge| fee)?)\b/i;
+
+function assertNoPublishedOwnerAdminFee(body, path = "/property-management/") {
+  const visible = visibleText(String(body).replace(/<\/(?:p|div|li|dd|details|section|article|h[1-6])>/gi, ". "));
+  const surfaces = [
+    ["visible copy", [visible]],
+    ["JSON-LD", jsonLdTexts(body)],
+    ["meta description", metaTexts(body)]
+  ];
+  for (const [label, texts] of surfaces) {
+    for (const text of texts) {
+      for (const sentence of text.replace(/\s+/g, " ").trim().split(/(?<=[.!?])\s+/)) {
+        for (const match of sentence.matchAll(new RegExp(OWNER_ADMIN_FEE_RE.source, "gi"))) {
+          const before = sentence.slice(0, match.index);
+          const thirdPartyAt = lastIndex(before, THIRD_PARTY_OWNER_RE);
+          const ownFeeAt = lastIndex(before, /\b(?:seascape|we|our|net rent)\b/i);
+          if (thirdPartyAt > ownFeeAt) continue;
+          throw new Error(path + " still publishes an administrative fee or monthly minimum in " + label);
+        }
+      }
+    }
+  }
+}
+
 function assertNoPublishedFeeNumbers(body) {
   const visible = visibleText(body).replace(/\s+/g, " ").trim();
   const schema = jsonLdTexts(body).join(" ").replace(/\s+/g, " ").trim();
@@ -221,5 +245,6 @@ function validateOwnerLiveSurface(body, { requireIncludes, requireExcludes }) {
 validateOwnerLiveSurface.FEE_PASSAGE_INCLUDES = FEE_PASSAGE_INCLUDES;
 validateOwnerLiveSurface.FEE_PASSAGE_EXCLUDES = FEE_PASSAGE_EXCLUDES;
 validateOwnerLiveSurface.assertNoPublishedFeeNumbers = assertNoPublishedFeeNumbers;
+validateOwnerLiveSurface.assertNoPublishedOwnerAdminFee = assertNoPublishedOwnerAdminFee;
 
 module.exports = validateOwnerLiveSurface;
