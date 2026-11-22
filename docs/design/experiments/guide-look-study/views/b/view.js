@@ -101,6 +101,21 @@
       card.append(text);
       band.append(card);
     });
+
+    /* Motion pass: mark each photo frame, then release it the first time it is on screen. */
+    if ('IntersectionObserver' in window) {
+      var watch = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('pgb-in');
+          watch.unobserve(entry.target);
+        });
+      }, { rootMargin: '0px 0px -12% 0px' });
+      Array.prototype.forEach.call(document.querySelectorAll('.pgb-hero picture, .pgb-ph'), function (frame) {
+        frame.classList.add('pgb-settle');
+        watch.observe(frame);
+      });
+    }
   }
   document.documentElement.dataset.studyReady = '1';
 })();

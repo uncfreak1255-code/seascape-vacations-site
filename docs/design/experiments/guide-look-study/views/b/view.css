@@ -45,6 +45,15 @@ body.study-b .pgb-dock p { max-width: none; font-size: 14px; line-height: 1.55; 
 body.study-b .pgb-dock p + p { margin-top: 8px; }
 body.study-b .pgb-dock strong { font-weight: 600; }
 
+/* Motion pass. Each photograph settles into its frame once, the first time it comes into view:
+   from 106% to its true size. The photo is never hidden; the script only adds .pgb-settle where
+   it can also remove the offset, so every other path is the still layout. */
+body.study-b .pgb-hero picture, body.study-b .pgb-ph { overflow: hidden; }
+@media (prefers-reduced-motion: no-preference) {
+  body.study-b .pgb-settle img { transform: scale(1.06); transition: transform 700ms cubic-bezier(.23, 1, .32, 1); }
+  body.study-b .pgb-settle.pgb-in img { transform: none; }
+}
+
 @media (min-width: 700px) {
   body.study-b .pgb-hero img { aspect-ratio: 2 / 1; max-height: 560px; }
 }

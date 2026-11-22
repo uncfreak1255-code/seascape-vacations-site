@@ -199,6 +199,14 @@ body.study-a .pg-rail a.a-rail-first { grid-template-columns: minmax(0, 1fr); }
   body.study-a .a-map:has(.a-link[data-k="3"]:hover) .a-dot[data-k="3"],
   body.study-a .a-map:has(.a-link[data-k="4"]:hover) .a-dot[data-k="4"],
   body.study-a .a-map:has(.a-link[data-k="5"]:hover) .a-dot[data-k="5"] { outline: 2px solid var(--pg-ink); }
+  body.study-a .a-link:hover::after { background: var(--pg-ink); }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body.study-a .a-map:has(.a-link[data-k="1"]:hover) .a-dot[data-k="1"],
+  body.study-a .a-map:has(.a-link[data-k="2"]:hover) .a-dot[data-k="2"],
+  body.study-a .a-map:has(.a-link[data-k="3"]:hover) .a-dot[data-k="3"],
+  body.study-a .a-map:has(.a-link[data-k="4"]:hover) .a-dot[data-k="4"],
+  body.study-a .a-map:has(.a-link[data-k="5"]:hover) .a-dot[data-k="5"] { transform: scale(1.2); }
 }
 body.study-a .a-map:has(.a-link[data-k="1"]:focus-visible) .a-dot[data-k="1"],
 body.study-a .a-map:has(.a-link[data-k="2"]:focus-visible) .a-dot[data-k="2"],
@@ -206,7 +214,22 @@ body.study-a .a-map:has(.a-link[data-k="3"]:focus-visible) .a-dot[data-k="3"],
 body.study-a .a-map:has(.a-link[data-k="4"]:focus-visible) .a-dot[data-k="4"],
 body.study-a .a-map:has(.a-link[data-k="5"]:focus-visible) .a-dot[data-k="5"] { outline: 2px solid var(--pg-ink); }
 
+/* Motion pass. A name and its marker answer each other: pointing at a name grows its marker and
+   darkens its line. The markers arrive once, in the order the guide reads (01 to 05). They are
+   visible without the animation; it only softens their arrival. */
+body.study-a .a-dot { transition: transform 150ms cubic-bezier(.23, 1, .32, 1); }
+body.study-a .a-link::after { transition: background-color 200ms ease; }
+@media (prefers-reduced-motion: no-preference) {
+  body.study-a .a-dot { animation: a-arrive 300ms cubic-bezier(.23, 1, .32, 1) backwards; }
+  body.study-a .a-dot[data-k="2"] { animation-delay: 70ms; }
+  body.study-a .a-dot[data-k="3"] { animation-delay: 130ms; }
+  body.study-a .a-dot[data-k="4"] { animation-delay: 180ms; }
+  body.study-a .a-dot[data-k="5"] { animation-delay: 220ms; }
+}
+@keyframes a-arrive { from { opacity: 0; transform: scale(.9); } }
+
 @media (prefers-reduced-motion: reduce) {
+  body.study-a .a-dot, body.study-a .a-link::after { transition: none; }
   body.study-a .a-txt { transition: none; }
   body.study-a .a-link:active .a-txt { transform: none; }
 }

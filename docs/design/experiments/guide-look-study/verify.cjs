@@ -1,6 +1,7 @@
 // Checks the views of the guide look study against today's page. Exit code 0 means every
 // requested view keeps the copy contract (contract.cjs), fits the screen, and adds no new
-// accessibility, type-size or tap-target problem.
+// accessibility, type-size or tap-target problem. Each view is judged at rest with motion on,
+// with reduced motion, and with motion switched off (see MODES).
 //
 //   node docs/design/experiments/guide-look-study/verify.cjs            all three views
 //   node docs/design/experiments/guide-look-study/verify.cjs a          one view
@@ -23,9 +24,40 @@ const AxeBuilder = need('@axe-core/playwright').default;
 const SIZES = [[1440, 900], [393, 852], [375, 812], [360, 740]];
 const DEEP = new Set([1440, 393]); // widths that also get the floor and axe checks
 const LABELS = { control: 'Today', a: 'A · Map first', b: 'B · Photo cards', c: 'C · Fact strips' };
+// Every view is judged three ways. motion: as most readers get it. reduced: with the reader's
+// "reduce motion" setting on. still: with every animation and transition switched off, so copy
+// that needs one to become visible is caught.
+const MODES = ['motion', 'reduced', 'still'];
+const STILL = '*,*::before,*::after{animation:none!important;transition:none!important}';
 
-async function open(browser, origin, view, viewport, scale) {
-  const context = await browser.newContext({ viewport, deviceScaleFactor: scale || 1 });
+// Runs in the browser. Opens every toggle when asked, then jumps each running animation and
+// transition to its end, so a view is judged at rest and not at the instant the check looked.
+// Nothing is scrolled or clicked, so copy that waits for either stays hidden and fails.
+// Returns the animations that never end.
+async function rest(openToggles) {
+  const toggles = [...document.querySelectorAll('details')];
+  if (openToggles) for (const details of toggles) details.open = true;
+  const frame = () => new Promise((done) => requestAnimationFrame(done));
+  await frame();
+  await frame();
+  const endless = [];
+  for (const animation of document.getAnimations()) {
+    const timing = animation.effect && animation.effect.getComputedTiming();
+    if (timing && timing.endTime === Infinity) endless.push(animation.animationName || animation.transitionProperty || 'script animation');
+    else try { animation.finish(); } catch (error) { /* not finishable, so it is not hiding anything at rest */ }
+  }
+  // Chromium does not list a transition on a toggle's own content box (::details-content), so
+  // also wait until the page has stopped changing shape.
+  const shape = () => document.documentElement.scrollHeight + ':' + toggles.map((details) => details.offsetHeight).join();
+  for (let last = '', tries = 0; tries < 30 && last !== shape(); tries += 1) {
+    last = shape();
+    await new Promise((done) => setTimeout(done, 100));
+  }
+  return endless;
+}
+
+async function open(browser, origin, view, viewport, scale, mode) {
+  const context = await browser.newContext({ viewport, deviceScaleFactor: scale || 1, reducedMotion: mode === 'reduced' ? 'reduce' : 'no-preference' });
   // The email popup opens on a timer; it is not part of the question, so it stays shut.
   await context.addInitScript(() => { try { localStorage.setItem('seascape_email_popup_shown', 'subscribed'); } catch (error) { /* private mode */ } });
   const seen = { errors: [], outside: [], failed: [] };
@@ -39,18 +71,20 @@ async function open(browser, origin, view, viewport, scale) {
   page.on('pageerror', (error) => seen.errors.push(error.message));
   page.on('response', (response) => { if (response.status() >= 400) seen.failed.push(new URL(response.url()).pathname); });
   await page.goto(`${origin}${GUIDE}?view=${view}&chrome=0`);
+  if (mode === 'still') await page.addStyleTag({ content: STILL });
   seen.ready = await page.waitForFunction(() => document.documentElement.dataset.studyReady === '1', null, { timeout: 8000 }).then(() => true, () => false);
   await page.evaluate(() => document.fonts.ready);
   return { context, page, seen };
 }
 
-async function measure(browser, origin, view, [width, height], mutate) {
-  const { context, page, seen } = await open(browser, origin, view, { width, height });
+async function measure(browser, origin, view, [width, height], mutate, mode = 'motion') {
+  const { context, page, seen } = await open(browser, origin, view, { width, height }, 1, mode);
   if (mutate) await page.evaluate(mutate);
   const out = { ...seen, width };
   out.overflowClosed = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  out.snap = await page.evaluate(contract.snapshot); // opens every toggle, so the checks below see all of the page
-  if (DEEP.has(width) && !mutate) {
+  out.endless = await page.evaluate(rest, true); // every toggle open and all motion finished, so the checks below see all of the page
+  out.snap = await page.evaluate(contract.snapshot);
+  if (DEEP.has(width) && !mutate && mode === 'motion') {
     out.smallText = await page.evaluate(contract.smallText);
     out.smallTargets = width === 393 ? await page.evaluate(contract.smallTargets) : [];
     const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
@@ -68,6 +102,7 @@ function judge(control, view, strings) {
   for (const item of fresh('errors')) fails.push(`script error: ${item}`);
   for (const item of fresh('outside')) fails.push(`request to an outside host: ${item}`);
   for (const item of fresh('failed')) fails.push(`request failed: ${item}`);
+  for (const item of fresh('endless')) fails.push(`animation never ends: ${item}`);
   if (view.overflowClosed > 0) fails.push(`page is ${view.overflowClosed}px wider than the screen`);
   const result = contract.compare(control.snap, view.snap, strings);
   fails.push(...result.fails);
@@ -83,8 +118,10 @@ function judge(control, view, strings) {
 }
 
 // The contract is only worth having if it fails when the page is damaged. Each break is applied
-// to today's page and must be reported; a break that slips through fails the whole run.
+// to today's page and must be reported; a break that slips through fails the whole run. A break
+// with a fourth item is judged in that mode.
 const para = 'document.querySelectorAll("#pg-1 p")[1]';
+const late = 'document.querySelector("#pg-9 p")';
 const BREAKS = [
   ['a deleted paragraph', /copy removed/, `${para}.remove()`],
   ['a retyped word', /copy removed/, `${para}.firstChild.nodeValue = "Changed. " + ${para}.firstChild.nodeValue`],
@@ -98,15 +135,20 @@ const BREAKS = [
   ['a duplicated section id', /id used 2 times/, 'document.querySelector("#pg-2").id = "pg-1"'],
   ['a changed meta description', /metadata changed/, 'document.querySelector("meta[name=description]").content = "x"'],
   ['a changed JSON-LD block', /metadata changed/, 'document.querySelector("script[type=\\"application/ld+json\\"]").textContent = "{}"'],
+  ['copy that waits for a scroll to appear', /no longer rendered/, `(() => { const p = ${late}; p.style.cssText = "opacity:0;transition:opacity 300ms"; new IntersectionObserver((seen) => { if (seen[0].isIntersecting) p.style.opacity = 1; }).observe(p); })()`],
+  ['copy that only an animation reveals', /no longer rendered/, '(() => { const s = document.createElement("style"); s.textContent = "@keyframes shown{to{opacity:1}}#pg-1 p{opacity:0;animation:shown 300ms forwards}"; document.head.append(s); })()', 'still'],
+  ['an animation that never ends', /never ends/, 'void document.querySelector("#pg-1 h2").animate([{ opacity: 1 }, { opacity: .6 }], { duration: 900, iterations: Infinity })'],
 ];
 
 async function selfTest(browser, origin, control) {
   const missed = [];
-  const untouched = judge(control, await measure(browser, origin, 'control', SIZES[0], 'void 0'), {}).fails;
-  if (untouched.length) missed.push(`that an untouched page is fine (false alarm: ${untouched[0]})`);
-  for (const [name, expected, script] of BREAKS) {
-    const broken = await measure(browser, origin, 'control', SIZES[0], script);
-    if (!judge(control, broken, {}).fails.some((line) => expected.test(line))) missed.push(name);
+  for (const mode of MODES) {
+    const untouched = judge(control[mode][1440], await measure(browser, origin, 'control', SIZES[0], 'void 0', mode), {}).fails;
+    if (untouched.length) missed.push(`that an untouched page is fine with ${mode} (false alarm: ${untouched[0]})`);
+  }
+  for (const [name, expected, script, mode = 'motion'] of BREAKS) {
+    const broken = await measure(browser, origin, 'control', SIZES[0], script, mode);
+    if (!judge(control[mode][1440], broken, {}).fails.some((line) => expected.test(line))) missed.push(name);
   }
   return missed;
 }
@@ -129,6 +171,7 @@ async function proof(browser, origin, views, dir) {
     for (const [name, viewport, scale] of [['1440', { width: 1440, height: 900 }, 1], ['390', { width: 390, height: 844 }, 2]]) {
       const { context, page } = await open(browser, origin, view, viewport, scale);
       await settle(page);
+      await page.evaluate(rest, false);
       await page.screenshot({ path: path.join(dir, `${view}-${name}-top.jpg`), type: 'jpeg', quality: 82 });
       // Close-ups of the parts the versions change most, for looking at detail.
       for (const part of ['.pg-open', '#pg-1', '#pg-2', '#pg-5', '#pg-6', '#pg-10']) {
@@ -139,9 +182,10 @@ async function proof(browser, origin, views, dir) {
       // The whole page is captured at 1x: a 2x capture of a page this long is taller than the browser can draw.
       const whole = await open(browser, origin, view, viewport, 1);
       await settle(whole.page);
+      await whole.page.evaluate(rest, false);
       await whole.page.screenshot({ path: path.join(dir, `${view}-${name}-full.jpg`), type: 'jpeg', quality: 72, fullPage: true });
       if (await whole.page.locator('main details').count()) {
-        await whole.page.evaluate(() => { for (const details of document.querySelectorAll('main details')) details.open = true; });
+        await whole.page.evaluate(rest, true);
         await whole.page.screenshot({ path: path.join(dir, `${view}-${name}-open-full.jpg`), type: 'jpeg', quality: 72, fullPage: true });
       }
       await whole.context.close();
@@ -173,14 +217,17 @@ async function proof(browser, origin, views, dir) {
   let failed = 0;
   try {
     const control = {};
-    for (const size of SIZES) control[size[0]] = await measure(browser, origin, 'control', size);
-    const base = control[1440];
+    for (const mode of MODES) {
+      control[mode] = {};
+      for (const size of SIZES) control[mode][size[0]] = await measure(browser, origin, 'control', size, null, mode);
+    }
+    const base = control.motion[1440];
     console.log(`today's page: ${base.snap.text.length} text nodes, ${base.snap.headings.length} headings, ${base.snap.hrefs.length} links`);
     for (const width of DEEP) {
-      const row = control[width];
+      const row = control.motion[width];
       console.log(`today's page at ${width}: axe [${row.axe.map((item) => `${item[0]} x${item[1]}`).join(', ') || 'clean'}], text under 12px ${row.smallText.length}, tap targets under 44px ${row.smallTargets.length}, overflow ${Math.max(0, row.overflowClosed)}px`);
     }
-    const missed = await selfTest(browser, origin, base);
+    const missed = await selfTest(browser, origin, control);
     console.log(missed.length ? `FAIL self-test: the contract did not notice ${missed.join('; ')}` : `PASS self-test: the contract caught all ${BREAKS.length} deliberate breaks`);
     failed += missed.length;
 
@@ -194,13 +241,16 @@ async function proof(browser, origin, views, dir) {
       const strings = JSON.parse(fs.readFileSync(file, 'utf8'));
       const results = [];
       const lines = new Map();
-      for (const size of SIZES) {
-        const { fails, result } = judge(control[size[0]], await measure(browser, origin, view, size), strings);
-        results.push(result);
-        for (const line of fails) lines.set(line, [...(lines.get(line) || []), size[0]]);
+      for (const mode of MODES) {
+        for (const size of SIZES) {
+          const { fails, result } = judge(control[mode][size[0]], await measure(browser, origin, view, size, null, mode), strings);
+          results.push(result);
+          const where = mode === 'motion' ? size[0] : `${size[0]} ${mode}`;
+          for (const line of fails) lines.set(line, [...(lines.get(line) || []), where]);
+        }
       }
       for (const line of contract.staleEntries(strings, results)) lines.set(line, ['list']);
-      console.log(`${lines.size ? 'FAIL' : 'PASS'} ${view} (${LABELS[view]}) at ${SIZES.map((size) => size[0]).join(', ')}`);
+      console.log(`${lines.size ? 'FAIL' : 'PASS'} ${view} (${LABELS[view]}) at ${SIZES.map((size) => size[0]).join(', ')}, each with motion on, reduced and off`);
       for (const [line, where] of lines) console.log(`  - [${where.join(',')}] ${line}`);
       failed += lines.size;
     }
