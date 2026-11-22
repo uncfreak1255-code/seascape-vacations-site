@@ -26,13 +26,14 @@ body.study-c .sf-more > summary i::after {
 body.study-c .sf-more > summary i::before { left: 0; top: 7px; width: 16px; height: 1.5px; }
 body.study-c .sf-more > summary i::after {
   left: 7px; top: 0; width: 1.5px; height: 16px;
-  transition: transform 150ms cubic-bezier(.23, 1, .32, 1);
+  transition: transform 200ms cubic-bezier(.23, 1, .32, 1);
 }
 body.study-c .sf-more[open] > summary i::after { transform: scaleY(0); }
 body.study-c .sf-more > :not(summary) { max-width: 68ch; }
-/* The gaps do not depend on [open], so nothing jumps when a row starts to close. */
-body.study-c .sf-more > summary + * { margin-top: 8px; }
-body.study-c .sf-more > :last-child:not(summary) { margin-bottom: 24px; }
+/* The gaps do not depend on [open], and are padding so they stay inside the box that grows:
+   a margin would escape it and snap at the end of an open or a close. */
+body.study-c .sf-more > summary + * { padding-top: 8px; }
+body.study-c .sf-more > :last-child:not(summary) { padding-bottom: 24px; }
 body.study-c .sf-more > p + p { margin-top: 16px; }
 body.study-c .sf-island > p { font: 400 15px/1.65 Poppins, system-ui, sans-serif; }
 
@@ -107,10 +108,10 @@ body.study-c #pg-10 .cost-table td { border-bottom-color: var(--pg-rule); }
 }
 
 /* Motion pass (catalog: Disclosure). The paragraphs grow out of the row that was pressed: height
-   and opacity, 200ms, the site's ease-out. Where the browser cannot do this, and under reduced
-   motion, the row opens at once as before. No script. */
+   and opacity, 200ms, the site's ease-out. Where the browser cannot do all of this, and under
+   reduced motion, the row opens at once as before. No script. */
 @media (prefers-reduced-motion: no-preference) {
-  @supports selector(::details-content) {
+  @supports selector(::details-content) and (interpolate-size: allow-keywords) {
     body.study-c .sf-more { interpolate-size: allow-keywords; }
     body.study-c .sf-more::details-content {
       block-size: 0; opacity: 0; overflow-y: clip;

@@ -102,13 +102,19 @@
       band.append(card);
     });
 
-    /* Motion pass: mark each photo frame, then release it the first time it is on screen. */
+    /* Motion pass: mark each photo frame, then release it the first time it is on screen and its
+       photo has arrived, so the settle never plays over an empty frame. */
     if ('IntersectionObserver' in window) {
       var watch = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add('pgb-in');
           watch.unobserve(entry.target);
+          var frame = entry.target;
+          var photo = frame.querySelector('img');
+          var settle = function () { frame.classList.add('pgb-in'); };
+          if (!photo || photo.complete) return settle();
+          photo.addEventListener('load', settle, { once: true });
+          photo.addEventListener('error', settle, { once: true });
         });
       }, { rootMargin: '0px 0px -12% 0px' });
       Array.prototype.forEach.call(document.querySelectorAll('.pgb-hero picture, .pgb-ph'), function (frame) {
