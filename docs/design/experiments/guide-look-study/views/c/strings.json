@@ -1,0 +1,6 @@
+{
+  "added": [
+    { "text": "More about this beach", "count": 5, "why": "label of the toggle that holds each beach's prose" },
+    { "text": "More about the island", "why": "label of the toggle that holds the second opening paragraph" }
+  ]
+}

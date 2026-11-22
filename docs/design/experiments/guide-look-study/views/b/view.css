@@ -1,0 +1,133 @@
+/* View b: Photo cards. Every rule is scoped under body.study-b. */
+
+/* Opening: the photograph is the focal point, edge to edge. Phone and tablet: photo, credit, then the title. */
+body.study-b .pg-open { padding: 0 0 44px; }
+body.study-b .pgb-hero { margin: 0; }
+body.study-b .pgb-hero picture { display: block; }
+body.study-b .pgb-hero img { display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; }
+body.study-b .pgb-credit { color: var(--pg-muted); font: 400 12px/1.5 Poppins, system-ui, sans-serif; text-wrap: balance; }
+body.study-b .pgb-hero .pgb-credit { padding: 10px 20px; }
+body.study-b main .pgb-credit a { white-space: nowrap; color: var(--pg-muted); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+body.study-b main .pgb-credit a:focus-visible { outline: 2px solid var(--pg-ink); outline-offset: 2px; }
+
+body.study-b .pg-open .pg-wrap { padding-top: 24px; }
+body.study-b .pg-open-grid { display: block; }
+body.study-b .pg-open h1 { margin: 16px 0 12px; }
+body.study-b .guide-intro { margin-top: 32px; padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--pg-rule); }
+body.study-b .guide-intro p + p { margin-top: 16px !important; }
+
+/* The five beach cards. */
+body.study-b .pgb-band { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; padding-bottom: 44px; }
+body.study-b .pgb-card {
+  display: flex; flex-direction: column; min-width: 0; padding: 0; border: 0; border-radius: 4px;
+  background: #F0F3EE; box-shadow: 0 20px 40px #173D421F; overflow: hidden; scroll-margin-top: 104px;
+}
+body.study-b .pgb-fig { display: flex; flex-direction: column; margin: 0; }
+body.study-b .pgb-ph { position: relative; aspect-ratio: 3 / 2; background: #F0F3EE; }
+body.study-b .pgb-ph img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+body.study-b .pgb-card .pgb-credit { padding: 10px 22px; background: var(--pg-paper); }
+
+body.study-b .pgb-text { display: flex; flex: 1 1 auto; flex-direction: column; padding: 24px 22px 26px; }
+body.study-b .pgb-text .pg-num { margin: 0 0 8px; }
+body.study-b .pgb-text h2 { margin: 0 0 18px; font: 400 36px/1.06 var(--pg-serif); letter-spacing: -0.02em; text-wrap: balance; }
+body.study-b .pgb-text p { max-width: none; font-size: 15px; line-height: 1.62; }
+body.study-b .pgb-text p + p { margin-top: 14px; }
+body.study-b .pgb-card .pg-step p a, body.study-b .pgb-text p a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+body.study-b .pgb-text p a:focus-visible { outline: 2px solid var(--pg-ink); outline-offset: 2px; }
+
+/* Phone and tablet reading order: photo, name, facts, then prose. */
+body.study-b .pgb-text > p, body.study-b .pgb-prose { order: 2; }
+body.study-b .pgb-text > p.pg-num { order: 0; }
+body.study-b .pgb-text > .pgb-dock { order: 1; margin: 2px 0 24px; }
+body.study-b .pgb-dock { padding: 4px 16px; background: var(--pg-paper); border-top: 2px solid var(--pg-ink); border-radius: 0 0 4px 4px; }
+body.study-b .pgb-dock p { padding: 12px 0; font-size: 14px; line-height: 1.55; }
+body.study-b .pgb-dock p + p { margin-top: 0; border-top: 1px solid var(--pg-rule); }
+body.study-b .pgb-dock strong { display: block; margin-bottom: 2px; color: var(--pg-clay); font: 600 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+
+/* The type-led card (Manatee Beach has no cleared photo): an ink band, lettering only. */
+body.study-b .pgb-card-text { background: var(--pg-ink); color: var(--pg-paper); box-shadow: none; }
+body.study-b .pgb-card-text .pgb-text { padding: 32px 22px 28px; }
+body.study-b .pgb-card-text .pg-num { color: var(--pg-citron, #D6EB85); }
+body.study-b .pgb-card-text h2 { margin-bottom: 20px; font-size: 40px; color: var(--pg-paper); }
+body.study-b .pgb-card-text .pgb-prose > p:first-child { font: 400 24px/1.32 var(--pg-serif); letter-spacing: 0; }
+body.study-b .pgb-card-text .pgb-prose > p:first-child + p { margin-top: 18px; }
+body.study-b .pgb-card-text .pgb-prose p { color: var(--pg-paper); }
+body.study-b main .pgb-card-text a { color: var(--pg-paper); }
+body.study-b main .pgb-card-text a:hover { color: #D6EB85; }
+body.study-b main .pgb-card-text a:focus-visible { outline: 2px solid #D6EB85; outline-offset: 3px; }
+body.study-b .pgb-card-text .pgb-dock { background: transparent; border-top: 2px solid #D6EB85; border-radius: 0; padding: 4px 0; }
+body.study-b .pgb-card-text .pgb-dock p + p { border-top-color: #F6F3EB4D; }
+body.study-b .pgb-card-text .pgb-dock strong { color: #D6EB85; }
+body.study-b .pgb-card-text .pgb-dock p { color: var(--pg-paper); }
+
+/* No motion in this view. A photo "settle" on first view was built, reviewed twice and removed:
+   it could not be seen in a recording, and it had no job beyond decoration (see review.md). */
+
+@media (min-width: 700px) {
+  body.study-b .pgb-hero img { aspect-ratio: 2 / 1; max-height: 560px; }
+}
+
+@media (min-width: 900px) {
+  /* Opening: the title sits on the photograph, as on the homepage, over an ink scrim. */
+  body.study-b .pg-open {
+    display: grid; padding-bottom: 56px;
+    grid-template-columns: minmax(40px, 1fr) minmax(0, 1100px) minmax(40px, 1fr);
+    grid-template-rows: auto auto;
+  }
+  body.study-b .pg-open .pg-wrap, body.study-b .pg-open-grid { display: contents; }
+  body.study-b .pgb-hero { grid-column: 1 / -1; grid-row: 1; }
+  body.study-b .pgb-hero img { aspect-ratio: auto; max-height: none; height: clamp(560px, 46vw, 660px); }
+  body.study-b .pgb-hero picture { position: relative; }
+  body.study-b .pgb-hero picture::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, #173D42F0 0%, #173D42DB 34%, #173D4299 58%, #173D4200 82%);
+  }
+  body.study-b .pgb-hero .pgb-credit { box-sizing: border-box; min-height: 48px; max-width: 1180px; margin: 0 auto; padding: 14px 40px 0; text-align: left; }
+  body.study-b .pgb-hero .pgb-credit span { display: block; }
+  body.study-b .pg-open-grid > div:first-child {
+    grid-column: 2; grid-row: 1; align-self: end; position: relative; z-index: 1; box-sizing: border-box;
+    max-width: 800px; margin-bottom: 76px; padding: 0;
+  }
+  body.study-b .pg-open-grid .pg-label { color: var(--pg-paper); }
+  body.study-b .pg-open h1 { margin: 14px 0 16px; color: var(--pg-paper); font-size: clamp(48px, 4.7vw, 68px); text-wrap: balance; }
+  body.study-b .pg-open .pg-sub { max-width: 620px; color: var(--pg-paper); font-size: 17px; line-height: 1.55; }
+  body.study-b .guide-intro {
+    grid-column: 2; grid-row: 2; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px;
+    margin-top: 8px; padding-top: 32px;
+  }
+  body.study-b .guide-intro p + p { margin-top: 0 !important; }
+
+  /* Cards: 1 full (photo left), 2 full type band, 3 and 4 a pair, 5 full (photo right). */
+  body.study-b .pgb-band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding-bottom: 60px; }
+  body.study-b .pgb-card .pgb-credit { padding: 10px 28px; }
+  body.study-b .pgb-text { padding: 32px 28px 30px; }
+  body.study-b .pgb-text h2 { font-size: 34px; }
+  body.study-b .pgb-text p { order: 0; }
+  body.study-b .pgb-text > .pgb-dock { order: 0; margin: auto 0 0; }
+  body.study-b .pgb-text > p:has(+ .pgb-dock), body.study-b .pgb-prose { margin-bottom: 28px; order: 0; }
+  body.study-b .pgb-band > #pg-1, body.study-b .pgb-band > #pg-2, body.study-b .pgb-band > #pg-5 { grid-column: 1 / -1; }
+  body.study-b .pgb-band > #pg-1 { display: grid; grid-template-columns: 58% minmax(0, 1fr); }
+  body.study-b .pgb-band > #pg-5 { display: grid; grid-template-columns: minmax(0, 1fr) 58%; }
+  body.study-b .pgb-band > #pg-5 .pgb-fig { order: 2; }
+  body.study-b #pg-1 .pgb-ph, body.study-b #pg-5 .pgb-ph { flex: 1 1 auto; aspect-ratio: auto; min-height: 380px; }
+  body.study-b #pg-1 .pgb-text, body.study-b #pg-5 .pgb-text { padding: 44px 40px; }
+  body.study-b #pg-1 .pgb-text h2, body.study-b #pg-5 .pgb-text h2 { font-size: 40px; }
+
+  body.study-b .pgb-card-text .pgb-text {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 72px; align-items: start; padding: 56px 56px 44px;
+  }
+  body.study-b .pgb-card-text h2 { margin-bottom: 24px; font-size: 56px; line-height: 1.02; }
+  body.study-b .pgb-card-text .pgb-prose { margin: 0; padding-top: 14px; }
+  body.study-b .pgb-card-text .pgb-prose p { font-size: 16px; line-height: 1.68; }
+  body.study-b .pgb-card-text .pgb-prose > p:first-child { font-size: 26px; line-height: 1.3; }
+
+  /* The pair: the photo frame absorbs any height difference, so neither card has a gap above its facts. */
+  body.study-b #pg-3 .pgb-fig, body.study-b #pg-4 .pgb-fig { flex: 1 1 auto; }
+  body.study-b #pg-3 .pgb-ph, body.study-b #pg-4 .pgb-ph { flex: 1 1 auto; }
+  body.study-b #pg-3 .pgb-text, body.study-b #pg-4 .pgb-text { flex: 0 0 auto; }
+  body.study-b .pgb-card-text .pgb-text > .pgb-dock {
+    grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 48px; padding: 0;
+  }
+  body.study-b .pgb-card-text .pgb-dock p { padding: 20px 28px 4px 0; }
+  body.study-b .pgb-card-text .pgb-dock p + p { margin-top: 0; padding-left: 28px; border-top: 0; border-left: 1px solid #F6F3EB4D; }
+}

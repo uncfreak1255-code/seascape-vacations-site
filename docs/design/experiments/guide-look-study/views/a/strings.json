@@ -1,0 +1,28 @@
+{
+  "added": [
+    { "text": "01", "why": "map key number for Bean Point Beach" },
+    { "text": "02", "why": "map key number for Manatee Beach" },
+    { "text": "03", "why": "map key number for Coquina Beach" },
+    { "text": "04", "why": "map key number for Holmes Beach" },
+    { "text": "05", "why": "map key number for Bradenton Beach" },
+    { "text": "Bean Point Beach", "why": "map key name, taken from the section heading before its colon" },
+    { "text": "Manatee Beach", "why": "map key name, taken from the section heading before its colon" },
+    { "text": "Coquina Beach", "why": "map key name, taken from the section heading before its colon" },
+    { "text": "Holmes Beach", "why": "map key name, taken from the section heading" },
+    { "text": "Bradenton Beach", "why": "map key name, taken from the section heading" },
+    { "text": "Gulf of Mexico", "why": "water name on the map; the guide's own text names it" },
+    { "text": "Tampa Bay", "why": "water name on the map; the guide's own text names it" },
+    { "text": "Longboat Pass", "why": "water name on the map; the guide's own text names it" },
+    { "text": "1 mile", "why": "map scale bar label" },
+    { "text": "N", "why": "north mark on the map" },
+    { "text": "Map data ©", "why": "map credit, required by the OpenStreetMap licence" },
+    { "text": "OpenStreetMap contributors", "why": "map credit link text" },
+    { "text": "Beaches on the map", "why": "accessible name of the map key navigation" }
+  ],
+  "removed": [
+    { "text": "10", "count": 2, "why": "the comparison moved to the top as the chooser; its section number and its rail number are dropped" }
+  ],
+  "addedLinks": [
+    { "href": "https://www.openstreetmap.org/copyright", "why": "map data credit link" }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "added": [
+    { "text": "Sea oats growing on white sand dunes under a blue sky, north end of Anna Maria Island", "why": "alt text for the opening photo" },
+    { "text": "People walking across white sand toward dune grass and the water at Bean Point Beach", "why": "alt text for the Bean Point photo" },
+    { "text": "Wooden lifeguard station on the sand, with the water behind it, at Coquina Beach", "why": "alt text for the Coquina Beach photo" },
+    { "text": "Sea oats on a dune, with beach umbrellas on the sand and the water behind, at Holmes Beach", "why": "alt text for the Holmes Beach photo" },
+    { "text": "White clock tower beside two palm trees at the Bridge Street Pier, Bradenton Beach", "why": "alt text for the Bradenton Beach photo" },
+    { "text": "Photo:", "count": 5, "why": "credit label under each of the five photos" },
+    { "text": "Gzzz, 2016", "count": 2, "why": "photographer and year, linked to the Commons file page (opening and Bean Point photos)" },
+    { "text": "Fred Hsu, 2017", "why": "photographer and year for the Coquina Beach photo" },
+    { "text": "Ann Caron, 2011", "why": "photographer and year for the Holmes Beach photo" },
+    { "text": "Wolfgang Moroder, 2017", "why": "photographer and year for the Bradenton Beach photo" },
+    { "text": ",", "count": 5, "why": "separator between photographer and licence in each credit" },
+    { "text": "CC BY-SA 4.0", "count": 2, "why": "licence name, linked to the licence (opening and Bean Point photos)" },
+    { "text": "CC BY-SA 3.0", "count": 3, "why": "licence name, linked to the licence (Coquina, Holmes Beach, Bradenton Beach photos)" },
+    { "text": ". Cropped and resized.", "count": 5, "why": "required statement that the photo is an adapted crop, under each photo" }
+  ],
+  "addedLinks": [
+    { "href": "https://commons.wikimedia.org/wiki/File:Anna_Maria_island.jpg", "why": "Commons file page of the opening photo" },
+    { "href": "https://commons.wikimedia.org/wiki/File:Anna_Maria_Bean_Point_Beach.jpg", "why": "Commons file page of the Bean Point photo" },
+    { "href": "https://commons.wikimedia.org/wiki/File:2017_Sarasota_Coquina_Beach_Lifeguard_Station_FRD_9077.jpg", "why": "Commons file page of the Coquina Beach photo" },
+    { "href": "https://commons.wikimedia.org/wiki/File:Tranquil_Anna_Maria_Island.jpg", "why": "Commons file page of the Holmes Beach photo" },
+    { "href": "https://commons.wikimedia.org/wiki/File:Florida_pier_Bradenton_Beach.jpg", "why": "Commons file page of the Bradenton Beach photo" },
+    { "href": "https://creativecommons.org/licenses/by-sa/4.0", "count": 2, "why": "licence of the opening and Bean Point photos" },
+    { "href": "https://creativecommons.org/licenses/by-sa/3.0", "count": 3, "why": "licence of the Coquina, Holmes Beach and Bradenton Beach photos" }
+  ]
+}

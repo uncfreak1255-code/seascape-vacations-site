@@ -1,0 +1,39 @@
+{
+ "note": "Island silhouette drawn from OpenStreetMap coastline data (c) OpenStreetMap contributors, ODbL. Simplified: canals and narrow inlets are filled. North is up. 1000 units is the island length (about 10.5 km).",
+ "width": 560,
+ "height": 1000,
+ "mile": 152.9,
+ "path": "M3.8 1L3.8 13L21.8 45L88.5 137L218.8 269L300.8 397L390.7 597L524.1 985L524.1 997L556.4 997L547.4 953L549.7 901L519.4 897L499.2 865L483 813L483.7 761L456.3 721L455.8 673L449.1 665L447.7 653L424.2 593L424.2 553L422.1 545L416.1 541L412.2 509L413.4 437L411.3 433L387.2 429L349 389L342.7 349L334.6 341L334.6 317L342.3 309L342.9 285L352.1 281L352.1 257L330.3 253L328.1 233L313.1 221L313.1 213L297 205L297 197L276.5 193L273.4 177L213.5 149L218.6 97L82 13L82 1Z",
+ "markers": {
+  "1": {
+   "x": 3.8,
+   "y": 12.7,
+   "lat": 27.5375,
+   "from": "Commons photo GPS for Bean Point Beach (27.5387, -82.7446), eased 130 m south so the mark sits on the shore"
+  },
+  "2": {
+   "x": 314.2,
+   "y": 426.8,
+   "lat": 27.4983,
+   "from": "OpenStreetMap stop \"GULF DR/42ND ST (MANATEE PUBLIC BEACH)\" (27.4983, -82.7124)"
+  },
+  "3": {
+   "x": 503.6,
+   "y": 925.5,
+   "lat": 27.4511,
+   "from": "OpenStreetMap stop \"COQUINA BEACH\" (27.4511, -82.6922)"
+  },
+  "4": {
+   "x": 268.5,
+   "y": 346.5,
+   "lat": 27.5059,
+   "from": "OpenStreetMap Holmes Beach city boundary, centre latitude (27.5059)"
+  },
+  "5": {
+   "x": 452.8,
+   "y": 777.6,
+   "lat": 27.4651,
+   "from": "OpenStreetMap \"Bridge Street, Bradenton Beach\" (27.4651, -82.6982)"
+  }
+ }
+}
