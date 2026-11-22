@@ -1,0 +1,71 @@
+/* View b: Photo cards. Every rule is scoped under body.study-b. */
+
+/* Opening: the photograph is the focal point, edge to edge. */
+body.study-b .pg-open { padding: 0 0 44px; }
+body.study-b .pgb-hero { margin: 0; }
+body.study-b .pgb-hero picture { display: block; }
+body.study-b .pgb-hero img { display: block; width: 100%; height: auto; aspect-ratio: 5 / 4; object-fit: cover; }
+body.study-b .pgb-credit { color: var(--pg-muted); font: 400 12px/1.5 Poppins, system-ui, sans-serif; text-wrap: balance; }
+body.study-b .pgb-hero .pgb-credit { padding: 10px 20px; }
+body.study-b main .pgb-credit a { white-space: nowrap; color: var(--pg-muted); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+body.study-b main .pgb-credit a:focus-visible { outline: 2px solid var(--pg-ink); outline-offset: 2px; }
+
+body.study-b .pg-open .pg-wrap { padding-top: 24px; }
+body.study-b .pg-open-grid { display: block; }
+body.study-b .pg-open h1 { margin: 16px 0 12px; }
+body.study-b .guide-intro { margin-top: 32px; padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--pg-rule); }
+body.study-b .guide-intro p + p { margin-top: 16px !important; }
+
+/* The five beach cards. */
+body.study-b .pgb-band { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; padding-bottom: 44px; }
+body.study-b .pgb-card {
+  display: flex; flex-direction: column; min-width: 0; padding: 0; border: 0; border-radius: 4px;
+  background: #F0F3EE; box-shadow: 0 20px 40px #173D421F; overflow: hidden; scroll-margin-top: 104px;
+}
+body.study-b .pgb-card.pgb-card-text { border: 1px solid var(--pg-rule); box-shadow: none; }
+body.study-b .pgb-fig { display: flex; flex-direction: column; margin: 0; }
+body.study-b .pgb-ph { position: relative; aspect-ratio: 3 / 2; background: #F0F3EE; }
+body.study-b .pgb-ph img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+body.study-b .pgb-card .pgb-credit { padding: 10px 22px; background: var(--pg-paper); }
+
+body.study-b .pgb-text { display: flex; flex: 1 1 auto; flex-direction: column; padding: 22px; }
+body.study-b .pgb-text .pg-num { margin: 0 0 8px; }
+body.study-b .pgb-text h2 { margin: 0 0 16px; font: 400 27px/1.12 var(--pg-serif); letter-spacing: -0.02em; }
+body.study-b .pgb-text > p { max-width: none; font-size: 15px; line-height: 1.6; }
+body.study-b .pgb-text > p + p { margin-top: 14px; }
+body.study-b .pgb-text > p.pg-num + p { margin-top: 0; }
+body.study-b .pgb-text > p:has(+ .pgb-dock) { margin-bottom: 24px; }
+body.study-b .pgb-card-text .pgb-text > h2 + p { font: 400 22px/1.34 var(--pg-serif); letter-spacing: 0; }
+body.study-b .pgb-card-text .pgb-text > h2 + p + p { margin-top: 16px; }
+body.study-b .pgb-card .pg-step p a, body.study-b .pgb-text p a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+body.study-b .pgb-text p a:focus-visible { outline: 2px solid var(--pg-ink); outline-offset: 2px; }
+
+body.study-b .pgb-dock { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--pg-rule); }
+body.study-b .pgb-dock p { max-width: none; font-size: 14px; line-height: 1.55; }
+body.study-b .pgb-dock p + p { margin-top: 8px; }
+body.study-b .pgb-dock strong { font-weight: 600; }
+
+@media (min-width: 700px) {
+  body.study-b .pgb-hero img { aspect-ratio: 2 / 1; max-height: 560px; }
+}
+
+@media (min-width: 900px) {
+  body.study-b .pg-open { padding-bottom: 56px; }
+  body.study-b .pgb-hero .pgb-credit { box-sizing: border-box; max-width: 1180px; min-height: 48px; margin: 0 auto; padding: 8px 40px; text-align: right; }
+  body.study-b .pgb-hero .pgb-credit span { display: block; max-width: 224px; margin-left: auto; }
+  body.study-b .pg-open .pg-wrap { position: relative; margin-top: -144px; padding-top: 0; }
+  body.study-b .pg-open-grid > div:first-child {
+    box-sizing: border-box; width: min(792px, calc(100% - 232px)); margin-left: -32px; padding: 44px 44px 24px 32px; background: var(--pg-paper);
+  }
+  body.study-b .pg-open h1 { font-size: clamp(48px, 4.7vw, 68px); margin: 16px 0 16px; }
+  body.study-b .guide-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; margin-top: 8px; padding-top: 32px; }
+  body.study-b .guide-intro p + p { margin-top: 0 !important; }
+
+  body.study-b .pgb-band { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding-bottom: 60px; }
+  body.study-b .pgb-card .pgb-credit { padding: 10px 28px; }
+  body.study-b .pgb-text { padding: 28px; }
+  body.study-b .pgb-band > .pgb-card:first-child { grid-column: 1 / -1; display: grid; grid-template-columns: 58% minmax(0, 1fr); }
+  body.study-b .pgb-card:first-child .pgb-ph { flex: 1 1 auto; aspect-ratio: auto; min-height: 360px; }
+  body.study-b .pgb-card:first-child .pgb-text { padding: 40px; }
+  body.study-b .pgb-card:first-child .pgb-text h2 { font-size: 36px; }
+}
