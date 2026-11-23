@@ -19,7 +19,7 @@ Sawyer chose these on November 22, 2026 from still pictures of the beaches guide
 
 **Place look (map with toggle).** For a guide whose main sections are each one place a reader could find on a map, each opening with labelled fact lines. Today that is the beaches guide only. It uses three catalog pieces, defined once in [the component catalog](component-patterns.md): Island locator, Fact strip and Disclosure. Four written exceptions to the frame above:
 
-1. *Map under the answer.* The `islandMap` key map is this guide's Instrument: one static, labelled figure under the quick answer. It is drawn from OpenStreetMap data and carries its credit.
+1. *Map under the answer.* The `islandMap` key map is this guide's Instrument: one static, labelled figure under the quick answer (from 1050px it sits beside the title and answer, the study's view a). It is drawn from OpenStreetMap data and carries its credit.
 2. *Comparison moved up.* The guide's comparison table sits under the map as the chooser and drops its section numeral; the rail lists it first, unnumbered.
 3. *Folded paragraphs.* In each place section, everything after the fact lines sits inside one Disclosure row labelled for the place type ("More about this beach"). The heading and the fact lines stay outside it. The quick answer, every heading, the topic sections, the FAQ and the comparison stay open.
 4. *Repeated small figure.* Each place section opens with a Fact strip panel: the `islandInset` with this place lit, beside its fact lines.

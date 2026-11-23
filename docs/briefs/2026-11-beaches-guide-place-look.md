@@ -3,10 +3,11 @@
 - lifecycle: active
 - scope: build the place look (`docs/design/planning-guides.md` -> Two guide
   looks; spec site#1043, build ticket site#1045) on
-  `/guides/anna-maria-island-beaches/`: an island map under the opening answer,
+  `/guides/anna-maria-island-beaches/`: an island map under the opening answer
+  (beside it from 1050px),
   the beach comparison moved up as the chooser, each beach's facts as a fact
   strip beside its own inset map, and each beach's longer reading folded under
-  "More about this beach". Sawyer approved building it (agent-issues#92) and
+  "More about <beach name>". Sawyer approved building it (agent-issues#92) and
   sees the deploy preview before it merges; it does not merge until he says
   keep.
 
@@ -15,8 +16,8 @@
 Layout lane: no new reader copy. Every sentence, fact and table cell is the
 page's current text, moved; the only new visible words are map labels
 (Gulf of Mexico, Tampa Bay, Longboat Pass, 1 mile, N), the key label "Beaches
-on the map", the OpenStreetMap credit and the fold label "More about this
-beach".
+on the map", the OpenStreetMap credit and the fold labels "More about" plus
+the beach's name, so a screen reader's list tells the five folds apart.
 
 - persona: a visitor planning an Anna Maria Island trip who wants to pick a beach by where it is, parking and crowds.
 - primary keyword: anna maria island beaches (unchanged)
