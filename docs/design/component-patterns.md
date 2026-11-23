@@ -114,7 +114,7 @@ selected may carry its recorded motion onto a production page:
 | Photographic folio — explored | Amicro CoverFlow: a dominant image with restrained neighboring depth | Same Dockside study; show the whole active photo and thumbnail access. Phone layout preserves photo size. No pointer tilt or parallax; reduced motion swaps directly. |
 | Responsive CTA — reference | Studio `Cta`: clear action hierarchy and an arrow that responds to intent | Explore gallery and editorial actions with Waterline colors, visible focus and stable labels. Press/hover cannot delay activation. No hold-to-book, decorative trails or hover-only meaning. |
 | Filter / selection pill — reference | Studio `Pagination`, Amicro pill controls: unmistakable active state and continuous selection feedback | Real filters or gallery choices. Preserve result counts and keyboard behavior; narrow screens wrap or offer reachable controls. Reduced motion changes selection immediately. Existing radius is not an experiment's limit. |
-| Disclosure — reference | Studio `Collapsible`: expansion feels connected to its trigger | Native details/summary for supporting facts; essential booking facts stay visible. Keep focus and touch targets. No spatial animation under reduced motion. |
+| Disclosure — explored | Studio `Collapsible`: expansion feels connected to its trigger | [Guide look study](experiments/guide-look-study/review.md), views `c` and `d`. Native details/summary for a section's longer reading; essential booking facts stay visible; no page uses it yet. No script. Limits and motion record: [Disclosure](#disclosure). |
 | Photo lightbox — reference | Studio `Lightbox`: continuity from thumbnail to a generous photo view | Native dialog, Escape, focus return, explicit close and original-image access. Phone content remains readable; keyboard and reduced-motion paths do not depend on animation. |
 | Island locator — explored | Herb Lester Associates' printed maps with a numbered key; nps.gov park "Maps" pages: the map comes before the prose and every number means one place | [Guide look study](experiments/guide-look-study/review.md), views `a` and `d`. Opens a guide about places on Anna Maria Island; no page uses it yet. Static markup, no script. Limits and motion record: [Island locator](#island-locator). |
 | Fact strip — explored | The mobile Wikipedia article layout: a facts box first, then the sections | [Guide look study](experiments/guide-look-study/review.md), views `c` and `d`. Opens a section with its labelled facts; no page uses it yet. Static markup, no script. Limits: [Fact strip](#fact-strip). |
@@ -245,6 +245,38 @@ Limits:
 - Keep a label to about 13 characters. On a 320px screen the rows beside a
   120px figure are 144px wide.
 - No motion, built or explored: nothing in it is pressable.
+
+### Disclosure
+
+The reader's job: open a section's longer reading when they want it, with its
+facts already in view. One macro in `src/_includes/partials/disclosure.njk`,
+styled by `src/css/disclosure.css`: `{% call disclosure(label) %}` around the
+page's own markup prints a native `details` row. Preview: the `disclosure`
+cards from `npm run design:sync`. Status `explored`, on the island locator's
+terms.
+
+Limits:
+
+- Closed until opened, with no script. The text stays in the page's HTML; keep
+  a fact the reader must not miss outside the row.
+- The label is the page's words and prints as written. Where a page repeats
+  rows, a label that names its subject tells them apart in a screen reader's
+  list.
+- The row is 56px tall and reaches 12px past the text on each side; its focus
+  ring reaches 19px. A container with less page padding, or one that clips
+  overflow, cuts the ring.
+- It draws a bottom rule and no top rule. `ends=true` is for the last thing in
+  a guide section: the next section's rule closes the row, and the section
+  drops its bottom padding where the browser has `:has()`.
+
+Motion record. Built: a pressed row at 99% in 120ms `out`, a fine-pointer hover
+fill in 200ms; the plus becomes a minus at once. Explored, not selected, not
+built (`experiments/guide-look-study/views/toggle.css`): the text grows out of
+the row, height and opacity over 200ms `out`, where the browser has
+`::details-content` and `interpolate-size`; the plus's upright folds away in
+200ms. Neither ships until Sawyer selects it from a working preview. Reduced
+motion: no press scale, the fill appears at once, and so would the explored
+opening.
 
 ### Craft and evidence
 

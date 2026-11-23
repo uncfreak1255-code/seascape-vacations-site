@@ -1,0 +1,48 @@
+/* Disclosure: a row that opens supporting text under it (docs/design/component-patterns.md -> Disclosure).
+   Linked by the page that uses the partial; no page does yet. Native details/summary, no script.
+   Colours, spacing and durations are Waterline scale literals (scripts/enforcement/waterline-tokens.test.js). */
+
+.dsc { border-bottom: 1px solid #CAD4CF; }
+/* The row reaches 12px past the text on each side, so its hover fill and focus ring clear the label.
+   The colour transition only ever runs for a fine pointer: the hover fill below is its one trigger. */
+.dsc > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 56px; margin: 0 -12px; padding: 0 12px; border-radius: 4px;
+  color: #173D42; font: 500 14px/1.4 Poppins, system-ui, sans-serif;
+  cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent;
+  transition: background-color 200ms cubic-bezier(.23, 1, .32, 1), transform 120ms cubic-bezier(.23, 1, .32, 1);
+}
+.dsc > summary::-webkit-details-marker { display: none; }
+.dsc > summary::marker { content: ""; }
+.dsc > summary:active { transform: scale(.99); }
+.dsc > summary:focus-visible { outline: 3px solid #A4533E; outline-offset: 4px; }
+
+/* A plus while closed, a minus while open. Drawn with borders, which forced colours keep. */
+.dsc > summary i { position: relative; flex: none; width: 16px; height: 16px; }
+.dsc > summary i::before,
+.dsc > summary i::after { content: ""; position: absolute; }
+.dsc > summary i::before { left: 0; top: 7px; width: 16px; border-top: 1.5px solid; }
+.dsc > summary i::after { left: 7px; top: 0; height: 16px; border-left: 1.5px solid; }
+.dsc[open] > summary i::after { display: none; }
+
+/* 12px above: the summary's focus ring ends 7px below the row. The paragraph gap names both
+   classes so it outranks a guide's own `.pg-step p + p` whichever sheet loads first. */
+.dsc-body { max-width: 68ch; padding: 12px 0 24px; }
+.dsc > .dsc-body > p + p { margin-top: 16px; }
+
+/* The last thing in a guide section: the next section's rule closes the row. */
+.dsc-ends { border-bottom: 0; }
+.pg-step:has(> .dsc-ends:last-child) { padding-bottom: 0; }
+
+@media (min-width: 900px) {
+  .dsc > summary { font-size: 15px; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dsc > summary:hover { background: #F0F3EE; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dsc > summary { transition: none; }
+  .dsc > summary:active { transform: none; }
+}

@@ -6,6 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const nunjucks = require('nunjucks');
 const partialEnv = require('../design/design-sync/partial-env');
+const assertStateMotionOnly = require('./css-motion');
 
 const root = path.resolve(__dirname, '../..');
 const read = (rel) => fs.readFileSync(path.join(root, rel), 'utf8');
@@ -84,20 +85,5 @@ test('the stylesheet\'s fixed sizes match the outline data', () => {
 // explored; docs/design/pattern-motion.md lets them ship only after Sawyer selects them from a
 // working preview. What remains is DESIGN.md's standard press and hover colour.
 test('the stylesheet ships no pattern motion, and every transition is switched off under reduced motion', () => {
-  const css = read('src/css/island-locator.css').replace(/\/\*[\s\S]*?\*\//g, '');
-  assert.doesNotMatch(css, /@keyframes|animation(-[a-z-]+)?\s*:/, 'an entrance needs a recorded selection first: docs/design/pattern-motion.md');
-
-  const rules = (text) => [...text.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(([, selector, body]) => ({
-    selectors: selector.split(',').map((s) => s.trim()),
-    transition: ((body.match(/(?:^|;)\s*transition\s*:\s*([^;]+)/) || [])[1] || '').trim(),
-  }));
-  const reducedRe = /@media \(prefers-reduced-motion: reduce\) \{((?:[^{}]*\{[^{}]*\})*)\s*\}/;
-  const off = rules((css.match(reducedRe) || [])[1] || '').filter((r) => r.transition === 'none').flatMap((r) => r.selectors);
-  const moving = rules(css.replace(reducedRe, '')).filter((r) => r.transition && r.transition !== 'none');
-
-  assert.deepEqual(moving.flatMap((r) => r.selectors).sort(), ['.isl-link::after', '.isl-txt'], 'expected only the press and the hover colour');
-  for (const { selectors, transition } of moving) {
-    assert.doesNotMatch(transition, /\b(all|width|height|top|left|margin|padding)\b/, `${selectors}: animate transform or colour only`);
-    for (const selector of selectors) assert.ok(off.includes(selector), `no "transition: none" under reduced motion for ${selector}`);
-  }
+  assertStateMotionOnly(read('src/css/island-locator.css'), ['.isl-link::after', '.isl-txt']);
 });

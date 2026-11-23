@@ -17,6 +17,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/css/island-locator.css` (copied to `waterline/`), `src/_includes/partials/island-locator.njk` | A catalog piece no page uses yet; its cards render the partial with sample places. Rules: "Island locator" in `waterline/component-patterns.md` |
 | `src/css/fact-strip.css` (copied to `waterline/`), `src/_includes/partials/fact-strip.njk` | A catalog piece no page uses yet; its cards render the partial with sample facts. Rules: "Fact strip" in `waterline/component-patterns.md` |
+| `src/css/disclosure.css` (copied to `waterline/`), `src/_includes/partials/disclosure.njk` | A catalog piece no page uses yet; its cards render the partial with sample prose. Rules: "Disclosure" in `waterline/component-patterns.md` |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
 | `docs/design/*.md` linked from `DESIGN.md` (copied to `waterline/`) | The rules `DESIGN.md` points to, including `cards-and-phone-surfaces.md` (phones, 700px and narrower) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
@@ -35,7 +36,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── fonts.css, fonts/        self-hosted faces
 │   ├── base.css, guest.css, motion.css, arrival.css, catalog.css, catalog-card.css,
 │   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css, activity-guide.css,
-│   │   trip-sheet.css (phone rules, 700px and narrower), island-locator.css and fact-strip.css (pieces no page uses yet)
+│   │   trip-sheet.css (phone rules, 700px and narrower), island-locator.css, fact-strip.css and disclosure.css (pieces no page uses yet)
 │   ├── shell.html               the real shared header + footer markup
 │   ├── cards-and-phone-surfaces.md and every other docs/design rule DESIGN.md links
 │   ├── design-review-workflow.md
@@ -49,6 +50,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── property-card, postcard-collection, scene-hero, footer
 │   ├── island-locator, island-locator-phone   (catalog piece, not on any page)
 │   ├── fact-strip, fact-strip-phone, fact-panel, fact-panel-phone   (catalog piece, not on any page)
+│   ├── disclosure, disclosure-phone   (catalog piece, not on any page)
 │   ├── logo, radii, spacing, rules-floors
 │   └── voice, iconography       (unchanged from before; still valid)
 ├── assets/                      PNG logos and site photography for email, slides, PDF

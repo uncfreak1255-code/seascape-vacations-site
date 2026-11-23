@@ -1,0 +1,23 @@
+{#
+  Disclosure: a row that opens supporting text under it. Native details/summary, no script.
+  Catalog entry and limits: docs/design/component-patterns.md -> Disclosure.
+  Styles: src/css/disclosure.css; a page that calls the macro links that sheet.
+
+  {% call disclosure(label) %} the supporting markup {% endcall %}
+
+  label  the row's words, printed as written. The partial adds none of its own.
+  ends   true when the row is the last thing in a guide section: the next section's
+         rule closes it, so the row draws none and the section drops its bottom padding.
+
+  Prints nothing when the label or the body is empty or only white space.
+#}
+{% macro disclosure(label, ends=false) %}
+{#- `caller` exists only under {% call %}. A trimmed body is a safe-string object, truthy even when empty, so test its length. #}
+{%- set body = (caller() | trim) if caller else "" %}
+{%- if (label | default("", true) | trim | length) > 0 and (body | length) > 0 -%}
+<details class="dsc{% if ends %} dsc-ends{% endif %}">
+  <summary><span>{{ label }}</span><i aria-hidden="true"></i></summary>
+  <div class="dsc-body">{{ body }}</div>
+</details>
+{%- endif %}
+{% endmacro %}
