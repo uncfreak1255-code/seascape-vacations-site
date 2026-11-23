@@ -3,6 +3,7 @@
 // Each renders the piece's real partial from src/_includes with fixture data, so the
 // card is the markup a page would get. Split out of build.js for the size gate.
 const partialEnv = require("./partial-env");
+const { absolutize } = require("./markup");
 
 module.exports = function patternCards({ card, read, inlined }) {
   const env = partialEnv();
@@ -67,4 +68,17 @@ ${step(4, "Holmes Beach", "", panel("linked", 4) + opened(more("holmes", ", ends
 ${step(5, "Bradenton Beach", "Inside a section · keeps its bottom rule", strip("one") + more("bradenton"))}`);
   card({ ...shared, css: dscCss, body: dscBody, file: "disclosure.html", name: "Disclosure", subtitle: "Explored · no page uses it yet · native details, no script", viewport: [1200, 1768] });
   card({ ...shared, css: dscCss, body: dscBody, file: "disclosure-phone.html", name: "Disclosure (phone)", subtitle: "393px · the whole row is the target", viewport: [393, 1861] });
+
+  // Photo lightbox: the real partial under a home page's body class and sheets, opened by the
+  // real script through the page's own opener, so each card is the modal a page would get.
+  const sample = require("./photo-lightbox-sample")(read);
+  const plbCss = [...["base", "guest", "motion", "arrival", "property-gallery", "photo-lightbox"].map(inlined), ".ds-plb{padding:24px}"];
+  const plbBody = `<main class="ds-plb"><p>The lightbox opens over this page from the button below.</p><button type="button" class="g-button" data-plb-open="${sample.id}" hidden>All photos</button></main>
+${absolutize(env.renderString('{% import "partials/photo-lightbox.njk" as plb %}{{ plb.photoLightbox(id, title, rooms, eyebrow) }}', sample))}
+<script>${read("src/assets/js/photo-lightbox.js")}</script>
+<script>document.querySelector("[data-plb-open]").click();</script>`;
+  const plb = { group: "Components", bodyClass: "guest-site", css: plbCss, body: plbBody };
+  card({ ...plb, file: "photo-lightbox.html", name: "Photo lightbox", subtitle: "Selected · no page uses it yet · native dialog, room by room", viewport: [1280, 800] });
+  card({ ...plb, file: "photo-lightbox-mid.html", name: "Photo lightbox (800px)", subtitle: "701 to 899px · the feed on paper", viewport: [800, 900] });
+  card({ ...plb, file: "photo-lightbox-phone.html", name: "Photo lightbox (phone)", subtitle: "393px · a feed of one room's photos", viewport: [393, 852] });
 };

@@ -1,0 +1,146 @@
+/* Photo lightbox: a home's photos room by room, in a native dialog (docs/design/photo-lightbox.md).
+   Linked by the page that uses the partial; no page does yet. Script: src/assets/js/photo-lightbox.js.
+   Colours, spacing and durations are Waterline scale literals (scripts/enforcement/waterline-tokens.test.js).
+   Three layouts: a feed of photos up to 899px, with the phone surface of
+   docs/design/cards-and-phone-surfaces.md at 700px and narrower, then a rail beside one large photo.
+   Every rule names two classes, so a host sheet's `.guest-site h2`, `p` or `button` cannot restyle it.
+   The focus ring and the picked photo's ring name one: on a guest page `.guest-site a:focus-visible`
+   and `button:focus-visible` in guest.css outrank them, and draw the same 3px clay ring at 4px.
+   `display` is never set on .plb itself: the browser hides a closed dialog with it. */
+
+:root:has(.plb[open]) { overflow: hidden; }
+
+.plb {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; overflow: hidden; overscroll-behavior: contain;
+  background: #F6F3EB; color: #173D42; font: 400 15px/1.55 Poppins, system-ui, sans-serif;
+}
+.plb, .plb * { box-sizing: border-box; }
+
+.plb .plb-frame {
+  display: grid; height: 100%; overflow: auto;
+  grid-template: "head close" auto "rooms rooms" auto "feed feed" minmax(120px, 1fr) "next next" auto / minmax(0, 1fr) auto;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.plb .plb-head { grid-area: head; min-width: 0; padding: 24px 24px 16px; }
+.plb .plb-eyebrow { margin: 0 0 4px; color: #52676A; font: 500 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+.plb .plb-title { margin: 0; color: #173D42; font: 400 clamp(28px, 3vw, 42px)/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
+
+/* --plb-hover is what a fine pointer's hover gives a control: a button its fill, a room its border. */
+.plb .plb-close { grid-area: close; align-self: start; margin: 0; padding: 24px 24px 16px 0; }
+.plb .plb-button {
+  --plb-hover: #52676A;
+  appearance: none; display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; margin: 0; padding: 14px 24px; border: 1px solid #173D42; border-radius: 4px;
+  background: #173D42; color: white; font: 500 14px/1.35 Poppins, system-ui, sans-serif;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+
+/* Rooms. Feed layout: choice chips, ink fill when selected. */
+.plb .plb-rooms { grid-area: rooms; display: flex; flex-wrap: wrap; gap: 8px; padding: 0 24px 16px; }
+.plb .plb-room {
+  --plb-hover: #173D42;
+  appearance: none; position: relative; display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; margin: 0; padding: 0 16px; border: 1px solid #CAD4CF; border-radius: 4px;
+  background: transparent; color: #173D42; font: 500 13px/1.4 Poppins, system-ui, sans-serif;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.plb .plb-room-count { color: #52676A; font-weight: 400; }
+.plb .plb-room[aria-pressed="true"] { border-color: #173D42; background: #173D42; color: #F6F3EB; }
+.plb .plb-room[aria-pressed="true"] .plb-room-count { color: inherit; }
+
+.plb .plb-button, .plb .plb-room, .plb .plb-step {
+  transition: background-color 200ms cubic-bezier(.23, 1, .32, 1), border-color 200ms cubic-bezier(.23, 1, .32, 1), color 200ms cubic-bezier(.23, 1, .32, 1), transform 120ms cubic-bezier(.23, 1, .32, 1);
+}
+.plb .plb-button:active, .plb .plb-room:active, .plb .plb-step:active { transform: scale(.97); }
+
+/* The feed: one room's photos, each a link to its full-size file. */
+.plb .plb-feed { grid-area: feed; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 24px; border-top: 1px solid #CAD4CF; }
+.plb .plb-photos { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
+.plb .plb-photo { display: block; background: #F0F3EE; color: inherit; }
+.plb .plb-photo img { display: block; width: 100%; max-width: none; height: auto; }
+.plb .plb-caption { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 8px 0 0; color: #173D42; font: 500 15px/1.55 Poppins, system-ui, sans-serif; }
+.plb .plb-count { margin-left: auto; color: #52676A; font-weight: 400; font-size: 13px; white-space: nowrap; }
+
+.plb .plb-next { grid-area: next; padding: 12px 24px 24px; border-top: 1px solid #CAD4CF; }
+.plb .plb-next .plb-button { display: flex; width: 100%; }
+
+.plb .plb-stage { display: none; }
+
+@media (max-width: 700px) {
+  .plb { background: white; }
+  .plb .plb-head { padding: 16px 16px 14px; }
+  .plb .plb-title { font-size: 28px; }
+  .plb .plb-close { padding: 16px 16px 14px 0; }
+  .plb .plb-close .plb-button { --plb-hover: #CAD4CF; min-height: 44px; padding: 10px 18px; border-color: transparent; border-radius: 999px; background: #F0F3EE; color: #173D42; }
+
+  /* Rooms become one pill track; each count stays in the button's name, out of sight. */
+  .plb .plb-rooms { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; margin: 0 16px 14px; padding: 4px; border-radius: 999px; background: #F0F3EE; }
+  .plb .plb-room { --plb-hover: transparent; justify-content: center; padding: 0 4px; border-color: transparent; border-radius: 999px; }
+  .plb .plb-room[aria-pressed="true"] { border-color: transparent; color: white; }
+  .plb .plb-room-count { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .plb .plb-feed { padding: 16px; }
+  .plb .plb-photos { gap: 20px; }
+  .plb .plb-photo, .plb .plb-photo img { border-radius: 16px; }
+  .plb .plb-photo img { outline: 1px solid oklch(0 0 0 / .1); outline-offset: -1px; }
+  .plb .plb-next { padding: 12px 16px 20px; }
+  .plb .plb-next .plb-button { border-radius: 12px; font-size: 16px; }
+}
+
+@media (min-width: 900px) {
+  .plb .plb-frame { grid-template: "head stage" auto "rooms stage" auto "feed stage" minmax(96px, 1fr) "close stage" auto / 320px minmax(0, 1fr); }
+  .plb .plb-head { padding: 40px 32px 0 40px; }
+  .plb .plb-title { font-size: 42px; }
+
+  /* Rooms become a ruled list in display type; the room on show is clay italic. Each row owns the
+     rule under it, so a hover darkens the rule under the name the pointer is on, not the one above. */
+  .plb .plb-rooms { display: block; margin: 24px 32px 0 40px; padding: 0; border-top: 1px solid #CAD4CF; }
+  .plb .plb-room { display: flex; align-items: baseline; justify-content: space-between; width: 100%; min-height: 56px; padding: 12px 0; border: 0; border-bottom: 1px solid #CAD4CF; border-radius: 0; text-align: left; }
+  .plb .plb-room[aria-pressed="true"] { --plb-hover: #CAD4CF; border-color: #CAD4CF; background: transparent; color: #173D42; }
+  .plb .plb-room-name { font: 400 26px/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
+  .plb .plb-room[aria-pressed="true"] .plb-room-name { color: #A4533E; font-style: italic; }
+  .plb .plb-room-count, .plb .plb-room[aria-pressed="true"] .plb-room-count { color: #52676A; font-size: 13px; }
+  .plb .plb-room:active { transform: scale(.99); }
+
+  /* The feed becomes the rail's small photos; one picks the large photo. */
+  .plb .plb-feed { padding: 24px 32px 8px 40px; border-top: 0; }
+  .plb .plb-photos { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .plb .plb-photo { height: 80px; }
+  .plb .plb-photo img { height: 100%; object-fit: cover; }
+  .plb [aria-current="true"] { outline: 2px solid #173D42; outline-offset: 2px; }
+  .plb .plb-caption, .plb .plb-next { display: none; }
+  .plb .plb-close { align-self: end; padding: 16px 32px 32px 40px; }
+
+  /* The stage: one photo, whole, in a 3:2 box no taller than the window leaves room for. */
+  .plb .plb-stage { grid-area: stage; display: flex; flex-direction: column; gap: 20px; min-width: 0; padding: 40px; border-left: 1px solid #CAD4CF; }
+  .plb .plb-stage > * { width: min(100%, calc((100vh - 160px) * 1.5)); width: min(100%, calc((100dvh - 160px) * 1.5)); }
+  .plb .plb-stage-photo { display: block; aspect-ratio: 3 / 2; background: #F0F3EE; color: inherit; }
+  .plb .plb-stage-photo img { display: block; width: 100%; max-width: none; height: 100%; object-fit: contain; }
+  .plb .plb-stage-bar { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .plb .plb-stage-text { min-width: 0; margin: 0; }
+  .plb .plb-stage-label { display: block; color: #A4533E; font: italic 400 30px/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
+  .plb .plb-stage-position { display: block; color: #52676A; font-size: 13px; line-height: 1.65; }
+  .plb .plb-steps { display: flex; flex: none; gap: 8px; }
+  .plb .plb-step {
+    --plb-hover: #CAD4CF;
+    appearance: none; display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; margin: 0; padding: 0; border: 1px solid #173D42; border-radius: 4px;
+    background: transparent; color: #173D42; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* After the small photo's ring above, with the same weight, so the focus ring replaces it. */
+.plb :focus-visible { outline: 3px solid #A4533E; outline-offset: 4px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .plb .plb-button:hover { border-color: var(--plb-hover); background: var(--plb-hover); }
+  .plb .plb-room:hover { border-color: var(--plb-hover); }
+  .plb .plb-step:hover { background: var(--plb-hover); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plb .plb-button, .plb .plb-room, .plb .plb-step { transition: none; }
+  .plb .plb-button:active, .plb .plb-room:active, .plb .plb-step:active { transform: none; }
+}

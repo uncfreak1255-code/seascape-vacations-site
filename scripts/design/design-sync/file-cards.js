@@ -60,6 +60,9 @@ const NOT_FILED = Object.freeze([
   "fact-panel-phone",
   "disclosure",
   "disclosure-phone",
+  "photo-lightbox",
+  "photo-lightbox-mid",
+  "photo-lightbox-phone",
 ]);
 
 function publishedPath(stem) {

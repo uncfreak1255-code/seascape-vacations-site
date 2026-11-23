@@ -1,0 +1,11 @@
+{
+  "note": "Sample rooms for the photo lightbox cards and tests. Each number is a Dockside Dreams photo file in src/_data/properties-fallback.json, which supplies the path, size and alt text. The grouping into rooms is this sample's own: property truth has no room field yet, and a home page needs one before it can use the piece.",
+  "home": "dockside-dreams",
+  "eyebrow": "Walk through",
+  "rooms": [
+    { "name": "Outside", "photos": ["02", "04", "39", "01"] },
+    { "name": "Living", "photos": ["18", "22", "20", "12"] },
+    { "name": "Bedrooms", "photos": ["24", "28", "31", "33"] },
+    { "name": "Bath", "photos": ["26"] }
+  ]
+}
