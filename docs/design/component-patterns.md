@@ -116,6 +116,7 @@ selected may carry its recorded motion onto a production page:
 | Filter / selection pill — reference | Studio `Pagination`, Amicro pill controls: unmistakable active state and continuous selection feedback | Real filters or gallery choices. Preserve result counts and keyboard behavior; narrow screens wrap or offer reachable controls. Reduced motion changes selection immediately. Existing radius is not an experiment's limit. |
 | Disclosure — reference | Studio `Collapsible`: expansion feels connected to its trigger | Native details/summary for supporting facts; essential booking facts stay visible. Keep focus and touch targets. No spatial animation under reduced motion. |
 | Photo lightbox — reference | Studio `Lightbox`: continuity from thumbnail to a generous photo view | Native dialog, Escape, focus return, explicit close and original-image access. Phone content remains readable; keyboard and reduced-motion paths do not depend on animation. |
+| Island locator — explored | Herb Lester Associates' printed maps with a numbered key; nps.gov park "Maps" pages: the map comes before the prose and every number means one place | [Guide look study](experiments/guide-look-study/review.md), views `a` and `d`. Opens a guide about places on Anna Maria Island; no page uses it yet. Static markup, no script. Limits and motion record: [Island locator](#island-locator). |
 | Editorial decision card — existing catalog pattern | Studio `EditorialDecisionCard`: direct answer with source context nearby | Keep the constraints above; it supplements complete comparison facts rather than replacing them. |
 
 Studio inspected November 17, 2026 at
@@ -162,6 +163,46 @@ odd final pages, rapid input, resizing and reduced-motion changes mid-turn.
 Real-device touch feel remains an implementation check, not a claim from the
 emulated phone proof. Apply Emil's relevant guidance through the existing Site
 specialist and critic workflow.
+
+### Island locator
+
+The reader's job: see where each place sits on the island before reading about
+it, and jump to the one they want. Two forms, both macros in
+`src/_includes/partials/island-locator.njk`, styled by `src/css/island-locator.css`:
+
+- `islandMap(island, places)`: the key map that opens the guide. Each numbered
+  name is a link to that place's section.
+- `islandInset(island, places, own)`: a small outline with one place lit, set
+  beside that place's facts.
+
+`island` is the global data `islandOutline`; `places` is the page's own list of
+`{ name, href, x, y }` in reading order. The page that calls a macro links the
+sheet. Preview: the `island-locator` cards from `npm run design:sync`.
+
+Limits:
+
+- The outline is OpenStreetMap data (ODbL). Its credit prints wherever the
+  outline appears; `islandMap` prints it, a page showing only insets adds it.
+- Every marker position needs a recorded source, as the study's `island-data.json` has.
+- The drawing is hidden from assistive technology, so each place's text says
+  where it is. The key is an ordinary list of links.
+- Wide screens (1050px and up) put the names beside the map: keep a name to
+  about 16 characters and places at least 44px apart on the 560px-tall map.
+  Narrower screens list the names in rows of at least 48px beside a smaller
+  island, where markers closer than 30px touch; under about 360px a two-word
+  name wraps onto two lines.
+- Keyboard focus follows the numbers. On wide screens the names sit by
+  latitude, so focus moves top to bottom only when the places are numbered
+  north to south; number them that way when the content allows.
+
+Motion record. Built, inside the default three jobs' scale: a pressed name
+scales to 97% in 120ms `out`; on a fine pointer, hover grows the marker to 120%
+in 150ms and darkens its line in 200ms. Reduced motion removes the scaling.
+Explored, not selected, not built: the markers arrive once in reading order,
+each from opacity 0 and 90% scale over 300ms `out`, delayed 0, 70, 130, 180 and
+220ms, with the names readable first (`experiments/guide-look-study/views/a/view.css`).
+300ms is off the duration scale, and Sawyer chose this look from still pictures,
+so [pattern motion](pattern-motion.md) does not yet let the entrance ship.
 
 ### Craft and evidence
 

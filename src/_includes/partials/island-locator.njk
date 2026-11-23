@@ -1,0 +1,40 @@
+{#
+  Island locator: Anna Maria Island with numbered places. Static markup, no script.
+  Catalog entry and limits: docs/design/component-patterns.md -> Island locator.
+  Styles: src/css/island-locator.css; a page that calls a macro links that sheet.
+
+  island  the global data `islandOutline` (src/_data/islandOutline.json)
+  places  [{ name, href, x, y }] in reading order; x and y are in the outline's units
+  own     1-based position in `places` of the place the inset lights
+
+  islandMap prints the OpenStreetMap credit the outline requires. A page that shows
+  an inset without the key map prints the same credit near it.
+#}
+{% macro islandMap(island, places) %}
+<div class="isl-map">
+  <div class="isl-plot">
+    <div class="isl-stage" aria-hidden="true">
+      <svg class="isl-island" viewBox="0 0 {{ island.width }} {{ island.height }}" focusable="false"><path d="{{ island.path }}"/></svg>
+      <span class="isl-water isl-gulf">Gulf of Mexico</span>
+      <span class="isl-water isl-bay">Tampa Bay</span>
+      <span class="isl-water isl-pass">Longboat Pass</span>
+      <span class="isl-scale"><i style="--m:{{ (island.mile / island.width) | round(4) }}"></i>1 mile</span>
+      <span class="isl-north"><svg viewBox="0 0 12 16" width="12" height="16" focusable="false"><path d="M6 0L12 15L6 11.5L0 15Z"/></svg>N</span>
+    </div>
+    <nav class="isl-key" aria-label="Places on the map">
+      {%- for p in places %}
+      {%- set n = ("0" if loop.index < 10 else "") ~ loop.index %}
+      <a class="isl-link" href="{{ p.href }}" style="--fx:{{ (p.x / island.width) | round(4) }};--fy:{{ (p.y / island.height) | round(4) }}"><span class="isl-dot" data-n="{{ n }}" aria-hidden="true"></span><span class="isl-txt"><span class="isl-n">{{ n }}</span> <span class="isl-name">{{ p.name }}</span></span></a>
+      {%- endfor %}
+    </nav>
+  </div>
+  <div class="isl-credit">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></div>
+</div>
+{% endmacro %}
+
+{% macro islandInset(island, places, own) %}
+{#- The box is padded by the lit marker's radius and stroke, so a place at the shore stays inside it. #}
+<svg class="isl-inset" viewBox="-88 -88 {{ island.width + 176 }} {{ island.height + 176 }}" aria-hidden="true" focusable="false"><path d="{{ island.path }}"/>
+  {%- for p in places %}{% if loop.index != own %}<circle class="isl-other" cx="{{ p.x }}" cy="{{ p.y }}" r="34"/>{% endif %}{% endfor %}
+  {%- set o = places[own - 1] %}<circle class="isl-own" cx="{{ o.x }}" cy="{{ o.y }}" r="80"/></svg>
+{% endmacro %}
