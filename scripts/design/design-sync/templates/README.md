@@ -69,7 +69,7 @@ The pre-Waterline layers that used to live here (v1 `colors_and_type.css`, v2 `d
 
 **Photography is evidence.** Only an actual photograph of the named property may illustrate it. A destination scene may illustrate a clearly named destination. No generated, retouched or substituted rooms. A missing image shows a neutral named unavailable state, never another home.
 
-**Motion.** Three jobs only: identify a newly selected home, give the collection tactile depth, connect a photo to its detail page. Browser-native, progressive, never required, never auto-rotating. Reduced-motion and no-JavaScript paths stay complete.
+**Motion.** Three jobs by default: identify a newly selected home, give the collection tactile depth, connect a photo to its detail page. A catalog pattern Sawyer selected adds only the motion its catalog entry records (`waterline/pattern-motion.md`). Browser-native, progressive, never required, never auto-rotating. Reduced-motion and no-JavaScript paths stay complete.
 
 **Trust.** Facts from canonical property data; unknown is not false. No universal savings, flexible-cancellation, rating or response-time claims without evidence. Capacity matching is not availability. Bradenton mainland is not Anna Maria Island; only Dockside Dreams has the dock.
 
