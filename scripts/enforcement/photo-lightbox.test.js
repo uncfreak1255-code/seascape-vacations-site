@@ -143,6 +143,21 @@ test('a phone gets the phone surface: white canvas, 16px photos with the inner o
   assert.match(css, /@media \(min-width: 900px\) \{\s*\.plb \.plb-frame \{ grid-template: "head stage"/);
 });
 
+test('a fine pointer\'s hover turns a room\'s border ink: a chip\'s, and the rule under a rail row; the picked row and the pills keep theirs', () => {
+  assert.match(ruleBody('.plb .plb-room'), /--plb-hover: #173D42;/);
+  assert.match(css, /@media \(hover: hover\) and \(pointer: fine\) \{[^@]*\.plb \.plb-room:hover \{ border-color: var\(--plb-hover\); \}/);
+  assert.match(css.match(/@media \(max-width: 700px\) \{([\s\S]*?)\n\}/)[1], /\.plb \.plb-room \{ --plb-hover: transparent;/);
+  const wide = css.slice(css.indexOf('@media (min-width: 900px)'), css.indexOf('.plb :focus-visible'));
+  // Each rail row owns the rule under it, so the hover marks the name the pointer is on.
+  assert.match(wide, /\.plb \.plb-rooms \{[^}]*border-top: 1px solid #CAD4CF; \}/);
+  const row = wide.match(/\.plb \.plb-room \{([^}]*)\}/)[1];
+  assert.match(row, /border: 0; border-bottom: 1px solid #CAD4CF;/);
+  assert.doesNotMatch(row, /--plb-hover/, 'an unpicked rail row keeps the ink hover');
+  assert.match(wide, /\.plb \.plb-room\[aria-pressed="true"\] \{ --plb-hover: #CAD4CF; border-color: #CAD4CF;/);
+  // A picked chip's label fades with its fill, as the shipped chips' does (src/css/motion.css).
+  assert.match(css, /transition: background-color 200ms [^;]*\), color 200ms /);
+});
+
 // The canvas Sawyer picked also had a sliding room pill, photos rising in, a fading large photo,
 // scroll snapping and a hidden scrollbar. docs/design/pattern-motion.md lets pattern motion ship
 // only after he selects it from a working preview; docs/design/photo-lightbox.md records it.

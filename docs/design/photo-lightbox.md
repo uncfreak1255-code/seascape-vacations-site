@@ -53,7 +53,9 @@ with its own design review and content gate.
   the partial's own words. A photo's `label` and `alt` and the room names are
   the page's, and print escaped.
 - The phone's pill track fits four short room names at 320px; the sample's
-  longest is "Bedrooms". More rooms or longer names need another switcher.
+  longest is "Bedrooms". More rooms or longer names need another switcher. The
+  rail has been rendered with four rooms only; each extra room takes 56px from
+  the small photos.
 - A room needs a name and one photo with `src` and `alt`; others are left out.
   One room prints no switcher, one photo no step buttons.
 - Escape, the Close button and the return of focus to the opener are the
@@ -90,13 +92,24 @@ Where it and the law differ on a state or a surface, the law wins:
 | Picked small photo in a 2px clay ring | A 2px ink ring | Clay at 3px is the focus ring; two clay rings read as one state |
 | Phone focus ring offset 3px | 4px | [Scales, states and forms](scales-states-forms.md) |
 | Phone Close: a white pill on a shadow ring | A soft-fill pill, no shadow | The phone rules name the controls that take the ring, and Close is not one |
+| Small photos are buttons named "room, photo N of M" | Links to the full-size file, named by the photo's `alt` | One list serves the feed and the rail, and a modified click opens the file; the position is in the caption |
+| No hover on any control | Hover on the buttons, chips and rail rows | The shipped controls' fine-pointer feedback |
+| The dialog fills the window edge to edge | Padded by the safe-area insets | A full-window dialog has to clear a phone's notch and home bar |
 
 ## Motion record
 
 Built: the state feedback `DESIGN.md` gives every control. A pressed button or
-room scales to 97% (99% for a rail row) in 120ms `out`; a fine pointer's hover
-fill or border changes in 200ms. Reduced motion: no scale, and the change is
-immediate. A room, a photo and the dialog itself change at once.
+room scales to 97% (99% for a rail row) in 120ms `out`. A colour change on
+these controls takes 200ms `out`. On a fine pointer's hover Close and Next fill
+with muted ink, a step button takes the soft fill, and a room's border goes
+ink: a chip's whole border, or the rule under a rail row. The picked rail row
+has no hover, since a press there does nothing. The phone's pills have none:
+they have no border, and no hover is designed for them. When a room is picked
+in the feed, its chip's or pill's fill, border and label make the same 200ms
+change; the catalog page's filter chips fade those three too
+(`src/css/motion.css`). Reduced motion: no scale, and every change is
+immediate. A room's photos, the rail's picked room, the large photo and the
+dialog itself change at once.
 
 In the canvas's source and not built; the record of Sawyer's choice does not
 say he saw any of it move:

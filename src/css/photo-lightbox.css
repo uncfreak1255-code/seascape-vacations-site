@@ -27,7 +27,7 @@
 .plb .plb-eyebrow { margin: 0 0 4px; color: #52676A; font: 500 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
 .plb .plb-title { margin: 0; color: #173D42; font: 400 clamp(28px, 3vw, 42px)/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
 
-/* --plb-hover is the fill a fine pointer's hover gives the button. */
+/* --plb-hover is what a fine pointer's hover gives a control: a button its fill, a room its border. */
 .plb .plb-close { grid-area: close; align-self: start; margin: 0; padding: 24px 24px 16px 0; }
 .plb .plb-button {
   --plb-hover: #52676A;
@@ -51,7 +51,7 @@
 .plb .plb-room[aria-pressed="true"] .plb-room-count { color: inherit; }
 
 .plb .plb-button, .plb .plb-room, .plb .plb-step {
-  transition: background-color 200ms cubic-bezier(.23, 1, .32, 1), border-color 200ms cubic-bezier(.23, 1, .32, 1), transform 120ms cubic-bezier(.23, 1, .32, 1);
+  transition: background-color 200ms cubic-bezier(.23, 1, .32, 1), border-color 200ms cubic-bezier(.23, 1, .32, 1), color 200ms cubic-bezier(.23, 1, .32, 1), transform 120ms cubic-bezier(.23, 1, .32, 1);
 }
 .plb .plb-button:active, .plb .plb-room:active, .plb .plb-step:active { transform: scale(.97); }
 
@@ -94,10 +94,11 @@
   .plb .plb-head { padding: 40px 32px 0 40px; }
   .plb .plb-title { font-size: 42px; }
 
-  /* Rooms become a ruled list in display type; the room on show is clay italic. */
-  .plb .plb-rooms { display: block; margin: 24px 32px 0 40px; padding: 0; border-bottom: 1px solid #CAD4CF; }
-  .plb .plb-room { --plb-hover: #CAD4CF; display: flex; align-items: baseline; justify-content: space-between; width: 100%; min-height: 56px; padding: 12px 0; border: 0; border-top: 1px solid #CAD4CF; border-radius: 0; text-align: left; }
-  .plb .plb-room[aria-pressed="true"] { border-color: #CAD4CF; background: transparent; color: #173D42; }
+  /* Rooms become a ruled list in display type; the room on show is clay italic. Each row owns the
+     rule under it, so a hover darkens the rule under the name the pointer is on, not the one above. */
+  .plb .plb-rooms { display: block; margin: 24px 32px 0 40px; padding: 0; border-top: 1px solid #CAD4CF; }
+  .plb .plb-room { display: flex; align-items: baseline; justify-content: space-between; width: 100%; min-height: 56px; padding: 12px 0; border: 0; border-bottom: 1px solid #CAD4CF; border-radius: 0; text-align: left; }
+  .plb .plb-room[aria-pressed="true"] { --plb-hover: #CAD4CF; border-color: #CAD4CF; background: transparent; color: #173D42; }
   .plb .plb-room-name { font: 400 26px/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
   .plb .plb-room[aria-pressed="true"] .plb-room-name { color: #A4533E; font-style: italic; }
   .plb .plb-room-count, .plb .plb-room[aria-pressed="true"] .plb-room-count { color: #52676A; font-size: 13px; }
