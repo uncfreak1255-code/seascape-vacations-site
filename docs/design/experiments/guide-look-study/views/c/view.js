@@ -1,17 +1,6 @@
 // View c, Fact strips. Moves existing elements only; the two toggles are the only new text.
 (function () {
-  function toggle(label, className) {
-    var details = document.createElement('details');
-    details.className = className;
-    var summary = document.createElement('summary');
-    var text = document.createElement('span');
-    text.textContent = label;
-    var mark = document.createElement('i');
-    mark.setAttribute('aria-hidden', 'true');
-    summary.append(text, mark);
-    details.append(summary);
-    return details;
-  }
+  var toggle = window.studyToggle; // ../toggle.js
 
   // Opening: the first paragraph stays as the lede, the second goes behind a toggle.
   var intro = document.querySelector('.pg-open .guide-intro');

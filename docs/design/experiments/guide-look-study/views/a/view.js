@@ -154,6 +154,8 @@
   fetch('/__study/island-data.json')
     .then(function (res) { if (!res.ok) throw new Error('no map data'); return res.json(); })
     .then(buildMap)
+    // A view built on this one (view d) finishes the page here, before the ready flag is set.
+    .then(function () { if (window.studyAfterMap) window.studyAfterMap(); })
     .catch(report)
     .then(done, done);
 })();

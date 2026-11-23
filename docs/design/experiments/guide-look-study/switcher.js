@@ -5,6 +5,7 @@
     ['a', 'A · Map first'],
     ['b', 'B · Photo cards'],
     ['c', 'C · Fact strips'],
+    ['d', 'D · Map with toggle'],
   ];
   var current = document.body.getAttribute('data-study-view') || 'control';
   var index = Math.max(0, views.findIndex(function (view) { return view[0] === current; }));

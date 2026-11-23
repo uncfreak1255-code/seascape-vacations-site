@@ -1,6 +1,6 @@
 // Records a short clip of the moving moment in each view that has one, for the pull request.
 //
-//   node docs/design/experiments/guide-look-study/record.cjs <out_dir> [a|c ...]
+//   node docs/design/experiments/guide-look-study/record.cjs <out_dir> [a|c|d ...]
 //
 // Writes <out_dir>/motion-<view>.webm and, when ffmpeg is installed, motion-<view>.gif.
 // A recording shows that the motion plays, not how it feels on a real phone.
@@ -56,11 +56,17 @@ const SCRIPTS = {
     await row.tap();
     await pause(page, 900);
   }],
+  // Map with toggle: the same row, under the beach's map panel. The map is built from fetched
+  // data and moves the page, so wait for it before scrolling.
+  d: [PHONE, async (page) => {
+    await page.waitForFunction(() => document.documentElement.dataset.studyReady === '1');
+    await SCRIPTS.c[1](page);
+  }],
 };
 
 (async () => {
   const [out, ...asked] = process.argv.slice(2);
-  if (!out) throw new Error('usage: record.cjs <out_dir> [a|c ...]');
+  if (!out) throw new Error('usage: record.cjs <out_dir> [a|c|d ...]');
   const views = asked.length ? asked : Object.keys(SCRIPTS);
   const unknown = views.filter((view) => !SCRIPTS[view]);
   if (unknown.length) throw new Error(`no moving moment to record for: ${unknown.join(', ')} (views with one: ${Object.keys(SCRIPTS).join(', ')})`);

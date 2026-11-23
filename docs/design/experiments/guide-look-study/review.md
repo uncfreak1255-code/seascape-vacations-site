@@ -207,8 +207,62 @@ type-only guide frame.
 - The pier photo's author asks reusers to send him a message. It was not sent:
   contacting a third party is Sawyer's call, and only matters if `b` ships.
 
+## View `d`, map with toggle (added 2026-11-22, #1040)
+
+Everything above this heading is the record of the first study and is left as
+it was. Sawyer then picked the map ("I like the map") and approved its toggle
+("Yes to both", agent-issues #90). View `d` draws that pick: view `a` down to
+the first beach; in each beach, the paragraphs that are not fact lines sit
+behind "More about this beach" under the map panel, and the section ends at
+that row. From 900px the section is one column (`a` has prose left, panel
+right); from 1200px each fact's label sits beside its line.
+
+Checker, every view, with `d` and the shared toggle in place:
+
+    PASS self-test: the contract caught all 16 deliberate breaks
+    PASS a (A · Map first) at 1440, 393, 375, 360, each with motion on, reduced and off
+    PASS b (B · Photo cards) at 1440, 393, 375, 360, each with motion on, reduced and off
+    PASS c (C · Fact strips) at 1440, 393, 375, 360, each with motion on, reduced and off
+    PASS d (D · Map with toggle) at 1440, 393, 375, 360, each with motion on, reduced and off
+    PASSED
+
+Building `d` moved `c`'s toggle into `views/toggle.css` and `views/toggle.js`
+and added one hook line to `a`'s script. A fresh run writes the same
+`a`, `b`, `c` and `control` screenshots as the files already in `proof/`, byte
+for byte (18 files), so those views and their verdicts stand.
+
+Critic: one fresh read of `d` by an independent critic (the
+`seascape-design-critic` method), one round. Verdict: "Approved with edge",
+confidence medium, no blockers. "Not plain Approved: it has no photography, and
+next to the homepage it reads as a well-made reference sheet, not a place." On
+a phone it judged `d` better than `a` (same map and facts, a shorter page: about
+12,000px against 14,800) and better than `c` (which loses the "where"). Edges it
+named, none fixed here:
+
+- `a`'s two opening edges carry over (rougher outline on the opening map; the
+  lit marker hangs about 14px left of the text column on a phone).
+- No picture in the beach half; five beaches use one module.
+- A beach with one fact line (Bradenton Beach) leaves empty paper beside or
+  under its map.
+- At 1440 the plus mark is small and far from its label.
+- The closed row does not say what is inside. The critic suggests a label that
+  names the beach. The label is copy Sawyer approved, so it is a spec question.
+- A production build must put the paragraphs inside the toggle in the built
+  HTML. This study moves them with a script.
+
+Motion: nothing new. `d` plays `a`'s marker arrival and `c`'s toggle, both
+reviewed above. `proof/motion-d.gif` shows the toggle on a phone. Not checked
+for `d`: the same list as under "Not checked", and the critic did not watch the
+motion.
+
 ## Proof
 
+View `d`: `proof/d-390-screen-2-map.png`, `-3-beach-closed.png` and
+`-4-beach-open.png` are three phone screens (the map, the first beach, the first
+beach with its row open); `d-1440-pg1.png` is the first beach on a desktop;
+`d-390-top.jpg`, `d-1440-top.jpg` and the `d-*-full.jpg` files show the rest.
+
+From the first study, without `d`:
 `proof/board-phone.jpg` shows the four views side by side on a phone.
 `proof/<view>-390-top.jpg`, `-1440-top.jpg` and the `-full.jpg` files show each
 view; `c-*-open-full.jpg` shows `c` with every row open. `proof/motion-a.gif`
