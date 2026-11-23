@@ -18,8 +18,12 @@ const NOT_INSTALLED = ["animate-expo", "ask-sonner", "pick-ui-library", "write-s
 const NOTE_LAW = "In this repo, `DESIGN.md` decides which motion ships: browser-native CSS, Web Animations and view transitions, no animation library, and a complete static path under reduced motion.";
 const NOTE_AUTHORITY = "This skill adds no authority: edit files, start a server or dispatch a subagent only when your task covers it, follow `AGENTS.md`, `CLAUDE.md` and `DESIGN.md` as instructions, and keep fixtures, prototypes and plans out of `src/`, which publishes.";
 const NOTE_MISSING = "`animate-expo`, `ask-sonner`, `pick-ui-library` and `write-swift` are not installed here";
+const NOTE_PUBLIC = "This repository is public: the dated comment under a rule publishes the words it quotes";
 // Claude Code lists each auto-invoked skill's description in every session, inside one shared budget.
+// The descriptions this repo wrote stay at its 220-character cap; mobile-native keeps upstream's.
 const LISTED_DESCRIPTION_BUDGET = 3000;
+const DESCRIPTION_CAP = 220;
+const UPSTREAM_DESCRIPTION = ["mobile-native"];
 // Soft hyphen, zero-width space and non-joiner, direction marks and overrides, word joiner and the
 // invisible operators, byte-order mark. The zero-width joiner (0x200d) stays legal: emoji use it.
 const INVISIBLE_CODE_POINTS = [
@@ -58,6 +62,7 @@ test("each Emil skill opens with the repo note and never asks for a greeting-onl
     const note = afterTitle.slice(0, afterTitle.indexOf("\n"));
     assert.ok(note.startsWith(NOTE_LAW), `${skill} states the DESIGN.md motion law under its title`);
     assert.ok(note.includes(NOTE_AUTHORITY), `${skill} says it adds no authority`);
+    if (skill === "learn-taste") assert.ok(note.includes(NOTE_PUBLIC), "learn-taste says the repository is public");
     assert.doesNotMatch(body, /Initial Response|respond only with|Do not provide any other information/i, `${skill} has no greeting-only block`);
   }
 });
@@ -103,7 +108,11 @@ test("the descriptions Claude lists every session stay inside their budget", () 
     const { frontmatter } = split(skill);
     const description = (frontmatter.match(/^description: (.+)$/m) || [])[1];
     assert.ok(description, `${skill} has a one-line description`);
-    if (!/^disable-model-invocation: true$/m.test(frontmatter)) listed += description.length;
+    assert.ok(!NOT_INSTALLED.some((missing) => description.includes(missing)), `${skill} description names a skill that is not installed`);
+    if (/^disable-model-invocation: true$/m.test(frontmatter)) continue;
+    listed += description.length;
+    if (UPSTREAM_DESCRIPTION.includes(skill)) continue;
+    assert.ok(description.length <= DESCRIPTION_CAP, `${skill} description is ${description.length} characters, over ${DESCRIPTION_CAP}`);
   }
   assert.ok(listed <= LISTED_DESCRIPTION_BUDGET, `auto-invoked descriptions total ${listed} characters, over ${LISTED_DESCRIPTION_BUDGET}`);
 });

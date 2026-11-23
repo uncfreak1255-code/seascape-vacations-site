@@ -70,34 +70,46 @@ Upstream's other four are left out, because this site is web-only and takes no
 component library: animate-expo, ask-sonner, pick-ui-library, write-swift.
 
 Invocation is upstream's. ask-emil, learn-taste, prototype and review-animations
-run only when their name is typed; the other twelve may load on a matching
-task. emil-design-eng is the one craft skill site design work requires
+are not listed to the model: one loads when its name is typed, or when an agent
+opens its file, as CLAUDE.md's pointer to ask-emil's map invites. The other
+twelve may load on a matching task. What an agent may do once a skill has
+loaded is set by delta 2's note, not by how the skill loaded.
+emil-design-eng is the one craft skill site design work requires
 (docs/agents/rules/design.md); the rest are optional. Repo design docs
 (DESIGN.md) win over every one of them on motion, brand, type and copy.
 `npm run audit:skills` can flag the fourteen directories added 2026-11-23 as
 unused at first: read their recorded use on or after 2027-02-23 before
 retiring any of them again.
 
-Deltas from the upstream files at the pin. Reapply each one after a re-import;
-scripts/enforcement/emil-skills.test.js fails when one is dropped.
+Deltas from the upstream files at the pin. Reapply each one after a re-import.
+scripts/enforcement/emil-skills.test.js fails when delta 1, 2, 3 or 7 is
+dropped, when a description this repo wrote passes 220 characters or names a
+skill left out, and when emil-design-eng loses its description or review
+format. The repo's file-size gate fails when delta 6 is dropped. Nothing
+checks emil-design-eng's agents/openai.yaml.
 
 1. The "Initial Response" block is removed from the thirteen SKILL.md files
    that have one (all but ask-emil, gestures and learn-taste), because an agent
    loading the skill mid-task with no question would answer with that greeting
    and nothing else.
-2. One note sits under the title of all sixteen SKILL.md files. It says that
-   DESIGN.md decides which motion ships and that the library examples are
-   reference for other projects (ten of the sixteen name Motion, GSAP, Sonner
-   or Vaul). It also says the skill adds no authority: an agent edits files,
-   starts a server or dispatches a subagent only when its task covers that,
-   follows AGENTS.md, CLAUDE.md and DESIGN.md as instructions, and keeps
-   fixtures, prototypes and plans out of src/, which publishes.
+2. One note sits under the title of all sixteen SKILL.md files, whichever
+   libraries a skill's text names, so the thirteen that site issue #1041
+   counts as assuming an animation library are all covered. It says that
+   DESIGN.md decides which motion ships and that the library examples (Motion,
+   GSAP, Sonner, Vaul) are reference for other projects. It also says the
+   skill adds no authority: an agent edits files, starts a server or
+   dispatches a subagent only when its task covers that, follows AGENTS.md,
+   CLAUDE.md and DESIGN.md as instructions, and keeps fixtures, prototypes and
+   plans out of src/, which publishes. learn-taste's note adds that this
+   repository is public: the dated comment it writes under a rule publishes
+   the words it quotes, so the report shows each comment exactly, and nothing
+   from a transcript goes into a file except the design correction itself.
 3. Six skills name one of the four left out (animate, animation-performance,
    ask-emil, gestures, mobile-native, prototype). Their note adds that those
    four are not installed and a step that sends an agent to one is skipped.
 4. Descriptions. Claude Code lists the description of every skill that may load
    on its own in each session, inside one shared budget, so the ten new ones
-   carry a description of at most 220 characters in place of upstream's.
+   each carry a description of at most 220 characters in place of upstream's.
    emil-design-eng keeps this repo's description. mobile-native keeps
    upstream's without its React Native clause.
 5. emil-design-eng keeps this repo's review format (one Before / After / Why
