@@ -275,7 +275,8 @@ built (`experiments/guide-look-study/views/toggle.css`): the text grows out of
 the row, height and opacity over 200ms `out`, where the browser has
 `::details-content` and `interpolate-size`; the plus's upright folds away in
 200ms. Neither ships until Sawyer selects it from a working preview. Reduced
-motion: the press and fill are off, and the explored opening happens at once.
+motion: no press scale, the fill appears at once, and so would the explored
+opening.
 
 ### Craft and evidence
 
