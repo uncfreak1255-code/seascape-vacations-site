@@ -1,0 +1,10 @@
+{
+  "note": "Places a guide draws on the island map (docs/design/planning-guides.md -> Two guide looks), keyed by guide slug, in guide order. x and y are in islandOutline's units. Each `from` records the marker's source; copied from docs/design/experiments/guide-look-study/island-data.json.",
+  "anna-maria-island-beaches": [
+    { "name": "Bean Point Beach", "href": "#pg-1", "x": 3.8, "y": 12.7, "from": "Commons photo GPS for Bean Point Beach (27.5387, -82.7446), eased 130 m south so the mark sits on the shore" },
+    { "name": "Manatee Beach", "href": "#pg-2", "x": 314.2, "y": 426.8, "from": "OpenStreetMap stop \"GULF DR/42ND ST (MANATEE PUBLIC BEACH)\" (27.4983, -82.7124)" },
+    { "name": "Coquina Beach", "href": "#pg-3", "x": 503.6, "y": 925.5, "from": "OpenStreetMap stop \"COQUINA BEACH\" (27.4511, -82.6922)" },
+    { "name": "Holmes Beach", "href": "#pg-4", "x": 268.5, "y": 346.5, "from": "OpenStreetMap Holmes Beach city boundary, centre latitude (27.5059)" },
+    { "name": "Bradenton Beach", "href": "#pg-5", "x": 452.8, "y": 777.6, "from": "OpenStreetMap \"Bridge Street, Bradenton Beach\" (27.4651, -82.6982)" }
+  ]
+}

@@ -1,0 +1,50 @@
+/* Place look for a planning guide (docs/design/planning-guides.md -> Two guide looks).
+   Linked by src/_includes/layouts/guide-planning.njk only when a guide sets `guidePlaceLook`,
+   after the Island locator, Fact strip and Disclosure sheets. It places those pieces in the
+   guide frame; their own looks stay in their sheets. Values are Waterline scale literals
+   (scripts/enforcement/waterline-tokens.test.js). Phone rules come first; wider screens
+   override them, so every query is a min-width on the scale. */
+
+/* ---- Opening: the key map under the quick answer ---- */
+.pg-open:has(.pg-open-map) { padding-bottom: 44px; }
+.pg-open-map { gap: 32px; }
+
+/* ---- Chooser: the comparison under the map, without a numeral ---- */
+.pg-chooser { padding-top: 44px; padding-bottom: 24px; }
+.pg-chooser .pg-step { padding: 0; border: 0; }
+.pg-chooser h2 { margin-bottom: 24px; }
+.pg-chooser .cost-table tbody { display: block; border-top: 1px solid #173D42; }
+.pg-chooser .cost-table tr { padding: 24px 0 12px; }
+.pg-chooser .cost-table td { padding: 12px 0; border-top: 1px solid #CAD4CF; font-size: 15px; }
+.pg-chooser .cost-table td:first-child { padding: 0 0 12px; border-top: 0; font: 400 26px/1.15 "Instrument Serif", Georgia, serif; letter-spacing: -.01em; }
+.pg-chooser .cost-table td::before { letter-spacing: .13em; text-transform: uppercase; }
+
+@media (min-width: 900px) {
+  .pg-open:has(.pg-open-map) { padding-bottom: 60px; }
+  /* The frame's two columns hold title and answer; with the map as a third child the
+     opening stays one column until the map's own 504px column fits beside the text. */
+  .pg-open-map { grid-template-columns: minmax(0, 1fr); align-items: start; }
+
+  .pg-chooser { padding-top: 56px; padding-bottom: 60px; }
+  .pg-chooser h2 { margin-bottom: 32px; }
+  .pg-chooser .cost-table tbody { display: table-row-group; border-top: 0; }
+  .pg-chooser .cost-table th { padding: 16px 16px 16px 0; border-top: 1px solid #173D42; border-bottom: 1px solid #CAD4CF; letter-spacing: .13em; }
+  .pg-chooser .cost-table th:nth-child(1) { width: 26%; }
+  .pg-chooser .cost-table th:nth-child(2) { width: 15%; }
+  .pg-chooser .cost-table th:nth-child(3) { width: 14%; }
+  .pg-chooser .cost-table th:nth-child(4) { width: 17%; }
+  .pg-chooser .cost-table td { padding: 16px 16px 16px 0; border-top: 0; border-bottom: 1px solid #CAD4CF; font: 400 15px/1.5 Poppins, system-ui, sans-serif; vertical-align: baseline; }
+  .pg-chooser .cost-table td:first-child { padding: 16px 16px 16px 0; font: 400 22px/1.2 "Instrument Serif", Georgia, serif; }
+  .pg-chooser .cost-table th:last-child, .pg-chooser .cost-table td:last-child { padding-right: 0; }
+
+  /* The chooser is listed first in the rail, without a numeral. */
+  .pg-rail a.pg-rail-chooser { grid-template-columns: minmax(0, 1fr); }
+  .pg-rail a.pg-rail-chooser span:first-child { color: inherit; font-weight: 400; }
+}
+
+@media (min-width: 1050px) {
+  .pg-open-map { grid-template-columns: minmax(0, 1fr) 504px; grid-template-rows: auto 1fr; column-gap: 72px; row-gap: 32px; }
+  .pg-open-map > :first-child { grid-column: 1; grid-row: 1; }
+  .pg-open-map > .guide-intro { grid-column: 1; grid-row: 2; align-self: start; }
+  .pg-open-map > .isl-map { grid-column: 2; grid-row: 1 / span 2; }
+}

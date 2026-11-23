@@ -34,7 +34,12 @@ guideSteps:
   - "Best Time to Visit AMI Beaches"
   - "Getting Around the Island"
   - "Frequently Asked Questions"
-  - "AMI Beach Comparison"
+guidePlaceLook:
+  slug: anna-maria-island-beaches
+  keyLabel: "Beaches on the map"
+  chooser: "partials/guide-chooser-anna-maria-island-beaches.njk"
+  chooserHref: "#pg-10"
+  chooserLabel: "AMI Beach Comparison"
 guideRelated:
   - href: /guides/best-time-visit-anna-maria-island/
     title: "Best Time to Visit Anna Maria Island"
@@ -77,49 +82,73 @@ guideKit:
     - href: /guides/anna-maria-city/
       title: "our detailed Anna Maria city guide"
 ---
+{%- from "partials/island-locator.njk" import islandInset %}
+{%- from "partials/fact-strip.njk" import factPanel %}
+{%- from "partials/disclosure.njk" import disclosure %}
+{%- set places = guidePlaces[guidePlaceLook.slug] %}
 <section class="pg-step pg-prose" id="pg-1">
   <p class="pg-num">01</p>
   <h2>Bean Point Beach: The Locals-only find</h2>
+  {% call factPanel([
+    { label: "Best for:", text: "Couples, photographers, sunset watching, shelling, and solitude seekers." },
+    { label: "Facilities:", text: "None — no restrooms, no lifeguards, no shade structures. Bring everything you need." },
+    { label: "Parking:", text: "Limited free street parking. Arrive early on weekends." }
+  ]) %}{{ islandInset(islandOutline, places, 1) }}{% endcall %}
+  {% call disclosure("More about this beach", true) %}
   <p>Bean Point sits at the northernmost tip of Anna Maria Island, where Tampa Bay meets the Gulf of Mexico. This undeveloped stretch of beach is consistently rated one of the best in Florida, and for good reason — there are no high-rises, no beach bars, no concession stands. Just pure, natural beauty. The convergence of bay and Gulf currents creates dramatic sandbars at low tide that extend hundreds of yards from shore, forming shallow wading pools perfect for kids and spectacular photo opportunities at sunset.</p>
   <p>Bean Point is also an exceptional <a href="/guides/shelling-guide-florida/">shelling destination</a>. The currents deposit fighting conchs, whelks, scallop shells, and olive shells along the tideline. The walk from the nearest parking (street parking at the end of North Shore Drive) takes about 10 minutes, which keeps the crowds manageable even during peak season.</p>
-  <p><strong>Best for:</strong> Couples, photographers, sunset watching, shelling, and solitude seekers.</p>
-  <p><strong>Facilities:</strong> None — no restrooms, no lifeguards, no shade structures. Bring everything you need.</p>
-  <p><strong>Parking:</strong> Limited free street parking. Arrive early on weekends.</p>
+  {% endcall %}
 </section>
 
 <section class="pg-step pg-prose" id="pg-2">
   <p class="pg-num">02</p>
   <h2>Manatee Beach: The Family Favorite</h2>
+  {% call factPanel([
+    { label: "Best for:", text: "Families with children, first-time visitors, and anyone who wants full amenities." },
+    { label: "Facilities:", text: "Lifeguards, restrooms, showers, playground, volleyball, restaurant, picnic areas." },
+    { label: "Parking:", text: "Free public lot with approximately 200 spaces. Fills by 10am on peak-season weekends." }
+  ]) %}{{ islandInset(islandOutline, places, 2) }}{% endcall %}
+  {% call disclosure("More about this beach", true) %}
   <p>If you are traveling with <a href="/guides/family-vacation-anna-maria-island/">kids</a> or want convenient access to amenities, Manatee Beach is the best choice on the island. This well-maintained public beach features free parking, clean restrooms, outdoor showers, lifeguards on duty, a playground, volleyball courts, and the Café Beachhouse restaurant right on the beach. You can spend an entire day here without needing to leave for anything.</p>
   <p>The water at Manatee Beach is shallow and calm, with a gradual slope that allows young children to wade safely. It is also one of the widest beaches on the island, so you will have plenty of room to spread out even on busy weekends. The concession stand sells snacks, drinks, and basic beach supplies if you forget anything.</p>
-  <p><strong>Best for:</strong> Families with children, first-time visitors, and anyone who wants full amenities.</p>
-  <p><strong>Facilities:</strong> Lifeguards, restrooms, showers, playground, volleyball, restaurant, picnic areas.</p>
-  <p><strong>Parking:</strong> Free public lot with approximately 200 spaces. Fills by 10am on peak-season weekends.</p>
+  {% endcall %}
 </section>
 
 <section class="pg-step pg-prose" id="pg-3">
   <p class="pg-num">03</p>
   <h2>Coquina Beach: The Local's Choice</h2>
+  {% call factPanel([
+    { label: "Best for:", text: "Locals, shellers, anglers, picnickers, and anyone avoiding peak crowds." },
+    { label: "Facilities:", text: "Restrooms, picnic pavilions with grills, nature trail, large free parking lot." },
+    { label: "Parking:", text: "The largest free parking area on AMI. Rarely fills up completely." }
+  ]) %}{{ islandInset(islandOutline, places, 3) }}{% endcall %}
+  {% call disclosure("More about this beach", true) %}
   <p>Stretching along the southern end of Anna Maria Island near Longboat Pass, Coquina Beach is where locals go when they want to avoid the tourist crowds. It pairs natural, uncrowded sand with the facilities a full beach day needs. The beach has plenty of free parking (the largest lot on the island), covered picnic pavilions with grills, restrooms, and a shaded nature trail that runs along the bayou behind the beach.</p>
   <p>The southern end of Coquina Beach near Longboat Pass is the most productive shelling area on the island. The tidal exchange through the pass deposits shells in concentrated bands along the shore, and after storms, you can find lightning whelks, horse conchs, and intact sand dollars. This stretch is also excellent for <a href="/guides/fishing-guide-anna-maria-sarasota/">fishing</a> — anglers cast from the pass for snook, redfish, and spanish mackerel.</p>
-  <p><strong>Best for:</strong> Locals, shellers, anglers, picnickers, and anyone avoiding peak crowds.</p>
-  <p><strong>Facilities:</strong> Restrooms, picnic pavilions with grills, nature trail, large free parking lot.</p>
-  <p><strong>Parking:</strong> The largest free parking area on AMI. Rarely fills up completely.</p>
+  {% endcall %}
 </section>
 
 <section class="pg-step pg-prose" id="pg-4">
   <p class="pg-num">04</p>
   <h2>Holmes Beach</h2>
+  {% call factPanel([
+    { label: "Best for:", text: "Guests staying in Holmes Beach rentals who want a quieter, less-crowded experience." },
+    { label: "Parking:", text: "Very limited street parking. Best accessed on foot or by bicycle from nearby vacation rentals." }
+  ]) %}{{ islandInset(islandOutline, places, 4) }}{% endcall %}
+  {% call disclosure("More about this beach", true) %}
   <p>Located along the central section of Anna Maria Island, Holmes Beach is a quieter residential area with public beach access points scattered along Gulf Drive. The beach itself is beautiful — the same white sand and clear water as other AMI beaches — but access is via narrow walkways between private homes rather than from a large public parking lot. If you are staying at one of our <a href="/guides/booking-direct-vacation-rentals/">vacation rentals</a> in Holmes Beach, you will love having the beach practically in your backyard with minimal crowds.</p>
-  <p><strong>Best for:</strong> Guests staying in Holmes Beach rentals who want a quieter, less-crowded experience.</p>
-  <p><strong>Parking:</strong> Very limited street parking. Best accessed on foot or by bicycle from nearby vacation rentals.</p>
+  {% endcall %}
 </section>
 
 <section class="pg-step pg-prose" id="pg-5">
   <p class="pg-num">05</p>
   <h2>Bradenton Beach</h2>
+  {% call factPanel([
+    { label: "Best for:", text: "Visitors who want beach access combined with walkable dining and shopping." }
+  ]) %}{{ islandInset(islandOutline, places, 5) }}{% endcall %}
+  {% call disclosure("More about this beach", true) %}
   <p>The southernmost town on Anna Maria Island, Bradenton Beach is a small, walkable community with direct beach access, restaurants, shops, and the Historic Bridge Street Pier. The beach here connects to Coquina Beach to the south, and the vibe is more village-like — you can walk from the beach to lunch to an ice cream shop without getting in your car. Bridge Street is particularly charming, with locally-owned boutiques, art galleries, and the old-Florida atmosphere that makes AMI special.</p>
-  <p><strong>Best for:</strong> Visitors who want beach access combined with walkable dining and shopping.</p>
+  {% endcall %}
 </section>
 
 <section class="pg-step pg-prose" id="pg-6">
@@ -161,19 +190,4 @@ guideKit:
   <p>Yes — the Gulf side has calm, warm water with gentle waves that are safe for children and adults. Manatee Beach has lifeguards for added safety. Water temperatures range from 65°F in winter to 87°F in summer.</p>
   <h3>Is there free parking at Anna Maria Island beaches?</h3>
   <p>Yes. Coquina Beach has the largest free parking area on the island and rarely fills up. Manatee Beach also offers free parking, though the lot fills by 10am on peak-season weekends. Bean Point has limited free street parking.</p>
-</section>
-
-<section class="pg-step" id="pg-10">
-  <p class="pg-num">10</p>
-  <h2>AMI Beach Comparison</h2>
-  <table class="cost-table stack-table">
-<thead><tr><th>Beach</th><th>Sand Type</th><th>Crowd Level</th><th>Parking</th><th>Best For</th></tr></thead>
-<tbody>
-<tr><td data-label="Beach">Bean Point</td><td data-label="Sand Type">Fine white</td><td data-label="Crowd Level">Low</td><td data-label="Parking">Street only</td><td data-label="Best For">Sunset walks, solitude</td></tr>
-<tr><td data-label="Beach">Anna Maria Beach</td><td data-label="Sand Type">Fine white</td><td data-label="Crowd Level">Low-Medium</td><td data-label="Parking">Small lot</td><td data-label="Best For">Quiet beach day</td></tr>
-<tr><td data-label="Beach">Holmes Beach (Manatee Public)</td><td data-label="Sand Type">Fine white</td><td data-label="Crowd Level">High</td><td data-label="Parking">Large lot</td><td data-label="Best For">Families, amenities</td></tr>
-<tr><td data-label="Beach">Bradenton Beach</td><td data-label="Sand Type">Fine white</td><td data-label="Crowd Level">Medium</td><td data-label="Parking">Metered street</td><td data-label="Best For">Fishing pier, Bridge St shops</td></tr>
-<tr><td data-label="Beach">Coquina Beach</td><td data-label="Sand Type">Fine white</td><td data-label="Crowd Level">Medium</td><td data-label="Parking">Large free lot</td><td data-label="Best For">Picnics, kayaking, shade</td></tr>
-</tbody>
-  </table>
 </section>

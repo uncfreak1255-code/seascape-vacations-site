@@ -74,6 +74,7 @@ const CEILINGS = {
   'src/css/fact-strip.css': {},
   'src/css/disclosure.css': {},
   'src/css/photo-lightbox.css': {},
+  'src/css/guide-place-look.css': {},
 };
 
 for (const [file, ceiling] of Object.entries(CEILINGS)) {

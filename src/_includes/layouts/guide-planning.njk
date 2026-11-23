@@ -5,6 +5,10 @@
   Old-design moves (pg-prose, guide-packing): docs/briefs/2026-11-old-design-guide-moves.md
 #}
 {% from "partials/guide-conversion-kit.njk" import guideConversionKit %}
+{% from "partials/island-locator.njk" import islandMap -%}
+{#- Place look (docs/design/planning-guides.md -> Two guide looks): opt-in per guide through
+    `guidePlaceLook: { slug, keyLabel, chooser, chooserHref, chooserLabel }`. A guide without it renders as before. -#}
+{% set placeLook = guidePlaceLook -%}
 <!doctype html>
 <html lang="en">
 <head>
@@ -111,6 +115,12 @@
   {% endif %}
   <link rel="stylesheet" href="/css/planning-guide.css">
   <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
+  {%- if placeLook %}
+  <link rel="stylesheet" href="/css/island-locator.css">
+  <link rel="stylesheet" href="/css/fact-strip.css">
+  <link rel="stylesheet" href="/css/disclosure.css">
+  <link rel="stylesheet" href="/css/guide-place-look.css">
+  {%- endif %}
 </head>
 <body class="guest-shell planning-guide">
 {% include "partials/guest-header.njk" %}
@@ -127,7 +137,7 @@
   <main>
     <section class="pg-open">
       <div class="pg-wrap">
-        <div class="pg-open-grid">
+        <div class="pg-open-grid{% if placeLook %} pg-open-map{% endif %}">
           <div>
             <span class="pg-label">{{ guideLabel }}</span>
             <h1>{{ guideTitle }}</h1>
@@ -138,6 +148,9 @@
             <p>{{ paragraph | safe }}</p>
             {% endfor %}
           </div>
+          {%- if placeLook %}
+          {{ islandMap(islandOutline, guidePlaces[placeLook.slug], placeLook.keyLabel) }}
+          {%- endif %}
         </div>
 
         {% if guideFigure %}
@@ -159,10 +172,19 @@
       </div>
     </section>
 
+    {%- if placeLook %}
+    <div class="pg-wrap pg-chooser">
+      {% include placeLook.chooser %}
+    </div>
+    {%- endif %}
+
     <div class="pg-body">
       <nav class="pg-rail" aria-label="In this guide">
         <p class="pg-label">In this guide</p>
         <ol>
+          {%- if placeLook %}
+          <li><a class="pg-rail-chooser" href="{{ placeLook.chooserHref }}"><span>{{ placeLook.chooserLabel }}</span></a></li>
+          {%- endif %}
           {% for step in guideSteps %}
           <li><a href="#pg-{{ loop.index }}"><span>{% if loop.index < 10 %}0{% endif %}{{ loop.index }}</span><span>{{ step }}</span></a></li>
           {% endfor %}
