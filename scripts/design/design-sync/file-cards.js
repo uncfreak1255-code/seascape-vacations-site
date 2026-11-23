@@ -51,9 +51,13 @@ const NOT_FILED = Object.freeze([
   "type-body",
   "radii",
   "spacing",
-  // No published component yet. Move both to CARD_MAP once the artifact has one.
+  // No published component yet. Move each pair to CARD_MAP once the artifact has one.
   "island-locator",
   "island-locator-phone",
+  "fact-strip",
+  "fact-strip-phone",
+  "fact-panel",
+  "fact-panel-phone",
 ]);
 
 function publishedPath(stem) {

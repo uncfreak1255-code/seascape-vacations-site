@@ -16,6 +16,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 | `src/css/base.css`, `src/css/guest.css`, `src/css/motion.css`, `src/css/arrival.css`, `src/css/catalog.css`, `src/css/catalog-card.css`, `src/css/about.css`, `src/css/property-gallery.css`, `src/css/owner.css`, `src/css/planning-guide.css`, `src/css/comparison-guide.css`, `src/css/activity-guide.css`, `src/css/trip-sheet.css` + `src/css/trip-sheet-cards.css` (copied to `waterline/`; the two trip-sheet files join into `trip-sheet.css` as the site ships them) | The live stylesheets the guest routes, owner pages and converted guides ship; `trip-sheet.css` holds the phone rules (700px and narrower) |
 | `src/_includes/partials/guest-*.njk`, `src/_includes/layouts/guest.njk` | The shared shell and guest components; the cards use their built output |
 | `src/css/island-locator.css` (copied to `waterline/`), `src/_includes/partials/island-locator.njk` | A catalog piece no page uses yet; its cards render the partial with sample places. Rules: "Island locator" in `waterline/component-patterns.md` |
+| `src/css/fact-strip.css` (copied to `waterline/`), `src/_includes/partials/fact-strip.njk` | A catalog piece no page uses yet; its cards render the partial with sample facts. Rules: "Fact strip" in `waterline/component-patterns.md` |
 | `src/assets/fonts/` (copied to `waterline/fonts/`) | Self-hosted Poppins and Instrument Serif (SIL OFL) |
 | `docs/design/*.md` linked from `DESIGN.md` (copied to `waterline/`) | The rules `DESIGN.md` points to, including `cards-and-phone-surfaces.md` (phones, 700px and narrower) |
 | `docs/process/design-review-workflow.md` | How a design becomes a change on the site |
@@ -34,7 +35,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── fonts.css, fonts/        self-hosted faces
 │   ├── base.css, guest.css, motion.css, arrival.css, catalog.css, catalog-card.css,
 │   │   about.css, property-gallery.css, owner.css, planning-guide.css, comparison-guide.css, activity-guide.css,
-│   │   trip-sheet.css (phone rules, 700px and narrower), island-locator.css (a piece no page uses yet)
+│   │   trip-sheet.css (phone rules, 700px and narrower), island-locator.css and fact-strip.css (pieces no page uses yet)
 │   ├── shell.html               the real shared header + footer markup
 │   ├── cards-and-phone-surfaces.md and every other docs/design rule DESIGN.md links
 │   ├── design-review-workflow.md
@@ -47,6 +48,7 @@ This project is **generated from the repository**, not authored here. Synced {{S
 │   ├── buttons, nav, nav-mobile, form-fields, booking-panel, sticky-cta, phone-surfaces
 │   ├── property-card, postcard-collection, scene-hero, footer
 │   ├── island-locator, island-locator-phone   (catalog piece, not on any page)
+│   ├── fact-strip, fact-strip-phone, fact-panel, fact-panel-phone   (catalog piece, not on any page)
 │   ├── logo, radii, spacing, rules-floors
 │   └── voice, iconography       (unchanged from before; still valid)
 ├── assets/                      PNG logos and site photography for email, slides, PDF

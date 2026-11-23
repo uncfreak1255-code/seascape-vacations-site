@@ -1,0 +1,42 @@
+{#
+  Fact strip: a section's labelled facts, before its prose. Static markup, no script.
+  Catalog entry and limits: docs/design/component-patterns.md -> Fact strip.
+  Styles: src/css/fact-strip.css; a page that calls a macro links that sheet.
+
+  facts  [{ label, text }] in reading order. The label prints as written, colon and all.
+         `html` in place of `text` prints unescaped, for a value that holds a link;
+         it must be markup the page's author wrote.
+
+  factStrip(facts)  the strip that opens a section
+  factPanel(facts)  ruled rows beside a figure; pass the figure with {% call %}
+
+  Neither prints anything for an empty list, apart from a panel's figure.
+#}
+{% macro factList(facts) -%}
+<dl class="fs-list">
+  {%- for f in facts %}
+  <div class="fs-fact"><dt>{{ f.label }}</dt> <dd>{{ f.html | safe if f.html else f.text }}</dd></div>
+  {%- endfor %}
+</dl>
+{%- endmacro %}
+
+{% macro factStrip(facts) %}
+{#- Columns are for two or three facts; one fact, or four and more, stay rows. #}
+{%- if facts and facts.length -%}
+<div class="fs-strip{% if facts.length == 2 or facts.length == 3 %} fs-cols-{{ facts.length }}{% endif %}">{{ factList(facts) }}</div>
+{%- endif %}
+{% endmacro %}
+
+{% macro factPanel(facts) %}
+{#- `caller` exists only under {% call %}; a plain call gets rows with no figure box. #}
+{%- set figure = (caller() | trim) if caller else "" %}
+{%- set n = facts.length if facts else 0 %}
+{#- A trimmed figure is a safe-string object, truthy even when empty, so test its length. #}
+{%- set shown = (figure | length) > 0 %}
+{%- if shown or n -%}
+<div class="fs-panel{% if n == 1 %} fs-lone{% endif %}">
+  {%- if shown %}<div class="fs-figure">{{ figure }}</div>{% endif %}
+  {%- if n %}<div class="fs-rows">{{ factList(facts) }}</div>{% endif %}
+</div>
+{%- endif %}
+{% endmacro %}

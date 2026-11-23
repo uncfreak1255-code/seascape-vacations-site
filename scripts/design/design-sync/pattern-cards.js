@@ -2,24 +2,51 @@
 // Cards for catalog pieces no page uses yet (docs/design/component-patterns.md).
 // Each renders the piece's real partial from src/_includes with fixture data, so the
 // card is the markup a page would get. Split out of build.js for the size gate.
-const path = require("path");
-const nunjucks = require("nunjucks");
+const partialEnv = require("./partial-env");
 
 module.exports = function patternCards({ card, read, inlined }) {
-  const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.resolve(__dirname, "../../../src/_includes")), { autoescape: true });
+  const env = partialEnv();
   const island = JSON.parse(read("src/_data/islandOutline.json"));
   const { places } = JSON.parse(read("scripts/design/design-sync/island-places.fixture.json"));
-  const render = (call) => env.renderString(`{% import "partials/island-locator.njk" as isl %}${call}`, { island, places });
+  const facts = JSON.parse(read("scripts/design/design-sync/fact-strip.fixture.json"));
+  const imports = '{% import "partials/island-locator.njk" as isl %}{% import "partials/fact-strip.njk" as fs %}';
+  const render = (call, f) => env.renderString(imports + call, { island, places, f });
 
   // A planning guide's body classes and sheets, in the order the guide layout loads them.
-  const css = [inlined("planning-guide"), inlined("guest"), inlined("island-locator"), ".ds-isl{padding:24px 20px;max-width:544px}.ds-isl h2{margin:32px 0 8px;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#52676A}.ds-isl p{margin:0 0 16px;font-size:14px;line-height:1.5;color:#52676A}.ds-isl-row{display:flex;gap:24px}"];
-  const body = `<main><div class="ds-isl">
+  const guide = [inlined("planning-guide"), inlined("guest")];
+  const shared = { group: "Components", bodyClass: "guest-shell planning-guide" };
+
+  const islCss = [...guide, inlined("island-locator"), ".ds-isl{padding:24px 20px;max-width:544px}.ds-isl h2{margin:32px 0 8px;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#52676A}.ds-isl p{margin:0 0 16px;font-size:14px;line-height:1.5;color:#52676A}.ds-isl-row{display:flex;gap:24px}"];
+  const islBody = `<main><div class="ds-isl">
 <h2>Key map</h2><p>Opens a guide about places. Each name links to its section.</p>
 ${render("{{ isl.islandMap(island, places) }}")}
 <h2>Inset</h2><p>One place lit, beside that place's facts. Shown for places 01 and 03.</p>
 <div class="ds-isl-row">${render("{{ isl.islandInset(island, places, 1) }}")}${render("{{ isl.islandInset(island, places, 3) }}")}</div>
 </div></main>`;
-  const shared = { group: "Components", css, bodyClass: "guest-shell planning-guide", body };
-  card({ ...shared, file: "island-locator.html", name: "Island locator", subtitle: "Explored · no page uses it yet · static markup, no script", viewport: [1200, 1220] });
-  card({ ...shared, file: "island-locator-phone.html", name: "Island locator (phone)", subtitle: "393px · the key becomes rows beside the island", viewport: [393, 900] });
+  card({ ...shared, css: islCss, body: islBody, file: "island-locator.html", name: "Island locator", subtitle: "Explored · no page uses it yet · static markup, no script", viewport: [1200, 1220] });
+  card({ ...shared, css: islCss, body: islBody, file: "island-locator-phone.html", name: "Island locator (phone)", subtitle: "393px · the key becomes rows beside the island", viewport: [393, 900] });
+
+  // Fact strip: each sample sits in a guide section, under its numeral and heading, in the
+  // guide's own column, so the guide's rules and the piece's meet as they would on a page.
+  // The card chrome owns .ds-note and loads after a card's own css, so the sample label has its own class.
+  const fsNote = ".ds-fs-note{margin:0;padding:32px 0 12px;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#52676A}";
+  const stripCss = [...guide, inlined("fact-strip"), fsNote];
+  const panelCss = [...guide, inlined("island-locator"), inlined("fact-strip"), fsNote];
+  const step = (n, title, note, inner) => `<p class="ds-fs-note">${note}</p><section class="pg-step" id="pg-${n}"><p class="pg-num">0${n}</p><h2>${title}</h2>${inner}</section>`;
+  const strip = (key) => render("{{ fs.factStrip(f) }}", facts[key]);
+  const panel = (key, own) => render(`{% call fs.factPanel(f) %}{{ isl.islandInset(island, places, ${own}) }}{% endcall %}`, facts[key]);
+  const column = (inner) => `<main><div class="pg-body"><div class="pg-steps">${inner}</div></div></main>`;
+  const stripBody = column(`
+${step(1, "Bean Point Beach: The Locals-only find", "Strip · three facts", strip("three"))}
+${step(4, "Holmes Beach", "Strip · two facts", strip("two"))}
+${step(5, "Bradenton Beach", "Strip · one fact", strip("one"))}`);
+  const panelBody = column(`
+${step(1, "Bean Point Beach: The Locals-only find", "Panel · a figure beside three facts", panel("three", 1))}
+${step(4, "Holmes Beach", "Panel · two facts, one holding a link", panel("linked", 4))}
+${step(5, "Bradenton Beach", "Panel · one fact", panel("one", 5))}`);
+  const unused = "Explored · no page uses it yet · static markup, no script";
+  card({ ...shared, css: stripCss, body: stripBody, file: "fact-strip.html", name: "Fact strip", subtitle: unused, viewport: [1200, 1265] });
+  card({ ...shared, css: stripCss, body: stripBody, file: "fact-strip-phone.html", name: "Fact strip (phone)", subtitle: "393px · facts stack as ruled rows", viewport: [393, 1367] });
+  card({ ...shared, css: panelCss, body: panelBody, file: "fact-panel.html", name: "Fact strip, panel form", subtitle: unused, viewport: [1200, 1760] });
+  card({ ...shared, css: panelCss, body: panelBody, file: "fact-panel-phone.html", name: "Fact strip, panel form (phone)", subtitle: "393px · rows beside the figure", viewport: [393, 1607] });
 };
