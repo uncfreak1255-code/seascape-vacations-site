@@ -83,6 +83,12 @@ that the check failed; it does not fall back to GitHub-hosted compute.
   asking Sawyer when the screenshot change is intended; use only your own PR
   branch and report the run ID and the pushed commit. Never use it to clear a
   diff you did not intend; that is a regression to fix.
+- `visual-regression` is not a required check, so content PRs can merge with
+  stale baselines. On 2026-11-23 it failed on every PR for that reason (42
+  routes, reproduced locally on the runner Mac). Before refreshing, run
+  `npm run test:visual` on `main`; if the failing routes match merged intended
+  changes, refresh them in one PR. A failure that is not a screenshot diff is a
+  stale test, not a baseline: fix the test.
 - The post-deploy smoke trio (`AGENTS.md` -> Deploy) also runs daily via `.github/workflows/live-smoke.yml`
   (dispatchable manually); a red scheduled run means production drift or stale
   smoke assertions, not necessarily an outage. A scheduled run that does not
