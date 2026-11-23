@@ -1,6 +1,6 @@
 /* Fact strip: a section's labelled facts, before its prose.
    Markup: src/_includes/partials/fact-strip.njk. Catalog entry and limits:
-   docs/design/component-patterns.md -> Fact strip. No page links this sheet yet.
+   docs/design/component-patterns.md -> Fact strip. Linked by the planning-guide layout for a place-look guide.
    Colours and spacing are Waterline scale literals (scripts/enforcement/waterline-tokens.test.js).
    Link colour, hover colour and the focus ring come from the page. The piece sets no
    outer margin: the section it sits in owns the space around it.
