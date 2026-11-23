@@ -44,7 +44,7 @@ test("design specialist skill requires critic first and routes local donor disco
   assert.match(skill, /design:donors/);
   assert.match(skill, /Local Donor Discovery section/);
   const studio = read("docs/process/seascape-design-studio.md");
-  assert.match(studio, /frontend-design/);
+  assert.match(studio, /component-patterns\.md/);
   assert.match(studio, /visualize/);
   assert.match(skill, /Figma remains optional/);
 });
@@ -107,7 +107,7 @@ test("design lane prompt wires the repo-local skills and proof contract", () => 
           source: "codex-plugin-cache",
           sourcePriority: 30,
           capabilities: ["interface-direction"],
-          baseScore: 100,
+          baseScore: 65,
           explicitOnly: false,
         },
         {
@@ -206,21 +206,21 @@ test("booking-path and responsive-layout tasks route narrow UI donor capabilitie
         description: "Distinctive website and interface design.",
         path: "/frontend/SKILL.md",
         source: "test",
-        sourcePriority: 1,
+        sourcePriority: 20,
       }),
       donorRouter.classifySkill({
         name: "better-layout",
         description: "Improve grouping, reading order, and adaptive responsive layouts.",
         path: "/better-layout/SKILL.md",
         source: "test",
-        sourcePriority: 1,
+        sourcePriority: 20,
       }),
       donorRouter.classifySkill({
         name: "improve-ui",
         description: "Audit an existing product surface against design evidence and identify verified UI problems.",
         path: "/improve-ui/SKILL.md",
         source: "test",
-        sourcePriority: 1,
+        sourcePriority: 20,
       }),
     ],
   };
@@ -232,7 +232,7 @@ test("booking-path and responsive-layout tasks route narrow UI donor capabilitie
 
   assert.deepEqual(
     route.selectedDonors.map((candidate) => candidate.name),
-    ["frontend-design", "better-layout", "improve-ui"]
+    ["better-layout", "improve-ui", "frontend-design"]
   );
   assert.deepEqual(route.taskCapabilities, ["responsive-layout", "evidence-audit"]);
   assert.deepEqual(route.unfilledCapabilities, []);
@@ -321,14 +321,14 @@ test("guide family routing gives comparison and planning guides different jobs",
           description: "Distinctive website and interface design.",
           path: "/frontend/SKILL.md",
           source: "test",
-          sourcePriority: 1,
+          sourcePriority: 20,
         }),
         donorRouter.classifySkill({
           name: "visualize",
           description: "Create maps and charts.",
           path: "/visualize/SKILL.md",
           source: "test",
-          sourcePriority: 1,
+          sourcePriority: 20,
         }),
       ],
     },
@@ -337,7 +337,7 @@ test("guide family routing gives comparison and planning guides different jobs",
   assert.equal(route.family.id, "comparison");
   assert.deepEqual(
     route.selectedDonors.map((candidate) => candidate.name),
-    ["frontend-design", "visualize"]
+    ["visualize", "frontend-design"]
   );
 });
 

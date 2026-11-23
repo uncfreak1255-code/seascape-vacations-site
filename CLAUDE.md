@@ -8,10 +8,12 @@ Claude harness delta.
 
 - Skills: shared `.claude/skills/<name>` entries link to the maintained
   `.agents/skills/<name>` source. The three Claude-only UI craft skills are
-  real directories declared in `.agents/skills-divergence.json`; they remain
-  optional under the Site design rules. Respect each skill's invocation policy
-  and applicable user skill overrides. A displayed or installed skill is not
-  proof that its body loaded or its procedure ran.
+  real directories declared in `.agents/skills-divergence.json`. Of them,
+  `emil-design-eng` is the craft skill `docs/agents/rules/design.md` requires
+  for site design work; `better-ui` and `mobile-native` stay optional. Respect
+  each skill's invocation policy and applicable user skill overrides. A
+  displayed or installed skill is not proof that its body loaded or its
+  procedure ran.
 - `.claude/settings.json` holds this repo's Claude permissions.
 - `.claude/rules/*.md` are symlinks to the shared `docs/agents/rules/` files;
   Claude loads each one only when it reads a path in that file's `paths:`
