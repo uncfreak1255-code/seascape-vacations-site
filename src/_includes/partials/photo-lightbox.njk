@@ -1,0 +1,81 @@
+{#
+  Photo lightbox: a home's photos room by room, in a native dialog.
+  Catalog entry: docs/design/component-patterns.md; limits and departures: docs/design/photo-lightbox.md.
+  Styles: src/css/photo-lightbox.css. Script: src/assets/js/photo-lightbox.js. A page that calls
+  the macro links both, and keeps every photo reachable without them.
+
+  {{ photoLightbox(id, title, rooms, eyebrow) }}
+
+  id       the dialog's id. An opener is the page's own button:
+           <button type="button" data-plb-open="<id>" hidden>…</button>
+           The script shows it once it can open the dialog.
+  title    the dialog's heading and accessible name, usually the home's name.
+  rooms    [{ name, photos: [{ src, alt, label, srcset, width, height }] }], in walking order.
+           src is the full-size file. srcset is the caller's own list of sizes, optional.
+  eyebrow  a short line above the title, optional.
+
+  A photo needs src and alt; a room needs a name and one such photo. Others are left out.
+  Prints nothing without an id, a title or a photo. With one room there is no room switcher.
+  The control labels (Close, Rooms, Previous photo, Next photo, the counts) are the partial's own.
+#}
+{% macro photoLightbox(id, title, rooms, eyebrow="") %}
+{#- Arrays are filled with push: a {% set %} inside a loop does not reach the macro's scope. #}
+{%- set shown = [] %}
+{%- set every = [] %}
+{%- for room in rooms or [] %}
+  {%- set kept = [] %}
+  {%- for photo in room.photos or [] %}{% if photo.src and photo.alt %}{% set _ = kept.push(photo) %}{% endif %}{% endfor %}
+  {%- if room.name and kept.length %}{% set _ = shown.push({ name: room.name, photos: kept }) %}{% for photo in kept %}{% set _ = every.push(photo) %}{% endfor %}{% endif %}
+{%- endfor %}
+{%- set total = every.length %}
+{%- if id and title and total -%}
+{%- set first = shown[0].photos[0] %}
+{%- set seen = [] %}
+<dialog class="plb" id="{{ id }}" aria-labelledby="{{ id }}-title">
+  <div class="plb-frame">
+    <header class="plb-head">
+      {%- if eyebrow %}<p class="plb-eyebrow">{{ eyebrow }}</p>{% endif %}
+      <h2 class="plb-title" id="{{ id }}-title">{{ title }}</h2>
+    </header>
+    <form class="plb-close" method="dialog"><button class="plb-button" autofocus>Close</button></form>
+    {%- if shown.length > 1 %}
+    <div class="plb-rooms" role="group" aria-label="Rooms">
+      {%- for room in shown %}
+      <button type="button" class="plb-room" data-plb-room aria-pressed="{{ "true" if loop.first else "false" }}" data-plb-next="Next: {{ shown[loop.index % shown.length].name }}"><span class="plb-room-name">{{ room.name }}</span> <span class="plb-room-count">{{ room.photos.length }} {{ "photo" if room.photos.length == 1 else "photos" }}</span></button>
+      {%- endfor %}
+    </div>
+    {%- endif %}
+    <div class="plb-feed" data-plb-feed>
+      {%- for room in shown %}
+      <div class="plb-panel" data-plb-panel role="group" aria-label="{{ room.name }} photos"{% if not loop.first %} hidden{% endif %}>
+        <ol class="plb-photos">
+          {%- for photo in room.photos %}
+          {%- set at = seen.push(1) %}
+          <li>
+            <a class="plb-photo" href="{{ photo.src }}" data-plb-photo data-plb-label="{{ photo.label }}" data-plb-position="{{ loop.index }} of {{ loop.length }} in {{ room.name }} · photo {{ at }} of {{ total }}"><img src="{{ photo.src }}"{% if photo.srcset %} srcset="{{ photo.srcset }}" sizes="(min-width: 900px) 120px, calc(100vw - 32px)"{% endif %} alt="{{ photo.alt }}"{% if photo.width and photo.height %} width="{{ photo.width }}" height="{{ photo.height }}"{% endif %} loading="lazy" decoding="async"></a>
+            <p class="plb-caption">{% if photo.label %}<span>{{ photo.label }}</span> {% endif %}<span class="plb-count">{{ loop.index }} of {{ loop.length }}</span></p>
+          </li>
+          {%- endfor %}
+        </ol>
+      </div>
+      {%- endfor %}
+    </div>
+    {%- if shown.length > 1 %}
+    <div class="plb-next"><button type="button" class="plb-button" data-plb-next-room>Next: {{ shown[1].name }}</button></div>
+    {%- endif %}
+    <div class="plb-stage" data-plb-stage>
+      <a class="plb-stage-photo" href="{{ first.src }}"><img src="{{ first.src }}"{% if first.srcset %} srcset="{{ first.srcset }}"{% endif %} sizes="(min-width: 900px) calc(100vw - 400px), 1px" alt="{{ first.alt }}"{% if first.width and first.height %} width="{{ first.width }}" height="{{ first.height }}"{% endif %} loading="lazy" decoding="async"></a>
+      <div class="plb-stage-bar">
+        <p class="plb-stage-text"><span class="plb-stage-label" data-plb-stage-label>{{ first.label }}</span> <span class="plb-stage-position" data-plb-stage-position aria-live="polite">1 of {{ shown[0].photos.length }} in {{ shown[0].name }} · photo 1 of {{ total }}</span></p>
+        {%- if total > 1 %}
+        <div class="plb-steps">
+          <button type="button" class="plb-step" data-plb-step="-1" aria-label="Previous photo"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>
+          <button type="button" class="plb-step" data-plb-step="1" aria-label="Next photo"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"></path></svg></button>
+        </div>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+</dialog>
+{%- endif %}
+{% endmacro %}

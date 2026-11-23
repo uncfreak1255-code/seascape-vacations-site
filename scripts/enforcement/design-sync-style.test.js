@@ -46,6 +46,19 @@ test('every docs/design doc DESIGN.md links, including the phone rules, ships ve
   assert.equal(exported('design-rules.md'), source('docs/agents/rules/design.md'), 'waterline/design-rules.md drifted from docs/agents/rules/design.md');
 });
 
+test('a design doc that an exported design doc links beside itself ships too, such as the photo lightbox', () => {
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.match(source('docs/design/component-patterns.md'), /\]\(photo-lightbox\.md\)/, 'the catalog no longer links photo-lightbox.md');
+  assert.equal(exported('photo-lightbox.md'), source('docs/design/photo-lightbox.md'));
+  const shipped = fs.readdirSync(path.join(root, out, 'waterline')).filter((name) => name.endsWith('.md') && fs.existsSync(path.join(root, 'docs/design', name)));
+  assert.ok(shipped.length > 10);
+  for (const name of shipped) {
+    for (const [, sibling] of exported(name).matchAll(/\]\(([a-z0-9-]+\.md)(?:#[^)]*)?\)/g)) {
+      assert.ok(shipped.includes(sibling), `waterline/${name} links ${sibling}, which the export lacks`);
+    }
+  }
+});
+
 // Text checks: they catch the pattern route losing its link or its gate wording, and a motion ban
 // being reworded or moved out of DESIGN.md. They cannot prove an agent reads the rule the right way.
 test('the motion law links the pattern route beside its unchanged bans, and the export README points at the same file', () => {
