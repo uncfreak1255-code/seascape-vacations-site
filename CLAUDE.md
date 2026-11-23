@@ -11,8 +11,10 @@ Claude harness delta.
   and Emil Kowalski's sixteen) are real directories declared in
   `.agents/skills-divergence.json`. Of them,
   `emil-design-eng` is the craft skill `docs/agents/rules/design.md` requires
-  for site design work; the rest stay optional, and
-  `.claude/skills/ask-emil/SKILL.md` maps which one fits a task. Respect
+  for site design work; the rest stay optional. Only it and
+  `mobile-native` of Emil's are listed to you: for the other fourteen, open
+  `.claude/skills/ask-emil/SKILL.md`, which maps Emil's skills by task, then
+  read the `SKILL.md` in the folder it names. Respect
   each skill's invocation policy and applicable user skill overrides. A
   displayed or installed skill is not proof that its body loaded or its
   procedure ran.

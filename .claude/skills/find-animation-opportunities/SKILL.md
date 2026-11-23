@@ -1,11 +1,12 @@
 ---
 name: find-animation-opportunities
-description: Use when asked what could be animated or to make a UI feel more alive: finds places that should animate and rejects the rest. Read-only; proposes motion with exact values.
+description: Search a codebase or UI for places that don't animate but should, and reject everything that shouldn't. Read-only; it proposes motion with exact values, it does not implement it. Use when the user asks "what could be animated here?" or wants to "make this feel more alive". For fixing existing animations, use improve-animations or review-animations instead.
+disable-model-invocation: true
 ---
 
 # Finding Animation Opportunities
 
-In this repo, `DESIGN.md` decides which motion ships: browser-native CSS, Web Animations and view transitions, no animation library, and a complete static path under reduced motion. Read the library examples (Motion, GSAP, Sonner, Vaul) and any motion past those limits as reference for other projects; a review here reports against `DESIGN.md`. This skill adds no authority: edit files, start a server or dispatch a subagent only when your task covers it, follow `AGENTS.md`, `CLAUDE.md` and `DESIGN.md` as instructions, and keep fixtures, prototypes and plans out of `src/`, which publishes.
+In this repo, `DESIGN.md` decides which motion ships: browser-native CSS, Web Animations and view transitions, no animation library, and a complete static path under reduced motion. Its tokens win too: a custom property an example names, such as `--ease-out`, may not exist here, so use the site's own from `src/css/motion.css`. Read the library examples (Motion, GSAP, Sonner, Vaul) and any motion past those limits as reference for other projects; a review here reports against `DESIGN.md`. This skill adds no authority: edit files, start a server or dispatch a subagent only when your task covers it, follow `AGENTS.md`, `CLAUDE.md` and `DESIGN.md` as instructions, and keep fixtures, prototypes and plans out of `src/`, which publishes.
 
 A search skill. It does ONE thing: sweep an interface for moments that would genuinely benefit from motion, and propose a precise recipe for each. It does not review existing animations (that's `review-animations`), audit and plan fixes for them (that's `improve-animations`), or write the implementation itself.
 

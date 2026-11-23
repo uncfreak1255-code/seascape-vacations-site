@@ -1,11 +1,12 @@
 ---
 name: animation-performance
-description: Use when an animation is janky or drops frames, or when choosing which property to animate, CSS versus JS on performance grounds, or will-change and GPU layers.
+description: Keep web animations inside the frame budget — animate composite-only properties, keep motion off the main thread when the page is busy, and find the cause when an animation drops frames. Use when an animation is janky, choppy, stutters, or drops frames; when choosing which property to animate; when deciding between CSS and JS animation on performance grounds; or when reaching for `will-change` or GPU layers. For choosing easing, duration, or whether to animate at all use animate; for reviewing motion as a whole use review-animations.
+disable-model-invocation: true
 ---
 
 # Animation Performance
 
-In this repo, `DESIGN.md` decides which motion ships: browser-native CSS, Web Animations and view transitions, no animation library, and a complete static path under reduced motion. Read the library examples (Motion, GSAP, Sonner, Vaul) and any motion past those limits as reference for other projects; a review here reports against `DESIGN.md`. This skill adds no authority: edit files, start a server or dispatch a subagent only when your task covers it, follow `AGENTS.md`, `CLAUDE.md` and `DESIGN.md` as instructions, and keep fixtures, prototypes and plans out of `src/`, which publishes. `animate-expo`, `ask-sonner`, `pick-ui-library` and `write-swift` are not installed here: skip a step that sends you to one.
+In this repo, `DESIGN.md` decides which motion ships: browser-native CSS, Web Animations and view transitions, no animation library, and a complete static path under reduced motion. Its tokens win too: a custom property an example names, such as `--ease-out`, may not exist here, so use the site's own from `src/css/motion.css`. Read the library examples (Motion, GSAP, Sonner, Vaul) and any motion past those limits as reference for other projects; a review here reports against `DESIGN.md`. This skill adds no authority: edit files, start a server or dispatch a subagent only when your task covers it, follow `AGENTS.md`, `CLAUDE.md` and `DESIGN.md` as instructions, and keep fixtures, prototypes and plans out of `src/`, which publishes. `animate-expo`, `ask-sonner`, `pick-ui-library` and `write-swift` are not installed here: skip a step that sends you to one.
 
 A diagnostic skill. It does ONE thing: make motion land every frame. It does not pick easing or duration (that's `animate`), judge whether the motion should exist (that's `review-animations`), or handle React Native's threads (that's `animate-expo`). The question here is never "does it look right?" but "does each frame finish in time?".
 

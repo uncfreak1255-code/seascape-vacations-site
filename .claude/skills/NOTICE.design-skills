@@ -69,12 +69,13 @@ Sixteen skills, each a real directory in seascape-vacations-site
 Upstream's other four are left out, because this site is web-only and takes no
 component library: animate-expo, ask-sonner, pick-ui-library, write-swift.
 
-Invocation is upstream's. ask-emil, learn-taste, prototype and review-animations
-are not listed to the model: one loads when its name is typed, or when an agent
-opens its file, as CLAUDE.md's pointer to ask-emil's map invites. The other
-twelve may load on a matching task. What an agent may do once a skill has
-loaded is set by delta 2's note, not by how the skill loaded.
-emil-design-eng is the one craft skill site design work requires
+Invocation differs from upstream's (delta 4). Only emil-design-eng and
+mobile-native, the two that were here before 2026-11-23, are listed to the
+model and may load on a matching task. The other fourteen are not listed: one
+loads when a person types its name, or when an agent opens its file. CLAUDE.md
+sends agents to ask-emil's map, which names the other fifteen by task. What an
+agent may do once a skill has loaded is set by delta 2's note, not by how the
+skill loaded. emil-design-eng is the one craft skill site design work requires
 (docs/agents/rules/design.md); the rest are optional. Repo design docs
 (DESIGN.md) win over every one of them on motion, brand, type and copy.
 `npm run audit:skills` can flag the fourteen directories added 2026-11-23 as
@@ -82,10 +83,9 @@ unused at first: read their recorded use on or after 2027-02-23 before
 retiring any of them again.
 
 Deltas from the upstream files at the pin. Reapply each one after a re-import.
-scripts/enforcement/emil-skills.test.js fails when delta 1, 2, 3 or 7 is
-dropped, when a description this repo wrote passes 220 characters or names a
-skill left out, and when emil-design-eng loses its description or review
-format. The repo's file-size gate fails when delta 6 is dropped. Nothing
+scripts/enforcement/emil-skills.test.js fails when delta 1, 2, 3, 4 or 7 is
+dropped and when emil-design-eng loses its description or review format
+(delta 5). The repo's file-size gate fails when delta 6 is dropped. Nothing
 checks emil-design-eng's agents/openai.yaml.
 
 1. The "Initial Response" block is removed from the thirteen SKILL.md files
@@ -95,8 +95,10 @@ checks emil-design-eng's agents/openai.yaml.
 2. One note sits under the title of all sixteen SKILL.md files, whichever
    libraries a skill's text names, so the thirteen that site issue #1041
    counts as assuming an animation library are all covered. It says that
-   DESIGN.md decides which motion ships and that the library examples (Motion,
-   GSAP, Sonner, Vaul) are reference for other projects. It also says the
+   DESIGN.md decides which motion ships, that the site's own tokens are used
+   in place of a custom property an example names, and that the library
+   examples (Motion, GSAP, Sonner, Vaul) are reference for other projects. It
+   also says the
    skill adds no authority: an agent edits files, starts a server or
    dispatches a subagent only when its task covers that, follows AGENTS.md,
    CLAUDE.md and DESIGN.md as instructions, and keeps fixtures, prototypes and
@@ -107,18 +109,30 @@ checks emil-design-eng's agents/openai.yaml.
 3. Six skills name one of the four left out (animate, animation-performance,
    ask-emil, gestures, mobile-native, prototype). Their note adds that those
    four are not installed and a step that sends an agent to one is skipped.
-4. Descriptions. Claude Code lists the description of every skill that may load
-   on its own in each session, inside one shared budget, so the ten new ones
-   each carry a description of at most 220 characters in place of upstream's.
-   emil-design-eng keeps this repo's description. mobile-native keeps
-   upstream's without its React Native clause.
+4. Listing. Claude Code lists every skill that may load on its own, in each
+   session, inside one budget the repo's own skills share
+   (code.claude.com/docs/en/skills, "Skill descriptions are cut short"). In
+   the sessions that made this import the budget was already spent: some of
+   the repo's own skills were listed by name only. So the ten added skills
+   that upstream leaves listed carry `disable-model-invocation: true` here,
+   as upstream's ask-emil, learn-taste, prototype and review-animations
+   already do, and the import adds nothing to the listing: the two listed
+   descriptions total 897 characters against 898 before. Descriptions are
+   upstream's, except that emil-design-eng keeps this repo's and mobile-native
+   drops its React Native clause. Listing one of the fourteen again means
+   removing that line and raising the ceiling in the test, and it takes
+   listing room from the repo's own skills.
 5. emil-design-eng keeps this repo's review format (one Before / After / Why
    table, without upstream's wrong-format sample), and its agents/openai.yaml,
    which is this repo's file and not an upstream one.
-6. Two sections moved whole into a file beside SKILL.md, to stay inside the
-   repo's 20,000-byte limit for a changed file: emil-design-eng "Spring
-   Animations" to SPRINGS.md, and apple-design "Design foundations" to
-   FOUNDATIONS.md. A pointer to the file stays where the section was.
+6. Three sections moved whole into a file beside SKILL.md, so each SKILL.md
+   passes the repo's file-size gate. apple-design "Design foundations" went
+   to FOUNDATIONS.md: a changed file stays under 20,000 bytes.
+   emil-design-eng "Spring Animations" went to SPRINGS.md and "The Sonner
+   Principles" to SONNER.md: that SKILL.md was already over the limit, and
+   the gate lets such a file shrink but never grow, so its ceiling is its
+   size at the last commit. A pointer to the file stays where each section
+   was.
 7. improve-animations/PLAN-TEMPLATE.md: upstream keeps its outer code fence
    open with four zero-width spaces before the inner fences. Here the outer
    fence has four backticks and no hidden character.
@@ -130,7 +144,9 @@ emil-design-eng and mobile-native were kept, at e8a175de.
 
 Re-import by copying the sixteen folders from upstream at a new pin into the
 site repo's .claude/skills/, reapplying the deltas above, updating the pin
-here, and keeping their entries in .agents/skills-divergence.json. Before the
+here, and keeping their entries in .agents/skills-divergence.json. Where
+upstream's apple-design or emil-design-eng text has grown, move another whole
+section beside SKILL.md (delta 6). Before the
 new text lands, have someone with no part in the import read it for
 instructions that act without being asked, withhold an answer, override the
 repo's rules or reach outside the repo: it is third-party text that agents

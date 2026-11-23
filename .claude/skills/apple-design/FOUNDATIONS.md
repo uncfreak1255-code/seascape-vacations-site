@@ -1,6 +1,6 @@
 # Apple Design: Design foundations — the eight principles
 
-Moved whole from `SKILL.md` to keep that file under the repo's size limit.
+Moved whole from `SKILL.md` so that file passes the repo's file-size gate.
 
 ## 16. Design foundations — the eight principles
 
