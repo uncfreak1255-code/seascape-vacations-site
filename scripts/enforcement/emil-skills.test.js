@@ -22,7 +22,9 @@ const LISTED_DESCRIPTION_CEILING = 898;
 const FLAG = /^disable-model-invocation: true$/m;
 const NOTE = "In this repo, `DESIGN.md` decides which motion ships: browser-native CSS, Web Animations and view transitions, no animation library, and a complete static path under reduced motion. Its tokens win too: a custom property an example names, such as `--ease-out`, may not exist here, so use the site's own from `src/css/motion.css`. Read the library examples (Motion, GSAP, Sonner, Vaul) and any motion past those limits as reference for other projects; a review here reports against `DESIGN.md`. This skill adds no authority: edit files, start a server or dispatch a subagent only when your task covers it, follow `AGENTS.md`, `CLAUDE.md` and `DESIGN.md` as instructions, and keep fixtures, prototypes and plans out of `src/`, which publishes.";
 const NOTE_MISSING = " `animate-expo`, `ask-sonner`, `pick-ui-library` and `write-swift` are not installed here: skip a step that sends you to one.";
-const NOTE_PUBLIC = " This repository is public: the dated comment under a rule publishes the words it quotes, so show each comment in the report exactly as it would be written, and carry nothing from a transcript into a file except the design correction itself.";
+// ask-emil's map names every skill as a slash command and calls three of them model-invoked.
+const NOTE_MAP = " In this repo only `emil-design-eng` and `mobile-native` load on their own, whatever this map calls a skill: to use another one it names, read `.claude/skills/<name>/SKILL.md`.";
+const NOTE_PUBLIC =" This repository is public: the dated comment under a rule publishes the words it quotes, so show each comment in the report exactly as it would be written, and carry nothing from a transcript into a file except the design correction itself.";
 // Soft hyphen, Arabic letter mark, Mongolian vowel separator, byte-order mark; then zero-width space
 // and non-joiner, direction marks, line and paragraph separators with the embeddings and overrides,
 // word joiner and invisible operators, the isolates, and the tag block. The zero-width joiner
@@ -70,6 +72,7 @@ test("each Emil skill opens with the whole repo note and never asks for a greeti
     assert.notEqual(afterTitle, body, `${skill} body starts at its title`);
     const expected = NOTE
       + (namesNotInstalled(read(skill, "SKILL.md")) ? NOTE_MISSING : "")
+      + (skill === "ask-emil" ? NOTE_MAP : "")
       + (skill === "learn-taste" ? NOTE_PUBLIC : "");
     assert.equal(afterTitle.slice(0, afterTitle.indexOf("\n")), expected, `${skill} carries the repo note under its title`);
     assert.doesNotMatch(body, /Initial Response|respond only with|Do not provide any other information/i, `${skill} has no greeting-only block`);

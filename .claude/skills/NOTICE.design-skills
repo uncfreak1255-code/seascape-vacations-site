@@ -121,7 +121,9 @@ checks emil-design-eng's agents/openai.yaml.
    upstream's, except that emil-design-eng keeps this repo's and mobile-native
    drops its React Native clause. Listing one of the fourteen again means
    removing that line and raising the ceiling in the test, and it takes
-   listing room from the repo's own skills.
+   listing room from the repo's own skills. ask-emil's map names every skill
+   as a slash command and calls three "model-invoked", so its note adds that
+   only those two load on their own here and gives the path to read.
 5. emil-design-eng keeps this repo's review format (one Before / After / Why
    table, without upstream's wrong-format sample), and its agents/openai.yaml,
    which is this repo's file and not an upstream one.
