@@ -105,8 +105,13 @@ test("SAVE50 campaign survives catalog and property trip edits", async ({ page }
   expect(catalogUrl.searchParams.get("utm_source")).toBe("mailchimp");
   expect(catalogUrl.searchParams.get("utm_campaign")).toBe("save50_welcome");
   var headerButton = page.locator(".g-header-actions").getByRole("link", {name:"Find your home",exact:true});
-  await expect(headerButton).toHaveAttribute("href", "#catalog-trip");
-  await expect(headerButton).not.toHaveAttribute("target");
+  if (page.viewportSize().width <= 700) {
+    // Phones hide the guest header button and show an Owners link instead (#1001).
+    await expect(headerButton).toHaveCount(0);
+  } else {
+    await expect(headerButton).toHaveAttribute("href", "#catalog-trip");
+    await expect(headerButton).not.toHaveAttribute("target");
+  }
   var catalogCheckout = new URL(await page.locator('[data-property="dockside-dreams"] .catalog-check-dates').getAttribute("href"));
   expect(catalogCheckout.searchParams.get("promo")).toBe("save50");
   expect(catalogCheckout.searchParams.get("utm_campaign")).toBe("save50_welcome");
