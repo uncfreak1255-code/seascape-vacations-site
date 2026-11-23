@@ -1,5 +1,5 @@
 /* Disclosure: a row that opens supporting text under it (docs/design/component-patterns.md -> Disclosure).
-   Linked by the page that uses the partial; no page does yet. Native details/summary, no script.
+   Linked by the page that uses the partial (the planning-guide layout for a place-look guide). Native details/summary, no script.
    Colours, spacing and durations are Waterline scale literals (scripts/enforcement/waterline-tokens.test.js). */
 
 .dsc { border-bottom: 1px solid #CAD4CF; }

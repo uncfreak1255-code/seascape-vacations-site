@@ -1,6 +1,6 @@
 /* Island locator: Anna Maria Island with numbered places.
    Markup: src/_includes/partials/island-locator.njk. Catalog entry and limits:
-   docs/design/component-patterns.md -> Island locator. No page links this sheet yet.
+   docs/design/component-patterns.md -> Island locator. Linked by the planning-guide layout for a place-look guide.
    Values are Waterline scale literals (scripts/enforcement/waterline-tokens.test.js).
    Link colour, hover colour and the focus ring come from the page. */
 

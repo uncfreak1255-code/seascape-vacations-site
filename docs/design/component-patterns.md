@@ -114,10 +114,10 @@ selected may carry its recorded motion onto a production page:
 | Photographic folio — explored | Amicro CoverFlow: a dominant image with restrained neighboring depth | Same Dockside study; show the whole active photo and thumbnail access. Phone layout preserves photo size. No pointer tilt or parallax; reduced motion swaps directly. |
 | Responsive CTA — reference | Studio `Cta`: clear action hierarchy and an arrow that responds to intent | Explore gallery and editorial actions with Waterline colors, visible focus and stable labels. Press/hover cannot delay activation. No hold-to-book, decorative trails or hover-only meaning. |
 | Filter / selection pill — reference | Studio `Pagination`, Amicro pill controls: unmistakable active state and continuous selection feedback | Real filters or gallery choices. Preserve result counts and keyboard behavior; narrow screens wrap or offer reachable controls. Reduced motion changes selection immediately. Existing radius is not an experiment's limit. |
-| Disclosure — explored | Studio `Collapsible`: expansion feels connected to its trigger | [Guide look study](experiments/guide-look-study/review.md), views `c` and `d`. Native details/summary for a section's longer reading; essential booking facts stay visible; no page uses it yet. No script. Limits and motion record: [Disclosure](#disclosure). |
+| Disclosure — explored | Studio `Collapsible`: expansion feels connected to its trigger | [Guide look study](experiments/guide-look-study/review.md), views `c` and `d`. Native details/summary for a section's longer reading; essential booking facts stay visible; first used on the beaches guide (#1045). No script. Limits and motion record: [Disclosure](#disclosure). |
 | Photo lightbox — selected | Studio `Lightbox`: continuity from thumbnail to a generous photo view | [Photo lightbox](photo-lightbox.md): "Room by room", selected by Sawyer November 14, 2026 from a Claude Design canvas. Native dialog, Escape, focus return, explicit close and original-image access; no page uses it yet. The homes' pages are on hold and none of the canvas's motion is built: both are recorded there. |
-| Island locator — explored | Herb Lester Associates' printed maps with a numbered key; nps.gov park "Maps" pages: the map comes before the prose and every number means one place | [Guide look study](experiments/guide-look-study/review.md), views `a` and `d`. Opens a guide about places on Anna Maria Island; no page uses it yet. Static markup, no script. Limits and motion record: [Island locator](#island-locator). |
-| Fact strip — explored | The mobile Wikipedia article layout: a facts box first, then the sections | [Guide look study](experiments/guide-look-study/review.md), views `c` and `d`. Opens a section with its labelled facts; no page uses it yet. Static markup, no script. Limits: [Fact strip](#fact-strip). |
+| Island locator — explored | Herb Lester Associates' printed maps with a numbered key; nps.gov park "Maps" pages: the map comes before the prose and every number means one place | [Guide look study](experiments/guide-look-study/review.md), views `a` and `d`. Opens a guide about places on Anna Maria Island; first used on the beaches guide (#1045). Static markup, no script. Limits and motion record: [Island locator](#island-locator). |
+| Fact strip — explored | The mobile Wikipedia article layout: a facts box first, then the sections | [Guide look study](experiments/guide-look-study/review.md), views `c` and `d`. Opens a section with its labelled facts; first used on the beaches guide (#1045). Static markup, no script. Limits: [Fact strip](#fact-strip). |
 | Editorial decision card — existing catalog pattern | Studio `EditorialDecisionCard`: direct answer with source context nearby | Keep the constraints above; it supplements complete comparison facts rather than replacing them. |
 
 Studio inspected November 17, 2026 at
@@ -171,8 +171,9 @@ The reader's job: see where each place sits on the island before reading about
 it, and jump to the one they want. Two forms, both macros in
 `src/_includes/partials/island-locator.njk`, styled by `src/css/island-locator.css`:
 
-- `islandMap(island, places)`: the key map that opens the guide. Each numbered
-  name is a link to that place's section.
+- `islandMap(island, places, label)`: the key map that opens the guide. Each
+  numbered name is a link to that place's section. `label` names the key's
+  navigation region (default "Places on the map").
 - `islandInset(island, places, own)`: a small outline with one place lit, set
   beside that place's facts.
 
@@ -180,9 +181,11 @@ it, and jump to the one they want. Two forms, both macros in
 `{ name, href, x, y }` in reading order. The page that calls a macro links the
 sheet. Preview: the `island-locator` cards from `npm run design:sync`.
 
-Status `explored`: Sawyer chose this look from still pictures, and no page uses
-it. Its source sits under `src/` as unused code (site issue #1041, item 3).
-Putting it on a page is a separate visible change with its own design review.
+Status `explored`: Sawyer chose this look from still pictures. First page use:
+the beaches guide's place look (site issue #1045,
+`docs/briefs/2026-11-beaches-guide-place-look.md`), with the fact strip and
+disclosure. Each further page is a separate visible change with its own design
+review.
 
 Limits:
 
@@ -226,8 +229,8 @@ by `src/css/fact-strip.css`:
 
 `facts` is the page's list of `{ label, text }`; a label prints as written.
 Preview: the `fact-strip` cards from `npm run design:sync`. Status `explored`,
-on the island locator's terms: chosen from still pictures, unused code under
-`src/`, and a page use is its own reviewed change.
+on the island locator's terms: chosen from still pictures, first used on the
+beaches guide (site #1045), and each further page use is its own reviewed change.
 
 Limits:
 

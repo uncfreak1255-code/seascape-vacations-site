@@ -6,13 +6,14 @@
   island  the global data `islandOutline` (src/_data/islandOutline.json)
   places  [{ name, href, x, y }] in reading order; x and y are in the outline's units
   own     1-based position in `places` of the place the inset lights
+  label   the key's accessible name; name the kind of place ("Beaches on the map")
 
   islandMap prints the OpenStreetMap credit the outline requires. A page that shows
   an inset without the key map calls islandCredit() near it.
 #}
 {% macro islandCredit() %}<div class="isl-credit">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></div>{% endmacro %}
 
-{% macro islandMap(island, places) %}
+{% macro islandMap(island, places, label="Places on the map") %}
 <div class="isl-map">
   <div class="isl-plot">
     <div class="isl-stage" aria-hidden="true">
@@ -23,7 +24,7 @@
       <span class="isl-scale"><i style="--m:{{ (island.mile / island.width) | round(4) }}"></i>1 mile</span>
       <span class="isl-north"><svg viewBox="0 0 12 16" width="12" height="16" focusable="false"><path d="M6 0L12 15L6 11.5L0 15Z"/></svg>N</span>
     </div>
-    <nav class="isl-key" aria-label="Places on the map">
+    <nav class="isl-key" aria-label="{{ label }}">
       {%- for p in places %}
       {%- set n = ("0" if loop.index < 10 else "") ~ loop.index %}
       <a class="isl-link" href="{{ p.href }}" style="--fx:{{ (p.x / island.width) | round(4) }};--fy:{{ (p.y / island.height) | round(4) }}"><span class="isl-dot" data-n="{{ n }}" aria-hidden="true"></span><span class="isl-txt"><span class="isl-n">{{ n }}</span> <span class="isl-name">{{ p.name }}</span></span></a>
