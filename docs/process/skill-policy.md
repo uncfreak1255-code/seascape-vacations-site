@@ -114,6 +114,8 @@ suite in `plugins/seascape-seo-os/evals/`. `seascape-design-specialist` and
 `design-review` failed their evals and now pass. Each skill now states its own
 deliverable and proof contract. Retired the unused `animate`, `break-ui` and
 `review-animations` skills. See `docs/research/2026-10-25-skill-audit-and-evals.md`.
+Reversed 2026-11-23 (agent-issues #91): see `.claude/skills/NOTICE.design-skills`;
+read recorded use after 2027-02-23 before retiring again.
 
 ### 2026-10-23 — repo-scoped Compound Writing trial
 

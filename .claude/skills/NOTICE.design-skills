@@ -4,9 +4,12 @@ Third-party attribution for the UI craft skills in this folder
 Moved 2026-10-12 from sawyer-skills `skills/` (global set) into this repo as
 repo-local skills: better-ui (jakubkrehel/skills, adapted: explicit invocation
 metadata, project design and accessibility precedence), and emil-design-eng,
-mobile-native (emilkowalski/skills, at the pinned commit with one delta noted below). animate,
-break-ui and review-animations were retired 2026-10-25: no use in Claude or Codex since
-they were added on 2026-10-12, and DESIGN.md already limits motion. License texts follow.
+mobile-native (emilkowalski/skills). animate, break-ui and review-animations
+were retired 2026-10-25: no use in Claude or Codex since they were added on
+2026-10-12, and DESIGN.md already limits motion. On 2026-11-23 that retirement
+was reversed with Sawyer's approval (agent-issues #91, site issue #1041 item 1):
+the sixteen web-relevant emilkowalski/skills are here at one pinned commit,
+with the deltas listed in section 4. License texts follow.
 
 ==========================================================================
 3. jakubkrehel/skills
@@ -53,21 +56,73 @@ SOFTWARE.
 ==========================================================================
 
 Upstream: https://github.com/emilkowalski/skills
-Pinned at: e8a175de22ae1e49370fc144c1f3bb9aeedf988d (re-imported 2026-10-08; first imported 2026-09-14 at d23d7f88)
+Pinned at: 64eb3deb9a5fbfa041faf783e0bc3fd635872e9c (imported 2026-11-23; earlier pins e8a175de on 2026-10-08 and d23d7f88 on 2026-09-14)
 
-  emil-design-eng, mobile-native (plus animate, break-ui, review-animations,
-  retired 2026-10-25) were moved 2026-10-12 to seascape-vacations-site .claude/skills/<name>
-  (verbatim, same pin). Their attribution and this license travel with them.
+Sixteen skills, each a real directory in seascape-vacations-site
+.claude/skills/<name>, declared in .agents/skills-divergence.json:
 
-Copies of the upstream files at the pinned commit with one delta (2026-11-11):
-the "Initial Response" block is removed from both SKILL.md files, because an
-agent loading the skill mid-task with no question would answer with that
-greeting and nothing else. Reapply this delta after a re-import. The
-2026-09-14 adapted emil-design-eng (explicit-only, rewritten body) is replaced:
-the skills are meant to fire on ordinary design and UI work. Repo design docs
-(e.g. seascape-vacations-site DESIGN.md) still win on brand, type, and copy.
-Re-import by copying the skill folders from upstream at a new pin into the
-site repo's .claude/skills/ and keep their entries in .agents/skills-divergence.json.
+  animate, animation-performance, animation-vocabulary, apple-design, ask-emil,
+  break-ui, choreograph, emil-design-eng, find-animation-opportunities, gestures,
+  improve-animations, learn-taste, mobile-native, prototype, remove-animations,
+  review-animations.
+
+Upstream's other four are left out, because this site is web-only and takes no
+component library: animate-expo, ask-sonner, pick-ui-library, write-swift.
+
+Invocation is upstream's. ask-emil, learn-taste, prototype and review-animations
+run only when their name is typed; the other twelve may load on a matching
+task. emil-design-eng is the one craft skill site design work requires
+(docs/agents/rules/design.md); the rest are optional. Repo design docs
+(DESIGN.md) win over every one of them on motion, brand, type and copy.
+`npm run audit:skills` can flag the fourteen directories added 2026-11-23 as
+unused at first: read their recorded use on or after 2027-02-23 before
+retiring any of them again.
+
+Deltas from the upstream files at the pin. Reapply each one after a re-import;
+scripts/enforcement/emil-skills.test.js fails when one is dropped.
+
+1. The "Initial Response" block is removed from the thirteen SKILL.md files
+   that have one (all but ask-emil, gestures and learn-taste), because an agent
+   loading the skill mid-task with no question would answer with that greeting
+   and nothing else.
+2. One note sits under the title of all sixteen SKILL.md files. It says that
+   DESIGN.md decides which motion ships and that the library examples are
+   reference for other projects (ten of the sixteen name Motion, GSAP, Sonner
+   or Vaul). It also says the skill adds no authority: an agent edits files,
+   starts a server or dispatches a subagent only when its task covers that,
+   follows AGENTS.md, CLAUDE.md and DESIGN.md as instructions, and keeps
+   fixtures, prototypes and plans out of src/, which publishes.
+3. Six skills name one of the four left out (animate, animation-performance,
+   ask-emil, gestures, mobile-native, prototype). Their note adds that those
+   four are not installed and a step that sends an agent to one is skipped.
+4. Descriptions. Claude Code lists the description of every skill that may load
+   on its own in each session, inside one shared budget, so the ten new ones
+   carry a description of at most 220 characters in place of upstream's.
+   emil-design-eng keeps this repo's description. mobile-native keeps
+   upstream's without its React Native clause.
+5. emil-design-eng keeps this repo's review format (one Before / After / Why
+   table, without upstream's wrong-format sample), and its agents/openai.yaml,
+   which is this repo's file and not an upstream one.
+6. Two sections moved whole into a file beside SKILL.md, to stay inside the
+   repo's 20,000-byte limit for a changed file: emil-design-eng "Spring
+   Animations" to SPRINGS.md, and apple-design "Design foundations" to
+   FOUNDATIONS.md. A pointer to the file stays where the section was.
+7. improve-animations/PLAN-TEMPLATE.md: upstream keeps its outer code fence
+   open with four zero-width spaces before the inner fences. Here the outer
+   fence has four backticks and no hidden character.
+
+History: the 2026-09-14 adapted emil-design-eng (explicit-only, rewritten body)
+was later replaced by upstream's text, because the skills are meant to fire on
+ordinary design and UI work. From 2026-10-25 to 2026-11-23 only
+emil-design-eng and mobile-native were kept, at e8a175de.
+
+Re-import by copying the sixteen folders from upstream at a new pin into the
+site repo's .claude/skills/, reapplying the deltas above, updating the pin
+here, and keeping their entries in .agents/skills-divergence.json. Before the
+new text lands, have someone with no part in the import read it for
+instructions that act without being asked, withhold an answer, override the
+repo's rules or reach outside the repo: it is third-party text that agents
+will follow. This attribution and license travel with the skills.
 
 --------------------------------------------------------------------------
 MIT License
