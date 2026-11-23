@@ -1,0 +1,19 @@
+{
+  "note": "Preview and test data only: fact lines as the beaches guide prints them (src/guides/anna-maria-island-beaches.html), labels and colons included. The link in `linked` is added here to show a value that holds one. A page that adopts the fact strip supplies its own facts.",
+  "three": [
+    { "label": "Best for:", "text": "Couples, photographers, sunset watching, shelling, and solitude seekers." },
+    { "label": "Facilities:", "text": "None — no restrooms, no lifeguards, no shade structures. Bring everything you need." },
+    { "label": "Parking:", "text": "Limited free street parking. Arrive early on weekends." }
+  ],
+  "two": [
+    { "label": "Best for:", "text": "Guests staying in Holmes Beach rentals who want a quieter, less-crowded experience." },
+    { "label": "Parking:", "text": "Very limited street parking. Best accessed on foot or by bicycle from nearby vacation rentals." }
+  ],
+  "one": [
+    { "label": "Best for:", "text": "Visitors who want beach access combined with walkable dining and shopping." }
+  ],
+  "linked": [
+    { "label": "Best for:", "text": "Guests staying in Holmes Beach rentals who want a quieter, less-crowded experience." },
+    { "label": "Parking:", "html": "Very limited street parking. Best accessed on foot or by bicycle from <a href=\"/properties/\">nearby vacation rentals</a>." }
+  ]
+}

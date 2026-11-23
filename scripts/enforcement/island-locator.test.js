@@ -5,12 +5,13 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const nunjucks = require('nunjucks');
+const partialEnv = require('../design/design-sync/partial-env');
 
 const root = path.resolve(__dirname, '../..');
 const read = (rel) => fs.readFileSync(path.join(root, rel), 'utf8');
 const island = JSON.parse(read('src/_data/islandOutline.json'));
 const { places } = JSON.parse(read('scripts/design/design-sync/island-places.fixture.json'));
-const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(root, 'src/_includes')), { autoescape: true });
+const env = partialEnv();
 const render = (call, data = places) => env.renderString(`{% import "partials/island-locator.njk" as isl %}${call}`, { island, places: data });
 const count = (html, re) => (html.match(re) || []).length;
 const CREDIT = '<div class="isl-credit">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></div>';

@@ -117,6 +117,7 @@ selected may carry its recorded motion onto a production page:
 | Disclosure — reference | Studio `Collapsible`: expansion feels connected to its trigger | Native details/summary for supporting facts; essential booking facts stay visible. Keep focus and touch targets. No spatial animation under reduced motion. |
 | Photo lightbox — reference | Studio `Lightbox`: continuity from thumbnail to a generous photo view | Native dialog, Escape, focus return, explicit close and original-image access. Phone content remains readable; keyboard and reduced-motion paths do not depend on animation. |
 | Island locator — explored | Herb Lester Associates' printed maps with a numbered key; nps.gov park "Maps" pages: the map comes before the prose and every number means one place | [Guide look study](experiments/guide-look-study/review.md), views `a` and `d`. Opens a guide about places on Anna Maria Island; no page uses it yet. Static markup, no script. Limits and motion record: [Island locator](#island-locator). |
+| Fact strip — explored | The mobile Wikipedia article layout: a facts box first, then the sections | [Guide look study](experiments/guide-look-study/review.md), views `c` and `d`. Opens a section with its labelled facts; no page uses it yet. Static markup, no script. Limits: [Fact strip](#fact-strip). |
 | Editorial decision card — existing catalog pattern | Studio `EditorialDecisionCard`: direct answer with source context nearby | Keep the constraints above; it supplements complete comparison facts rather than replacing them. |
 
 Studio inspected November 17, 2026 at
@@ -212,6 +213,38 @@ movement. Explored, not selected, not built
 opacity 0 and 90% scale over 300ms `out`, delayed 0, 70, 130, 180 and 220ms,
 with the names readable first. 300ms is off the duration scale. Neither ships
 until Sawyer selects it from a working preview: [pattern motion](pattern-motion.md).
+
+### Fact strip
+
+The reader's job: read the two or three facts that decide a section before its
+prose. Two forms, both macros in `src/_includes/partials/fact-strip.njk`, styled
+by `src/css/fact-strip.css`:
+
+- `factStrip(facts)`: the strip that opens a section; its first fact is the lead.
+- `factPanel(facts)`: ruled rows beside a figure passed with `{% call %}`, such
+  as the island inset.
+
+`facts` is the page's list of `{ label, text }`; a label prints as written.
+Preview: the `fact-strip` cards from `npm run design:sync`. Status `explored`,
+on the island locator's terms: chosen from still pictures, unused code under
+`src/`, and a page use is its own reviewed change.
+
+Limits:
+
+- Layout follows the piece's own width, by container query, because a guide's
+  column narrows again beside its rail. Two or three strip facts sit side by
+  side from 720px; a panel's label moves beside its line once the rows are
+  480px. Narrower, or without container queries, facts are ruled rows. Four or
+  more strip facts stay rows.
+- For facts inside running prose keep the guide's `pg-facts` list; this piece
+  opens a section.
+- `html` in place of `text` prints unescaped, for a value holding a link the
+  page's author wrote.
+- It draws its own bottom rule and sets no outer margin. A disclosure row
+  placed under it adds no top rule.
+- Keep a label to about 13 characters. On a 320px screen the rows beside a
+  120px figure are 144px wide.
+- No motion, built or explored: nothing in it is pressable.
 
 ### Craft and evidence
 
