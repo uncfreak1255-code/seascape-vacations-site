@@ -57,6 +57,12 @@ test('a design doc that an exported design doc links beside itself ships too, su
       assert.ok(shipped.includes(sibling), `waterline/${name} links ${sibling}, which the export lacks`);
     }
   }
+  // A dead link stops the export with the doc that holds it, not a bare ENOENT.
+  const copyReferenceDocuments = require('../design/design-sync/copy-reference-documents');
+  assert.throws(
+    () => copyReferenceDocuments(() => {}, 'docs/design/cards-and-phone-surfaces.md docs/design/no-such-doc.md'),
+    /^Error: DESIGN\.md links docs\/design\/no-such-doc\.md, which does not exist$/
+  );
 });
 
 // Text checks: they catch the pattern route losing its link or its gate wording, and a motion ban

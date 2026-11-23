@@ -35,6 +35,9 @@ const pressed = (page) => dialog(page).locator('.plb-room[aria-pressed="true"]')
 test('the page\'s own button opens the lightbox as a modal; Escape and Close hand focus back', async ({ page }) => {
   const errors = await openPage(page, { width: 1280, height: 800 });
   await expect(dialog(page)).toBeHidden();
+  // Closed, with the script running, it has fetched no photo: every image is lazy.
+  await page.waitForLoadState('networkidle');
+  expect(await dialog(page).locator('img').evaluateAll((images) => images.filter((image) => image.currentSrc).length)).toBe(0);
   await opener(page).click();
   await expect(dialog(page)).toBeVisible();
   expect(await dialog(page).evaluate((node) => node.matches(':modal'))).toBe(true);
@@ -100,11 +103,33 @@ test('wide: rooms in a rail, one large photo, and the arrows walk every photo', 
   await page.keyboard.press('ArrowRight');
   await expect(stage.locator('[data-plb-stage-position]')).toHaveText(`1 of 4 in Outside · photo 1 of ${count}`);
 
-  // Keyboard: the ring on a focused small photo is the shared focus ring, not the picked ring.
-  await dialog(page).locator('.plb-photo').first().focus();
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Shift+Tab');
-  expect(await dialog(page).locator('.plb-photo').first().evaluate((node) => getComputedStyle(node).outlineWidth)).toBe('3px');
+  // Keyboard. Focus on a small photo goes with the pick, so the arrows still reach the dialog once
+  // that photo's room is hidden: the fifth press proves it.
+  const photos = dialog(page).locator('.plb-photo');
+  await photos.first().focus();
+  for (let press = 0; press < 4; press += 1) await page.keyboard.press('ArrowRight');
+  await expect(pressed(page)).toContainText('Living');
+  await expect(photos.nth(4)).toBeFocused();
+  await page.keyboard.press('ArrowRight');
+  await expect(photos.nth(5)).toBeFocused();
+  // One live region reads the photo's name with its place.
+  await expect(stage.locator('[aria-live="polite"][aria-atomic="true"]')).toHaveText(`${sample.rooms[1].photos[1].label} 2 of 4 in Living · photo 6 of ${count}`);
+  // The focused photo wears the 3px focus ring, not the 2px picked ring. On this guest page it is
+  // guest.css's `.guest-site a:focus-visible` that draws it; photo-lightbox.test.js checks the sheet's own.
+  expect(await photos.nth(5).evaluate((node) => getComputedStyle(node).outlineWidth)).toBe('3px');
+
+  // Focus on a control stays there, and the picked photo is still brought inside the feed's box.
+  await page.setViewportSize({ width: 1280, height: 600 });
+  const feed = dialog(page).locator('.plb-feed');
+  expect(await feed.evaluate((node) => node.scrollHeight - node.clientHeight), 'the second row starts out of view').toBeGreaterThan(40);
+  await dialog(page).getByRole('button', { name: 'Next photo' }).focus();
+  for (let press = 0; press < 2; press += 1) await page.keyboard.press('ArrowRight');
+  await expect(dialog(page).getByRole('button', { name: 'Next photo' })).toBeFocused();
+  expect(await feed.evaluate((node) => {
+    const box = node.getBoundingClientRect();
+    const picked = node.querySelector('[aria-current="true"]').getBoundingClientRect();
+    return picked.top >= box.top && picked.bottom <= box.bottom;
+  })).toBe(true);
   expect(await page.evaluate(() => document.getAnimations().length)).toBe(0);
   expect(errors).toEqual([]);
 });

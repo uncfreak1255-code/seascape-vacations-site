@@ -1,5 +1,6 @@
 // Photo lightbox (docs/design/photo-lightbox.md): the script for src/_includes/partials/photo-lightbox.njk.
-// It opens the dialog as a modal, switches rooms, and on a wide screen steps the large photo.
+// It opens the dialog as a modal, switches rooms, and on a wide screen steps the large photo,
+// taking focus and the rail's scroll along with the picked small photo.
 // Escape, the Close button and the return of focus are the browser's own. It holds no words:
 // every label it shows is printed by the partial. A page with no lightbox is left alone.
 (function () {
@@ -67,10 +68,22 @@
       return Boolean(stage && stage.getClientRects().length);
     }
 
+    // Keeps the picked small photo inside the feed's own box. Only the feed scrolls, never the page.
+    function reveal(link) {
+      var box = feed.getBoundingClientRect();
+      var at = link.getBoundingClientRect();
+      if (at.top < box.top) feed.scrollTop -= box.top - at.top + 8;
+      else if (at.bottom > box.bottom) feed.scrollTop += at.bottom - box.bottom + 8;
+    }
+
     function render(next) {
       var roomChanged = next.room !== state.room;
       var link = photos[next.photo];
       var image = link.querySelector("img");
+      var active = dialog.ownerDocument && dialog.ownerDocument.activeElement;
+      // Focus on a small photo goes with the pick. Left behind, it would sit in a room that is
+      // now hidden: the browser drops it to the page, and the arrow keys stop reaching the dialog.
+      var follow = next.photo !== state.photo && photos.indexOf(active) !== -1;
       state = next;
       wide = staged();
       rooms.forEach(function (button, i) { button.setAttribute("aria-pressed", i === state.room ? "true" : "false"); });
@@ -81,6 +94,8 @@
       });
       if (nextButton && rooms[state.room]) nextButton.textContent = rooms[state.room].getAttribute("data-plb-next");
       if (roomChanged && feed) feed.scrollTop = 0;
+      if (follow) link.focus();
+      if (wide && feed) reveal(link);
       if (!wide || !stageLink || !stageImage) return;
       stageLink.setAttribute("href", link.getAttribute("href"));
       ["srcset", "src", "alt", "width", "height"].forEach(function (name) {

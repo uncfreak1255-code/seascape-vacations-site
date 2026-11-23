@@ -66,7 +66,7 @@
     <div class="plb-stage" data-plb-stage>
       <a class="plb-stage-photo" href="{{ first.src }}"><img src="{{ first.src }}"{% if first.srcset %} srcset="{{ first.srcset }}"{% endif %} sizes="(min-width: 900px) calc(100vw - 400px), 1px" alt="{{ first.alt }}"{% if first.width and first.height %} width="{{ first.width }}" height="{{ first.height }}"{% endif %} loading="lazy" decoding="async"></a>
       <div class="plb-stage-bar">
-        <p class="plb-stage-text"><span class="plb-stage-label" data-plb-stage-label>{{ first.label }}</span> <span class="plb-stage-position" data-plb-stage-position aria-live="polite">1 of {{ shown[0].photos.length }} in {{ shown[0].name }} · photo 1 of {{ total }}</span></p>
+        <p class="plb-stage-text" aria-live="polite" aria-atomic="true"><span class="plb-stage-label" data-plb-stage-label>{{ first.label }}</span> <span class="plb-stage-position" data-plb-stage-position>1 of {{ shown[0].photos.length }} in {{ shown[0].name }} · photo 1 of {{ total }}</span></p>
         {%- if total > 1 %}
         <div class="plb-steps">
           <button type="button" class="plb-step" data-plb-step="-1" aria-label="Previous photo"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg></button>

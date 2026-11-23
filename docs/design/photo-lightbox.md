@@ -39,9 +39,13 @@ with its own design review and content gate.
   the page's own `<button type="button" data-plb-open="<id>" hidden>`; the
   script shows it only where it can open the dialog. Load the script with
   `defer`.
-- A closed dialog loads no photo. Every image is lazy, and a screen under 900px
-  never fetches the large one. Pass `srcset` so the feed and the small photos
-  take a small file.
+- With the script running, a closed dialog loads no photo: every image is lazy,
+  and a screen under 900px never fetches the large one. Pass `srcset` so the
+  feed and the small photos take a small file. A browser with scripting off
+  ignores `loading="lazy"` and fetches every photo of a dialog it cannot open
+  (14 requests for the 13-photo sample, measured in Chromium). The page change
+  that first uses the lightbox settles this, for example by printing the dialog
+  inside a `template` the script unpacks.
 - In the feed a photo is a plain link to its full-size file, in the same tab.
   Beside the large photo a click picks it, and a modified or middle click still
   opens the file.
@@ -56,6 +60,18 @@ with its own design review and content gate.
   browser's own (`showModal()` and `form method="dialog"`). It opens with Close
   focused (`autofocus`). The page behind stays still where the browser has
   `:has()`.
+- Close is the first control in the markup, so a keyboard or screen-reader
+  user can leave at once. At 900px and up it is drawn at the rail's foot, where
+  the canvas has it, so there the tab order starts at the bottom of the rail.
+- Beside the large photo, focus on a small photo goes with the pick; focus on
+  Close or a step button stays. The picked small photo is scrolled inside the
+  rail. The caption and its position are one live region, read as a whole.
+- A step changes the caption at once and the large photo when its file
+  arrives. On a slow connection the old photo sits under the new caption until
+  then.
+- The focus ring and the picked photo's ring name one class. On a guest page
+  `guest.css`'s `.guest-site a:focus-visible` outranks them and draws the same
+  3px clay ring at 4px.
 - No mock shows a short window. A phone on its side (393px tall) gets a feed
   about 160px tall, under a third of a photo at a time; a shorter window, or a
   wide one under about 550px tall, scrolls the dialog as a whole. That view

@@ -46,7 +46,7 @@ test('the script reads only hooks the partial prints, and runs no animation of i
   const code = script.replace(/\/\/.*$/gm, '');
   const hooks = [...new Set(code.match(/data-plb-[a-z-]+/g))].filter((hook) => hook !== 'data-plb-open');
   assert.ok(hooks.length >= 9);
-  for (const hook of hooks) assert.ok(html.includes(` ${hook}`), `${hook} is not in the partial's markup`);
+  for (const hook of hooks) assert.match(html, new RegExp(` ${hook}[=> ]`), `${hook} is not in the partial's markup`);
   // The canvas's motion is not built: docs/design/photo-lightbox.md, "Motion record".
   assert.doesNotMatch(code, /animate\(|requestAnimationFrame|setTimeout|classList/);
 });
@@ -114,6 +114,55 @@ test('beside the stage the arrows and step buttons walk every photo, and the roo
   all('[data-plb-room]')[1].fire('click');
   assert.deepEqual(current(), ['Living room'], 'a room starts at its first photo');
   assert.equal(stage().position, '1 of 4 in Living · photo 5 of 13');
+});
+
+test('focus on a small photo goes with the pick, into another room too; focus on a control stays', () => {
+  const { all, at, dialog, doc, opener, view, layout, current } = page({ wide: true });
+  const photos = all('[data-plb-photo]');
+  opener.fire('click');
+  photos[3].fire('click');
+  photos[3].focus();
+  dialog.fire('keydown', { key: 'ArrowRight' });
+  assert.deepEqual(current(), ['Living room']);
+  assert.equal(doc.activeElement, photos[4], 'its room was hidden: focus would fall to the page and the arrows go dead');
+  dialog.fire('keydown', { key: 'ArrowRight' });
+  assert.equal(doc.activeElement, photos[5]);
+  photos[7].focus();
+  layout.wide = false;
+  view.fire('resize');
+  assert.equal(doc.activeElement, photos[7], 'a redraw that picks nothing new leaves focus alone');
+  layout.wide = true;
+  const close = at('form').querySelector('button');
+  close.focus();
+  dialog.fire('keydown', { key: 'ArrowRight' });
+  assert.equal(doc.activeElement, close);
+
+  // In the feed, a room change that would hide the focused photo moves focus to the new room's first.
+  const feed = page({ wide: false });
+  feed.all('[data-plb-photo]')[1].focus();
+  feed.at('[data-plb-next-room]').fire('click');
+  assert.equal(feed.doc.activeElement, feed.all('[data-plb-photo]')[4]);
+});
+
+test('beside the stage the picked small photo is kept inside the feed, and only the feed scrolls', () => {
+  const { all, at, dialog, opener } = page({ wide: true });
+  const feed = at('[data-plb-feed]');
+  const boxes = [[120, 220], [120, 220], [360, 460], [40, 90]];
+  feed.getBoundingClientRect = () => ({ top: 100, bottom: 400 });
+  all('[data-plb-photo]').forEach((photo, i) => { photo.getBoundingClientRect = () => ({ top: boxes[i % 4][0], bottom: boxes[i % 4][1] }); });
+  opener.fire('click');
+  feed.scrollTop = 50;
+  dialog.fire('keydown', { key: 'ArrowRight' });
+  assert.equal(feed.scrollTop, 50, 'in view: left alone');
+  dialog.fire('keydown', { key: 'ArrowRight' });
+  assert.equal(feed.scrollTop, 118, 'below the feed: up by the overhang and 8px for its ring');
+  dialog.fire('keydown', { key: 'ArrowRight' });
+  assert.equal(feed.scrollTop, 50, 'above the feed: back down');
+
+  const narrow = page({ wide: false });
+  narrow.at('[data-plb-feed]').getBoundingClientRect = () => { throw new Error('a feed is not measured'); };
+  narrow.opener.fire('click');
+  narrow.at('[data-plb-next-room]').fire('click');
 });
 
 test('a window that changes layout with the dialog open is redrawn: the room on show takes the stage', () => {

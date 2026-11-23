@@ -31,6 +31,9 @@ class Node {
   querySelectorAll(selector) { return this.children.flatMap((child) => (child.tag === '#text' ? [] : [...(child.matches(selector) ? [child] : []), ...child.querySelectorAll(selector)])); }
   querySelector(selector) { return this.querySelectorAll(selector)[0] || null; }
   getElementById(id) { return this.querySelectorAll('[id]').find((node) => node.attrs.id === id) || null; }
+  contains(node) { for (let at = node; at; at = at.parent) if (at === this) return true; return false; }
+  focus() { let top = this; while (top.parent) top = top.parent; top.activeElement = this; }
+  getBoundingClientRect() { return { top: 0, bottom: 0 }; }
   addEventListener(type, handler) { (this.listeners[type] ||= []).push(handler); }
   // Bubbles like a real event; returns whether a listener called preventDefault().
   fire(type, init = {}) {

@@ -4,6 +4,8 @@
    Three layouts: a feed of photos up to 899px, with the phone surface of
    docs/design/cards-and-phone-surfaces.md at 700px and narrower, then a rail beside one large photo.
    Every rule names two classes, so a host sheet's `.guest-site h2`, `p` or `button` cannot restyle it.
+   The focus ring and the picked photo's ring name one: on a guest page `.guest-site a:focus-visible`
+   and `button:focus-visible` in guest.css outrank them, and draw the same 3px clay ring at 4px.
    `display` is never set on .plb itself: the browser hides a closed dialog with it. */
 
 :root:has(.plb[open]) { overflow: hidden; }

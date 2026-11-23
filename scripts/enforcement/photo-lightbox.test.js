@@ -56,7 +56,11 @@ test('every photo links its full-size file and loads lazily, with the caller\'s 
   const stage = at('[data-plb-stage]');
   assert.equal(stage.querySelector('img').attrs.loading, 'lazy', 'a phone never lays the stage out, so never fetches its photo');
   assert.equal(stage.querySelector('a').attrs.href, truth[0].src);
-  assert.equal(at('[data-plb-stage-position]').attrs['aria-live'], 'polite');
+  // One live region around both, read as a whole: a step announces the photo's name with its place.
+  const text = at('[data-plb-stage-label]').parent;
+  assert.equal(text, at('[data-plb-stage-position]').parent);
+  assert.equal(`${text.attrs['aria-live']} ${text.attrs['aria-atomic']}`, 'polite true');
+  assert.equal(all('[aria-live]').length, 1);
   assert.deepEqual(all('[data-plb-step]').map((step) => `${step.attrs['data-plb-step']}:${step.attrs['aria-label']}`), ['-1:Previous photo', '1:Next photo']);
 });
 
@@ -97,13 +101,18 @@ test('one room: no room switcher and no Next button. One photo: no step buttons.
 const ruleBody = (selector) => (css.match(new RegExp(`(?:^|\\})\\s*${selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\{([^}]*)\\}`)) || [])[1];
 
 test('the stylesheet never sets display on the dialog, and every rule stays inside it', () => {
-  assert.ok(ruleBody('.plb'));
-  assert.doesNotMatch(ruleBody('.plb'), /display/, 'the browser hides a closed dialog with display');
-  const selectors = [...css.replace(/@media[^{]*\{/g, '').matchAll(/([^{}]+)\{[^{}]*\}/g)].flatMap(([, list]) => list.split(',').map((s) => s.trim()));
+  // Every rule, inside @media too, as [selectors, body].
+  const rules = [...css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/@media[^{]*\{/g, '').matchAll(/([^{}]+)\{([^{}]*)\}/g)].map(([, list, body]) => [list.split(',').map((s) => s.trim()), body]);
+  const selectors = rules.flatMap(([list]) => list);
   assert.ok(selectors.length > 40);
+  const onDialog = rules.filter(([list]) => list.includes('.plb'));
+  assert.ok(onDialog.length >= 3, 'the base rule, box-sizing and the phone canvas');
+  for (const [, body] of onDialog) assert.doesNotMatch(body, /display/, 'the browser hides a closed dialog with display');
   for (const selector of selectors) assert.match(selector, /^(\.plb( |$)|:root:has\(\.plb\[open\]\)$)/, selector);
   // Two classes outrank a host page's `.guest-site h2`, `.guest-site p` and `.guest-site button`.
-  for (const selector of selectors.filter((s) => /^\.plb \.plb-(title|eyebrow|caption|button|room|step)\b/.test(s))) assert.ok(selector.split('.').length >= 3);
+  // The two rings below cannot: a host's `.guest-site a:focus-visible` wins, with the same ring.
+  const ONE_CLASS = ['.plb', '.plb *', ':root:has(.plb[open])', '.plb :focus-visible', '.plb [aria-current="true"]'];
+  for (const selector of selectors.filter((s) => !ONE_CLASS.includes(s))) assert.ok((selector.match(/\.[a-z]/g) || []).length >= 2, `${selector} names one class`);
 });
 
 test('the page stays still behind the dialog, the stage is laid out only on a wide screen, and its photo shows whole', () => {
