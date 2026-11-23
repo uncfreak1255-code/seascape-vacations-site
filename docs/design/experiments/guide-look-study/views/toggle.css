@@ -1,0 +1,61 @@
+/* The "More about …" toggle row that views c and d share. serve.cjs loads it before the view's
+   own stylesheet, so a view can still restyle a row (view c does, for its island row). */
+body.study-view .sf-more { border-bottom: 1px solid var(--pg-rule); }
+body.study-view .sf-more > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 56px; margin: 0 -12px; padding: 0 12px;
+  color: var(--pg-ink); font: 500 14px/1.4 Poppins, system-ui, sans-serif;
+  cursor: pointer; list-style: none; border-radius: 4px;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 150ms cubic-bezier(.23, 1, .32, 1), transform 150ms cubic-bezier(.23, 1, .32, 1);
+}
+body.study-view .sf-more > summary::-webkit-details-marker { display: none; }
+body.study-view .sf-more > summary::marker { content: ""; }
+body.study-view .sf-more > summary:active { transform: scale(.99); }
+body.study-view .sf-more > summary:focus-visible { outline: 2px solid var(--pg-ink); outline-offset: 2px; }
+body.study-view .sf-more > summary i { position: relative; flex: none; width: 16px; height: 16px; }
+body.study-view .sf-more > summary i::before,
+body.study-view .sf-more > summary i::after {
+  content: ""; position: absolute; background: var(--pg-ink);
+}
+body.study-view .sf-more > summary i::before { left: 0; top: 7px; width: 16px; height: 1.5px; }
+body.study-view .sf-more > summary i::after {
+  left: 7px; top: 0; width: 1.5px; height: 16px;
+  transition: transform 200ms cubic-bezier(.23, 1, .32, 1);
+}
+body.study-view .sf-more[open] > summary i::after { transform: scaleY(0); }
+body.study-view .sf-more > :not(summary) { max-width: 68ch; }
+/* The gaps do not depend on [open], and are padding so they stay inside the box that grows:
+   a margin would escape it and snap at the end of an open or a close. */
+body.study-view .sf-more > summary + * { padding-top: 8px; }
+body.study-view .sf-more > :last-child:not(summary) { padding-bottom: 24px; }
+body.study-view .sf-more > p + p { margin-top: 16px; }
+
+@media (min-width: 900px) {
+  body.study-view .sf-more > summary { font-size: 15px; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body.study-view .sf-more > summary:hover { background: #F0F3EE; }
+}
+
+/* Motion pass (catalog: Disclosure). The paragraphs grow out of the row that was pressed: height
+   and opacity, 200ms, the site's ease-out. Where the browser cannot do all of this, and under
+   reduced motion, the row opens at once as before. No script. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports selector(::details-content) and (interpolate-size: allow-keywords) {
+    body.study-view .sf-more { interpolate-size: allow-keywords; }
+    body.study-view .sf-more::details-content {
+      block-size: 0; opacity: 0; overflow-y: clip;
+      transition: block-size 200ms cubic-bezier(.23, 1, .32, 1), opacity 200ms cubic-bezier(.23, 1, .32, 1), content-visibility 200ms allow-discrete;
+    }
+    body.study-view .sf-more[open]::details-content { block-size: auto; opacity: 1; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.study-view .sf-more > summary,
+  body.study-view .sf-more > summary i::after { transition: none; }
+  body.study-view .sf-more > summary:active { transform: none; }
+  body.study-view .sf-more[open] > summary i::after { transform: none; display: none; }
+}

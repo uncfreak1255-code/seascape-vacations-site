@@ -1,0 +1,5 @@
+{
+  "added": [
+    { "text": "More about this beach", "count": 5, "why": "label of the toggle that holds each beach's prose; view a's list (../a/strings.json) also applies" }
+  ]
+}

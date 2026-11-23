@@ -3,7 +3,7 @@
 // accessibility, type-size or tap-target problem. Each view is judged at rest with motion on,
 // with reduced motion, and with motion switched off (see MODES).
 //
-//   node docs/design/experiments/guide-look-study/verify.cjs            all three views
+//   node docs/design/experiments/guide-look-study/verify.cjs            all four views
 //   node docs/design/experiments/guide-look-study/verify.cjs a          one view
 //   node docs/design/experiments/guide-look-study/verify.cjs control    today's page and the self-test only
 //   PROOF_DIR=<dir> node .../verify.cjs                                 also write screenshots there
@@ -12,7 +12,7 @@
 // built site (`npm run build`, or STUDY_SITE_ROOT) and the repo's node_modules (or NODE_PATH).
 const fs = require('node:fs');
 const path = require('node:path');
-const { start, GUIDE, STUDY_ROOT } = require('./serve.cjs');
+const { start, viewStrings, GUIDE, STUDY_ROOT } = require('./serve.cjs');
 const contract = require('./contract.cjs');
 
 function need(name) {
@@ -23,7 +23,7 @@ const AxeBuilder = need('@axe-core/playwright').default;
 
 const SIZES = [[1440, 900], [393, 852], [375, 812], [360, 740]];
 const DEEP = new Set([1440, 393]); // widths that also get the floor and axe checks
-const LABELS = { control: 'Today', a: 'A · Map first', b: 'B · Photo cards', c: 'C · Fact strips' };
+const LABELS = { control: 'Today', a: 'A · Map first', b: 'B · Photo cards', c: 'C · Fact strips', d: 'D · Map with toggle' };
 // Every view is judged three ways. motion: as most readers get it. reduced: with the reader's
 // "reduce motion" setting on. still: with every animation and transition switched off, so copy
 // that needs one to become visible is caught.
@@ -210,7 +210,7 @@ async function proof(browser, origin, views, dir) {
       await whole.context.close();
     }
   }
-  // One picture for a phone: the four views side by side, top of page and first beach.
+  // One picture for a phone: the views side by side, top of page and first beach.
   const frames = views.map((view) => `<figure><figcaption>${LABELS[view]}</figcaption><iframe src="${origin}${GUIDE}?view=${view}&chrome=0"></iframe></figure>`).join('');
   const html = `<style>body{margin:0;padding:24px;display:flex;gap:24px;background:#1c1c1e;font:600 22px -apple-system,sans-serif;color:#fff}
     figure{margin:0}figcaption{margin:0 0 14px}iframe{display:block;width:390px;height:1900px;border:0;background:#fff}</style>${frames}`;
@@ -229,7 +229,7 @@ async function proof(browser, origin, views, dir) {
 
 (async () => {
   const asked = process.argv.slice(2);
-  const views = asked.length ? asked.filter((view) => view !== 'control') : ['a', 'b', 'c'];
+  const views = asked.length ? asked.filter((view) => view !== 'control') : ['a', 'b', 'c', 'd'];
   const server = await start(0);
   const origin = `http://127.0.0.1:${server.address().port}`;
   const browser = await chromium.launch();
@@ -251,13 +251,12 @@ async function proof(browser, origin, views, dir) {
     failed += missed.length;
 
     for (const view of views) {
-      const file = path.join(STUDY_ROOT, 'views', view, 'strings.json');
-      if (!fs.existsSync(file)) {
-        console.log(`FAIL ${view}: views/${view}/strings.json is missing (view not built)`);
+      let strings; // its own strings.json plus, for a view built on another, that view's
+      try { strings = viewStrings(view); } catch (error) {
+        console.log(`FAIL ${view}: its string list cannot be read, so the view is not built or is broken (${error.message})`);
         failed += 1;
         continue;
       }
-      const strings = JSON.parse(fs.readFileSync(file, 'utf8'));
       const results = [];
       const lines = new Map();
       for (const mode of MODES) {

@@ -1,0 +1,23 @@
+/* View d, Map with toggle. View a's stylesheet and ../toggle.css load first; these rules only
+   change how a beach section is laid out. Scoped to body.study-d. */
+
+/* The toggle row hangs from the panel's bottom rule and ends the section: the next section's
+   top rule closes it, so there is no second rule and no empty band under each beach. */
+body.study-d .a-panel { margin-bottom: 0; }
+body.study-d .pg-step:has(> .sf-more) { padding-bottom: 0; }
+body.study-d .pg-step > .sf-more { border-bottom: 0; }
+
+@media (min-width: 900px) {
+  /* View a puts the prose left and the panel right. Here the prose is behind the toggle, so the
+     section is one column again: the panel is a band, then the toggle row. */
+  body.study-d .pg-step:has(> .a-panel) { display: block; }
+  body.study-d .a-panel { column-gap: 32px; padding: 24px 0; }
+  body.study-d .a-facts { grid-column: auto; grid-row: auto; margin-top: 0; padding-top: 0; border-top: 0; }
+}
+
+@media (min-width: 1200px) {
+  /* Room for the label beside its line: the same ruled rows as on a phone, read across. */
+  body.study-d .a-panel { column-gap: 48px; }
+  body.study-d .a-facts p { display: grid; grid-template-columns: 120px minmax(0, 1fr); column-gap: 24px; align-items: baseline; padding: 16px 0; }
+  body.study-d .a-facts p:first-child { padding-top: 0; }
+}
