@@ -154,6 +154,9 @@ test('a fine pointer\'s hover turns a room\'s border ink: a chip\'s, and the rul
   assert.match(row, /border: 0; border-bottom: 1px solid #CAD4CF;/);
   assert.doesNotMatch(row, /--plb-hover/, 'an unpicked rail row keeps the ink hover');
   assert.match(wide, /\.plb \.plb-room\[aria-pressed="true"\] \{ --plb-hover: #CAD4CF; border-color: #CAD4CF;/);
+  // A step button fills with the rule colour: the soft fill is too close to the paper to see.
+  assert.match(wide, /\.plb \.plb-step \{\s*--plb-hover: #CAD4CF;/);
+  assert.match(css, /\.plb \.plb-step:hover \{ background: var\(--plb-hover\); \}/);
   // A picked chip's label fades with its fill, as the shipped chips' does (src/css/motion.css).
   assert.match(css, /transition: background-color 200ms [^;]*\), color 200ms /);
 });

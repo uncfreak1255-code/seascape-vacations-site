@@ -111,6 +111,9 @@ test('wide: rooms in a rail, one large photo, and the arrows walk every photo', 
   await expect(bath).toHaveCSS('border-bottom-color', fine ? 'rgb(23, 61, 66)' : 'rgb(202, 212, 207)');
   await pressed(page).hover();
   await expect(pressed(page)).toHaveCSS('border-bottom-color', 'rgb(202, 212, 207)');
+  const nextPhoto = dialog(page).getByRole('button', { name: 'Next photo' });
+  await nextPhoto.hover();
+  await expect(nextPhoto).toHaveCSS('background-color', fine ? 'rgb(202, 212, 207)' : 'rgba(0, 0, 0, 0)');
   // Off the controls, and the hover's own 200ms over, before the check for motion at the end.
   await page.mouse.move(700, 20);
   await expect.poll(() => page.evaluate(() => document.getAnimations().length)).toBe(0);

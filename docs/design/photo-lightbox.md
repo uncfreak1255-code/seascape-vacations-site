@@ -100,11 +100,13 @@ Where it and the law differ on a state or a surface, the law wins:
 
 Built: the state feedback `DESIGN.md` gives every control. A pressed button or
 room scales to 97% (99% for a rail row) in 120ms `out`. A colour change on
-these controls takes 200ms `out`. On a fine pointer's hover Close and Next fill
-with muted ink, a step button takes the soft fill, and a room's border goes
-ink: a chip's whole border, or the rule under a rail row. The picked rail row
-has no hover, since a press there does nothing. The phone's pills have none:
-they have no border, and no hover is designed for them. When a room is picked
+these controls takes 200ms `out`. On a fine pointer's hover the ink Close and
+Next buttons fill with muted ink. The phone's soft Close pill and a step button
+fill with the rule colour; on a step the soft fill would be too close to paper
+to see. A room's border goes ink: a chip's whole border, or the rule under a
+rail row. The picked rail row has no hover, since a press there does nothing.
+The phone's pills have none: they have no border, and no hover is designed for
+them. When a room is picked
 in the feed, its chip's or pill's fill, border and label make the same 200ms
 change; the catalog page's filter chips fade those three too
 (`src/css/motion.css`). Reduced motion: no scale, and every change is

@@ -124,7 +124,7 @@
   .plb .plb-stage-position { display: block; color: #52676A; font-size: 13px; line-height: 1.65; }
   .plb .plb-steps { display: flex; flex: none; gap: 8px; }
   .plb .plb-step {
-    --plb-hover: #F0F3EE;
+    --plb-hover: #CAD4CF;
     appearance: none; display: inline-flex; align-items: center; justify-content: center;
     width: 48px; height: 48px; margin: 0; padding: 0; border: 1px solid #173D42; border-radius: 4px;
     background: transparent; color: #173D42; cursor: pointer; -webkit-tap-highlight-color: transparent;
