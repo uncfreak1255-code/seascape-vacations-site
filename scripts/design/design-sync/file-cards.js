@@ -58,6 +58,8 @@ const NOT_FILED = Object.freeze([
   "fact-strip-phone",
   "fact-panel",
   "fact-panel-phone",
+  "disclosure",
+  "disclosure-phone",
 ]);
 
 function publishedPath(stem) {
