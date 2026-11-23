@@ -116,6 +116,7 @@ selected may carry its recorded motion onto a production page:
 | Filter / selection pill — reference | Studio `Pagination`, Amicro pill controls: unmistakable active state and continuous selection feedback | Real filters or gallery choices. Preserve result counts and keyboard behavior; narrow screens wrap or offer reachable controls. Reduced motion changes selection immediately. Existing radius is not an experiment's limit. |
 | Disclosure — reference | Studio `Collapsible`: expansion feels connected to its trigger | Native details/summary for supporting facts; essential booking facts stay visible. Keep focus and touch targets. No spatial animation under reduced motion. |
 | Photo lightbox — reference | Studio `Lightbox`: continuity from thumbnail to a generous photo view | Native dialog, Escape, focus return, explicit close and original-image access. Phone content remains readable; keyboard and reduced-motion paths do not depend on animation. |
+| Island locator — explored | Herb Lester Associates' printed maps with a numbered key; nps.gov park "Maps" pages: the map comes before the prose and every number means one place | [Guide look study](experiments/guide-look-study/review.md), views `a` and `d`. Opens a guide about places on Anna Maria Island; no page uses it yet. Static markup, no script. Limits and motion record: [Island locator](#island-locator). |
 | Editorial decision card — existing catalog pattern | Studio `EditorialDecisionCard`: direct answer with source context nearby | Keep the constraints above; it supplements complete comparison facts rather than replacing them. |
 
 Studio inspected November 17, 2026 at
@@ -162,6 +163,55 @@ odd final pages, rapid input, resizing and reduced-motion changes mid-turn.
 Real-device touch feel remains an implementation check, not a claim from the
 emulated phone proof. Apply Emil's relevant guidance through the existing Site
 specialist and critic workflow.
+
+### Island locator
+
+The reader's job: see where each place sits on the island before reading about
+it, and jump to the one they want. Two forms, both macros in
+`src/_includes/partials/island-locator.njk`, styled by `src/css/island-locator.css`:
+
+- `islandMap(island, places)`: the key map that opens the guide. Each numbered
+  name is a link to that place's section.
+- `islandInset(island, places, own)`: a small outline with one place lit, set
+  beside that place's facts.
+
+`island` is the global data `islandOutline`; `places` is the page's own list of
+`{ name, href, x, y }` in reading order. The page that calls a macro links the
+sheet. Preview: the `island-locator` cards from `npm run design:sync`.
+
+Status `explored`: Sawyer chose this look from still pictures, and no page uses
+it. Its source sits under `src/` as unused code (site issue #1041, item 3).
+Putting it on a page is a separate visible change with its own design review.
+
+Limits:
+
+- The outline is OpenStreetMap data (ODbL). Its credit prints wherever the
+  outline appears: `islandMap` prints it, and a page showing only insets calls
+  `islandCredit()`.
+- Every marker position needs a recorded source, as the study's `island-data.json` has.
+- The drawing is hidden from assistive technology, so each place's text says
+  where it is. The key is a labelled navigation region of ordinary links.
+- Wide screens (1050px and up, by viewport) put the names beside the map, which
+  is then 504px wide and needs a column that wide. Keep a name to about 16
+  characters and places at least 44px apart on the 560px-tall map.
+- Narrower screens list the names in rows of at least 48px beside an island
+  147px to 190px wide. Markers for places under about two thirds of a mile
+  apart touch or overlap there, as two of the sample places do. Under about
+  360px a two-word name wraps onto two lines.
+- Keyboard focus follows the numbers. On wide screens the names sit by
+  latitude, so focus moves top to bottom only when the places are numbered
+  north to south; number them that way when the content allows.
+- `islandInset` lights nothing when `own` is not a position in `places`.
+
+Motion record. Built: only the state feedback `DESIGN.md` gives every control,
+a pressed name at 97% in 120ms `out` and, on a fine pointer, the line to the
+marker darkening in 200ms; a hovered or focused marker gains a ring with no
+movement. Explored, not selected, not built
+(`experiments/guide-look-study/views/a/view.css`): hover grows the marker to
+120% in 150ms `out`; the markers arrive once in reading order, each from
+opacity 0 and 90% scale over 300ms `out`, delayed 0, 70, 130, 180 and 220ms,
+with the names readable first. 300ms is off the duration scale. Neither ships
+until Sawyer selects it from a working preview: [pattern motion](pattern-motion.md).
 
 ### Craft and evidence
 

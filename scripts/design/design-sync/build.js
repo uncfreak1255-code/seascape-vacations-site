@@ -5,10 +5,9 @@
  * design-sync build — generate the Claude Design bundle for the Waterline system.
  *
  * WHY THIS EXISTS
- * The Claude Design project "Seascape Vacations Design System" is what Claude Design
- * mocks Seascape surfaces from. This script regenerates it from repo truth so the two
- * never drift by hand: DESIGN.md's Waterline block, the live guest CSS, the self-hosted
- * fonts and the real rendered markup of the shared shell and guest components.
+ * Claude Design mocks Seascape surfaces from the project "Seascape Vacations Design
+ * System". This script regenerates it from repo truth: DESIGN.md's Waterline block, the
+ * live guest CSS, the fonts and the rendered markup of the shell and guest components.
  *
  * WHAT IT PRODUCES (into --out, default .design-sync/out, gitignored)
  *   SKILL.md, README.md            entrypoints Claude Design reads first (templates/)
@@ -19,7 +18,7 @@
  *   waterline/DESIGN.md            verbatim DESIGN.md (visual law)
  *   waterline/*.md                 reference docs (copy-reference-documents.js)
  *   preview/*.html                 self-contained cards for the Design System pane,
- *                                  built from the REAL built HTML of the site
+ *                                  from the built site; pattern-cards.js from partials
  *   _sync-manifest.json            exact writes + deletes for the DesignSync push
  *   _sync-push.json                ready DesignSync arguments (push-payload.js)
  *
@@ -487,6 +486,7 @@ card({
 
 /* ---------------------------------------------------------------- phone + pane manifest */
 require("./phone-card")({ card, GUEST, catalogCss, catalogCardCss, tripSheetCss: inlined("trip-sheet"), headerPaper, catalogCard, homeTrip, arrivalCss });
+require("./pattern-cards")({ card, read, inlined });
 require("./pane-manifest")({ OUT, tokensCss, cards, today, commit, write });
 
 /* ---------------------------------------------------------------- deletes */

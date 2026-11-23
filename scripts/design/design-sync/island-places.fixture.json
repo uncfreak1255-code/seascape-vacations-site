@@ -1,0 +1,10 @@
+{
+  "note": "Preview and test data only: the five places of the beaches guide, from docs/design/experiments/guide-look-study/island-data.json, where each position's source is recorded. A page that adopts the island locator supplies its own places.",
+  "places": [
+    { "name": "Bean Point Beach", "href": "#pg-1", "x": 3.8, "y": 12.7 },
+    { "name": "Manatee Beach", "href": "#pg-2", "x": 314.2, "y": 426.8 },
+    { "name": "Coquina Beach", "href": "#pg-3", "x": 503.6, "y": 925.5 },
+    { "name": "Holmes Beach", "href": "#pg-4", "x": 268.5, "y": 346.5 },
+    { "name": "Bradenton Beach", "href": "#pg-5", "x": 452.8, "y": 777.6 }
+  ]
+}

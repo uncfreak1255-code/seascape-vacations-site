@@ -70,6 +70,7 @@ const CEILINGS = {
   'src/css/about.css': {},
   'src/css/planning-guide.css': { color: 4, shadow: 1, breakpoint: 1 },
   'src/css/comparison-guide.css': {},
+  'src/css/island-locator.css': {},
 };
 
 for (const [file, ceiling] of Object.entries(CEILINGS)) {
