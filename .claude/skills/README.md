@@ -21,6 +21,7 @@ skill (the global `seascape-seo` skill was retired). Keep external SEO/GEO packs
 donor-only unless a fresh agent-surface audit proves they should become live
 local authority.
 
-Do not park generic skill bundles here.
+Do not park generic skill bundles here; the UI craft skills that
+`NOTICE.design-skills` records are the one approved set.
 Do not keep broken symlinks here.
 Do not duplicate repo-local skill content here when a symlink will do.
