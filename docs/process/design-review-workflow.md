@@ -57,8 +57,10 @@ That includes:
   the Playwright proof.
 - The design launcher classifies the page or guide family and scans local Codex
   and Claude plugin-cache skill metadata for relevant donor capabilities.
-  `frontend-design`-style donors are preferred for distinctive interface
-  direction; `visualize`-style donors are preferred for maps, charts,
+  Interface direction starts from the component catalog and the Emil craft
+  skill, chosen by task (step 4 below); the launcher holds no built-in
+  preference for an outside interface skill and ranks each from its name and
+  description. `visualize`-style donors are preferred for maps, charts,
   comparisons, and interactive artifacts. The scan is read-only and never
   installs, copies, globally loads, or promotes a donor. Invoke a donor only
   when it is available in the current session, and rewrite useful output into
@@ -86,11 +88,13 @@ That includes:
    - responsive, accessibility, performance, and implementation risks
    Use `docs/process/seascape-design-studio.md` when the task needs a fuller
    reusable intake and output packet before implementation.
-4. For assigned component exploration, consult the shelf in
-   `docs/design/component-patterns.md`, name what feels weak, and use relevant
-   Emil guidance before rendering. Report the actual skill and references read,
-   not just those discovered. Show distinct alternatives with one recommendation
-   and desktop/mobile behavior; preserve the existing specialist/critic gates.
+4. Choose by task, as `docs/agents/rules/design.md` sets out: the reader's job
+   in each section picks the pattern from the catalog in
+   `docs/design/component-patterns.md`, and the packet says why. Name what
+   feels weak, and use relevant Emil guidance before rendering. Report the
+   actual skill and references read, not just those discovered. Show distinct
+   alternatives with one recommendation and desktop/mobile behavior; preserve
+   the existing specialist/critic gates.
    Exploration is not selection or permission to migrate other pages.
 
    For meaningful visual changes, run the repo-local

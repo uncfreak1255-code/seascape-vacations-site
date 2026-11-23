@@ -34,8 +34,14 @@ Claude loads it when it reads a file matching `paths:` above, through the
   show two or three rendered variants (deploy-preview links or screenshots),
   each anchored to a named reference site from `npm run design:donors`, and ask
   only "which one" or "keep X, lose Y".
-- In assigned visual work, use the [component catalog](../../design/component-patterns.md)
-  to identify a weak treatment, render distinct alternatives, and recommend one.
+- Choose by task. In assigned visual work, name the reader's job in each
+  section you design (compare, narrow a set, read numbers, open detail, follow
+  a photo sequence, act). Pick the pattern in the
+  [component catalog](../../design/component-patterns.md) built for that job
+  and say why it fits; the page's current pattern is one candidate among them.
+  The catalog's statuses govern: a `reference` or `explored` pattern, or a new
+  piece when none fits, enters as a labeled exploration. Render distinct
+  alternatives and recommend one.
   Read the relevant Emil design, animation and mobile guidance; record what was
   actually used. A donor scan or installed skill is not evidence of invocation.
 - Keep UI lean: cut marketing filler and repeated labels; keep accessible

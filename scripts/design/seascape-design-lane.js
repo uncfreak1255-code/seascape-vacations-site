@@ -320,6 +320,7 @@ function buildPrompt({
     "Execution rules:",
     formatList([
       "Start by stating what decision the page must help the visitor make.",
+      designDonorRouter.CHOOSE_BY_TASK,
       "Run the critic on the current or proposed direction before approving anything.",
       "If the critic says `Reject` or `Needs another pass`, generate 2-3 stronger directions before coding.",
       "Do not bless bland work just because it is clean or easier to build.",

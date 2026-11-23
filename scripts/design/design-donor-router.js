@@ -57,11 +57,13 @@ const DESIGN_FAMILIES = {
   },
 };
 
+// Interface direction starts at the repo's own component catalog, so no outside
+// interface skill is listed in KNOWN_DONORS: each is ranked from its name and
+// description like any other skill. The rule itself lives in design.md.
+const CHOOSE_BY_TASK =
+  "Choose by task, as docs/agents/rules/design.md sets out: for each section, name the reader's job, pick the pattern in docs/design/component-patterns.md built for it and say why.";
+
 const KNOWN_DONORS = {
-  "frontend-design": {
-    capabilities: ["interface-direction"],
-    baseScore: 100,
-  },
   "better-layout": {
     capabilities: ["responsive-layout"],
     baseScore: 95,
@@ -399,6 +401,7 @@ function routeDesignTask(taskText, options = {}) {
   return {
     family,
     authorities: ["DESIGN.md", "seascape-design-specialist", "seascape-design-critic"],
+    chooseByTask: CHOOSE_BY_TASK,
     taskCapabilities,
     unfilledCapabilities,
     selectedDonors: selected.map((candidate) => ({
@@ -430,6 +433,7 @@ function formatRoute(route) {
     `Design family: ${route.family.label} (${route.family.id})`,
     `Visitor decision: ${route.family.decision}`,
     `Suggested shape: ${route.family.shape}`,
+    `Component catalog: ${CHOOSE_BY_TASK}`,
     `Task-specific optional capabilities: ${route.taskCapabilities.length ? route.taskCapabilities.join(", ") : "none"}`,
     `Unfilled optional capabilities: ${route.unfilledCapabilities.length ? route.unfilledCapabilities.join(", ") : "none"}`,
     `Plugin skill metadata scanned: ${route.scannedSkillFiles}`,
@@ -473,6 +477,7 @@ function main() {
 if (require.main === module) main();
 
 module.exports = {
+  CHOOSE_BY_TASK,
   DESIGN_FAMILIES,
   classifySkill,
   defaultPluginRoots,

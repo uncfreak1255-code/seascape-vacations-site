@@ -88,7 +88,11 @@ the current agent session exposes it as available; otherwise keep it as a
 candidate reference and do not claim it ran. Never auto-install, vendor, copy,
 or promote a donor from this scan.
 
-`frontend-design`-style donors are preferred for a distinctive concept pass.
+A distinctive concept pass starts from the component catalog
+(`docs/design/component-patterns.md`) and the Emil craft skill: choose by task,
+as `docs/agents/rules/design.md` sets out. The launcher holds no built-in
+preference for an outside interface skill; it ranks each from its name and
+description.
 `visualize`-style donors are preferred when a map, chart, comparison artifact,
 or interactive explainer materially helps the visitor decide. Figma,
 standalone site builders, and imagery generators require an explicit task need.
@@ -230,7 +234,8 @@ Use this shape:
 
 ## Implementation Brief
 - Section order:
-- Component list:
+- Component list (for each section: the catalog pattern chosen and why it
+  fits, or why none does):
 - Typography and spacing notes:
 - Color and surface notes:
 - Image and asset notes:
