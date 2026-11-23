@@ -104,7 +104,9 @@ Do not silently turn a promising reference into a selected or implemented rule.
 
 Statuses: **reference** is inspiration; **explored** has a working local preview;
 **selected** records Sawyer's named choice; **implemented** links to verified
-Site source. Preserve the distinction when updating an entry.
+Site source. Preserve the distinction when updating an entry. An entry Sawyer
+selected may carry its recorded motion onto a production page:
+[pattern motion](pattern-motion.md).
 
 | Pattern / status | Reference and quality to borrow | Seascape application and constraints |
 | --- | --- | --- |
@@ -149,7 +151,8 @@ sheet before progressively enhancing a production page.
 
 Preserve a full 180-degree sheet turn hinged at the spine, two printed faces
 on desktop, the underlying destination spread, restrained paper depth and
-moving shade. The reference uses 700ms ease-in-out for deliberate storytelling;
+moving shade. The turn runs 700ms on `cubic-bezier(.77,0,.175,1)`, a strong
+ease-in-out, for deliberate storytelling;
 this is not a new timing default for buttons or filters. One readable page on
 phones, immediate interruptible navigation, no autoplay, direct keyboard and
 reduced-motion changes, visible progress, 44px controls, and an always-available

@@ -46,6 +46,29 @@ test('every docs/design doc DESIGN.md links, including the phone rules, ships ve
   assert.equal(exported('design-rules.md'), source('docs/agents/rules/design.md'), 'waterline/design-rules.md drifted from docs/agents/rules/design.md');
 });
 
+// Text checks: they catch the pattern route losing its link or its gate wording, and a motion ban
+// being reworded or moved out of DESIGN.md. They cannot prove an agent reads the rule the right way.
+test('the motion law links the pattern route beside its unchanged bans, and the export README points at the same file', () => {
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const design = source('DESIGN.md');
+  const law = design.split('\n').find((line) => line.includes('(docs/design/pattern-motion.md)'));
+  assert.ok(law, 'DESIGN.md no longer links docs/design/pattern-motion.md');
+  for (const sentence of [
+    'Motion has three jobs:',
+    'a catalog pattern Sawyer selected adds',
+    'No loader, scroll hijacking, autoplay, custom cursor, or required animation library.',
+    'The static reduced-motion and no-JavaScript paths remain complete.'
+  ]) assert.ok(law.includes(sentence), `DESIGN.md's motion bullet no longer says: ${sentence}`);
+  assert.ok(design.includes('No animation may delay booking or be required to reveal essential information.'), 'DESIGN.md lost the booking limit');
+  const rule = source('docs/design/pattern-motion.md');
+  assert.match(rule, /Sawyer selected the pattern/);
+  assert.match(rule, /`reference` or `explored` pattern[^.]*stay in a labeled exploration\./);
+  assert.match(rule, /\]\(component-patterns\.md\)/);
+  const readme = fs.readFileSync(path.join(root, out, 'README.md'), 'utf8');
+  assert.doesNotMatch(readme, /Three jobs only/);
+  assert.match(readme, /catalog pattern Sawyer selected[^.]*`waterline\/pattern-motion\.md`/);
+});
+
 test('the phone surfaces card carries the live phone CSS', () => {
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const card = fs.readFileSync(path.join(root, out, 'preview', 'phone-surfaces.html'), 'utf8');
