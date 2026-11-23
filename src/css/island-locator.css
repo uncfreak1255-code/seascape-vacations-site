@@ -43,7 +43,6 @@
   border: 2px solid #F6F3EB;
   border-radius: 50%;
   background: #D6EB85;
-  transition: transform 150ms cubic-bezier(.23,1,.32,1);
 }
 .isl-dot::before { content: attr(data-n); display: grid; place-items: center; height: 100%; color: #173D42; font: 600 12px/1 Poppins, system-ui, sans-serif; }
 /* The lit marker's ring is ink inside paper, so it shows over the island and over the water. */
@@ -52,7 +51,10 @@
 .isl-credit { display: flex; flex-wrap: wrap; align-items: center; color: #52676A; font: 400 12px/1.4 Poppins, system-ui, sans-serif; white-space: pre; }
 .isl-credit a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 
-/* Wide screens: each name sits at its place's latitude, joined to its marker by a rule. */
+/* Wide screens: each name sits at its place's latitude, joined to its marker by a rule.
+   The switch follows the viewport, as the guide layout's does, and the map is then
+   504px wide: it needs a column at least that wide. The px values assume the 560 by
+   1000 outline (island-locator.test.js holds the data to it). */
 @media (min-width: 1050px) {
   .isl-map { width: 504px; }
   .isl-plot { display: block; width: 503.6px; margin: 0 0 32px; padding-left: 190px; }
@@ -74,11 +76,8 @@
   .isl-link:hover .isl-dot { border-color: #173D42; outline: 2px solid #F6F3EB; }
   .isl-link:hover::after { background: #173D42; }
 }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .isl-link:hover .isl-dot { transform: scale(1.2); }
-}
 @media (prefers-reduced-motion: reduce) {
-  .isl-txt, .isl-dot, .isl-link::after { transition: none; }
+  .isl-txt, .isl-link::after { transition: none; }
   .isl-link:active .isl-txt { transform: none; }
 }
 

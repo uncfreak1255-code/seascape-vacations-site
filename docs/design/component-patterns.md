@@ -179,30 +179,39 @@ it, and jump to the one they want. Two forms, both macros in
 `{ name, href, x, y }` in reading order. The page that calls a macro links the
 sheet. Preview: the `island-locator` cards from `npm run design:sync`.
 
+Status `explored`: Sawyer chose this look from still pictures, and no page uses
+it. Its source sits under `src/` as unused code (site issue #1041, item 3).
+Putting it on a page is a separate visible change with its own design review.
+
 Limits:
 
 - The outline is OpenStreetMap data (ODbL). Its credit prints wherever the
-  outline appears; `islandMap` prints it, a page showing only insets adds it.
+  outline appears: `islandMap` prints it, and a page showing only insets calls
+  `islandCredit()`.
 - Every marker position needs a recorded source, as the study's `island-data.json` has.
 - The drawing is hidden from assistive technology, so each place's text says
-  where it is. The key is an ordinary list of links.
-- Wide screens (1050px and up) put the names beside the map: keep a name to
-  about 16 characters and places at least 44px apart on the 560px-tall map.
-  Narrower screens list the names in rows of at least 48px beside a smaller
-  island, where markers closer than 30px touch; under about 360px a two-word
-  name wraps onto two lines.
+  where it is. The key is a labelled navigation region of ordinary links.
+- Wide screens (1050px and up, by viewport) put the names beside the map, which
+  is then 504px wide and needs a column that wide. Keep a name to about 16
+  characters and places at least 44px apart on the 560px-tall map.
+- Narrower screens list the names in rows of at least 48px beside an island
+  147px to 190px wide. Markers for places under about two thirds of a mile
+  apart touch or overlap there, as two of the sample places do. Under about
+  360px a two-word name wraps onto two lines.
 - Keyboard focus follows the numbers. On wide screens the names sit by
   latitude, so focus moves top to bottom only when the places are numbered
   north to south; number them that way when the content allows.
+- `islandInset` lights nothing when `own` is not a position in `places`.
 
-Motion record. Built, inside the default three jobs' scale: a pressed name
-scales to 97% in 120ms `out`; on a fine pointer, hover grows the marker to 120%
-in 150ms and darkens its line in 200ms. Reduced motion removes the scaling.
-Explored, not selected, not built: the markers arrive once in reading order,
-each from opacity 0 and 90% scale over 300ms `out`, delayed 0, 70, 130, 180 and
-220ms, with the names readable first (`experiments/guide-look-study/views/a/view.css`).
-300ms is off the duration scale, and Sawyer chose this look from still pictures,
-so [pattern motion](pattern-motion.md) does not yet let the entrance ship.
+Motion record. Built: only the state feedback `DESIGN.md` gives every control,
+a pressed name at 97% in 120ms `out` and, on a fine pointer, the line to the
+marker darkening in 200ms; a hovered or focused marker gains a ring with no
+movement. Explored, not selected, not built
+(`experiments/guide-look-study/views/a/view.css`): hover grows the marker to
+120% in 150ms `out`; the markers arrive once in reading order, each from
+opacity 0 and 90% scale over 300ms `out`, delayed 0, 70, 130, 180 and 220ms,
+with the names readable first. 300ms is off the duration scale. Neither ships
+until Sawyer selects it from a working preview: [pattern motion](pattern-motion.md).
 
 ### Craft and evidence
 

@@ -12,7 +12,7 @@ module.exports = function patternCards({ card, read, inlined }) {
   const render = (call) => env.renderString(`{% import "partials/island-locator.njk" as isl %}${call}`, { island, places });
 
   // A planning guide's body classes and sheets, in the order the guide layout loads them.
-  const css = [inlined("planning-guide"), inlined("guest"), inlined("island-locator"), ".ds-isl{padding:24px 20px;max-width:504px}.ds-isl h2{margin:32px 0 8px;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#52676A}.ds-isl p{margin:0 0 16px;font-size:14px;line-height:1.5;color:#52676A}.ds-isl-row{display:flex;gap:24px}"];
+  const css = [inlined("planning-guide"), inlined("guest"), inlined("island-locator"), ".ds-isl{padding:24px 20px;max-width:544px}.ds-isl h2{margin:32px 0 8px;font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#52676A}.ds-isl p{margin:0 0 16px;font-size:14px;line-height:1.5;color:#52676A}.ds-isl-row{display:flex;gap:24px}"];
   const body = `<main><div class="ds-isl">
 <h2>Key map</h2><p>Opens a guide about places. Each name links to its section.</p>
 ${render("{{ isl.islandMap(island, places) }}")}
@@ -20,6 +20,6 @@ ${render("{{ isl.islandMap(island, places) }}")}
 <div class="ds-isl-row">${render("{{ isl.islandInset(island, places, 1) }}")}${render("{{ isl.islandInset(island, places, 3) }}")}</div>
 </div></main>`;
   const shared = { group: "Components", css, bodyClass: "guest-shell planning-guide", body };
-  card({ ...shared, file: "island-locator.html", name: "Island locator", subtitle: "Explored · no page uses it yet · static markup, no script", viewport: [1200, 1200] });
+  card({ ...shared, file: "island-locator.html", name: "Island locator", subtitle: "Explored · no page uses it yet · static markup, no script", viewport: [1200, 1220] });
   card({ ...shared, file: "island-locator-phone.html", name: "Island locator (phone)", subtitle: "393px · the key becomes rows beside the island", viewport: [393, 900] });
 };

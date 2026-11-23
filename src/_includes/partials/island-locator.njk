@@ -8,8 +8,10 @@
   own     1-based position in `places` of the place the inset lights
 
   islandMap prints the OpenStreetMap credit the outline requires. A page that shows
-  an inset without the key map prints the same credit near it.
+  an inset without the key map calls islandCredit() near it.
 #}
+{% macro islandCredit() %}<div class="isl-credit">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></div>{% endmacro %}
+
 {% macro islandMap(island, places) %}
 <div class="isl-map">
   <div class="isl-plot">
@@ -28,7 +30,7 @@
       {%- endfor %}
     </nav>
   </div>
-  <div class="isl-credit">Map data © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a></div>
+  {{ islandCredit() }}
 </div>
 {% endmacro %}
 
@@ -36,5 +38,6 @@
 {#- The box is padded by the lit marker's radius and stroke, so a place at the shore stays inside it. #}
 <svg class="isl-inset" viewBox="-88 -88 {{ island.width + 176 }} {{ island.height + 176 }}" aria-hidden="true" focusable="false"><path d="{{ island.path }}"/>
   {%- for p in places %}{% if loop.index != own %}<circle class="isl-other" cx="{{ p.x }}" cy="{{ p.y }}" r="34"/>{% endif %}{% endfor %}
-  {%- set o = places[own - 1] %}<circle class="isl-own" cx="{{ o.x }}" cy="{{ o.y }}" r="80"/></svg>
+  {#- An `own` outside the list lights nothing, so a wrong call shows as a missing marker, not a stray one. #}
+  {%- set o = places[own - 1] %}{% if o %}<circle class="isl-own" cx="{{ o.x }}" cy="{{ o.y }}" r="80"/>{% endif %}</svg>
 {% endmacro %}
