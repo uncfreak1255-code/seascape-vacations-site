@@ -10,7 +10,7 @@
   var TRIP_MEMORY_KEY = "seascape_trip";
   var TRIP_MEMORY_FIELDS = ["arrive", "depart", "guests"];
   var TRIP_MEMORY_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
-  var TRIP_PAGE_PATTERN = /^(?:\/(?:properties|guides|stays)(?:\/|$)|\/about-us\/|\/$)/;
+  var TRIP_PAGE_PATTERN = /^\/($|(properties|guides|stays|reviews|about-us)(\/|$))/;
   var AI_SOURCE_HOSTS = [
     "chatgpt.com",
     "perplexity.ai",

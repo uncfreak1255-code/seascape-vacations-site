@@ -1,0 +1,223 @@
+---
+layout: layouts/guest.njk
+permalink: "/reviews/"
+pageTitle: "Seascape Vacations Reviews | Bradenton & Sarasota, Florida"
+pageDescription: "Guest reviews of Seascape Vacations, the local vacation rental manager in Bradenton and Sarasota, Florida. Read verified stay reviews and book a home direct."
+pageAuthor: "Seascape Vacations Team"
+pageImage: "https://seascape-vacations.com/images/seascape-og-default.jpg"
+pageUpdated: "2026-11-21T08:00:00-05:00"
+pageStylesheet: "/css/reviews.css"
+---
+{% set faqIdentityQ = "Is Seascape Vacations the Bradenton, Florida company?" %}
+{% set faqIdentityA = "Yes. Seascape Vacations is the locally owned vacation rental manager in Bradenton and Sarasota, Florida. It is a different business from similarly named rentals and managers, including a vacation rental on Whidbey Island, Washington." %}
+{% set faqWhereQ = "Where can I read guest reviews?" %}
+{% set faqWhereA = "On this page, on each home's page, and on the booking page linked from the home. Reviews quoted here are from our booking listings, in the guests' own words." %}
+{% set faqBookQ = "How do I book a Seascape home?" %}
+{% set faqBookA = "Compare dates on the home's page at seascape-vacations.com and complete checkout on our direct booking site, or book the same home through Airbnb or Vrbo after you compare the complete checkout total." %}
+{% set faqLegalQ = "Who is the legal company behind Seascape Vacations?" %}
+{% set faqLegalA = "Seascape Vacations is a fictitious name of B&T Rental Group LLC, a Florida LLC. You can look the entity up on Sunbiz. Sunbiz document L22000510885 was listed Active on the official entity-name search on November 21, 2026." %}
+
+<div class="g-reviews-page">
+<div class="g-wrap">
+  <nav class="g-breadcrumb" aria-label="Breadcrumb"><a href="/" data-trip-link>Home</a><span>/</span><span aria-current="page">Reviews</span></nav>
+
+  <header class="g-reviews-intro">
+    <p class="g-label">Bradenton &amp; Sarasota, Florida</p>
+    <h1>Seascape Vacations reviews</h1>
+    <p class="g-lede g-reviews-identity">Seascape Vacations is the locally owned vacation rental manager in Bradenton and Sarasota, Florida.</p>
+    <p>The reviews on this page are from guests who stayed in our homes. This is a different business from similarly named rentals and managers in other states.</p>
+    <p>Seascape Vacations operates as a fictitious name of B&amp;T Rental Group LLC, a Florida limited liability company. Sunbiz document L22000510885 was listed Active on the official entity-name search on November 21, 2026. Look the company up on Sunbiz.</p>
+  </header>
+
+  <section class="g-section" aria-labelledby="reviews-disambiguation-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">Not Washington</p>
+        <h2 id="reviews-disambiguation-heading">A different business with a similar name</h2>
+      </div>
+    </div>
+    <p>We are not the vacation rental on Whidbey Island, Washington. We are also a different business from Seascape Property Management in Lewes, Delaware; Sea Scape Properties in North Carolina; Seascapes Vacation Rentals; 30A Seascapes; and Seascape Resort in Miramar Beach, Florida. Those companies have appeared in answer-engine mix-ups. This page does not describe their businesses or quote their reviews.</p>
+    <p>Read more about the Florida team on our <a href="/about-us/">About Us</a> page, or go back to the <a href="/" data-trip-link>home page</a>.</p>
+  </section>
+
+  <section class="g-section" aria-labelledby="reviews-quotes-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">From guests who stayed</p>
+        <h2 id="reviews-quotes-heading">Guest reviews of our homes</h2>
+      </div>
+      <p>Real reviews from the booking listings, in the guests' own words.</p>
+    </div>
+
+    {% for home in properties %}
+    {% set facts = home.guestFacts or {} %}
+    {% set quotes = facts.reviews or [] %}
+    <article class="g-reviews-home" aria-labelledby="reviews-{{ home.slug }}-heading">
+      <h3 id="reviews-{{ home.slug }}-heading">{{ home.name }}</h3>
+      <p class="g-small">{{ home.city }}, Florida</p>
+      {% if quotes | length %}
+      <div class="g-review-grid">
+        {% for review in quotes %}
+        <figure>
+          <blockquote><p>“{{ review.text }}”</p></blockquote>
+          <figcaption>{{ review.author }} · {{ review.date | monthYear }} · {{ review.rating }}/5 · <a href="{{ home.pageUrl }}#reviews" data-trip-link>{{ home.name }}</a></figcaption>
+        </figure>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>We do not quote guest reviews for this home here yet.</p>
+      {% endif %}
+      <div class="g-reviews-home-links">
+        <a class="g-inline-link" href="{{ home.pageUrl }}" data-trip-link>See {{ home.name }}</a>
+        {% set bookingHref = facts.sourceUrl or home.bookingUrl %}
+        {% if bookingHref %}
+        <a class="g-inline-link" href="{{ bookingHref }}" data-property-slug="{{ home.slug }}" data-property-booking-link data-track-event="property_booking_page_click" data-page-slug="{{ home.slug }}" data-placement="reviews_page" target="_blank" rel="noopener noreferrer">Read reviews on the booking page</a>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </section>
+
+  <section class="g-section g-reviews-cta" aria-labelledby="reviews-book-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">Book a stay</p>
+        <h2 id="reviews-book-heading">How to book or get in touch</h2>
+      </div>
+    </div>
+    <p>Compare dates on <a href="/properties/" data-trip-link>our homes</a>, then complete checkout on our <a href="https://book.seascape-vacations.com" data-track-event="booking_engine_handoff" data-page-slug="reviews" data-placement="reviews_page">direct booking site</a>. You can also book the same homes on Airbnb or Vrbo; compare the complete checkout total before you pay. For the fee math behind that comparison, see <a href="/guides/booking-direct-vacation-rentals/" data-trip-link>why guests book direct</a>.</p>
+    <div class="g-reviews-actions">
+      <a class="g-button btn-brand" href="/properties/" data-trip-link>Browse our homes</a>
+      <a class="g-inline-link" href="tel:9417048545">Call (941) 704-8545</a>
+      <a class="g-inline-link" href="mailto:info@seascape-vacations.com">info@seascape-vacations.com</a>
+    </div>
+    <p class="g-small">Find our <a href="{{ site.businessProfiles.googleBusinessProfile }}">Google Business Profile</a>. This page does not quote Google reviews or state a Google review count.</p>
+  </section>
+
+  <section class="g-section" aria-labelledby="reviews-owners-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">For property owners</p>
+        <h2 id="reviews-owners-heading">If you own a vacation rental</h2>
+      </div>
+    </div>
+    <p>If you want a local team to run a Bradenton or Sarasota home, start on our <a href="/property-management/">property management</a> page. <a href="/about-us/">About Us</a> is the short version of who we are.</p>
+  </section>
+
+  <section class="g-section" aria-labelledby="reviews-faq-heading">
+    <div class="g-section-heading">
+      <div>
+        <p class="g-label">Questions</p>
+        <h2 id="reviews-faq-heading">Reviews FAQ</h2>
+      </div>
+    </div>
+    <div class="g-faqs">
+      <details>
+        <summary>{{ faqIdentityQ }}</summary>
+        <p>{{ faqIdentityA }}</p>
+      </details>
+      <details>
+        <summary>{{ faqWhereQ }}</summary>
+        <p>{{ faqWhereA }}</p>
+      </details>
+      <details>
+        <summary>{{ faqBookQ }}</summary>
+        <p>{{ faqBookA }}</p>
+      </details>
+      <details>
+        <summary>{{ faqLegalQ }}</summary>
+        <p>{{ faqLegalA }}</p>
+      </details>
+    </div>
+  </section>
+</div>
+</div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://seascape-vacations.com/reviews/#webpage",
+      "name": "Seascape Vacations reviews",
+      "url": "https://seascape-vacations.com/reviews/",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://seascape-vacations.com/#website" },
+      "about": { "@id": "https://seascape-vacations.com/#organization" }
+    },
+    {
+      "@type": ["LocalBusiness", "Organization"],
+      "@id": "https://seascape-vacations.com/#organization",
+      "name": "Seascape Vacations",
+      "legalName": "B&T Rental Group LLC",
+      "url": "https://seascape-vacations.com",
+      "description": {{ site.description | dump | safe }},
+      "disambiguatingDescription": {{ site.disambiguatingDescription | dump | safe }},
+      "telephone": "+1-941-704-8545",
+      "email": "info@seascape-vacations.com",
+      "areaServed": ["Bradenton, FL", "Sarasota, FL", "Anna Maria Island, FL", "Siesta Key, FL", "Longboat Key, FL"],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bradenton",
+        "addressRegion": "FL",
+        "postalCode": "34209",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        {% for profile in site.sameAsLinks %}
+        {{ profile | dump | safe }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://seascape-vacations.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Reviews", "item": "https://seascape-vacations.com/reviews/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": {{ faqIdentityQ | dump | safe }},
+          "acceptedAnswer": { "@type": "Answer", "text": {{ faqIdentityA | dump | safe }} }
+        },
+        {
+          "@type": "Question",
+          "name": {{ faqWhereQ | dump | safe }},
+          "acceptedAnswer": { "@type": "Answer", "text": {{ faqWhereA | dump | safe }} }
+        },
+        {
+          "@type": "Question",
+          "name": {{ faqBookQ | dump | safe }},
+          "acceptedAnswer": { "@type": "Answer", "text": {{ faqBookA | dump | safe }} }
+        },
+        {
+          "@type": "Question",
+          "name": {{ faqLegalQ | dump | safe }},
+          "acceptedAnswer": { "@type": "Answer", "text": {{ faqLegalA | dump | safe }} }
+        }
+      ]
+    }{% for home in properties %}{% if home.guestFacts and home.guestFacts.reviews %}{% for review in home.guestFacts.reviews %}
+    ,{
+      "@type": "Review",
+      "author": { "@type": "Person", "name": {{ review.author | dump | safe }} },
+      "datePublished": {{ review.date | dump | safe }},
+      "reviewBody": {{ review.text | dump | safe }},
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": {{ review.rating }},
+        "bestRating": 5
+      },
+      "itemReviewed": {
+        "@type": "LodgingBusiness",
+        "name": {{ home.name | dump | safe }},
+        "url": "{{ site.url }}{{ home.pageUrl }}"
+      }
+    }{% endfor %}{% endif %}{% endfor %}
+  ]
+}
+</script>

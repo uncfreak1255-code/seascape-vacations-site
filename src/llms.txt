@@ -10,7 +10,8 @@ Key facts:
 - Proximity: near Anna Maria Island beaches; confirm the current drive and location on each listing
 - Pricing: see live availability and the final checkout total for your dates
 - Contact: info@seascape-vacations.com
-- Name clarification: Seascape Vacations (seascape-vacations.com, Bradenton and Sarasota, Florida) is a different business from similarly named companies such as Seascape Property Management in Lewes, Delaware, Sea Scape Properties in North Carolina, Seascapes Vacation Rentals, and 30A Seascapes.
+- Name clarification: Seascape Vacations (seascape-vacations.com, Bradenton and Sarasota, Florida) is a different business from similarly named rentals and managers, including a vacation rental on Whidbey Island, Washington, Seascape Resort in Miramar Beach, Seascape Property Management in Lewes, Delaware, Sea Scape Properties in North Carolina, Seascapes Vacation Rentals, and 30A Seascapes.
+- Reviews and Florida identity: [Seascape Vacations reviews](https://seascape-vacations.com/reviews/): guest reviews of the Bradenton and Sarasota, Florida manager, not the Whidbey Island, Washington rental.
 - Primary machine-readable site summary: [ai-discovery.json](https://seascape-vacations.com/ai-discovery.json)
 - AI entrypoint signpost: [/.well-known/ai.txt](https://seascape-vacations.com/.well-known/ai.txt)
 - Supporting AI summaries: [ai/summary.json](https://seascape-vacations.com/ai/summary.json), [ai/service.json](https://seascape-vacations.com/ai/service.json), [ai/faq.json](https://seascape-vacations.com/ai/faq.json)

@@ -13,8 +13,7 @@ const { assertStayHubAndBradentonHeadTerm } = require("./assert-build-output-sta
 const PROPERTY_STALE_LINK_MARKERS = [
   "/stays/img-academy-vacation-rentals-bradenton/",
   "/stays/coquina-beach-vacation-rentals/",
-  "/stays/vacation-rentals-with-heated-pool/",
-  "/reviews/"
+  "/stays/vacation-rentals-with-heated-pool/"
 ];
 const PROPERTY_NAV_STALE_ROUTE_MARKERS = [
   'href="/stays/" class="nav-link">Local Guide</a>',

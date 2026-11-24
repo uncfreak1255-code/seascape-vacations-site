@@ -73,7 +73,8 @@ test("llms inventory only advertises live canonical URLs", () => {
   );
 
   assert.equal(llms.includes("/contact/"), false);
-  assert.equal(llms.includes("/reviews/"), false);
+  assert.equal(llms.includes("/reviews/"), true);
+  assert.equal(llms.includes("Whidbey Island"), true);
   assert.equal(llms.includes("Bradenton vs Sarasota Vacation Rental Comparison"), false);
 
   const duplicateUrls = urls.filter((url, index) => urls.indexOf(url) !== index);
@@ -221,6 +222,8 @@ test("AI endpoint layer advertises canonical summaries without replacing the mai
   assert.equal(aiWellKnown.includes("Primary machine-readable contract: {{ site.url }}/ai-discovery.json"), true);
   assert.equal(aiSummary.includes('"location_boundary"'), true);
   assert.equal(aiSummary.includes("do not describe Bradenton homes as on-island inventory"), true);
+  assert.equal(aiSummary.includes("/reviews/"), true);
+  assert.equal(aiSummary.includes("Whidbey Island"), true);
   assert.equal(aiService.includes('"performance_note"'), true);
   assert.equal(aiService.includes("Seascape does not publish a current direct-booking revenue performance figure"), true);
   assert.equal(aiFaq.includes('"questions"'), true);
@@ -394,7 +397,6 @@ test("guide pages only claim Sawyer authorship when the page visibly supports it
 test("llms.txt avoids known dead targets and stale duplicate guide references", () => {
   for (const deadUrl of [
     "https://seascape-vacations.com/contact/",
-    "https://seascape-vacations.com/reviews/",
     "https://seascape-vacations.com/book-direct/",
     "https://seascape-vacations.com/stays/book-direct-vs-airbnb-vrbo/",
     "https://seascape-vacations.com/stays/vacation-rentals-bradenton-florida/"

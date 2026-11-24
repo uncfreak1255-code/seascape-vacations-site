@@ -27,18 +27,18 @@ function link(href) { return { get href() { return href; }, set href(value) { hr
 const trip = '?arrive=2099-12-05&depart=2099-12-12&guests=8';
 
 test('guide and stay detours retain dates and guests without copying private query fields', () => {
-  const links = [link('/stays/fishing-vacation-rentals-bradenton/'), link('/properties/dockside-dreams/'), link('/guides/'), link('/'), link('/property-management/'), link('https://example.com/guides/'), link('#map')];
+  const links = [link('/stays/fishing-vacation-rentals-bradenton/'), link('/properties/dockside-dreams/'), link('/guides/'), link('/'), link('/reviews/'), link('/property-management/'), link('https://example.com/guides/'), link('#map')];
   runtime(trip + '&email=private@example.com', links).init();
-  for (const item of links.slice(0, 4)) {
+  for (const item of links.slice(0, 5)) {
     const url = new URL(item.getAttribute(), 'https://seascape-vacations.com');
     assert.equal(url.searchParams.get('arrive'), '2099-12-05');
     assert.equal(url.searchParams.get('depart'), '2099-12-12');
     assert.equal(url.searchParams.get('guests'), '8');
     assert.equal(url.searchParams.has('email'), false);
   }
-  assert.equal(new URL(links[4].getAttribute()).search, '');
-  assert.equal(links[5].getAttribute(), 'https://example.com/guides/');
-  assert.equal(new URL(links[6].getAttribute()).search, trip + '&email=private@example.com');
+  assert.equal(new URL(links[5].getAttribute()).search, '');
+  assert.equal(links[6].getAttribute(), 'https://example.com/guides/');
+  assert.equal(new URL(links[7].getAttribute()).search, trip + '&email=private@example.com');
 });
 
 test('shared navigation retains the approved SAVE50 campaign allowlist only', () => {
@@ -108,7 +108,7 @@ test('a trip in the page address is remembered as dates and guest count only', (
 });
 
 test('a remembered trip is restored to guest pages that arrive without one', () => {
-  for (const pathname of ['/', '/properties/', '/properties/dockside-dreams/', '/guides/bradenton-vs-sarasota/', '/stays/fishing-vacation-rentals-bradenton/', '/about-us/']) {
+  for (const pathname of ['/', '/properties/', '/properties/dockside-dreams/', '/guides/bradenton-vs-sarasota/', '/stays/fishing-vacation-rentals-bradenton/', '/about-us/', '/reviews/']) {
     const links = [link('/properties/the-oasis/')];
     const page = runtime('?utm_source=newsletter', links, { pathname, storage: memory({ ...remembered, saved: Date.now() }) });
     assert.equal(page.location.pathname, pathname);
@@ -140,6 +140,19 @@ test('the page address wins over a remembered trip, including a rejected one', (
   assert.equal(shortlist.location.search, '?compare=dockside-dreams,the-oasis');
   const area = runtime('?area=sarasota', [], { pathname: '/properties/', storage: memory({ ...remembered, saved: Date.now() }) });
   assert.equal(area.location.search, '?area=sarasota&arrive=2099-12-05&depart=2099-12-12&guests=8');
+});
+
+test('reviews-to-property handoff keeps dates and guests', () => {
+  const links = [link('/properties/the-oasis/'), link('/properties/dockside-dreams/#reviews')];
+  const page = runtime(trip, links, { pathname: '/reviews/' });
+  page.init();
+  assert.equal(page.location.pathname, '/reviews/');
+  for (const item of links) {
+    const url = new URL(item.getAttribute(), 'https://seascape-vacations.com');
+    assert.equal(url.searchParams.get('arrive'), '2099-12-05');
+    assert.equal(url.searchParams.get('depart'), '2099-12-12');
+    assert.equal(url.searchParams.get('guests'), '8');
+  }
 });
 
 test('owner and other non-guest pages never receive a remembered trip', () => {
