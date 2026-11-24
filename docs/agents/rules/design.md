@@ -52,3 +52,8 @@ Claude loads it when it reads a file matching `paths:` above, through the
   against a fresh build; a green visual gate is not proof a shell edit was
   safe — its per-route pixel tolerance absorbed an entire new footer column on
   2026-09-10 without a single diff.
+- Treat a layout rebuild of a page that already gets search traffic (a guide,
+  stay or owner page) as a search change too: before choosing its sections,
+  read the page's Search Console queries and position through local OpenSEO
+  (`docs/process/openseo.md` -> Read-Only Use) and keep a section that answers
+  each query it earns clicks for.
