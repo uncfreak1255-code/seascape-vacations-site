@@ -128,6 +128,22 @@
       "finalVerdictDue": "2026-12-21",
       "verdict": null,
       "note": "Held guide (AGENTS.md): a harm verdict goes to Sawyer as a proposal, no automatic revert."
+    },
+    {
+      "route": "/guides/anna-maria-island-beaches/",
+      "sources": [
+        "src/guides/anna-maria-island-beaches.html"
+      ],
+      "change": "Rebuilt as the place look: island map, comparison chooser under it, five folded beach sections (#1045)",
+      "pr": 1056,
+      "shipped": "2026-11-24",
+      "targetQuery": "anna maria island beaches",
+      "brief": "docs/briefs/2026-11-beaches-guide-place-look.md",
+      "kind": "layout",
+      "baseline": "GSC 2026-10-23..11-19: 1 click, 371 impressions, 0.27% CTR, position 16.3; GA4 organic 10 sessions, 0 key events; no AI-answer citation (site #1046)",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "Revert rule on site #1046: clicks down 30%+ not sitewide, or impressions down 30%+ not sitewide (agent's call, reversible there). Keep-or-revert date 2026-12-22, judged on the next Monday. The chooser partial and stylesheets are left out of sources so the pending layout fixes (PR #1063) are not held by the settle gate; a copy change in the partial still counts as a change to this page."
     }
   ],
   "liveChecks": [
