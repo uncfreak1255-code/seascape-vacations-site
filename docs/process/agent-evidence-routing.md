@@ -16,7 +16,10 @@ truth the task needs.
    question more directly.
 4. **Keep receipts.** Store proof in local artifacts, CI artifacts, PR checks,
    logs, or concise closeout notes. Paste screenshots into chat only when the
-   visual decision is subjective, surprising, or requested.
+   visual decision is subjective, surprising, or requested. When Sawyer must
+   see one, put it in the PR description and link the deploy preview; a file
+   send from a Claude Code session outside a claude.ai project thread fails
+   ("not on a project thread", 2026-11-23).
 
 ## Tool Router
 
