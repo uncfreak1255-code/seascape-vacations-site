@@ -65,6 +65,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       <p class="g-card-source">Ratings from Airbnb</p>
       <button id="reset-filter" type="button">Show all stays</button>
       <span class="g-card-rating" aria-hidden="true">★ 5.0 (112)</span>
+      <p>Boat size, trailer parking, or who sleeps where. Ask us about the home you’re considering before you book.</p>
       <p>Full price, fees and cancellation terms on the booking page.</p>
       <article><a href="/properties/dockside-dreams/">Dockside Dreams</a></article>
       <article><a href="/properties/the-oasis/">The Oasis</a></article>
@@ -86,6 +87,12 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
       body: currentPropertiesBody
     });
   });
+
+  assert.throws(() => smoke.validateTargetResponse(target, {
+    statusCode: 200,
+    location: null,
+    body: currentPropertiesBody.replace("Boat size, trailer parking, or who sleeps where.", "Boat size, a dog coming along, or who sleeps where.")
+  }), /properties|dog coming along|trailer parking/i);
 
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,
@@ -126,6 +133,7 @@ test("properties smoke rejects missing stable property detail hrefs", () => {
           <button type="button" data-trip-sheet-open>Dates and guests</button>
           <p class="g-card-source">Ratings from Airbnb</p>
           <button id="reset-filter" type="button">Show all stays</button>
+          <p>Boat size, trailer parking, or who sleeps where.</p>
           <span class="g-card-rating" aria-hidden="true">★ 5.0 (112)</span>
           <article>Dockside Dreams</article>
           <article>The Oasis</article>
