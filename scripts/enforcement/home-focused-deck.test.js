@@ -64,11 +64,33 @@ function parseDeclarations(body) {
   return declarations;
 }
 
+// Classes the initialized phone homepage actually carries: home-deck.js adds
+// hd-ready on init and toggles hd-open whenever showingList() is true, which is
+// always true at phone width. Rules for other states (:not(.hd-ready), the
+// desktop deck without hd-open, filtered cards) must not feed the cascade.
+const PHONE_ACTIVE_CLASSES = new Set(['g-home', 'hd-deck', 'hd-ready', 'hd-open', 'g-postcards', 'g-postcard']);
+
+function selectorActiveInPhoneState(selector, active = PHONE_ACTIVE_CLASSES) {
+  const negated = [...selector.matchAll(/:not\(([^)]*)\)/g)].map((match) => match[1]);
+  for (const inner of negated) {
+    const classes = [...inner.matchAll(/\.([\w-]+)/g)].map((match) => match[1]);
+    if (classes.length && classes.every((name) => active.has(name))) return false;
+    if (/\[/.test(inner) && !classes.length) continue;
+  }
+  const positive = selector.replace(/:not\([^)]*\)/g, '');
+  if (/\[[^\]]*\]/.test(positive)) return false;
+  const classes = [...positive.matchAll(/\.([\w-]+)/g)].map((match) => match[1]);
+  return classes.every((name) => active.has(name));
+}
+
 function cascadeDeclarations(css, predicate) {
   const declarations = {};
   walkCss(css, (prelude, body, mediaStack) => {
     if (!mediaStack.every((query) => mediaMatchesPhone(query))) return;
-    const matches = prelude.split(',').some((selector) => predicate(selector.trim()));
+    const matches = prelude.split(',').some((raw) => {
+      const selector = raw.trim();
+      return predicate(selector) && selectorActiveInPhoneState(selector);
+    });
     if (!matches) return;
     Object.assign(declarations, parseDeclarations(body));
   });
@@ -81,8 +103,7 @@ function isPostcardList(selector) {
 
 function isReadyHomepageCard(selector) {
   return /(^|[\s>+~])\.g-postcard(?!s)(?![\w-])/.test(selector)
-    && selector.includes('.g-home')
-    && selector.includes('.hd-ready');
+    && selector.includes('.g-home');
 }
 
 function assertPhoneHomeCardsStacked(html, css) {
@@ -157,6 +178,8 @@ test('deck controls are manual, scoped and progressively enhanced', () => {
   assert.match(js, /ts-filtered/);
   assert.match(js, /ResizeObserver/);
   assert.match(js, /function showingList\(\) \{ return phone\.matches \|\| open; \}/);
+  assert.match(js, /var listMode = showingList\(\);\s*root\.classList\.toggle\('hd-open', listMode\);/);
+  assert.match(js, /root\.classList\.add\('hd-ready'\)/);
 });
 test('homepage postcard extras defer src until strip interaction', () => {
   const source = fs.readFileSync('src/index.njk', 'utf8');
@@ -210,5 +233,22 @@ test('a horizontal homepage carousel fails the phone stack contract', () => {
       `${stackedCss}.g-home .hd-ready .g-postcard{position:absolute;left:50%;width:420px}`
     ),
     /overlay single-home deck/
+  );
+  // Rules for states the phone never shows must not rescue the contract.
+  assert.throws(
+    () => assertPhoneHomeCardsStacked(
+      stackedHtml,
+      '.g-home .hd-ready .g-postcards{display:block;height:512px;overflow:clip}'
+        + '.g-home .hd-deck:not(.hd-ready) .g-postcards{display:grid;grid-template-columns:minmax(0,1fr);overflow:visible}'
+    ),
+    /vertical stacked list/
+  );
+  assert.throws(
+    () => assertPhoneHomeCardsStacked(
+      stackedHtml,
+      '.g-home .hd-ready .g-postcards{display:block;height:512px;overflow:clip}'
+        + '.g-home .hd-ready:not(.hd-open) .g-postcards{display:grid;grid-template-columns:minmax(0,1fr)}'
+    ),
+    /vertical stacked list/
   );
 });
