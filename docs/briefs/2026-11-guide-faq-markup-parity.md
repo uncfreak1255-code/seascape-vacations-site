@@ -28,7 +28,7 @@
 - hypothesis: removing markup for questions the page never shows does not cost search visibility, because Google limits FAQ rich results to authoritative government and health sites and the visible content is unchanged. No lift is forecast.
 - primary event: Search Console impressions and clicks on the thirteen routes
 - guardrail event: average position of each route's top query
-- entry criteria: `faq-markup-parity.test.js` green; `npm run verify:release` green
+- entry criteria: `faq-markup-parity.test.js` green (since 2026-11-25 folded into `faq-markup-visible.test.js`, which checks any FAQPage on these guides against the visible page); `npm run verify:release` green
 - readback window: 28 days after the production publish, judged on the verdict Monday in `docs/status/page-ledger.json`
 - decision rule: keep unless a route loses 30% or more of its impressions while the guides as a group do not. A harm result never restores hidden markup: the fix is to show those questions on the page and mark up only what is shown.
 
@@ -38,7 +38,7 @@
 | --- | --- |
 | Target query family | Unchanged; each guide keeps its current queries |
 | Searcher intent | Informational trip planning, unchanged |
-| Current Seascape URL | The thirteen `/guides/` routes in `scripts/enforcement/faq-markup-parity.test.js` |
+| Current Seascape URL | The thirteen `/guides/` routes: anna-maria-city, anna-maria-island-area-guide, anna-maria-island-vacation-cost, best-restaurants-anna-maria-island, best-vacation-rental-companies-ami, bradenton-area-guide, bradenton-beach, florida-gulf-coast-vacation-rental-market-report-2026, holmes-beach, holmes-beach-vs-bradenton-beach, siesta-key-area-guide, srq-airport-to-anna-maria-island, things-to-do-bradenton-fl |
 | SERP observed date | 2026-11-24 |
 | SERP stale after | 2026-12-01 |
 | Attack status | none found after named checks |

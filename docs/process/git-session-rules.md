@@ -167,6 +167,13 @@ Open a PR when:
 - the branch is meant to land in `main`
 - the user has reviewed any visible site changes first
 
+When a PR needs another PR that has not merged yet, branch it from that PR's
+branch and set its base to that branch, or branch from `origin/main` and have
+its new test name the first PR's items as pending until it merges. Otherwise
+its checks fail on work it does not contain: on 2026-11-25 the #1068 FAQ test
+failed on #1067's thirteen guides until #1067 landed. Retarget the base to
+`main` once the first PR merges.
+
 ## Hard stop conditions
 
 Stop and fix workflow first if:

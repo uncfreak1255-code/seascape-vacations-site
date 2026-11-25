@@ -1,7 +1,10 @@
 // FAQPage markup must mark up only what the page shows (site #1016).
 // Reads the built _site/ (run `npm run build` first): every Question name and
 // acceptedAnswer text in a guide's FAQPage JSON-LD must appear in the page's
-// visible text. Guides outside this PR's scope are listed in EXCLUDED with why.
+// visible text, outside elements marked `hidden` or aria-hidden="true". Guides
+// outside this check are listed in EXCLUDED with why. It replaces
+// faq-markup-parity.test.js (the 13 guides whose hidden FAQ markup was dropped in
+// PR #1067): FAQPage may come back on one of them only for questions it shows.
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -30,9 +33,33 @@ function decode(s) {
 function norm(s) {
   return s.normalize('NFKC').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[‐-―−]/g, '-').replace(/\s+/g, ' ').replace(/ ([.,;:!?)])/g, '$1').trim().toLowerCase();
 }
+const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);
+// Drop elements a reader cannot see: the `hidden` attribute or aria-hidden="true",
+// with everything inside them (same-name tags are counted to find the matching close).
+function stripHidden(html) {
+  let out = '';
+  let skip = null;
+  let depth = 0;
+  let last = 0;
+  for (const m of html.matchAll(/<(\/?)([a-z][a-z0-9-]*)\b([^>]*)>/gi)) {
+    const [tag, closing, rawName, attrs] = m;
+    const name = rawName.toLowerCase();
+    if (skip) {
+      if (name === skip && !VOID.has(name) && !attrs.endsWith('/')) depth += closing ? -1 : 1;
+      if (depth === 0) { skip = null; last = m.index + tag.length; }
+      continue;
+    }
+    if (!closing && !VOID.has(name) && /\s(hidden(?=[\s=>/]|$)|aria-hidden=["']true["'])/i.test(attrs)) {
+      out += html.slice(last, m.index) + ' ';
+      skip = name;
+      depth = 1;
+    }
+  }
+  return skip ? out : out + html.slice(last);
+}
 function visibleText(html) {
-  const body = html.replace(/<head[\s\S]*?<\/head>/i, ' ');
-  return norm(decode(body.replace(/<(script|style|noscript|template)[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ')));
+  const body = html.replace(/<head[\s\S]*?<\/head>/i, ' ').replace(/<(script|style|noscript|template)[\s\S]*?<\/\1>/gi, ' ');
+  return norm(decode(stripHidden(body).replace(/<[^>]+>/g, ' ')));
 }
 function isFaqPage(node) {
   const type = node['@type'];
