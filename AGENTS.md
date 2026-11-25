@@ -42,7 +42,8 @@ to existing pages end to end, with no preview or merge approval from Sawyer.
 That means picking from evidence, passing the PR class's review and checks,
 merging, letting the daily publish ship it, verifying it live, and reverting
 through a PR if it hurts. Simulated phone checks count. Each fix freezes its
-baseline, gets a keep-or-revert date and a written verdict, and Sawyer gets
+baseline and gets a keep-or-revert date, so it is a tracked fix, not a new
+live experiment. Write the verdict on its date; Sawyer gets
 one weekly note of what shipped, what each change did and what was reverted. A merge follows its PR class. A paid lookup follows
 `docs/process/openseo.md` -> Cost Boundary. Sawyer still decides: anything
 sent outside the business (guest/owner sends included), Seascape fee,
@@ -71,9 +72,12 @@ their measurement ends. Visual redesigns follow
   workflow and prioritization; never import its code, publishing assumptions
   or folder structure.
 - When code changes affect active instructions, runbooks, status or briefs,
-  update them in the same branch. At closeout, fix stale pointers and
-  leftovers your task caused, verify source and consumers before removal, and
-  report unrelated ones.
+  update them in the same branch and run their focused check; label dated
+  reports historical only when they could pass for current guidance. At
+  closeout, check the touched area for stale instructions, dead code and
+  agent-navigation obstacles, fix stale pointers and leftovers your task
+  caused, verify source and consumers before removal, and report unrelated
+  ones. Prefer source/test pointers to duplicate indexes.
 - No local dirt: a task is not complete while its checkout is dirty, its
   worktree sits on detached `HEAD`, or cleanup is left for Sawyer. The worker
   owns verification, the keeper branch or PR, and branch and worktree cleanup
@@ -87,7 +91,8 @@ their measurement ends. Visual redesigns follow
 - A lone `node --test` skips `pretest`. Tests that read `_site/` fail in a
   fresh worktree until `npm run build` has run once.
 - `npm run verify:release` is the one full pre-PR gate. Use standalone
-  `npm test` and `npm run lint:content` only for iteration. On a dirty
+  `npm test` and `npm run lint:content` only for iteration, not before an
+  unchanged full verification. On a dirty
   worktree, stage new files and run
   `npm run verify:release -- --range origin/main`.
 
