@@ -6,8 +6,10 @@ currency (read the rest before edits or publication), then reads
 
 ## Load context for the task
 
+- UI, CSS, templates or layout: `DESIGN.md`, then `docs/process/design-review-workflow.md`
+- Public copy or SEO copy: select the brief through `docs/briefs/README.md`, then the content gate
 - Behavior diagnosis, a focused fix or tests: `docs/status/current-state.md` -> Code map names each flow's source and existing tests
-- Measured SEO expansion, title or meta rewrites, or prioritizing from analytics: `docs/status/next-batch.md`, the canonical reread handoff surface for measurement truth, and the `next-batch-gate` skill
+- Measured SEO expansion, title or meta rewrites, or prioritizing from analytics: `docs/status/next-batch.md`, the canonical reread handoff surface for measurement truth, `docs/status/current-state.md`, the matching brief and `docs/portfolio/` file, and the `next-batch-gate` skill
 - Business-priority, experiment or capability-trial advice: `docs/process/learning-contract.md`
 - Browser, DOM, screenshots, Playwright, web search, desktop automation: `docs/process/agent-evidence-routing.md` first
 - Commit, push, PR or merge: review the diff, then `docs/process/git-session-rules.md`, `docs/process/before-merge-checklist.md`, and after merge `docs/process/post-merge-runtime-proof-checklist.md`
@@ -17,7 +19,8 @@ currency (read the rest before edits or publication), then reads
 - SEO/AEO research, skills, tooling or workflow changes: `docs/process/skill-policy.md`, `docs/process/learning-contract.md`, `docs/process/openseo.md`; `docs/process/seo-workflow-map.md` routes research skills
 
 Conditional reading never waives a content, design, safety, measurement or
-release requirement. A skill never replaces the gates, approval or proof
+release requirement. If a workflow doc conflicts with repo safety docs, the
+stricter repo rule wins. A skill never replaces the gates, approval or proof
 requirements here.
 
 ## Ownership
@@ -40,7 +43,7 @@ That means picking from evidence, passing the PR class's review and checks,
 merging, letting the daily publish ship it, verifying it live, and reverting
 through a PR if it hurts. Simulated phone checks count. Each fix freezes its
 baseline, gets a keep-or-revert date and a written verdict, and Sawyer gets
-one weekly note. A merge follows its PR class. A paid lookup follows
+one weekly note of what shipped, what each change did and what was reverted. A merge follows its PR class. A paid lookup follows
 `docs/process/openseo.md` -> Cost Boundary. Sawyer still decides: anything
 sent outside the business (guest/owner sends included), Seascape fee,
 rental-price and legal wording, new pages, spending outside the Cost
@@ -64,12 +67,23 @@ their measurement ends. Visual redesigns follow
   -analytics; check the locks in
   `docs/plans/2026-06-12-v1-implementation-handoff.md` before renaming any of
   them.
+- Use seomachine only as a reference for context rules, brief shape, rewrite
+  workflow and prioritization; never import its code, publishing assumptions
+  or folder structure.
 - When code changes affect active instructions, runbooks, status or briefs,
   update them in the same branch. At closeout, fix stale pointers and
-  leftovers your task caused, and report unrelated ones.
+  leftovers your task caused, verify source and consumers before removal, and
+  report unrelated ones.
+- No local dirt: a task is not complete while its checkout is dirty, its
+  worktree sits on detached `HEAD`, or cleanup is left for Sawyer. The worker
+  owns verification, the keeper branch or PR, and branch and worktree cleanup
+  unless a named blocker stops the lane.
 
 ## Testing
 
+- Fast gates: `npm run lint:content` for copy-only work; `npm run build` (worktree
+  lock, Hostaway cache sync, Eleventy, availability validation) for structural
+  source work.
 - A lone `node --test` skips `pretest`. Tests that read `_site/` fail in a
   fresh worktree until `npm run build` has run once.
 - `npm run verify:release` is the one full pre-PR gate. Use standalone
@@ -82,7 +96,7 @@ their measurement ends. Visual redesigns follow
 - A merge is not live. `publish-production.yml` fast-forwards `production` to
   `main` daily at 09:05 UTC, and Netlify publishes from `production`.
 - Agents never push to `production` and never dispatch Publish Production. An
-  early publish is Sawyer's to run.
+  early publish costs a Netlify build and is Sawyer's to run from his account.
 - After every merge, run `npm run verify:merge-live -- <squash-sha>` (exit 0 =
   `production` contains the merge; 1 = merged, queued, not live). Live also
   needs the completed Netlify deploy and the post-merge checklist's proof
@@ -93,8 +107,8 @@ their measurement ends. Visual redesigns follow
 ## Required Batch Workflow
 
 Route by `docs/process/batch-workflow.md`. Visible-copy order:
-**Draft the copy**, **Remove internal wording**, **Check voice and specificity**,
-then `npm run lint:content`.
+**Draft the copy**, **Remove internal wording**, **Check voice and specificity**
+(using the active brief and `docs/style/`), then `npm run lint:content`.
 
 ## Path-scoped rules
 

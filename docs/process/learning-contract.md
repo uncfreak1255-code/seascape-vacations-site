@@ -26,10 +26,10 @@ improvement with its upside and cost of inaction, prefer an existing
 capability, and test it locally; an old toolchain freeze is not a permanent
 veto.
 
-A trial is in scope when it is an authorized bug fix, local prototype or
-reversible capability trial with independent source and behavior proof;
-missing analytics limits only its measurement and impact claims. This section
-owns how to run one. A trial may use an already available
+Missing analytics does not block an authorized bug fix, local prototype or
+reversible capability trial with independent source and behavior proof; it
+limits only measurement and impact claims. This section owns how to run a
+trial. A trial may use an already available
 tool or proposed instruction change in an isolated checkout before it earns
 adoption. It needs a named task, isolated checkout, affected surface,
 comparison with the current method, time limit, and stop condition. Test the
