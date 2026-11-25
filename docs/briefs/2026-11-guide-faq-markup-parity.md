@@ -20,7 +20,8 @@
 
 - What changed: nothing on the pages. The FAQPage blocks were written for older versions of these guides; later rewrites dropped the visible FAQ sections but left the markup, so it now describes questions a reader cannot find.
 - Why now: Sawyer's owner growth push (agent-issues #82) asked for markup that matches the page. Hidden FAQ markup breaks Google's structured-data rules and can put answers no reader can check into AI answers.
-- What should wait: the fourteen guides whose markup partly matches the page (second PR); the held guides, pets and `sarasota-area-guide` above.
+- What should wait: guides whose markup partly matches the page go to the second PR: `anna-maria-island-vs-clearwater-beach`, `bradenton-insider-guide`, `bradenton-vs-sarasota-for-families`, `bradenton-vs-sarasota-restaurants`, `bradenton-vs-sarasota-retirement`, `bradenton-vs-tampa-vacation-rentals`, `flights-to-anna-maria-island`, `how-to-get-to-anna-maria-island`, `hurricane-preparedness-florida-vacation`, `is-anna-maria-island-worth-visiting`, `longboat-key-area-guide`, `siesta-key-beach-guide`, `spring-break-activities-bradenton-anna-maria-island` and `where-to-stay-near-anna-maria-island` (the beaches guide waits for its settle window to end 2026-12-22). The held guides, pets and `sarasota-area-guide` stay out as above.
+- Visible Q&A sections: `best-restaurants-anna-maria-island` and `srq-airport-to-anna-maria-island` show a short Q&A whose questions differ from the dropped markup; `bradenton-insider-guide` is the same case and is deferred only because it sits in the second PR's list. The second PR treats all three alike: it either marks up exactly the questions shown or leaves them unmarked.
 
 ## Experiment And Readback Contract
 
