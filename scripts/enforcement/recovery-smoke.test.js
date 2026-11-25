@@ -92,7 +92,12 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
     statusCode: 200,
     location: null,
     body: currentPropertiesBody.replace("Boat size, trailer parking, or who sleeps where.", "Boat size, a dog coming along, or who sleeps where.")
-  }), /properties|dog coming along|trailer parking/i);
+  }), /missing current live marker\(s\): Boat size, trailer parking, or who sleeps where\./);
+  assert.throws(() => smoke.validateTargetResponse(target, {
+    statusCode: 200,
+    location: null,
+    body: currentPropertiesBody.replace("</main>", "<p>Boat size, a dog coming along, or who sleeps where.</p></main>")
+  }), /still serving stale live marker\(s\): a dog coming along/);
 
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,
