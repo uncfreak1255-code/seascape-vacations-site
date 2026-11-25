@@ -98,6 +98,11 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
     location: null,
     body: currentPropertiesBody.replace("</main>", "<p>Boat size, a dog coming along, or who sleeps where.</p></main>")
   }), /still serving stale live marker\(s\): a dog coming along/);
+  assert.throws(() => smoke.validateTargetResponse(target, {
+    statusCode: 200,
+    location: null,
+    body: currentPropertiesBody.replace("</main>", '<button class="catalog-filter" type="button" data-filter="pet-friendly">Ask about pets</button></main>')
+  }), /still serving stale live marker\(s\): Ask about pets, data-filter="pet-friendly"/);
 
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,

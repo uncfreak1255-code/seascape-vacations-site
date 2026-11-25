@@ -120,7 +120,7 @@ function validateTargetResponse(target, response) {
     requireIncludes(target.path, response.body, ['data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ', 'class="g-header-owners"']);
     requireIncludes(target.path, response.body, ['id="reset-filter" type="button">Show all stays</button>']);
     requireIncludes(target.path, response.body, ["Boat size, trailer parking, or who sleeps where."]);
-    requireExcludes(target.path, response.body, ["a dog coming along"]);
+    requireExcludes(target.path, response.body, ["a dog coming along", "Ask about pets", 'data-filter="pet-friendly"']);
     if (!response.body.includes("Dockside Dreams") || !response.body.includes("The Oasis")) {
       throw new Error("properties page is missing premium catalog property cards");
     }
