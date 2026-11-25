@@ -9,7 +9,7 @@
 .isl-plot { position: relative; box-sizing: border-box; display: grid; grid-template-columns: var(--isl-w) minmax(0, 1fr); column-gap: 16px; margin: 0 0 32px 16px; }
 .isl-stage { position: relative; align-self: start; width: 100%; aspect-ratio: 560 / 1000; }
 .isl-island { display: block; width: 100%; height: 100%; }
-.isl-island path { fill: #173D42; stroke: #173D42; stroke-width: 6; stroke-linejoin: round; }
+.isl-island path { fill: #CAD4CF; stroke: #173D42; stroke-width: 6; stroke-linejoin: round; }
 
 .isl-water { position: absolute; color: #52676A; font: italic 400 16px/1.3 "Instrument Serif", Georgia, serif; white-space: nowrap; }
 .isl-gulf { left: 0; top: 58%; }
@@ -40,13 +40,14 @@
   width: 28px;
   height: 28px;
   margin: -14px 0 0 -14px;
-  border: 2px solid #F6F3EB;
+  border: 2px solid #173D42;
   border-radius: 50%;
   background: #D6EB85;
 }
 .isl-dot::before { content: attr(data-n); display: grid; place-items: center; height: 100%; color: #173D42; font: 600 12px/1 Poppins, system-ui, sans-serif; }
-/* The lit marker's ring is ink inside paper, so it shows over the island and over the water. */
-.isl-link:focus-visible .isl-dot { border-color: #173D42; outline: 2px solid #F6F3EB; }
+/* The ring is ink, so the marker reads over the pale island and over the paper (8:1 and 10:1);
+   the lit marker adds a second ink ring outside it. */
+.isl-link:focus-visible .isl-dot { outline: 2px solid #173D42; outline-offset: 2px; }
 
 .isl-credit { display: flex; flex-wrap: wrap; align-items: center; color: #52676A; font: 400 12px/1.4 Poppins, system-ui, sans-serif; white-space: pre; }
 .isl-credit a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
@@ -73,7 +74,7 @@
 /* A name and its marker answer each other. */
 @media (hover: hover) and (pointer: fine) {
   .isl-link:hover .isl-name { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-  .isl-link:hover .isl-dot { border-color: #173D42; outline: 2px solid #F6F3EB; }
+  .isl-link:hover .isl-dot { outline: 2px solid #173D42; outline-offset: 2px; }
   .isl-link:hover::after { background: #173D42; }
 }
 @media (prefers-reduced-motion: reduce) {
