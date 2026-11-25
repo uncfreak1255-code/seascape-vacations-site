@@ -98,6 +98,12 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: write
+    # A stalled fetch hung checkout until the job timeout on 2026-11-25 (run
+    # 45537773536, attempt 1). Make git abort a stalled transfer so checkout's
+    # own retry runs, and bound the step well inside the job timeout.
+    env:
+      GIT_HTTP_LOW_SPEED_LIMIT: "1000"
+      GIT_HTTP_LOW_SPEED_TIME: "60"
 
     steps:
       - name: Validate target branch
@@ -113,9 +119,11 @@ jobs:
           esac
 
       - uses: actions/checkout@v7
+        timeout-minutes: 5
         with:
           ref: ${{ inputs.branch }}
-          fetch-depth: 0
+          # Only the branch tip is needed to commit and push the baselines.
+          fetch-depth: 1
 
       - name: Verify branch did not move during generation
         env:
