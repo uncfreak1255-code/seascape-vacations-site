@@ -144,12 +144,47 @@
       "verdictDue": "2026-12-28",
       "verdict": null,
       "note": "Revert rule on site #1046: clicks down 30%+ not sitewide, or impressions down 30%+ not sitewide (agent's call, reversible there). Keep-or-revert date 2026-12-22, judged on the next Monday. The chooser partial and stylesheets are left out of sources so the pending layout fixes (PR #1063) are not held by the settle gate; a copy change in the partial still counts as a change to this page."
+    },
+    {
+      "route": "/property-management/vacation-rental-management-anna-maria-island/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Says the homes are in Bradenton and Sarasota and none is on the island yet; new description, intro, benefits from owner-offer section 7 and a 'Not yet' first FAQ; title and H1 unchanged (site #1016)",
+      "pr": 1066,
+      "shipped": null,
+      "targetQuery": "anna maria island vacation rental management",
+      "brief": "docs/briefs/2026-11-owner-service-area-truth.md",
+      "kind": "search-text",
+      "live": null,
+      "baseline": "GSC 2026-08-22..11-22: 0 clicks, 35 impressions; 'anna maria island vacation rental management' 24 impressions at position 36.8 (brief Gate 0)",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer is unchanged and waits on agent-issues #102."
+    },
+    {
+      "route": "/property-management/vacation-rental-management-longboat-key/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Says the homes are in Bradenton and Sarasota and none is on Longboat Key yet; new description, intro, benefits and a 'Not yet' first FAQ; Old Collier, quarterly-inspection and five-star claims removed; title and H1 unchanged (site #1016)",
+      "pr": 1066,
+      "shipped": null,
+      "targetQuery": "longboat key property management",
+      "brief": "docs/briefs/2026-11-owner-service-area-truth.md",
+      "kind": "search-text",
+      "live": null,
+      "baseline": "GSC 2026-08-22..11-22: 0 clicks, about 43 impressions; 'longboat key property management' 8 impressions at position 19.4 (brief Gate 0)",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer is unchanged and waits on agent-issues #102."
     }
   ],
   "liveChecks": [
     {"pr": 1010, "kind": "fact-fix", "change": "Airport travel times and removed guarantees across ten guides", "live": "2026-11-19", "brief": "docs/briefs/2026-11-guide-airport-and-safety-facts.md", "baseline": "Search Console clicks and impressions for the ten routes, 2026-10-22 to 2026-11-18 (brief)", "verdictDue": "2026-12-21", "verdict": null, "note": "Accuracy repair: the Dec traffic read is for information; a drop leads to rewording, never restoring old claims."},
     {"pr": 1014, "kind": "fact-fix", "change": "llms.txt home count corrected to eight", "live": "2026-11-19", "brief": "docs/briefs/2026-11-llms-home-count.md", "baseline": "Live /llms.txt read 2026-11-18T21:18Z said 'manages seven homes' (brief)", "verdict": "keep", "verdictNote": "Live https://seascape-vacations.com/llms.txt read 2026-11-20 says 'manages eight homes'."},
     {"pr": 1067, "kind": "markup-fix", "change": "Dropped FAQPage markup whose questions never appear on the page from 13 guides (site #1016); no visible change", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-parity.md", "baseline": "Search Console 2026-10-25..11-21 per route, frozen in the brief's Gate 0 table (result d60302d8-0227-4ffa-bc75-ead53856f0a0): srq-airport 24 clicks/2,873 impressions, holmes-beach-vs-bradenton-beach 11/400, things-to-do-bradenton-fl 8/1,285, others 0-2 clicks", "verdictDue": "2026-12-28", "verdict": null, "note": "Keep unless a route loses 30%+ impressions while the guides as a group do not. A harm verdict never restores hidden markup: show the questions on the page and mark up only what is shown. verdictDue assumes a publish by 2026-11-30."},
-    {"pr": null, "kind": "markup-fix", "change": "FAQPage markup on fourteen guides matched to the visible questions and answers; unshown questions dropped (site #1016)", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-align.md", "baseline": "Search Console clicks and impressions for the fourteen routes, 2026-10-25 to 2026-11-21 (brief)", "verdictDue": "2026-12-28", "verdict": null, "note": "Markup-only accuracy repair: a drop leads to showing the question on the page, never restoring unmatched markup."}
+    {"pr": 1068, "kind": "markup-fix", "change": "FAQPage markup on fourteen guides matched to the visible questions and answers; unshown questions dropped (site #1016)", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-align.md", "baseline": "Search Console clicks and impressions for the fourteen routes, 2026-10-25 to 2026-11-21 (brief)", "verdictDue": "2026-12-28", "verdict": null, "note": "Markup-only accuracy repair: a drop leads to showing the question on the page, never restoring unmatched markup."},
+    {"pr": 1066, "kind": "fact-fix", "change": "About page names Bradenton and Sarasota as where the homes are; Anna Maria Island and Siesta Key appear only as beaches guests drive to (site #1016)", "live": null, "brief": "docs/briefs/2026-11-owner-service-area-truth.md", "baseline": "origin/main 55f773e5 and the live page (before screenshots in PR #1066) said Seascape offers rentals 'across Anna Maria Island, Bradenton, Sarasota, and Siesta Key'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing PR #1066, fetch https://seascape-vacations.com/about-us/ and confirm it says 'manages vacation homes in Bradenton and Sarasota'. Set live to that publish date."}
   ]
 }
