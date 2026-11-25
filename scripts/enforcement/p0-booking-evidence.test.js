@@ -49,7 +49,9 @@ test('withdrawn benchmark does not claim a verified sample or available method i
   const article = schemas.find((schema) => schema['@type'] === 'Article');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   assert.match(article.description, /findings are withheld/i);
-  assert.doesNotMatch(JSON.stringify(faq), /from five|figures describe|verified (?:sample|dataset)/i);
+  // Site #1016: the FAQPage questions never appeared on the page, so the markup was dropped.
+  assert.equal(faq, undefined, 'no FAQPage markup for questions the page does not show');
+  assert.doesNotMatch(s, /from five|figures describe|verified (?:sample|dataset)/i);
   assert.doesNotMatch(s, /value of this small dataset|records the fixed dataset and method|Historical portfolio signals/i);
   assert.match(s, /explains why earlier numeric findings are withheld/i);
 });

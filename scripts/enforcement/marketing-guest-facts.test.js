@@ -36,8 +36,8 @@ test('AMI area cards use native dates anchors with one tracking owner', () => {
 test('AMI locality copy does not imply walkable mainland homes or unsupported pet policies', () => {
   const faq = [...guide.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
     .map(m => JSON.parse(m[1])).find(p => p['@type'] === 'FAQPage');
-  assert.ok(faq);
-  assert.equal(faq.mainEntity.some(q => /walk to the beach|walk from these|pet-friendly vacation rentals|near-AMI rentals allow pets/.test(q.name)), false);
+  // Site #1016: the FAQPage questions never appeared on the page, so the markup was dropped.
+  assert.equal(faq, undefined, 'no FAQPage markup for questions the page does not show');
   assert.match(guide, /These featured homes are in mainland Bradenton\. Plan to drive to Anna Maria Island beaches/);
   assert.doesNotMatch(guide, /Many Seascape Vacations properties are within walking or biking distance/);
   for (const fact of pages.find(p => p.slug === 'vacation-rentals-near-anna-maria-island').propertyFacts) assert.equal(fact.time, 'Check route');

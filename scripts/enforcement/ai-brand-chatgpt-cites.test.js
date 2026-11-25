@@ -39,7 +39,7 @@ test("ChatGPT-cited stay pages name Seascape Vacations in intro and FAQ extracts
   assert.match(nearAmi.intro, /mainland Bradenton/);
 });
 
-test("ChatGPT-cited AMI company guide names Seascape Vacations in hero and FAQ", () => {
+test("ChatGPT-cited AMI company guide names Seascape Vacations in hero, with no hidden FAQ markup", () => {
   assertNamedSeascape(amiCompanies, "AMI company guide");
   assert.match(
     amiCompanies,
@@ -49,14 +49,8 @@ test("ChatGPT-cited AMI company guide names Seascape Vacations in hero and FAQ",
     amiCompanies,
     /Seascape Vacations is a locally managed Bradenton and Sarasota option with mainland homes near the island\. The real question/
   );
-  const faq = amiCompanies.match(
-    /"name": "How do I choose the best Anna Maria Island rental company\?",[\s\S]*?"text": "([^"]+)"/
-  );
-  assert.ok(faq, "first FAQ JSON-LD is present");
-  assertNamedSeascape(faq[1], "AMI company FAQ");
-  assert.match(faq[1], /mainland homes near Anna Maria Island/);
-  assert.match(faq[1], /judge it the same way as any AMI company/);
-  assert.doesNotMatch(faq[1], /A good AMI rental company should/);
+  // Site #1016: the FAQPage questions never appeared on the page, so the markup was dropped.
+  assert.doesNotMatch(amiCompanies, /"@type": "FAQPage"/, "no FAQPage markup for questions the page does not show");
 });
 
 test("unnamed extracts fail the brand contract", () => {
