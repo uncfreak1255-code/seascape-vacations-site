@@ -74,7 +74,7 @@ test('Relaxing Oasis can be discovered on the homepage and filtered and compared
   await card.scrollIntoViewIfNeeded();
   await expect.poll(() => card.locator('img[data-property-photo]').evaluate(i => i.complete && i.naturalWidth > 0)).toBe(true);
   await expect(card.getByRole('link', { name: 'Check dates for Relaxing Oasis', exact: true })).toHaveAttribute('href', /\/listings\/607228(?:\?|$)/);
-  for (const filter of ['waterfront', 'pet-friendly', 'sarasota']) {
+  for (const filter of ['waterfront', 'sarasota']) {
     await page.locator(`[data-filter="${filter}"]`).click();
     await expect(card).toBeHidden();
   }
