@@ -2,7 +2,7 @@
 
 - lifecycle: completed — source change finished in this PR (agent-issues #102). Source completion is not proof that it is live.
 - task scope: two FAQ answers in `src/_data/seoPages.json`, the owner entries `vacation-rental-management-longboat-key` ("How does the Longboat Key homeowners association impact short-term rental operations?") and `vacation-rental-management-siesta-key` ("What are the specific regulations for Siesta Key short-term rentals?"). Plus a guard against compliance promises on owner pages, `scripts/enforcement/owner-compliance-claims.test.js`. No question, title, description, H1, link, CTA, layout or tracking change.
-- completion or successor: this PR. Two more live compliance promises the guard found (`new-vacation-rental-owner-guide-florida` permits FAQ, `condo-rental-management-florida` HOA answer) wait on their own ruling from Sawyer; they are exempted by exact match in `PENDING_RULING` in that test until then.
+- completion or successor: this PR. Two more live compliance promises the guard found (`new-vacation-rental-owner-guide-florida` permits FAQ, `condo-rental-management-florida` HOA answer) wait on their own ruling from Sawyer (agent-issues #105); they are exempted by exact match, one occurrence each, in `PENDING_RULING` in that test until then, and the test fails once an exemption no longer matches.
 
 ## Approval
 
@@ -72,12 +72,12 @@ Legal wording is Sawyer's (AGENTS.md, Business Priorities). He approved both rep
 ## Source Files Changed In This Batch
 
 - `src/_data/seoPages.json` (two FAQ answers only)
-- `scripts/enforcement/owner-compliance-claims.test.js` (new: compliance-promise patterns, the pending-ruling exemptions, and fixtures of the replaced and approved wording)
+- `scripts/enforcement/owner-compliance-claims.test.js` (new: compliance-promise patterns, the pending-ruling exemptions, and fixtures of the replaced wording and the two shipped answers)
 - `docs/status/page-ledger.json` (the Longboat Key note that said the HOA answer waits on #102)
 
 ## Boundary Proof
 
-Check from a source other than the new copy: `scripts/enforcement/owner-compliance-claims.test.js`, written from the replaced wording and owner-offer. Observed 2026-11-25: against the `origin/main` copy it fails with four violations on the two pages ("full compliance", "ensures full compliance", "ensure your property operates in full compliance"); against the shipped copy it reports none. Before the pending list existed it also reported the Florida owner guide ("ensuring your property operates in full legal compliance"), which is how that page was found.
+Check from a source other than the new copy: `scripts/enforcement/owner-compliance-claims.test.js`, written from the replaced wording and owner-offer. Observed 2026-11-25: against the `origin/main` copy it fails with four violations on the two pages (Siesta Key "full compliance" and "ensures full compliance"; Longboat Key "full compliance" and "ensure your property operates in full compliance"); against the shipped copy it reports none. Before the pending list existed it also reported the Florida owner guide ("ensuring your property operates in full legal compliance"), which is how that page was found.
 
 ## Voice and specificity pass
 
