@@ -177,7 +177,7 @@
       "baseline": "GSC 2026-08-22..11-22: 0 clicks, about 43 impressions; 'longboat key property management' 8 impressions at position 19.4 (brief Gate 0)",
       "verdictDue": "2026-12-28",
       "verdict": null,
-      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer is unchanged and waits on agent-issues #102."
+      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer was replaced separately (Sawyer approved it on agent-issues #102, 2026-11-25; brief docs/briefs/2026-11-owner-compliance-wording.md). That change does not touch the title, description or H1 and is not judged as a ranking change."
     }
   ],
   "liveChecks": [
