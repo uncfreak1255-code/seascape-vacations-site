@@ -182,32 +182,32 @@
     {
       "route": "/stays/anna-maria-island-homes-with-pool/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "Added tracked date-panel links in the intro for The Oasis, Dockside Dreams, and River House",
-      "pr": 967,
+      "change": "#967 date-panel links for The Oasis, Dockside Dreams, and River House; #1035 added a heated-pool related-stay sentence",
+      "pr": 1035,
       "shipped": null,
       "targetQuery": "Bradenton vacation rentals with private pools",
-      "brief": "docs/briefs/2026-11-bradenton-private-pool-booking.md",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
-      "live": "2026-11-16",
-      "baseline": "GSC 2026-10-18..11-15 (28 days before first production publish): 0 clicks, 5 impressions, position 78.0 (GSC URL-prefix pull 2026-11-25)",
-      "verdictDue": "2026-12-14",
+      "live": "2026-11-22",
+      "baseline": "None: no GSC pull for 2026-10-25..11-21 (28 days before the #1035 publish). Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-18..11-15: 0 clicks, 5 impressions, position 78.0.",
+      "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. First production publish 2026-11-16 (daily 4:05 AM ET). This is an intro date-panel booking-link change, not a snippet rewrite; no finalVerdictDue. Brief decision rule: keep the source-backed links; report insufficient evidence for unmeasured booking or revenue outcomes; revert a factual or route regression. Event baseline on agent-issues #72 was not re-read (unverified)."
+      "note": "One verdict per page: #1035 republished this route on 2026-11-22, so this row uses that live boundary, not #967's 2026-11-16 date-panel publish. shipped stays null: shared seoPages.json. First production publish of the current page 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue."
     },
     {
       "route": "/stays/sarasota-vacation-rentals-with-pool/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "Added a tracked date-panel link in the intro for Sarasota Luxe",
-      "pr": 997,
+      "change": "#997 date-panel link for Sarasota Luxe; #1035 added a heated-pool related-stay sentence",
+      "pr": 1035,
       "shipped": null,
       "targetQuery": "sarasota rentals with private pools",
-      "brief": "docs/briefs/2026-11-sarasota-private-pool-booking.md",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
-      "live": "2026-11-19",
-      "baseline": "GSC 2026-10-21..11-18 (28 days before first production publish): URL 0 clicks, 19 impressions, position 18.1; 'sarasota rentals with private pools' 0 clicks, 17 impressions, position 18.4 (GSC URL-prefix pull 2026-11-25)",
+      "live": "2026-11-22",
+      "baseline": "None: no GSC pull for 2026-10-25..11-21 (28 days before the #1035 publish). Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-21..11-18: URL 0 clicks, 19 impressions, position 18.1; 'sarasota rentals with private pools' 0 clicks, 17 impressions, position 18.4.",
       "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. First production publish 2026-11-19 (daily 4:05 AM ET). Keep-or-revert date 2026-12-17, judged on the next Monday. This is an intro date-panel booking-link change, not a snippet rewrite; no finalVerdictDue. Brief decision rule: keep the source-backed date link; report insufficient evidence for unmeasured booking or revenue outcomes; revert a factual or route regression."
+      "note": "One verdict per page: #1035 republished this route on 2026-11-22, so this row uses that live boundary, not #997's 2026-11-19 date-panel publish. shipped stays null: shared seoPages.json. First production publish of the current page 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue."
     },
     {
       "route": "/stays/heated-pool-vacation-rentals-bradenton/",
@@ -238,6 +238,36 @@
       "verdictDue": "2026-12-21",
       "verdict": null,
       "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. First production publish 2026-11-22 (daily 4:05 AM ET). Live HTTP 200 verified 2026-11-25. Keep-or-revert date 2026-12-20, judged on the next Monday. New page: a harm verdict goes to Sawyer."
+    },
+    {
+      "route": "/guides/booking-direct-vacation-rentals/",
+      "sources": ["src/guides/booking-direct-vacation-rentals.html"],
+      "change": "Rewrote title, description, H1, FAQ, and body for the local-manager book-direct query",
+      "pr": 1035,
+      "shipped": "2026-11-22",
+      "targetQuery": "book direct vacation rentals Bradenton Sarasota",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "GSC 90-day window ended 2026-11-18: 1,269 impressions, 0 clicks, position 22.4 (brief Gate 0, pull 2026-11-21). No 28-day-before-publish pull.",
+      "verdictDue": "2026-12-21",
+      "verdict": null,
+      "note": "First production publish 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue. Brief decision rule: keep source-backed answers; report insufficient evidence for citation or booking lift; revert a factual or route regression."
+    },
+    {
+      "route": "/stays/book-direct-anna-maria-island/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "Light-refresh of the AMI book-direct lander body and a related-stay sentence to the book-direct guide",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "book direct vacation rentals",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "None: no Search Console pull for this URL through 2026-11-22.",
+      "verdictDue": "2026-12-21",
+      "verdict": null,
+      "note": "shipped stays null: shared seoPages.json. First production publish 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue."
     }
   ],
   "liveChecks": [
