@@ -33,10 +33,21 @@ test("empty --range input fails", () => {
   assert.throws(() => getChangedFiles(), /non-empty git range/);
 });
 
-test("dirty tree without --range fails", () => {
+test("dirty tree with untracked files and no --range fails and names them", () => {
   assert.throws(
-    () => resolveReleaseRange({ rangeProvided: false, range: "" }, { dirty: true }),
-    /required on a dirty worktree/
+    () =>
+      resolveReleaseRange(
+        { rangeProvided: false, range: "" },
+        { dirty: true, untracked: ["src/new-page.njk"] }
+      ),
+    /untracked files.*src\/new-page\.njk/
+  );
+});
+
+test("dirty tree with only tracked changes and no --range diffs the working tree against origin/main", () => {
+  assert.equal(
+    resolveReleaseRange({ rangeProvided: false, range: "" }, { dirty: true, untracked: [] }),
+    "origin/main"
   );
 });
 

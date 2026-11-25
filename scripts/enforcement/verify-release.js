@@ -88,7 +88,7 @@ function parseArgs(argv) {
   return parsed;
 }
 
-function worktreeIsDirty(cwd = process.cwd()) {
+function worktreeStatus(cwd = process.cwd()) {
   const result = spawnSync("git", ["status", "--porcelain", "--untracked-files=all"], {
     cwd,
     encoding: "utf8"
@@ -98,22 +98,35 @@ function worktreeIsDirty(cwd = process.cwd()) {
     throw new Error((result.stderr || "").trim() || "git status failed");
   }
 
-  return Boolean((result.stdout || "").trim());
+  const lines = (result.stdout || "").split("\n").filter(Boolean);
+  return {
+    dirty: lines.length > 0,
+    untracked: lines.filter((line) => line.startsWith("?? ")).map((line) => line.slice(3))
+  };
+}
+
+function worktreeIsDirty(cwd = process.cwd()) {
+  return worktreeStatus(cwd).dirty;
 }
 
 function resolveReleaseRange(parsed, options = {}) {
-  const dirty = Object.prototype.hasOwnProperty.call(options, "dirty")
-    ? Boolean(options.dirty)
-    : worktreeIsDirty();
+  const status = Object.prototype.hasOwnProperty.call(options, "dirty")
+    ? { dirty: Boolean(options.dirty), untracked: options.untracked || [] }
+    : worktreeStatus();
   const range = String(parsed.range || "").trim();
 
   if (!parsed.rangeProvided) {
-    if (dirty) {
+    if (!status.dirty) {
+      return "origin/main...HEAD";
+    }
+    if (status.untracked.length) {
       throw new Error(
-        "verify-release: --range is required on a dirty worktree. Without it, git diff origin/main...HEAD can return no files and the gate passes while uncommitted edits exist."
+        `verify-release: untracked files on a dirty worktree would be skipped by the diff. Stage them with git add, then rerun: ${status.untracked.join(", ")}`
       );
     }
-    return "origin/main...HEAD";
+    // Dirty with every change tracked: diff the working tree against origin/main,
+    // the same range the docs told agents to pass by hand.
+    return "origin/main";
   }
 
   if (!range) {
@@ -406,6 +419,7 @@ module.exports = {
   buildCommandSteps,
   resolveReleaseRange,
   worktreeIsDirty,
+  worktreeStatus,
   getChangedFiles,
   assertNoForbiddenSourceChanges
 };

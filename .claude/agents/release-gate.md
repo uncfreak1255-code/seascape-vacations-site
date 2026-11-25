@@ -35,7 +35,7 @@ repair route; other batches retain their separate voice/design requirements.
 
 ## Required Checks
 
-- `npm run verify:release` (on a dirty worktree add `-- --range origin/main`).
+- `npm run verify:release` (on a dirty worktree, `git add` new files first; the gate names any it would skip).
   It builds once, then runs content lint, the full test suite and the release
   checks; do not also run `lint:content`, `build` or `npm test` on the same
   unchanged tree.
