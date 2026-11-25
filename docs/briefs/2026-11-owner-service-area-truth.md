@@ -14,11 +14,11 @@
 - offer claim: `seascape-hub/context/owner-offer.md` section 7 (listing on Airbnb, Vrbo and the direct site; rates set per home and reviewed with the owner; guests screened by a local person; cleaning and maintenance coordinated with a note before the owner has to ask; monthly payout and statement; Sawyer and Patrick answer; the one-page review), carried by the section 6 sentence: "A small local team that gives my home direct attention, tells me what it earned and what needs fixing before I ask, and answers the phone."
 - required internal links: /property-management/, /properties/
 - CTA target: the existing owner evaluation form on each owner page; labels, hrefs, fields and tracking unchanged
-- anti-claims: no Seascape home placed on Anna Maria Island, Longboat Key or Siesta Key; no count of homes; no revenue, occupancy or savings figure; no review count or response time; no guarantee; no passive income or hands-off management; no software name; no HOA or legal compliance promise
+- anti-claims: no Seascape home placed on Anna Maria Island, Longboat Key or Siesta Key; no count of homes; no revenue, occupancy or savings figure; no review count or response time; no guarantee; no passive income or hands-off management; no software name; no new HOA or legal compliance promise (the LBK HOA FAQ answer, which promises "full compliance", stays byte-identical to `origin/main`: it is legal wording, reserved to Sawyer in agent-issues #102)
 
 ## Why This Batch
 
-- What changed: nothing in the data; the copy was wrong. Hub property truth puts every managed home in Bradenton or Sarasota. The About page said Seascape offers rentals "across Anna Maria Island, Bradenton, Sarasota, and Siesta Key". The AMI owner page spoke as the "right island operator" running "island-grade turnover" and an "island takeover". The Longboat Key page said "we market Longboat Key properties", named Old Collier Golf Club (it is in Naples), promised quarterly inspections and five-star reviews, and offered "HOA compliance".
+- What changed: nothing in the data; the copy was wrong. Hub property truth puts every managed home in Bradenton or Sarasota. The About page said Seascape offers rentals "across Anna Maria Island, Bradenton, Sarasota, and Siesta Key". The AMI owner page spoke as the "right island operator" running "island-grade turnover" and an "island takeover". The Longboat Key page said "we market Longboat Key properties", named Old Collier Golf Club (it is in Naples), promised quarterly inspections and five-star reviews, and listed "HOA compliance" as a benefit.
 - Why now: Sawyer's owner growth push (agent-issues #82) sends owners to these pages. An owner who asks "which island homes do you run?" finds there are none, and the page loses the trust the offer depends on.
 - What should wait: the Siesta Key owner page, which also says "homes we manage" (noted on #1016 as a follow-up, not edited here); the AMI fee FAQ line "tourism and sales taxes remitted for you" and the direct-booking line "the fee gap is real" (fee wording, left byte-identical and noted on #1016).
 
@@ -64,6 +64,7 @@
 
 - Location: homes in Bradenton and Sarasota only. Island beaches are "a short drive" from them. Siesta Key is "about 3 miles from Sarasota Luxe" (hub property truth).
 - Every service claim maps to owner-offer section 7. Section 7 excluded claims stay out.
+- The LBK HOA FAQ answer is byte-identical to `origin/main` (legal wording; the proposed rewrite waits on Sawyer in agent-issues #102).
 - Fee and price strings on both owner entries are byte-identical to `origin/main`: the AMI fee benefit, fee FAQ, fee objection, the proof stats and the geoIntro fee paragraph; the LBK nightly-rates FAQ.
 - LBK place facts kept to what a reader can check: Gulf beaches, golf at the Longboat Key Club, St. Armands Circle a short drive south. Old Collier Golf Club removed (Naples).
 - Compound Writing (`cw-draft`, `cw-line-edit`) is not installed in this session; drafting was native, with the independent Voice Editor pass below.
@@ -83,7 +84,7 @@ Must not break: every other `seoPages` entry; the AMI page's "share of your home
 Check from a source other than the new copy: `scripts/enforcement/service-area-truth.test.js`, written from hub property truth. Observed 2026-11-24:
 
 - against the `origin/main` copy: 3 of 3 tests fail ("names where the managed homes are", "says no home is managed in Longboat Key today", About description lacks "Bradenton and Sarasota")
-- against the new copy with "our island homes", "the homes we manage on the island" or "we manage homes on Longboat Key" added to each owner entry: both owner tests fail with "presents Seascape as already operating in …"
+- against the new copy with each of 15 wrong phrasings inserted into both owner entries and the About Siesta Key tile (for example "Seascape manages vacation homes on Anna Maria Island", "Ask about our Longboat Key condos", "Our Holmes Beach rentals book early", "These are the island homes we manage", "We list properties Seascape manages in Bradenton and on Anna Maria Island", "Seascape manages homes in Bradenton and Sarasota and on Anna Maria Island"): all 3 tests fail for every phrasing
 - against the shipped copy: 3 of 3 pass
 
 ## Overlap
@@ -92,4 +93,4 @@ PR #1034 edits `src/about-us/index.njk` front matter (lines 8 and 19) and adds a
 
 ## Voice and specificity pass
 
-Independent Voice Editor, 2026-11-24, two rounds. Round one: no sentence placed a home on the island or key; it asked for ten changes. These were "fast response" and "carefully selected homes" on About (a response-time edge and filler), hedging the HOA answer, removing "quieter pace than Siesta Key", the repetitive "Not yet" answer sentence, the "taking on homes next" pipeline implication, the disclosure repeated four times per page, the circular About intro, an unbacked "a walk from downtown" on the Sarasota tile (property truth says only "in downtown Sarasota"), and the About description opener. All were applied except two items on lines unchanged from `origin/main`: the LBK seasonality FAQ and the LBK `geoIntro` rental-rule sentence. Those are logged on #1016 as follow-ups. Round two returned `Approved`.
+Independent Voice Editor, 2026-11-24, two rounds. Round one: no sentence placed a home on the island or key; it asked for ten changes. These were "fast response" and "carefully selected homes" on About (a response-time edge and filler), hedging the HOA answer (later withdrawn: that answer stays byte-identical as legal wording, agent-issues #102), removing "quieter pace than Siesta Key", the repetitive "Not yet" answer sentence, the "taking on homes next" pipeline implication, the disclosure repeated four times per page, the circular About intro, an unbacked "a walk from downtown" on the Sarasota tile (property truth says only "in downtown Sarasota"), and the About description opener. All were applied except two items on lines unchanged from `origin/main`: the LBK seasonality FAQ and the LBK `geoIntro` rental-rule sentence. Those are logged on #1016 as follow-ups. Round two returned `Approved`.
