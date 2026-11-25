@@ -49,7 +49,16 @@ Continue bounded unpaid source/SERP/competitor checks when independently availab
   evidence, and competitor pages. Analytics unavailable, below threshold, or
   waiting for recrawl is not an attack-lane result.
 - If the status is `fresh but below threshold`, do not invent a new SEO batch just because the data is fresh.
-- Favor one bounded branch over parallel SEO lanes.
+- Favor one bounded branch over parallel SEO lanes: one serious SEO cluster
+  at a time, with one brief driving it.
+- A hold still allows ranked ideas, experiment proposals and evidence-backed
+  drafts that improve existing pages; new expansion branches stay on hold.
+  Each keeps its own approval route.
+- A run that only restates the hold is a failed run; it must carry ranked
+  opportunities.
+- Missing analytics limits measurement and impact claims. It still permits an
+  authorized bug fix, a local prototype or a reversible capability trial, each
+  with independent source and behavior proof.
 - Route analytics freshness questions back to `seascape-analytics`, not to a site-wide audit here.
 
 ## Decision
