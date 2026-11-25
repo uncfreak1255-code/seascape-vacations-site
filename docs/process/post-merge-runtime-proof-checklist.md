@@ -18,11 +18,20 @@ This is required for deploy-sensitive site work.
   while live availability is under 12 hours old
   (`scripts/enforcement/netlify-ignore-build.js`); the deploy log then shows
   the skip reason and no new deploy is expected.
+- [ ] Pass the squash commit on `main`, not the PR head. Never substitute a
+  bare `git merge-base --is-ancestor`: it exits 128 on an unfetched commit.
+- [ ] The live revision is the `commit_ref` of Netlify's current production
+  deploy (project `cozy-licorice-e83928`). Confirm that deploy is complete
+  and its `commit_ref` contains the merge.
 - [ ] I am testing production, not preview.
 
 ## 2. Run production smoke
 
 - [ ] `npm run verify:recovery:live`
+- [ ] `npm run verify:direct-booking-events`
+- [ ] `npm run verify:owner-funnel-routes`
+- [ ] For a change to one page, also fetch that production URL and confirm
+  the new text.
 
 ## 3. Re-run live entity schema coverage
 

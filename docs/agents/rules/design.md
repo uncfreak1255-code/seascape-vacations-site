@@ -26,7 +26,9 @@ Claude loads it when it reads a file matching `paths:` above, through the
 - Meaningful visual work (mockups, page concepts, layout, type, color,
   imagery, CTA treatment, motion) starts in the `seascape-design-specialist`
   lane with `seascape-design-critic` as taste gate (`npm run design:lane --
-  "<task>"`) and ends with the `design-review` rendered QA loop.
+  "<task>"`) and ends with the `design-review` rendered QA loop. Visual
+  changes also need `npm run test:visual` and fresh desktop and mobile
+  screenshots; `docs/process/design-review-workflow.md` holds the full route.
 - An approved mock or direction is the implementation contract: build it
   closely and name any deviation with its source, accessibility, performance,
   or responsive reason.
@@ -57,3 +59,11 @@ Claude loads it when it reads a file matching `paths:` above, through the
   read the page's Search Console queries and position through local OpenSEO
   (`docs/process/openseo.md` -> Read-Only Use) and keep a section that answers
   each query it earns clicks for.
+- Claude: of Emil's sixteen skills only `emil-design-eng` and `mobile-native`
+  load on their own. For the other fourteen, open
+  `.claude/skills/ask-emil/SKILL.md`, which maps them by task, then read the
+  `SKILL.md` in the folder it names.
+- Claude: when you delegate UI or visual work, run that subagent with
+  `model: "sonnet"`. Whether to delegate is your call.
+- For visitor-facing work, apply
+  [Audience, benefit and next step](../../process/content-quality-gate.md#audience-benefit-and-next-step).

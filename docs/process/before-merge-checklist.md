@@ -80,6 +80,18 @@ If the task changed layout, CSS, spacing, typography, imagery, component structu
 - [ ] no unrelated files are being pulled in
 - [ ] generated churn is understood, not accidental
 
+## Codex review
+
+- Request `@codex review` on every PR except Dependabot's, on the head you
+  intend to merge, and answer each finding before merge. If the run is
+  unfinished after 15 minutes, request it again naming the head SHA.
+- Where `pr-gate-wait` is installed, wait for checks and review with
+  `pr-gate-wait <pr> -R uncfreak1255-code/seascape-vacations-site` (exit 0
+  ready, 1 blocker, 2 usage error, 3 timeout) rather than a hand-written
+  polling loop; elsewhere read `gh pr checks <pr>`.
+- Codex unavailability (quota, outage, or no result) does not block a
+  BASELINE PR; say so in the PR body.
+
 ## 7. Release decision
 
 Only merge or push `main` if this sentence is true:

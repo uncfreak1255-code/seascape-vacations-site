@@ -14,10 +14,22 @@ local result is evidence for that task, not proof of business impact.
 Do not turn page views, AI referrals, proof-labeled owner tests, or model
 suggestions into public claims without a current source-backed receipt.
 
+Start from Sawyer's current objective and the affected source or guest flow.
+Verify any ranking of the bottleneck (owner acquisition, direct booking)
+against the owning business or analytics source before redirecting work;
+dated holds and forecasts in status files are not current facts.
+
 ## Local Capability Trials
 
-`AGENTS.md` -> Business Priorities And Experiments sets when a trial is in
-scope; this section owns how to run one. A trial may use an already available
+For an AI-workflow or product-improvement request, propose one concrete
+improvement with its upside and cost of inaction, prefer an existing
+capability, and test it locally; an old toolchain freeze is not a permanent
+veto.
+
+A trial is in scope when it is an authorized bug fix, local prototype or
+reversible capability trial with independent source and behavior proof;
+missing analytics limits only its measurement and impact claims. This section
+owns how to run one. A trial may use an already available
 tool or proposed instruction change in an isolated checkout before it earns
 adoption. It needs a named task, isolated checkout, affected surface,
 comparison with the current method, time limit, and stop condition. Test the

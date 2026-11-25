@@ -25,6 +25,9 @@ traces and server logs from the run when investigating a failure.
 
 Report the revision, tested journey, both browser targets, exit status and
 receipt location. If the journey is missing, report the coverage gap.
+When changing a flow covered by `docs/runbooks/tester-army-e2e.md`, run
+`npm run test:e2e -- --grep '<test title>'`. When fixing a demonstrated flow
+bug, add or update a journey that fails on the bug and passes on the fix.
 These journeys prove local behavior with intercepted external services.
 Production deploy, live attribution and delivery each have their own proof
 in the repository's release procedures.

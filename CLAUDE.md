@@ -1,64 +1,19 @@
-# CLAUDE.md — Seascape SEO OS (Claude delta)
-
 @AGENTS.md
 
-Read `AGENTS.md` first. It is canonical for this repo; use its "Load context
-for the task" routes after checking source currency. This file holds only the
-Claude harness delta.
+Read `AGENTS.md` first. It is canonical. Content work follows its
+[Required Batch Workflow](AGENTS.md#required-batch-workflow).
 
-- Skills: shared `.claude/skills/<name>` entries link to the maintained
-  `.agents/skills/<name>` source. The Claude-only UI craft skills (`better-ui`
-  and Emil Kowalski's sixteen) are real directories declared in
-  `.agents/skills-divergence.json`. Of them,
-  `emil-design-eng` is the craft skill `docs/agents/rules/design.md` requires
-  for site design work; the rest stay optional. Only it and
-  `mobile-native` of Emil's are listed to you: for the other fourteen, open
-  `.claude/skills/ask-emil/SKILL.md`, which maps Emil's skills by task, then
-  read the `SKILL.md` in the folder it names. Respect
-  each skill's invocation policy and applicable user skill overrides. A
-  displayed or installed skill is not proof that its body loaded or its
+- `emil-design-eng` is the craft skill `docs/agents/rules/design.md` requires for site design work.
+- Worktrees: a session pinned to `.claude/worktrees/<name>` is the isolated
+  worktree AGENTS.md asks for. Work on the branch the harness created, run
+  `npm ci` once (a fresh worktree has no `node_modules`), and create no
+  `.worktrees/<task>` checkout as well. A "permission denied" on a
+  root-checkout path is that rule working.
+- A displayed or installed skill is not proof that its body loaded or its
   procedure ran.
-- `.claude/settings.json` holds this repo's Claude permissions.
-- `.claude/rules/*.md` are symlinks to the shared `docs/agents/rules/` files;
-  Claude loads each one only when it reads a path in that file's `paths:`
-  frontmatter. Keep them symlinks: an `@import` inside a rule file loads at
-  session start whatever its paths say. Codex reaches the same files through
-  the pointers in `AGENTS.md`; keep both routes when adding a rule.
-- When you delegate UI/visual work, run that subagent with `model: "sonnet"`.
-  Whether to delegate is your call.
-- Worktrees: when the harness pins the session to `.claude/worktrees/<name>`,
-  that is the isolated worktree `AGENTS.md` asks for. Work there on the
-  branch the harness created, run `npm ci` once (a fresh worktree has no
-  `node_modules`), and do not create a `.worktrees/<task>` checkout as well.
-  The harness rejects edits outside the pinned worktree, so a "permission
-  denied" on a root-checkout path is the rule working, not a bug.
-
-## Content Work
-
-Follow the canonical [Required Batch Workflow](AGENTS.md#required-batch-workflow)
-and the Content Gate in `docs/agents/rules/content-gate.md` before public-copy work.
-
-## GBrain Search Guidance (local, optional)
-<!-- gstack-gbrain-search-guidance:start -->
-
-GBrain is machine-local and optional. It holds decisions and dated context
-(the `session-briefs` facts lane), not this repo's code: the brain has no
-index of this repository, so search code and docs with Grep/Glob.
-
-Before answering "what did we decide" or "what do we know about X", or
-asserting a non-trivial detail about a person, project, or past change, read
-it first whenever the `gbrain` MCP tool or `gbrain` CLI is available:
-
-- Claude: the `gbrain` MCP tool `recall` with `source_id: "session-briefs"`
-  plus `entity: projects/<name>` or `grep: "<text>"`. A repo-scoped
-  connection keeps its own facts; if it refuses that source, use the CLI.
-- Codex or shell: `GBRAIN_SOURCE=session-briefs gbrain recall "<topic>" --json`
-  or `gbrain recall <entity-slug> --source session-briefs --json`.
-
-Save a durable decision the same way (`remember` with `source_id:
-"session-briefs"`, date, and provenance).
-
-Zero results are not proof of absence. Do not run `gbrain sync` from a task
-session; the machine's approved sync lane owns that.
-
-<!-- gstack-gbrain-search-guidance:end -->
+- GBrain has no index of this repo's code: search code and docs with Grep and
+  Glob. Decisions and dated facts live in its `session-briefs` lane: `recall`
+  with `source_id: "session-briefs"` plus `entity: projects/<name>` or
+  `grep`; zero results are not proof of absence. If a repo-scoped GBrain connection refuses the `session-briefs`
+  source, use the `gbrain` CLI. Don't run `gbrain sync` from a task session;
+  the machine's sync lane owns it.
