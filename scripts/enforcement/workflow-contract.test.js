@@ -244,6 +244,20 @@ test("actual PR routing selects the Mac only for screenshot-sensitive owner even
   }
 });
 
+test("baseline commit checkout cannot stall until the job timeout", () => {
+  // Run 45537773536 attempt 1: a full-history fetch stalled for the whole
+  // 10-minute job and the bot commit never landed.
+  const job = readWorkflow("update-visual-baselines.yml").split(/^  commit-baselines:$/m)[1];
+  assert.ok(job, "commit-baselines job missing");
+  assert.match(job, /GIT_HTTP_LOW_SPEED_LIMIT: "\d+"/);
+  assert.match(job, /GIT_HTTP_LOW_SPEED_TIME: "\d+"/);
+  const checkout = job.split("- uses: actions/checkout@")[1].split(/\n      - /)[0];
+  const stepTimeout = Number(checkout.match(/timeout-minutes: (\d+)/)?.[1]);
+  const jobTimeout = Number(job.match(/^    timeout-minutes: (\d+)$/m)?.[1]);
+  assert.ok(stepTimeout > 0 && stepTimeout < jobTimeout, `checkout ${stepTimeout} vs job ${jobTimeout}`);
+  assert.match(checkout, /fetch-depth: 1\b/);
+});
+
 test("manual routing checks both actors and preserves scheduled routes", () => {
   const trusted = ownerEvent("workflow_dispatch", { event: {} });
   for (const file of ["live-smoke.yml", "update-visual-baselines.yml", "publish-production.yml"]) {
