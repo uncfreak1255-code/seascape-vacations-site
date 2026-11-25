@@ -26,8 +26,11 @@ test('near-island accommodation copy and schema do not promise blanket lower pri
   assert.match(s, /complete checkout totals for the same dates and guest count/i);
   const schemas = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
-  const stay = faq.mainEntity.find((question) => question.name === 'Is it better to stay on Anna Maria Island or nearby?');
-  assert.match(stay.acceptedAnswer.text, /complete checkout totals for the same dates and guest count/i);
+  // The page shows this question only as "...or nearby on the mainland?", so its old markup is gone (site #1016).
+  assert.equal(faq.mainEntity.find((question) => question.name === 'Is it better to stay on Anna Maria Island or nearby?'), undefined);
+  for (const question of faq.mainEntity) {
+    assert.doesNotMatch(question.acceptedAnswer.text, /for less money|at lower prices|cheaper|significantly more expensive|best vacation rental value/i);
+  }
 });
 
 test('booking report and its feeder withhold numbers without reviewed underlying evidence', () => {
