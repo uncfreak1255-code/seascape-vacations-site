@@ -16,7 +16,12 @@
  *     --live  a folder holding the published project's components/<Name>/preview.html
  *             (read them back from the artifact first)
  *     --dest  where changed cards are written, as components/<Name>/preview.html
- *   Prints which cards changed, which were unchanged and which bundle cards are not filed.
+ *     --new   also file mapped cards the artifact does not have yet; each gets a header
+ *             built from its bundle @dsCard line (group, subtitle, viewport size).
+ *             Without it a missing live copy is an error, so a forgotten read-back
+ *             never looks like a new card.
+ *   Prints which cards changed, which were created, which were unchanged and which
+ *   bundle cards are not filed.
  */
 
 const fs = require("fs");
@@ -39,6 +44,18 @@ const CARD_MAP = Object.freeze({
   "booking-panel": "BookingPanel",
   iconography: "Iconography",
   voice: "Voice",
+  // Catalog patterns no page uses yet (#1041 item 3), one component per viewport.
+  "island-locator": "IslandLocator",
+  "island-locator-phone": "IslandLocatorPhone",
+  "fact-strip": "FactStrip",
+  "fact-strip-phone": "FactStripPhone",
+  "fact-panel": "FactPanel",
+  "fact-panel-phone": "FactPanelPhone",
+  disclosure: "Disclosure",
+  "disclosure-phone": "DisclosurePhone",
+  "photo-lightbox": "PhotoLightbox",
+  "photo-lightbox-mid": "PhotoLightboxMid",
+  "photo-lightbox-phone": "PhotoLightboxPhone",
 });
 
 // Bundle cards with no published component (the published system keeps them under
@@ -51,18 +68,6 @@ const NOT_FILED = Object.freeze([
   "type-body",
   "radii",
   "spacing",
-  // No published component yet. Move each pair to CARD_MAP once the artifact has one.
-  "island-locator",
-  "island-locator-phone",
-  "fact-strip",
-  "fact-strip-phone",
-  "fact-panel",
-  "fact-panel-phone",
-  "disclosure",
-  "disclosure-phone",
-  "photo-lightbox",
-  "photo-lightbox-mid",
-  "photo-lightbox-phone",
 ]);
 
 function publishedPath(stem) {
@@ -93,10 +98,28 @@ function differsOnlyBySyncStamp(a, b) {
   return a !== b && stripSyncStamp(a) === stripSyncStamp(b);
 }
 
+// A card the artifact does not have yet: build its published header from the bundle's
+// @dsCard line. The bundle's viewport ("WxH") becomes the artifact's width and height.
+function headerForNewCard(bundleHtml) {
+  const line = bundleHtml.split("\n").find((l) => /^<!--\s*@dsCard\b/.test(l));
+  if (!line) throw new Error("Bundle card has no @dsCard line");
+  const attr = (key) => {
+    const m = new RegExp(`\\b${key}="([^"]*)"`).exec(line);
+    return m ? m[1] : undefined;
+  };
+  const viewport = /^(\d+)x(\d+)$/.exec(attr("viewport") || "");
+  if (!viewport) throw new Error(`Bundle @dsCard line has no WxH viewport: ${line.slice(0, 120)}`);
+  const parts = [`group="${attr("group") || "Components"}"`, `height=${viewport[2]}`, `width=${viewport[1]}`];
+  const subtitle = attr("subtitle");
+  if (subtitle) parts.push(`subtitle="${subtitle}"`);
+  return `<!-- @dsCard ${parts.join(" ")} -->`;
+}
+
 // Pure planning step: what to write, given bundle and live contents.
 // bundle: { stem: html }, live: { componentPath: html }.
-function planFiling(bundle, live) {
-  const result = { changed: [], unchanged: [], notFiled: [] };
+// allowNew files a mapped card with no live copy as created instead of failing.
+function planFiling(bundle, live, { allowNew = false } = {}) {
+  const result = { changed: [], created: [], unchanged: [], notFiled: [] };
   for (const stem of Object.keys(bundle).sort()) {
     if (NOT_FILED.includes(stem)) {
       result.notFiled.push(stem);
@@ -108,7 +131,11 @@ function planFiling(bundle, live) {
     const target = publishedPath(stem);
     const current = live[target];
     if (current === undefined) {
-      throw new Error(`Live copy of ${target} is missing; read it back from the artifact first`);
+      if (!allowNew) {
+        throw new Error(`Live copy of ${target} is missing; read it back from the artifact first, or pass --new for a component the artifact does not have yet`);
+      }
+      result.created.push({ path: target, html: fileCard(bundle[stem], headerForNewCard(bundle[stem])) });
+      continue;
     }
     const filed = fileCard(bundle[stem], current.split("\n")[0]);
     if (filed === current || differsOnlyBySyncStamp(filed, current)) {
@@ -130,7 +157,7 @@ function main(argv) {
   const liveDir = value("--live");
   const dest = value("--dest");
   if (!liveDir || !dest) {
-    throw new Error("Usage: file-cards.js --live <dir> --dest <dir> [--out .design-sync/out]");
+    throw new Error("Usage: file-cards.js --live <dir> --dest <dir> [--out .design-sync/out] [--new]");
   }
   // A leftover card from an earlier run would be published as if it had changed.
   if (fs.existsSync(dest) && fs.readdirSync(dest).length > 0) {
@@ -147,13 +174,14 @@ function main(argv) {
     const file = path.join(liveDir, target);
     if (fs.existsSync(file)) live[target] = fs.readFileSync(file, "utf8");
   }
-  const plan = planFiling(bundle, live);
-  for (const { path: rel, html } of plan.changed) {
+  const plan = planFiling(bundle, live, { allowNew: argv.includes("--new") });
+  for (const { path: rel, html } of [...plan.changed, ...plan.created]) {
     const file = path.join(dest, rel);
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, html);
   }
   console.log(`Changed (written to ${dest}): ${plan.changed.map((c) => c.path).join(", ") || "none"}`);
+  console.log(`Created (new components, written to ${dest}): ${plan.created.map((c) => c.path).join(", ") || "none"}`);
   console.log(`Unchanged: ${plan.unchanged.length}`);
   console.log(`Not filed (no published component): ${plan.notFiled.join(", ") || "none"}`);
   return plan;
@@ -168,4 +196,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { CARD_MAP, NOT_FILED, publishedPath, fileCard, differsOnlyBySyncStamp, planFiling, main };
+module.exports = { CARD_MAP, NOT_FILED, publishedPath, fileCard, headerForNewCard, differsOnlyBySyncStamp, planFiling, main };

@@ -5,7 +5,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 const {
-  CARD_MAP, NOT_FILED, publishedPath, fileCard, differsOnlyBySyncStamp, planFiling, main
+  CARD_MAP, NOT_FILED, publishedPath, fileCard, headerForNewCard, differsOnlyBySyncStamp, planFiling, main
 } = require('../design/design-sync/file-cards');
 
 const root = path.resolve(__dirname, '../..');
@@ -70,6 +70,24 @@ test('a real change is filed, archived cards are listed, and unknown cards or mi
   assert.deepEqual(plan.notFiled, ['radii']);
   assert.throws(() => planFiling({ 'new-card': bundleCard() }, live), /neither CARD_MAP nor NOT_FILED/);
   assert.throws(() => planFiling({ buttons: bundleCard() }, live), /Live copy of components\/Button/);
+});
+
+test('headerForNewCard turns the bundle viewport into the published width and height', () => {
+  assert.equal(
+    headerForNewCard(bundleCard()),
+    '<!-- @dsCard group="Homes" height=480 width=1100 subtitle="x" -->'
+  );
+  assert.throws(() => headerForNewCard('<!DOCTYPE html>'), /no @dsCard line/);
+  assert.throws(() => headerForNewCard('<!-- @dsCard group="Homes" -->'), /no WxH viewport/);
+});
+
+test('a mapped card with no live copy is created only when allowNew is set', () => {
+  const bundle = { disclosure: bundleCard('<p>new pattern</p>') };
+  assert.throws(() => planFiling(bundle, {}), /Live copy of components\/Disclosure.*--new/);
+  const plan = planFiling(bundle, {}, { allowNew: true });
+  assert.deepEqual(plan.changed, []);
+  assert.deepEqual(plan.created.map((c) => c.path), ['components/Disclosure/preview.html']);
+  assert.equal(plan.created[0].html, fileCard(bundle.disclosure, headerForNewCard(bundle.disclosure)));
 });
 
 test('every card build.js writes is either mapped or listed as not filed', () => {
