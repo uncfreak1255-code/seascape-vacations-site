@@ -358,7 +358,9 @@ function main() {
       assertNoNetAssertionRemoval({ range: args.range })
     );
     recordAssertion(pathAssertions, "settling page edits", () =>
-      assertNoSettlingPageEdits({ range: args.range })
+      // origin/main's ledger always applies, so a hold added after this branch
+      // split still blocks the dirty-tree default (a merge-base range).
+      assertNoSettlingPageEdits({ range: args.range, ledgerRevs: ["origin/main"] })
     );
     recordAssertion(pathAssertions, "valid figma brief handoffs", () =>
       assertValidFigmaBriefs(args.range)
