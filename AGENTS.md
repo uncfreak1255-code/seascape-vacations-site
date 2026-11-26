@@ -4,6 +4,11 @@ Every session first follows `docs/process/git-session-rules.md` -> Source
 currency (read the rest before edits or publication), then reads
 `docs/process/agent-safety-standard.md`.
 
+Every harness, cloud included: without Sawyer's explicit approval, never write to Hostaway, message a guest,
+owner or other third party (issues, comments and review requests on Sawyer's own GitHub repositories that tag
+no outside person are fine), change pricing, deploy outside this repo's rules, or spend beyond a standing
+approval recorded in the owning repo. No agent issues a refund, even with approval.
+
 ## Load context for the task
 
 - UI, CSS, templates or layout: `DESIGN.md`, then `docs/process/design-review-workflow.md`
@@ -15,13 +20,26 @@ currency (read the rest before edits or publication), then reads
 - Commit, push, PR or merge: review the diff, then `docs/process/git-session-rules.md`, `docs/process/before-merge-checklist.md`, and after merge `docs/process/post-merge-runtime-proof-checklist.md`
 - Red or queued CI, visual-baseline refresh, missing Netlify deploy: `docs/process/checks-and-runners.md`
 - Codex cloud task: `docs/process/codex-cloud-handoff.md`
-- Issues, triage labels or domain terms in a managed engineering skill: `docs/agents/issue-tracker.md`, `docs/agents/triage-labels.md`, `docs/agents/domain.md`
 - SEO/AEO research, skills, tooling or workflow changes: `docs/process/skill-policy.md`, `docs/process/learning-contract.md`, `docs/process/openseo.md`; `docs/process/seo-workflow-map.md` routes research skills
 
 Conditional reading never waives a content, design, safety, measurement or
 release requirement. If a workflow doc conflicts with repo safety docs, the
 stricter repo rule wins. A skill never replaces the gates, approval or proof
 requirements here.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live in GitHub (`uncfreak1255-code/seascape-vacations-site`), read through connected tools or `gh`; PRs are not a request surface. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Five roles: needs-triage, needs-info, ready-for-agent, ready-for-human, wontfix; readiness never authorizes a send, spend, production change or gate bypass. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: root `GLOSSARY.md` and decisions under `docs/adr/`; existing Site process and business-source rules stay authoritative. See `docs/agents/domain.md`.
 
 ## Ownership
 
@@ -92,9 +110,9 @@ their measurement ends. Visual redesigns follow
   fresh worktree until `npm run build` has run once.
 - `npm run verify:release` is the one full pre-PR gate. Use standalone
   `npm test` and `npm run lint:content` only for iteration, not before an
-  unchanged full verification. On a dirty
-  worktree, stage new files and run
-  `npm run verify:release -- --range origin/main`.
+  unchanged full verification. On a dirty worktree, stage new files first:
+  the gate then diffs the working tree from where the branch left
+  `origin/main`, and it stops and names any untracked file.
 
 ## Deploy
 
