@@ -209,12 +209,18 @@ function extractAuthorizedSourceSectionText(briefContent) {
   const lines = String(briefContent || "").split(/\r?\n/);
   const collectedLines = [];
   let collecting = false;
+  // A heading such as "## Source Files Changed" owns its whole section, so its
+  // top-level bullets count. A bullet such as "- source files likely to
+  // change:" owns only its indented children.
+  let collectingHeadingSection = false;
 
   for (const line of lines) {
     const trimmed = line.trim();
+    const isHeading = /^#{1,6}\s+/.test(trimmed);
     if (AUTHORIZED_SOURCE_SECTION_PATTERN.test(trimmed)) {
       collectedLines.push(line);
       collecting = true;
+      collectingHeadingSection = isHeading;
       continue;
     }
 
@@ -222,8 +228,13 @@ function extractAuthorizedSourceSectionText(briefContent) {
       continue;
     }
 
-    if (/^##\s+/.test(trimmed)) {
+    if (isHeading) {
       collecting = false;
+      continue;
+    }
+
+    if (collectingHeadingSection) {
+      collectedLines.push(line);
       continue;
     }
 
