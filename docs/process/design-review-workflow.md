@@ -45,6 +45,8 @@ That includes:
   `components/<Name>/preview.html` files back and run
   `npm run design:sync:file -- --live <dir> --dest <dir>`: it converts the
   bundle cards to the published layout and writes only the cards that changed.
+  A card newly added to `CARD_MAP` in `file-cards.js` has no live copy yet; add
+  `--new` to file it as a new component, with its header taken from the bundle card.
   Re-sync after any PR that touches `DESIGN.md`,
   a stylesheet listed in `scripts/design/design-sync/stylesheets.js`
   (including `trip-sheet.css`, which holds the phone rules, and

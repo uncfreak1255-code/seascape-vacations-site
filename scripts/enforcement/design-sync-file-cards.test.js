@@ -5,7 +5,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 const {
-  CARD_MAP, NOT_FILED, publishedPath, fileCard, differsOnlyBySyncStamp, planFiling, main
+  CARD_MAP, NOT_FILED, publishedPath, fileCard, headerForNewCard, differsOnlyBySyncStamp, planFiling, main
 } = require('../design/design-sync/file-cards');
 
 const root = path.resolve(__dirname, '../..');
@@ -72,6 +72,24 @@ test('a real change is filed, archived cards are listed, and unknown cards or mi
   assert.throws(() => planFiling({ buttons: bundleCard() }, live), /Live copy of components\/Button/);
 });
 
+test('headerForNewCard turns the bundle viewport into the published width and height', () => {
+  assert.equal(
+    headerForNewCard(bundleCard()),
+    '<!-- @dsCard group="Homes" height=480 width=1100 subtitle="x" -->'
+  );
+  assert.throws(() => headerForNewCard('<!DOCTYPE html>'), /no @dsCard line/);
+  assert.throws(() => headerForNewCard('<!-- @dsCard group="Homes" -->'), /no WxH viewport/);
+});
+
+test('a mapped card with no live copy is created only when allowNew is set', () => {
+  const bundle = { disclosure: bundleCard('<p>new pattern</p>') };
+  assert.throws(() => planFiling(bundle, {}), /Live copy of components\/Disclosure.*--new/);
+  const plan = planFiling(bundle, {}, { allowNew: true });
+  assert.deepEqual(plan.changed, []);
+  assert.deepEqual(plan.created.map((c) => c.path), ['components/Disclosure/preview.html']);
+  assert.equal(plan.created[0].html, fileCard(bundle.disclosure, headerForNewCard(bundle.disclosure)));
+});
+
 test('every card build.js writes is either mapped or listed as not filed', () => {
   const out = '.design-sync/file-cards-test';
   const result = spawnSync(process.execPath, ['scripts/design/design-sync/build.js', '--out', out], {
@@ -109,4 +127,30 @@ test('main writes only changed cards under --dest', (t) => {
   assert.ok(fs.existsSync(path.join(dest, 'components/Button/preview.html')));
   assert.ok(!fs.existsSync(path.join(dest, 'components/Wordmark')));
   assert.throws(() => main(['--out', out, '--live', liveDir, '--dest', dest]), /is not empty/);
+});
+
+test('main --new writes a new card with the bundle header and refuses an empty --live', (t) => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'file-cards-new-'));
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+  const out = path.join(tmp, 'out');
+  const liveDir = path.join(tmp, 'live');
+  fs.mkdirSync(path.join(out, 'preview'), { recursive: true });
+  fs.writeFileSync(path.join(out, 'preview', 'buttons.html'), bundleCard());
+  fs.writeFileSync(path.join(out, 'preview', 'disclosure.html'), bundleCard('<p>new pattern</p>'));
+  const log = console.log;
+  console.log = () => {};
+  try {
+    assert.throws(
+      () => main(['--out', out, '--live', path.join(tmp, 'missing'), '--dest', path.join(tmp, 'd0'), '--new']),
+      /holds no components/
+    );
+    fs.mkdirSync(path.join(liveDir, 'components', 'Button'), { recursive: true });
+    fs.writeFileSync(path.join(liveDir, 'components', 'Button', 'preview.html'), fileCard(bundleCard(), header));
+    main(['--out', out, '--live', liveDir, '--dest', path.join(tmp, 'd1'), '--new']);
+  } finally {
+    console.log = log;
+  }
+  const created = fs.readFileSync(path.join(tmp, 'd1', 'components/Disclosure/preview.html'), 'utf8');
+  assert.equal(created.split('\n')[0], '<!-- @dsCard group="Homes" height=480 width=1100 subtitle="x" -->');
+  assert.ok(!fs.existsSync(path.join(tmp, 'd1', 'components/Button')));
 });
