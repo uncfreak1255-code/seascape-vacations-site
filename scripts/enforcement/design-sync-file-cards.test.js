@@ -5,7 +5,7 @@ const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 const {
-  CARD_MAP, NOT_FILED, publishedPath, fileCard, headerForNewCard, differsOnlyBySyncStamp, planFiling, main
+  CARD_MAP, NOT_FILED, publishedPath, fileCard, cardImages, headerForNewCard, differsOnlyBySyncStamp, planFiling, main
 } = require('../design/design-sync/file-cards');
 
 const root = path.resolve(__dirname, '../..');
@@ -153,4 +153,45 @@ test('main --new writes a new card with the bundle header and refuses an empty -
   const created = fs.readFileSync(path.join(tmp, 'd1', 'components/Disclosure/preview.html'), 'utf8');
   assert.equal(created.split('\n')[0], '<!-- @dsCard group="Homes" height=480 width=1100 subtitle="x" -->');
   assert.ok(!fs.existsSync(path.join(tmp, 'd1', 'components/Button')));
+});
+
+test('fileCard points live-site photos at the copies published beside the cards', () => {
+  const body = '<img src="https://seascape-vacations.com/images/homes/a/01.webp" '
+    + 'srcset="https://seascape-vacations.com/images/homes/a/01-800.webp 800w, https://seascape-vacations.com/images/homes/a/01.webp 1600w">'
+    + '<a href="https://seascape-vacations.com/homes/a/">A</a>';
+  const filed = fileCard(bundleCard(body), header);
+  assert.doesNotMatch(filed, /seascape-vacations\.com\/images\//);
+  assert.match(filed, /src="\.\.\/\.\.\/images\/homes\/a\/01\.webp"/);
+  assert.match(filed, /href="https:\/\/seascape-vacations\.com\/homes\/a\/"/, 'page links stay on the live site');
+  assert.deepEqual(cardImages(filed), ['images/homes/a/01-800.webp', 'images/homes/a/01.webp']);
+  assert.deepEqual(cardImages('<i style="background:url(&quot;../../images/b/c.jpg&quot;)" data-src="../../images/d.webp"></i>'),
+    ['images/b/c.jpg', 'images/d.webp']);
+  assert.throws(() => cardImages('<img src="../../images/../../x.txt">'), /leaves images/);
+});
+
+test('main copies the photos of written cards from the built site and fails on a missing one', (t) => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'file-cards-img-'));
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+  const out = path.join(tmp, 'out');
+  const liveDir = path.join(tmp, 'live');
+  const site = path.join(tmp, 'site');
+  fs.mkdirSync(path.join(out, 'preview'), { recursive: true });
+  fs.writeFileSync(path.join(out, 'preview', 'buttons.html'),
+    bundleCard('<img src="https://seascape-vacations.com/images/homes/a/01.webp">'));
+  fs.mkdirSync(path.join(liveDir, 'components', 'Button'), { recursive: true });
+  fs.writeFileSync(path.join(liveDir, 'components', 'Button', 'preview.html'), fileCard(bundleCard(), header));
+  const log = console.log;
+  console.log = () => {};
+  try {
+    const args = (d) => ['--out', out, '--live', liveDir, '--site', site, '--dest', path.join(tmp, d)];
+    assert.throws(() => main(args('d0')), /Photos missing.*images\/homes\/a\/01\.webp/);
+    assert.ok(!fs.existsSync(path.join(tmp, 'd0')), 'nothing is written when a photo is missing');
+    fs.mkdirSync(path.join(site, 'images/homes/a'), { recursive: true });
+    fs.writeFileSync(path.join(site, 'images/homes/a/01.webp'), 'webp-bytes');
+    const plan = main(args('d1'));
+    assert.deepEqual(plan.images, ['images/homes/a/01.webp']);
+  } finally {
+    console.log = log;
+  }
+  assert.equal(fs.readFileSync(path.join(tmp, 'd1', 'images/homes/a/01.webp'), 'utf8'), 'webp-bytes');
 });

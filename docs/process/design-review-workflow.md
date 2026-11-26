@@ -47,6 +47,9 @@ That includes:
   bundle cards to the published layout and writes only the cards that changed.
   A card newly added to `CARD_MAP` in `file-cards.js` has no live copy yet; add
   `--new` to file it as a new component, with its header taken from the bundle card.
+  The artifact's preview blocks images from other sites, so the script points
+  the cards' live-site photos at `images/` and copies those photos from the built
+  `_site` into `--dest`; run `npm run build` first and publish `images/` with the cards.
   Re-sync after any PR that touches `DESIGN.md`,
   a stylesheet listed in `scripts/design/design-sync/stylesheets.js`
   (including `trip-sheet.css`, which holds the phone rules, and
