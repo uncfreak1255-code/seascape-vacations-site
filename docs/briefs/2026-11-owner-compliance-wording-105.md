@@ -96,6 +96,8 @@ The shipped text matches the proposals word for word.
 
 ## Source Files Changed In This Batch
 
+Source files changed in this batch: `src/_data/seoPages.json`, `scripts/enforcement/owner-compliance-claims.test.js`, `docs/status/page-ledger.json`.
+
 - `src/_data/seoPages.json` (the five strings named in task scope)
 - `scripts/enforcement/owner-compliance-claims.test.js` (pending exemptions removed; "HOA compliance" pattern added)
 - `docs/status/page-ledger.json` (a condo route entry and a guide liveChecks entry)
