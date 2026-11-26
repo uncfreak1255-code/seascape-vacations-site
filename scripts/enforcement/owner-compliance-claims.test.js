@@ -18,28 +18,12 @@ const COMPLIANCE_PROMISE_PATTERNS = [
   /\bHOA\s+(?:rules?\s+)?compliance\b/i
 ];
 
-// Same reader-visible walk as content-voice.test.js: skip URL-like fields.
-const NON_READER_FIELDS = new Set(["slug", "canonical", "image", "ogImage", "url", "ctaPath", "benchmarkUrl", "sourceUrl"]);
-function readerVisibleText(entry) {
-  const parts = [];
-  const walk = (key, value) => {
-    if (typeof value === "string") {
-      if (NON_READER_FIELDS.has(key) || /^(https?:)?\/\//i.test(value.trim())) return;
-      parts.push(value);
-    } else if (Array.isArray(value)) {
-      value.forEach((item) => walk(key, item));
-    } else if (value && typeof value === "object") {
-      for (const [k, v] of Object.entries(value)) walk(k, v);
-    }
-  };
-  walk("", entry);
-  return parts.join("\n");
-}
+const { readerVisibleSeoText } = require("./reader-visible-seo-text");
 
 function complianceViolations(ownerEntries) {
   const violations = [];
   for (const entry of ownerEntries) {
-    const text = readerVisibleText(entry);
+    const text = readerVisibleSeoText(entry);
     for (const pattern of COMPLIANCE_PROMISE_PATTERNS) {
       const re = new RegExp(pattern.source, "gi");
       for (const match of text.matchAll(re)) violations.push(`${entry.slug}::${match[0]}`);

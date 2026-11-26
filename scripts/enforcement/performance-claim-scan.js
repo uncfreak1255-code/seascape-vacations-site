@@ -22,16 +22,7 @@ const PUBLIC_COPY_PATH_PATTERNS = [
 
 const PUBLIC_COPY_DATA_FILES = [path.join("src", "_data", "seoPages.json")];
 
-const NON_READER_SEO_FIELDS = new Set([
-  "slug",
-  "canonical",
-  "image",
-  "ogImage",
-  "url",
-  "ctaPath",
-  "benchmarkUrl",
-  "sourceUrl"
-]);
+const { readerVisibleSeoText } = require("./reader-visible-seo-text");
 
 function findPerformanceClaimHits(text) {
   if (typeof text !== "string" || !text.trim()) {
@@ -52,29 +43,6 @@ function lintPerformanceClaims(relativePath, text) {
   return findPerformanceClaimHits(text).map(
     (hit) => `${relativePath}: unsourced occupancy/ADR/revenue claim "${hit.match}"`
   );
-}
-
-function readerVisibleSeoText(entry) {
-  const parts = [];
-  const walk = (key, value) => {
-    if (typeof value === "string") {
-      if (NON_READER_SEO_FIELDS.has(key)) return;
-      if (/^(https?:)?\/\//i.test(value.trim())) return;
-      parts.push(value);
-      return;
-    }
-    if (Array.isArray(value)) {
-      value.forEach((item) => walk(key, item));
-      return;
-    }
-    if (value && typeof value === "object") {
-      for (const [childKey, childValue] of Object.entries(value)) {
-        walk(childKey, childValue);
-      }
-    }
-  };
-  walk("", entry);
-  return parts.join("\n");
 }
 
 function listFilesRecursive(rootDir) {
