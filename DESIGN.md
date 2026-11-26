@@ -229,6 +229,8 @@ The homepage, catalog, property details, owner hub, guide index and About page u
 - Pointer and touch presses use subtle feedback (up to 3% scale, 120ms) when motion is allowed. Keyboard scene selection and horizontal selector movement are immediate. Keyboard card focus keeps the visible outline without lifting or enlarging the card. Desktop card hover movement is limited to fine pointers and 200ms; reduced-motion users keep the static layout. Guide CTA buttons, the guide email button, the sticky book-direct bar and the legacy mobile CTA bar use the same press. On fine-pointer hover, guide buttons fill with the muted ink, the sticky bar link darkens its citron (14% ink), and the guide text link's arrow moves 4px. Control hover, press, and interrupt live in `src/css/motion.css` and append onto built `guest.css` so they do not add a stylesheet request. Press uses `scale(0.97)` at 120ms with `cubic-bezier(0.23, 1, 0.32, 1)`; hover color stays behind `(hover: hover) and (pointer: fine)` at 200ms. Keyboard focus does not scale. Dialogs, the phone menu and the email overlay enter in 250ms and leave in 150ms (opacity, `scale(0.96)`); Escape closes the menu at once. Gallery zoom: fine pointers, 200ms.
 - Desktop content can reach 1280px, with a full-width opening photograph. Controls remain at least 44px tall, with visible focus, clear labels and quiet solid surfaces. No animation may delay booking or be required to reveal essential information.
 
+Desktop listing galleries keep the booklet. Its existing photo button opens the selected [contact sheet](docs/design/property-contact-sheet.md); below 900px keep the current carousel and photo grid.
+
 ## Homepage controls (November 2026)
 
 See [selected homepage candidate](docs/design/homepage-controls.md).

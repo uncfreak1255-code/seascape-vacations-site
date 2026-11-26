@@ -1,3 +1,4 @@
+import {installContactSheet} from './property-contact-sheet.js';
 // Progressive desktop enhancement of the server-rendered photo gallery.
 const frame=document.querySelector('[data-booklet-gallery]');
 if(frame) installBooklet(frame);
@@ -11,15 +12,8 @@ function installBooklet(frame) {
  const stage=book.querySelector('.stage'),spread=book.querySelector('.spread'),previous=book.querySelector('[data-previous]'),next=book.querySelector('[data-next]'),position=book.querySelector('[role=status]'),thumbs=book.querySelector('.thumbnails');
  let index=0,animation,motion=[];
  const pageSize=()=>2,caption=photo=>photo.alt.replace(/^.*? — /,'');
- const dialog=document.querySelector('.g-photo-dialog'),openGallery=document.querySelector('[data-open-gallery]');
- const fullCaption=document.createElement('p');fullCaption.hidden=true;dialog.append(fullCaption);
- function resetPhoto(){dialog.classList.remove('g-booklet-focus');dialog.querySelectorAll('.g-photo-grid img').forEach(i=>i.hidden=false);fullCaption.hidden=true;}
- openGallery.addEventListener('click',resetPhoto);
- function openPhoto(photo){
-  openGallery.click();const images=[...dialog.querySelectorAll('.g-photo-grid img')],n=photos.indexOf(photo);
-  dialog.classList.add('g-booklet-focus');images.forEach((image,i)=>image.hidden=i!==n);
-  fullCaption.textContent=caption(photo);fullCaption.hidden=false;dialog.scrollTop=0;
- }
+ const viewer=installContactSheet(desktop);
+ function openPhoto(photo,trigger){viewer.open(photos.indexOf(photo),trigger);}
 
 function image(photo) {
  const img = document.createElement('img'); img.srcset = photo.srcset; img.sizes = '(min-width:1400px) 560px, calc((100vw - 104px)/2)'; img.src = photo.src; img.loading='eager'; img.decoding='async'; img.alt = photo.alt; img.width=photo.width; img.height=photo.height;
@@ -34,7 +28,7 @@ function page(photo, number) {
   name.textContent=document.querySelector('.g-property-heading h1').textContent;note.textContent='End of photo collection';
   fig.append(name,note);return fig;
  }
- const button=document.createElement('button');button.className='photo-button';button.setAttribute('aria-label',`View ${caption(photo)} full size`);button.append(image(photo));button.addEventListener('click',()=>openPhoto(photo));
+ const button=document.createElement('button');button.className='photo-button';button.setAttribute('aria-label',`View ${caption(photo)} full size`);button.append(image(photo));button.addEventListener('click',()=>openPhoto(photo,button));
  const cap=document.createElement('figcaption'),label=document.createElement('span'),n=document.createElement('span');label.textContent=caption(photo);n.textContent=String(number+1).padStart(2,'0');cap.append(label,n);fig.append(button,cap);return fig;
 }
 function render() {
@@ -99,6 +93,6 @@ function move(target, animate=true) {
  reduced.addEventListener('change',finishMotion);
  // Small derivatives keep the complete selector strip inexpensive.
  photos.forEach((p,n)=>{const b=document.createElement('button');b.type='button';b.textContent=String(n+1);const thumbnail=document.createElement('img');thumbnail.alt='';thumbnail.src=p.src.replace(/(?:-800)?\.webp$/, '-160.webp');thumbnail.width=80;thumbnail.height=54;thumbnail.loading='lazy';thumbnail.addEventListener('error',()=>thumbnail.remove(),{once:true});b.append(thumbnail);b.setAttribute('aria-label','Show photo '+(n+1)+': '+p.alt);b.addEventListener('click',e=>move(Math.floor(n/2)*2,e.detail!==0));thumbs.append(b);});
- function sync(){finishMotion();book.hidden=!desktop.matches;original.hidden=desktop.matches;frame.classList.toggle('has-booklet',desktop.matches);if(desktop.matches)render();else{original.scrollLeft=0;resetPhoto();}}
+ function sync(){finishMotion();book.hidden=!desktop.matches;original.hidden=desktop.matches;frame.classList.toggle('has-booklet',desktop.matches);if(desktop.matches)render();else{original.scrollLeft=0;}}
  frame.insertBefore(book,original);desktop.addEventListener('change',sync);sync();
 }

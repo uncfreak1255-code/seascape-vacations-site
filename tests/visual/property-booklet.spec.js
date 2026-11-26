@@ -18,7 +18,25 @@ for(const home of homes)test(`${home.slug}: desktop booklet preserves mobile gal
  await book.locator('[data-previous]').click();await expect(book.locator('[role=status]')).toHaveText(`1–2 / ${home.photography.photos.length}`);
  await page.emulateMedia({reducedMotion:'reduce'});await book.locator('[data-next]').click();await expect(book.locator('.turn-leaf')).toHaveCount(0);
  await book.locator('.thumbnails button').last().click();await expect(book.locator('[data-next]')).toBeDisabled();
- await book.locator('.spread > .page .photo-button').first().click();await expect(page.locator('.g-photo-dialog')).toBeVisible();await expect(page.locator('.g-photo-dialog img:visible')).toHaveCount(1);await page.keyboard.press('Escape');await page.locator('[data-open-gallery]').click();await expect(page.locator('.g-photo-dialog img:visible')).toHaveCount(home.photography.photos.length);await page.keyboard.press('Escape');await expect(page.locator('.g-photo-dialog')).not.toBeVisible();
+ const dialog=page.locator('.g-photo-dialog'),tiles=dialog.locator('.contact-tile'),opener=page.locator('[data-open-gallery]');
+ await expect(tiles).toHaveCount(0);
+ const direct=book.locator('.spread > .page .photo-button').first();
+ const directAlt=await direct.locator('img').getAttribute('alt');
+ await direct.click();await expect(dialog).toBeVisible();
+ await expect(dialog.locator('.contact-detail')).toBeVisible();
+ await expect(dialog.locator('.contact-photo img')).toHaveAttribute('alt',directAlt);
+ await expect(dialog.locator('.g-photo-grid img[src]')).toHaveCount(0);
+ await page.keyboard.press('Escape');await expect(direct).toBeFocused();
+ await opener.click();await expect(tiles).toHaveCount(home.photography.photos.length);
+ expect(await tiles.locator('img').evaluateAll(imgs=>imgs.map(i=>i.alt))).toEqual(home.photography.photos.map(i=>i.alt));
+ expect(await tiles.locator('img').evaluateAll(imgs=>imgs.map(i=>i.getAttribute('src')))).toEqual(home.photography.photos.map(i=>i.src.replace('.webp','-800.webp')));
+ expect(await dialog.locator('.contact-sheet').evaluate(el=>getComputedStyle(el).gridTemplateColumns.split(' ').length)).toBe(4);
+ await tiles.nth(1).click();await expect(dialog.locator('[data-photo-count]')).toHaveText('02 / '+home.photography.photos.length);
+ await page.keyboard.press('ArrowRight');await expect(dialog.locator('.contact-photo img')).toHaveAttribute('alt',home.photography.photos[2].alt);
+ await dialog.getByRole('button',{name:'Previous photo',exact:true}).click();
+ await dialog.getByRole('button',{name:'All photos',exact:false}).click();await expect(tiles.nth(1)).toBeFocused();
+ await page.keyboard.press('Escape');await expect(opener).toBeFocused();await expect(dialog).not.toBeVisible();
+ await page.setViewportSize({width:899,height:844});await opener.click();await expect(dialog.locator('.contact-pane')).not.toBeVisible();await expect(dialog.locator('.g-photo-grid img:visible')).toHaveCount(home.photography.photos.length);await page.keyboard.press('Escape');
  await page.setViewportSize({width:390,height:844});await expect(book).not.toBeVisible();await expect(page.locator('.g-gallery')).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
 });
@@ -29,4 +47,37 @@ test('complete photos remain reachable without JavaScript or when booklet import
  for(const photo of homes.find(h=>h.slug==='dockside-dreams').photography.photos)expect(hrefs).toContain(photo.src);
  await context.close();
  const fallback=await browser.newPage({viewport:{width:1440,height:1100}});await fallback.route('**/property-booklet.js',r=>r.abort());await fallback.goto('/properties/dockside-dreams/');await fallback.locator('[data-open-gallery]').click();await expect(fallback.locator('.g-photo-dialog')).toBeVisible();await expect(fallback.locator('.g-photo-dialog img')).toHaveCount(13);await fallback.close();
+});
+
+for(const asset of ['property-booklet.css','property-contact-sheet.js'])test(`old desktop paths survive ${asset} failure`,async({page})=>{
+ await page.setViewportSize({width:1440,height:900});
+ await page.route('**/'+asset,route=>route.abort());
+ await page.goto('/properties/dockside-dreams/');
+ await expect(page.locator('.g-gallery')).toBeVisible();
+ await page.locator('[data-open-gallery]').click();
+ await expect(page.locator('.g-photo-dialog .g-photo-grid img:visible')).toHaveCount(13);
+ await expect(page.locator('.contact-tile')).toHaveCount(0);
+ await page.keyboard.press('Escape');
+ await expect(page.locator('[data-open-gallery]')).toBeFocused();
+});
+
+test('open viewer crosses the desktop boundary without trapping hidden focus',async({page})=>{
+ await page.setViewportSize({width:1440,height:900});await page.goto('/properties/dockside-dreams/');
+ await expect(page.locator('.inpage-book')).toBeVisible();await page.locator('[data-open-gallery]').click();
+ await page.locator('.contact-tile').nth(2).click();
+ await page.setViewportSize({width:899,height:900});
+ await expect(page.locator('.contact-pane')).not.toBeVisible();
+ await expect(page.locator('.g-photo-dialog .g-photo-grid img:visible')).toHaveCount(13);
+ await expect(page.locator('[data-close-gallery]')).toBeFocused();
+ await page.setViewportSize({width:900,height:900});
+ await expect(page.locator('.contact-overview')).toBeVisible();
+ await expect(page.locator('.g-photo-dialog .g-photo-grid')).not.toBeVisible();
+ await page.keyboard.press('Escape');await expect(page.locator('[data-open-gallery]')).toBeFocused();
+});
+
+ test('direct booklet opener falls back to View all photos if resize replaces it',async({page})=>{
+ await page.setViewportSize({width:1440,height:900});await page.goto('/properties/dockside-dreams/');
+ await page.locator('.inpage-book .spread > .page .photo-button').first().click();
+ await page.setViewportSize({width:899,height:900});await page.keyboard.press('Escape');
+ await expect(page.locator('[data-open-gallery]')).toBeFocused();
 });
