@@ -51,6 +51,25 @@
 | Tools/plugins used | Hub canon read, site source, free Search Console pull cited in the spec, Treg ChatGPT check 2026-11-21 |
 | Decision and reason | Sawyer approved this citation-gap cluster on 2026-11-21. Stay inside the three intents. Do not open unrelated new pages |
 
+## Page Ledger Readback
+
+Judge the seven routes below on the November 22, 2026 production version from
+PR #1035. The 28-day window ends December 20, and the ledger verdict is due
+Monday, December 21. The book-direct guide has its own source and a November 22
+settle hold. All six stay routes share `src/_data/seoPages.json`, so their
+`shipped` dates are null. Bring a harm verdict on a newly launched page to
+Sawyer. Keep source-backed guide answers and revert a factual or route regression.
+
+| Route | Change and baseline evidence |
+| --- | --- |
+| `/stays/anna-maria-island-homes-with-pool/` | #967 added date-panel links for The Oasis, Dockside Dreams, and River House on November 16. #1035 added a heated-pool related-stay sentence. No Search Console pull covers October 25 through November 21. The nearest verified URL-prefix pull on November 25 covered October 18 through November 15 and showed 0 clicks, 5 impressions, and position 78.0. |
+| `/stays/sarasota-vacation-rentals-with-pool/` | #997 added Sarasota Luxe's date-panel link on November 19. #1035 added a heated-pool related-stay sentence. No Search Console pull covers October 25 through November 21. The nearest verified URL-prefix pull on November 25 covered October 21 through November 18. The URL had 0 clicks, 19 impressions, and position 18.1. The target query had 0 clicks, 17 impressions, and position 18.4. |
+| `/stays/heated-pool-vacation-rentals-bradenton/` | New collection. The November 25 Search Console URL-prefix pull found no rows through November 22. |
+| `/stays/vacation-rentals-near-img-academy/` | New collection. The November 25 Search Console URL-prefix pull found no rows through November 22. |
+| `/guides/booking-direct-vacation-rentals/` | Rewrote the title, description, H1, FAQ, and body for the local-manager book-direct query. Gate 0 records the 90 days ending November 18. A pull for the 28 days before publication is unavailable. |
+| `/stays/book-direct-anna-maria-island/` | Refreshed the body and added a related-stay sentence linking to the guide. A Search Console pull for this URL through November 22 is unavailable. |
+| `/stays/bradenton-vacation-rentals/` | #1035 added heated-pool, IMG, and book-direct links to `longContent` and replaced the verdict for the November 19 launch in #1002. No Search Console pull covers October 25 through November 21. The launch brief recorded no rows before #1002. |
+
 ## Cluster In Scope
 
 - New: `/stays/heated-pool-vacation-rentals-bradenton/`, `/stays/vacation-rentals-near-img-academy/`

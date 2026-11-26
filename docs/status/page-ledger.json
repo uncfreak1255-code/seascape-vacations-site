@@ -183,107 +183,117 @@
     {
       "route": "/stays/anna-maria-island-homes-with-pool/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "#967 date-panel links for The Oasis, Dockside Dreams, and River House; #1035 added a heated-pool related-stay sentence",
+      "change": "#967 date-panel links and #1035 heated-pool link",
       "pr": 1035,
       "shipped": null,
       "targetQuery": "Bradenton vacation rentals with private pools",
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
       "live": "2026-11-22",
-      "baseline": "None: no GSC pull for 2026-10-25..11-21. Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-18..11-15: 0 clicks, 5 impressions, position 78.0.",
+      "baseline": "No matching GSC window (see brief)",
       "verdictDue": "2026-12-21",
-      "verdict": null,
-      "note": "One verdict per page: live is #1035's 2026-11-22 republish, not #967's 2026-11-16. shipped null. Keep-or-revert 2026-12-20."
+      "verdict": null
     },
     {
       "route": "/stays/sarasota-vacation-rentals-with-pool/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "#997 date-panel link for Sarasota Luxe; #1035 added a heated-pool related-stay sentence",
+      "change": "#997 date-panel link and #1035 heated-pool link",
       "pr": 1035,
       "shipped": null,
       "targetQuery": "sarasota rentals with private pools",
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
       "live": "2026-11-22",
-      "baseline": "None: no GSC pull for 2026-10-25..11-21. Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-21..11-18: URL 0 clicks, 19 impressions, position 18.1; query 0 clicks, 17 impressions, position 18.4.",
+      "baseline": "No matching GSC window (see brief)",
       "verdictDue": "2026-12-21",
-      "verdict": null,
-      "note": "One verdict per page: live is #1035's 2026-11-22 republish, not #997's 2026-11-19. shipped null. Keep-or-revert 2026-12-20."
+      "verdict": null
     },
     {
       "route": "/stays/heated-pool-vacation-rentals-bradenton/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "New heated-pool Bradenton collection for heated pool vacation rentals Bradenton",
+      "change": "New Bradenton heated-pool collection",
       "pr": 1035,
       "shipped": null,
       "targetQuery": "heated pool vacation rentals Bradenton",
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "new-page",
       "live": "2026-11-22",
-      "baseline": "None: no Search Console rows through 2026-11-22 (GSC URL-prefix pull 2026-11-25)",
+      "baseline": "No GSC rows through 2026-11-22",
       "verdictDue": "2026-12-21",
-      "verdict": null,
-      "note": "shipped null: shared seoPages.json. live 2026-11-22. Keep-or-revert 2026-12-20. New page: harm goes to Sawyer."
+      "verdict": null
     },
     {
       "route": "/stays/vacation-rentals-near-img-academy/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "New IMG Academy stay collection for vacation rentals near IMG Academy",
+      "change": "New IMG Academy stay collection",
       "pr": 1035,
       "shipped": null,
       "targetQuery": "vacation rentals near IMG Academy",
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "new-page",
       "live": "2026-11-22",
-      "baseline": "None: no Search Console rows through 2026-11-22 (GSC URL-prefix pull 2026-11-25)",
+      "baseline": "No GSC rows through 2026-11-22",
       "verdictDue": "2026-12-21",
-      "verdict": null,
-      "note": "shipped null: shared seoPages.json. live 2026-11-22. Keep-or-revert 2026-12-20. New page: harm goes to Sawyer."
+      "verdict": null
     },
     {
       "route": "/guides/booking-direct-vacation-rentals/",
       "sources": ["src/guides/booking-direct-vacation-rentals.html"],
-      "change": "Rewrote title, description, H1, FAQ, and body for the local-manager book-direct query",
+      "change": "Book-direct guide rewrite",
       "pr": 1035,
       "shipped": "2026-11-22",
       "targetQuery": "book direct vacation rentals Bradenton Sarasota",
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
       "live": "2026-11-22",
-      "baseline": "GSC 90-day window ended 2026-11-18: 1,269 impressions, 0 clicks, position 22.4 (brief Gate 0, pull 2026-11-21). No 28-day-before-publish pull.",
+      "baseline": "90-day GSC pull (see brief)",
       "verdictDue": "2026-12-21",
-      "verdict": null,
-      "note": "live 2026-11-22. Keep-or-revert 2026-12-20. Keep source-backed answers; revert a factual or route regression."
+      "verdict": null
     },
     {
       "route": "/stays/book-direct-anna-maria-island/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "Light-refresh of the AMI book-direct lander body and a related-stay sentence to the book-direct guide",
+      "change": "AMI book-direct body and guide link",
       "pr": 1035,
       "shipped": null,
       "targetQuery": "book direct vacation rentals",
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
       "live": "2026-11-22",
-      "baseline": "None: no Search Console pull for this URL through 2026-11-22.",
+      "baseline": "No GSC pull through 2026-11-22",
       "verdictDue": "2026-12-21",
-      "verdict": null,
-      "note": "shipped null: shared seoPages.json. live 2026-11-22. Keep-or-revert 2026-12-20."
+      "verdict": null
     },
     {
       "route": "/stays/bradenton-vacation-rentals/",
       "sources": ["src/_data/seoPages.json"],
-      "change": "#1035 appended heated-pool, IMG, and book-direct links in longContent",
+      "change": "Heated-pool, IMG, and book-direct links",
       "pr": 1035,
       "shipped": null,
       "targetQuery": "bradenton vacation rentals",
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
       "live": "2026-11-22",
-      "baseline": "None: no GSC pull for 2026-10-25..11-21. Launch baseline (brief): no Search Console rows before #1002.",
+      "baseline": "No matching GSC window (see brief)",
       "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/property-management/condo-rental-management-florida/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Meta description and first benefit say 'HOA rule review' instead of 'HOA compliance'; HOA restrictions answer rewritten without the compliance promise or the '3-7 days' figure; track-record sentence removed; title and H1 unchanged (agent-issues #105)",
+      "pr": 1082,
+      "shipped": null,
+      "targetQuery": "condo rental management florida",
+      "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md",
+      "kind": "search-text",
+      "live": null,
+      "baseline": "GSC 2026-08-23..11-23: 0 clicks, 44 impressions, position 11.3. See brief for top query and result IDs.",
+      "verdictDue": "2026-12-28",
       "verdict": null,
-      "note": "One verdict per page: live is #1035's 2026-11-22 republish, not #1002's 2026-11-19 launch. shipped null. Keep-or-revert 2026-12-20. Harm on a new page still goes to Sawyer."
+      "note": "Set live from the first production publish with #1082. If after 2026-11-30, move verdictDue to the Monday on or after live + 28 days. Follow the brief's description-only revert rule and keep compliance promises out."
     }
   ],
   "liveChecks": [
@@ -291,6 +301,7 @@
     {"pr": 1014, "kind": "fact-fix", "change": "llms.txt home count corrected to eight", "live": "2026-11-19", "brief": "docs/briefs/2026-11-llms-home-count.md", "baseline": "Live /llms.txt read 2026-11-18T21:18Z said 'manages seven homes' (brief)", "verdict": "keep", "verdictNote": "Live https://seascape-vacations.com/llms.txt read 2026-11-20 says 'manages eight homes'."},
     {"pr": 1067, "kind": "markup-fix", "change": "Dropped FAQPage markup whose questions never appear on the page from 13 guides (site #1016); no visible change", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-parity.md", "baseline": "Search Console 2026-10-25..11-21 per route, frozen in the brief's Gate 0 table (result d60302d8-0227-4ffa-bc75-ead53856f0a0): srq-airport 24 clicks/2,873 impressions, holmes-beach-vs-bradenton-beach 11/400, things-to-do-bradenton-fl 8/1,285, others 0-2 clicks", "verdictDue": "2026-12-28", "verdict": null, "note": "Keep unless a route loses 30%+ impressions while the guides as a group do not. A harm verdict never restores hidden markup: show the questions on the page and mark up only what is shown. verdictDue assumes a publish by 2026-11-30."},
     {"pr": 1068, "kind": "markup-fix", "change": "FAQPage markup on fourteen guides matched to the visible questions and answers; unshown questions dropped (site #1016)", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-align.md", "baseline": "Search Console clicks and impressions for the fourteen routes, 2026-10-25 to 2026-11-21 (brief)", "verdictDue": "2026-12-28", "verdict": null, "note": "Markup-only accuracy repair: a drop leads to showing the question on the page, never restoring unmatched markup."},
-    {"pr": 1066, "kind": "fact-fix", "change": "About page names Bradenton and Sarasota as where the homes are; Anna Maria Island and Siesta Key appear only as beaches guests drive to (site #1016)", "live": null, "brief": "docs/briefs/2026-11-owner-service-area-truth.md", "baseline": "origin/main 55f773e5 and the live page (before screenshots in PR #1066) said Seascape offers rentals 'across Anna Maria Island, Bradenton, Sarasota, and Siesta Key'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing PR #1066, fetch https://seascape-vacations.com/about-us/ and confirm it says 'manages vacation homes in Bradenton and Sarasota'. Set live to that publish date."}
+    {"pr": 1066, "kind": "fact-fix", "change": "About page names Bradenton and Sarasota as where the homes are; Anna Maria Island and Siesta Key appear only as beaches guests drive to (site #1016)", "live": null, "brief": "docs/briefs/2026-11-owner-service-area-truth.md", "baseline": "origin/main 55f773e5 and the live page (before screenshots in PR #1066) said Seascape offers rentals 'across Anna Maria Island, Bradenton, Sarasota, and Siesta Key'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing PR #1066, fetch https://seascape-vacations.com/about-us/ and confirm it says 'manages vacation homes in Bradenton and Sarasota'. Set live to that publish date."},
+    {"pr": 1082, "kind": "fact-fix", "change": "Florida new-owner guide permits answer no longer says Seascape handles all licensing and ensures full legal compliance; it names the separate checks and offers the one-page review (agent-issues #105)", "live": null, "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md", "baseline": "origin/main 1286a95f said 'Seascape Vacations handles all licensing and regulatory requirements, ensuring your property operates in full legal compliance from launch.'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing this PR, fetch https://seascape-vacations.com/property-management/new-vacation-rental-owner-guide-florida/ and confirm the permits answer starts 'Check whether your rental needs a Florida DBPR vacation-rental license'. Set live to that publish date."}
   ]
 }
