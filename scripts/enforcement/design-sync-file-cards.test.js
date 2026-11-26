@@ -128,3 +128,29 @@ test('main writes only changed cards under --dest', (t) => {
   assert.ok(!fs.existsSync(path.join(dest, 'components/Wordmark')));
   assert.throws(() => main(['--out', out, '--live', liveDir, '--dest', dest]), /is not empty/);
 });
+
+test('main --new writes a new card with the bundle header and refuses an empty --live', (t) => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'file-cards-new-'));
+  t.after(() => fs.rmSync(tmp, { recursive: true, force: true }));
+  const out = path.join(tmp, 'out');
+  const liveDir = path.join(tmp, 'live');
+  fs.mkdirSync(path.join(out, 'preview'), { recursive: true });
+  fs.writeFileSync(path.join(out, 'preview', 'buttons.html'), bundleCard());
+  fs.writeFileSync(path.join(out, 'preview', 'disclosure.html'), bundleCard('<p>new pattern</p>'));
+  const log = console.log;
+  console.log = () => {};
+  try {
+    assert.throws(
+      () => main(['--out', out, '--live', path.join(tmp, 'missing'), '--dest', path.join(tmp, 'd0'), '--new']),
+      /holds no components/
+    );
+    fs.mkdirSync(path.join(liveDir, 'components', 'Button'), { recursive: true });
+    fs.writeFileSync(path.join(liveDir, 'components', 'Button', 'preview.html'), fileCard(bundleCard(), header));
+    main(['--out', out, '--live', liveDir, '--dest', path.join(tmp, 'd1'), '--new']);
+  } finally {
+    console.log = log;
+  }
+  const created = fs.readFileSync(path.join(tmp, 'd1', 'components/Disclosure/preview.html'), 'utf8');
+  assert.equal(created.split('\n')[0], '<!-- @dsCard group="Homes" height=480 width=1100 subtitle="x" -->');
+  assert.ok(!fs.existsSync(path.join(tmp, 'd1', 'components/Button')));
+});

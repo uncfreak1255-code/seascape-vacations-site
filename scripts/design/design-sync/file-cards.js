@@ -174,6 +174,11 @@ function main(argv) {
     const file = path.join(liveDir, target);
     if (fs.existsSync(file)) live[target] = fs.readFileSync(file, "utf8");
   }
+  // The artifact always has published cards, so an empty --live is a wrong or missing
+  // read-back; with --new it would otherwise refile every card with a bundle header.
+  if (Object.keys(live).length === 0) {
+    throw new Error(`--live ${liveDir} holds no components/<Name>/preview.html; read the cards back from the artifact first`);
+  }
   const plan = planFiling(bundle, live, { allowNew: argv.includes("--new") });
   for (const { path: rel, html } of [...plan.changed, ...plan.created]) {
     const file = path.join(dest, rel);
