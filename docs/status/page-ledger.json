@@ -14,7 +14,8 @@
       "live": "2026-11-19",
       "baseline": "None: no Search Console rows before launch (brief)",
       "verdictDue": "2026-12-07",
-      "verdict": null,
+      "verdict": "replaced",
+      "verdictNote": "Replaced by #1035 on the same route (one verdict per page); #1035 published 2026-11-22.",
       "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. New page: a harm verdict goes to Sawyer."
     },
     {
@@ -189,10 +190,10 @@
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
       "live": "2026-11-22",
-      "baseline": "None: no GSC pull for 2026-10-25..11-21 (28 days before the #1035 publish). Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-18..11-15: 0 clicks, 5 impressions, position 78.0.",
+      "baseline": "None: no GSC pull for 2026-10-25..11-21. Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-18..11-15: 0 clicks, 5 impressions, position 78.0.",
       "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "One verdict per page: #1035 republished this route on 2026-11-22, so this row uses that live boundary, not #967's 2026-11-16 date-panel publish. shipped stays null: shared seoPages.json. First production publish of the current page 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue."
+      "note": "One verdict per page: live is #1035's 2026-11-22 republish, not #967's 2026-11-16. shipped null. Keep-or-revert 2026-12-20."
     },
     {
       "route": "/stays/sarasota-vacation-rentals-with-pool/",
@@ -204,10 +205,10 @@
       "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
       "kind": "search-text",
       "live": "2026-11-22",
-      "baseline": "None: no GSC pull for 2026-10-25..11-21 (28 days before the #1035 publish). Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-21..11-18: URL 0 clicks, 19 impressions, position 18.1; 'sarasota rentals with private pools' 0 clicks, 17 impressions, position 18.4.",
+      "baseline": "None: no GSC pull for 2026-10-25..11-21. Nearest verified URL-prefix pull 2026-11-25 covered 2026-10-21..11-18: URL 0 clicks, 19 impressions, position 18.1; query 0 clicks, 17 impressions, position 18.4.",
       "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "One verdict per page: #1035 republished this route on 2026-11-22, so this row uses that live boundary, not #997's 2026-11-19 date-panel publish. shipped stays null: shared seoPages.json. First production publish of the current page 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue."
+      "note": "One verdict per page: live is #1035's 2026-11-22 republish, not #997's 2026-11-19. shipped null. Keep-or-revert 2026-12-20."
     },
     {
       "route": "/stays/heated-pool-vacation-rentals-bradenton/",
@@ -222,7 +223,7 @@
       "baseline": "None: no Search Console rows through 2026-11-22 (GSC URL-prefix pull 2026-11-25)",
       "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. First production publish 2026-11-22 (daily 4:05 AM ET). Live HTTP 200 verified 2026-11-25. Keep-or-revert date 2026-12-20, judged on the next Monday. New page: a harm verdict goes to Sawyer."
+      "note": "shipped null: shared seoPages.json. live 2026-11-22. Keep-or-revert 2026-12-20. New page: harm goes to Sawyer."
     },
     {
       "route": "/stays/vacation-rentals-near-img-academy/",
@@ -237,7 +238,7 @@
       "baseline": "None: no Search Console rows through 2026-11-22 (GSC URL-prefix pull 2026-11-25)",
       "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. First production publish 2026-11-22 (daily 4:05 AM ET). Live HTTP 200 verified 2026-11-25. Keep-or-revert date 2026-12-20, judged on the next Monday. New page: a harm verdict goes to Sawyer."
+      "note": "shipped null: shared seoPages.json. live 2026-11-22. Keep-or-revert 2026-12-20. New page: harm goes to Sawyer."
     },
     {
       "route": "/guides/booking-direct-vacation-rentals/",
@@ -252,7 +253,7 @@
       "baseline": "GSC 90-day window ended 2026-11-18: 1,269 impressions, 0 clicks, position 22.4 (brief Gate 0, pull 2026-11-21). No 28-day-before-publish pull.",
       "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "First production publish 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue. Brief decision rule: keep source-backed answers; report insufficient evidence for citation or booking lift; revert a factual or route regression."
+      "note": "live 2026-11-22. Keep-or-revert 2026-12-20. Keep source-backed answers; revert a factual or route regression."
     },
     {
       "route": "/stays/book-direct-anna-maria-island/",
@@ -267,7 +268,22 @@
       "baseline": "None: no Search Console pull for this URL through 2026-11-22.",
       "verdictDue": "2026-12-21",
       "verdict": null,
-      "note": "shipped stays null: shared seoPages.json. First production publish 2026-11-22 (daily 4:05 AM ET). Keep-or-revert 2026-12-20, judged Monday. No finalVerdictDue."
+      "note": "shipped null: shared seoPages.json. live 2026-11-22. Keep-or-revert 2026-12-20."
+    },
+    {
+      "route": "/stays/bradenton-vacation-rentals/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "#1035 appended heated-pool, IMG, and book-direct links in longContent",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "bradenton vacation rentals",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "None: no GSC pull for 2026-10-25..11-21. Launch baseline (brief): no Search Console rows before #1002.",
+      "verdictDue": "2026-12-21",
+      "verdict": null,
+      "note": "One verdict per page: live is #1035's 2026-11-22 republish, not #1002's 2026-11-19 launch. shipped null. Keep-or-revert 2026-12-20. Harm on a new page still goes to Sawyer."
     }
   ],
   "liveChecks": [
