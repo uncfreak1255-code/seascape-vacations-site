@@ -2,7 +2,7 @@
 
 - lifecycle: completed — source change finished in this PR (site issue #1083). Finishing the source change does not prove it is live.
 - task scope: owner entries in `src/_data/seoPages.json`, and nothing else on them:
-  - `new-vacation-rental-owner-guide-florida` geoIntro: remove the "helped hundreds … from day one" sentence and the "ensuring … the returns you anticipated" clause.
+  - `new-vacation-rental-owner-guide-florida` geoIntro: remove the "helped hundreds … from day one" sentence and the "ensuring … the returns you anticipated" clause, and drop "draws from our real experience with new owners" and "proven strategies" from the next sentence (voice review, round 1).
   - `condo-rental-management-florida`: remove "We specialize in condo management." from the intro; "respond immediately to complaints" becomes "respond to complaints"; remove "ensures guests understand and comply with HOA rules" from the guest-communication answer; fix the "professional betters" typo to "professional cleaners".
   - The guard in `scripts/enforcement/owner-compliance-claims.test.js` also catches "ensures … comply".
   - No title, meta description, H1, question, link, CTA, layout or tracking change.
@@ -33,7 +33,7 @@ Removing unbacked claims from existing owner pages falls under the standing SEO 
 
 - What changed: the reviews for PR #1082 found these strings, which owner-offer does not back.
 - Why now: they sit on the same two pages Sawyer's #105 ruling just corrected, and owner growth sends owners there.
-- What should wait: other generic operations wording on the condo page ("prevents conflicts and guest violations", "swift corrective action", "detailed welcome messages") makes no number, track-record or compliance promise and is left as it is.
+- What should wait: other claims already on these pages and on the cleaning-services page, found by this PR's reviews and tracked in site #1087: the guide's photography income claim, its swipe at other managers and its service list; the condo page's amenity occupancy claims, "before you have to ask", "swift corrective action" and "ensure guest behavior respects shared facilities"; and the cleaning page's "betters" typos.
 
 ## Experiment And Readback Contract
 
@@ -79,7 +79,7 @@ Removing unbacked claims from existing owner pages falls under the standing SEO 
 
 ## Source Files Changed In This Batch
 
-- `src/_data/seoPages.json` (the six strings named in task scope)
+- `src/_data/seoPages.json` (the strings named in task scope)
 - `scripts/enforcement/owner-compliance-claims.test.js` ("ensures … comply" pattern and fixture)
 - `docs/status/page-ledger.json` (two liveChecks entries)
 
@@ -89,4 +89,7 @@ The check is `scripts/enforcement/owner-compliance-claims.test.js`, whose new fi
 
 ## Voice and specificity pass
 
-Pending the independent Voice Editor pass.
+Independent Voice Editor, 2026-11-25, two rounds.
+
+- Round 1, at 0744dc5f: "Changes needed". The deletions read cleanly and add no claim. It found older claims in the same entries. The one in the paragraph this PR edits ("draws from our real experience with new owners … proven strategies") is removed in round 1. The rest are in site #1087.
+- Round 2, on the reworded sentence: no claim finding (no track record, no returns promise, no banned phrase). Its two low style notes, the generic opener and "successful rental properties", are logged on #1087.
