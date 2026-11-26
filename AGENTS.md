@@ -93,8 +93,8 @@ their measurement ends. Visual redesigns follow
 - `npm run verify:release` is the one full pre-PR gate. Use standalone
   `npm test` and `npm run lint:content` only for iteration, not before an
   unchanged full verification. On a dirty worktree, stage new files first:
-  the gate then diffs the working tree against `origin/main`, and it stops
-  and names any untracked file.
+  the gate then diffs the working tree from where the branch left
+  `origin/main`, and it stops and names any untracked file.
 
 ## Deploy
 

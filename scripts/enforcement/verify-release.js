@@ -105,6 +105,15 @@ function worktreeStatus(cwd = process.cwd()) {
   };
 }
 
+function mergeBaseWithOriginMain(cwd = process.cwd()) {
+  const result = spawnSync("git", ["merge-base", "origin/main", "HEAD"], { cwd, encoding: "utf8" });
+  const sha = (result.stdout || "").trim();
+  if (result.status !== 0 || !sha) {
+    throw new Error((result.stderr || "").trim() || "verify-release: git merge-base origin/main HEAD failed");
+  }
+  return sha;
+}
+
 function worktreeIsDirty(cwd = process.cwd()) {
   return worktreeStatus(cwd).dirty;
 }
@@ -124,9 +133,9 @@ function resolveReleaseRange(parsed, options = {}) {
         `verify-release: untracked files on a dirty worktree would be skipped by the diff. Stage them with git add, then rerun: ${status.untracked.join(", ")}`
       );
     }
-    // Dirty with every change tracked: diff the working tree against origin/main,
-    // the same range the docs told agents to pass by hand.
-    return "origin/main";
+    // Dirty with every change tracked: diff the working tree against the commit where
+    // this branch left origin/main, so main's later commits never read as this branch's.
+    return options.mergeBase || mergeBaseWithOriginMain();
   }
 
   if (!range) {
