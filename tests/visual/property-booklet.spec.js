@@ -1,5 +1,6 @@
 const {test,expect}=require('@playwright/test');
 const homes=require('../../src/_data/properties-fallback.json');
+const { registerStableNetwork } = require('./test-helpers');
 for(const home of homes)test(`${home.slug}: desktop booklet preserves mobile gallery and photo identity`,async({page})=>{
  const requests=[];page.on('request',r=>requests.push(r.url()));
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -80,4 +81,39 @@ test('open viewer crosses the desktop boundary without trapping hidden focus',as
  await page.locator('.inpage-book .spread > .page .photo-button').first().click();
  await page.setViewportSize({width:899,height:900});await page.keyboard.press('Escape');
  await expect(page.locator('[data-open-gallery]')).toBeFocused();
+});
+
+test('contact detail hides the previous photo until the selected image decodes', async ({ page }) => {
+  const photos = homes.find(home => home.slug === 'dockside-dreams').photography.photos;
+  const [previousPhoto, lastPhoto] = photos.slice(-2);
+  await registerStableNetwork(page);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/properties/dockside-dreams/');
+  await expect(page.locator('.inpage-book')).toBeVisible();
+  await page.locator('[data-open-gallery]').click();
+  await page.locator('.contact-tile').nth(photos.length - 2).click();
+  const detail = page.locator('.contact-detail');
+  const photo = detail.locator('.contact-photo img');
+  await expect(photo).toHaveAttribute('src', previousPhoto.src);
+  await expect(photo).toBeVisible();
+  await photo.evaluate(img => img.decode());
+
+  const requested = Promise.withResolvers();
+  const release = Promise.withResolvers();
+  await page.route(url => url.pathname === lastPhoto.src, async route => {
+    requested.resolve();
+    await release.promise;
+    await route.continue();
+  });
+  try {
+    await detail.getByRole('button', { name: 'Next photo' }).click();
+    await requested.promise;
+    await expect(detail.locator('[data-photo-count]')).toHaveText(`${photos.length} / ${photos.length}`);
+    await expect(photo).toBeHidden({ timeout: 1000 });
+  } finally {
+    release.resolve();
+  }
+  await expect(photo).toBeVisible();
+  await expect(photo).toHaveAttribute('alt', lastPhoto.alt);
+  expect(await photo.evaluate(img => new URL(img.currentSrc).pathname)).toBe(lastPhoto.src);
 });

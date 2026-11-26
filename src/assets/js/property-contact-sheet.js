@@ -9,6 +9,7 @@ export function installContactSheet(desktop) {
  const steps=[...pane.querySelectorAll('[data-step]')];
  pane.querySelector('.contact-lead span').textContent=`${photos.length} photographs`;
  let index=0, detailOpen=false, lastOpener=null, built=false;
+ let pendingPhoto;
  const number=n=>String(n+1).padStart(2,'0');
  function buildSheet(){
   if(built)return;built=true;
@@ -20,7 +21,6 @@ export function installContactSheet(desktop) {
    tile.addEventListener('click',()=>{index=n;detailOpen=true;render();dialog.scrollTop=0;back.focus({preventScroll:true});});sheet.append(tile);
   });
  }
- image.addEventListener('error',()=>{image.hidden=true;unavailable.hidden=false;});
  function render(){
   const active=desktop.matches && dialog.open;
   pane.hidden=!active;grid.hidden=active;dialog.classList.toggle('has-contact-sheet',active);
@@ -28,7 +28,20 @@ export function installContactSheet(desktop) {
   overview.hidden=detailOpen;detail.hidden=!detailOpen;
   if(!detailOpen){buildSheet();return;}
   const photo=photos[index];
-  if(image.dataset.index!==String(index)){image.hidden=false;unavailable.hidden=true;image.alt=photo.alt;image.src=photo.src;image.dataset.index=String(index);}
+  if(image.dataset.index!==String(index)){
+   // The browser may keep painting the previous source while the new one loads.
+   image.hidden=true;
+   unavailable.hidden=true;
+   image.alt=photo.alt;
+   image.src=photo.src;
+   image.dataset.index=String(index);
+   const decoded=image.decode();
+   pendingPhoto=decoded;
+   decoded.then(
+    ()=>{if(pendingPhoto===decoded)image.hidden=false;},
+    ()=>{if(pendingPhoto===decoded)unavailable.hidden=false;}
+   );
+  }
   pane.querySelector('[data-label]').textContent=photo.label;pane.querySelector('[data-photo-count]').textContent=`${number(index)} / ${photos.length}`;
   steps[0].disabled=index===0;steps[1].disabled=index===photos.length-1;
  }
