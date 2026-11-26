@@ -36,7 +36,8 @@ function makeRepo(shipped = "2026-10-25") {
   git("add", ".");
   git("commit", "-q", "-m", "base");
   git("branch", "base");
-  const run = (range = "base") => assertNoSettlingPageEdits({ range, cwd: dir, env: FIXTURE_ENV, now: NOW });
+  const run = (range = "base", ledgerRevs = []) =>
+    assertNoSettlingPageEdits({ range, ledgerRevs, cwd: dir, env: FIXTURE_ENV, now: NOW });
   return { dir, git, run };
 }
 
@@ -68,6 +69,22 @@ test("passes other pages, an expired window, and an acknowledged override", () =
   fs.writeFileSync(path.join(expired.dir, "src/guides/a.html"), "<title>A later</title>\n");
   expired.git("commit", "-q", "-am", "later edit");
   assert.equal(expired.run().status, "passed");
+});
+
+test("a hold added on the target branch after the split blocks an uncommitted edit", () => {
+  const { dir, git, run } = makeRepo();
+  fs.writeFileSync(path.join(dir, LEDGER_PATH), JSON.stringify({ settleDays: 28, pages: [] }));
+  git("commit", "-q", "-am", "empty ledger");
+  git("branch", "-f", "base");
+  git("checkout", "-q", "-b", "task");
+  git("checkout", "-q", "main");
+  fs.writeFileSync(path.join(dir, LEDGER_PATH), ledger("2026-10-25"));
+  git("commit", "-q", "-am", "main records a hold");
+  git("checkout", "-q", "task");
+  fs.writeFileSync(path.join(dir, "src/guides/a.html"), "<title>A edited</title>\n");
+  const mergeBase = git("merge-base", "main", "HEAD").trim();
+  assert.equal(run(mergeBase).status, "passed");
+  assert.throws(() => run(mergeBase, ["main"]), /\/guides\/a\/ .*settles until/);
 });
 
 test("the PR that adds an entry is not blocked by it", () => {
