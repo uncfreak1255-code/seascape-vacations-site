@@ -14,7 +14,8 @@
       "live": "2026-11-19",
       "baseline": "None: no Search Console rows before launch (brief)",
       "verdictDue": "2026-12-07",
-      "verdict": null,
+      "verdict": "replaced",
+      "verdictNote": "Replaced by #1035 on the same route (one verdict per page); #1035 published 2026-11-22.",
       "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. New page: a harm verdict goes to Sawyer."
     },
     {
@@ -180,6 +181,104 @@
       "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer was replaced separately (Sawyer approved it on agent-issues #102, 2026-11-25; brief docs/briefs/2026-11-owner-compliance-wording.md). That change does not touch the title, description or H1 and is not judged as a ranking change."
     },
     {
+      "route": "/stays/anna-maria-island-homes-with-pool/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "#967 date-panel links and #1035 heated-pool link",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "Bradenton vacation rentals with private pools",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No matching GSC window (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/sarasota-vacation-rentals-with-pool/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "#997 date-panel link and #1035 heated-pool link",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "sarasota rentals with private pools",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No matching GSC window (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/heated-pool-vacation-rentals-bradenton/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "New Bradenton heated-pool collection",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "heated pool vacation rentals Bradenton",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "new-page",
+      "live": "2026-11-22",
+      "baseline": "No GSC rows through 2026-11-22",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/vacation-rentals-near-img-academy/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "New IMG Academy stay collection",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "vacation rentals near IMG Academy",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "new-page",
+      "live": "2026-11-22",
+      "baseline": "No GSC rows through 2026-11-22",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/guides/booking-direct-vacation-rentals/",
+      "sources": ["src/guides/booking-direct-vacation-rentals.html"],
+      "change": "Book-direct guide rewrite",
+      "pr": 1035,
+      "shipped": "2026-11-22",
+      "targetQuery": "book direct vacation rentals Bradenton Sarasota",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "90-day GSC pull (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/book-direct-anna-maria-island/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "AMI book-direct body and guide link",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "book direct vacation rentals",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No GSC pull through 2026-11-22",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/bradenton-vacation-rentals/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "Heated-pool, IMG, and book-direct links",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "bradenton vacation rentals",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No matching GSC window (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
       "route": "/property-management/condo-rental-management-florida/",
       "sources": [
         "src/_data/seoPages.json"
@@ -191,10 +290,10 @@
       "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md",
       "kind": "search-text",
       "live": null,
-      "baseline": "GSC 2026-08-23..11-23: 0 clicks, 44 impressions, average position 11.3; top query 'vacation property management in sarasota fl' 15 impressions at position 5.9 (OpenSEO result 6d192cfa-bde9-4f0a-92d3-d08e2c928a9b, e3a3593c-7be9-4c5e-b0a6-88c90b8ec3e9)",
+      "baseline": "GSC 2026-08-23..11-23: 0 clicks, 44 impressions, position 11.3. See brief for top query and result IDs.",
       "verdictDue": "2026-12-28",
       "verdict": null,
-      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains this PR. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or 'vacation property management in sarasota fl' down 5+ positions; a harm verdict reverts only the description wording, never back to a compliance promise."
+      "note": "Set live from the first production publish with #1082. If after 2026-11-30, move verdictDue to the Monday on or after live + 28 days. Follow the brief's description-only revert rule and keep compliance promises out."
     }
   ],
   "liveChecks": [
