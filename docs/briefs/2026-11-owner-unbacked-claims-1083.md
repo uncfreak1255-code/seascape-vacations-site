@@ -41,7 +41,7 @@ Removing unbacked claims from existing owner pages falls under the standing SEO 
 - primary event: `owner_primary_cta_click` on the two routes
 - guardrail event: owner evaluation form submits on the two routes
 - entry criteria: `owner-compliance-claims.test.js` green; voice pass approved; `npm run verify:release` green
-- readback window: one `liveChecks` fact-fix entry for each route in `docs/status/page-ledger.json`, verdict due 2026-11-30
+- readback window: one `liveChecks` fact-fix entry covering both routes in `docs/status/page-ledger.json`, verdict due 2026-11-30. To keep the ledger under the file-size limit, this PR also removes two entries whose verdict is already recorded: #807 (replaced by #984) and #1014 (keep)
 - decision rule: keep; never restore a removed claim without a source in owner-offer
 
 ## Gate 0 Search And Attack Receipt
@@ -81,7 +81,7 @@ Removing unbacked claims from existing owner pages falls under the standing SEO 
 
 - `src/_data/seoPages.json` (the strings named in task scope)
 - `scripts/enforcement/owner-compliance-claims.test.js` ("ensures … comply" pattern and fixture)
-- `docs/status/page-ledger.json` (two liveChecks entries)
+- `docs/status/page-ledger.json` (one liveChecks entry; finished entries #807 and #1014 removed)
 
 ## Boundary Proof
 
