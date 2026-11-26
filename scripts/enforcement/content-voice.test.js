@@ -119,27 +119,7 @@ const OWNER_EXCLUDED_CLAIM_PATTERNS = [
 // Vendor names legitimately appear in non-reader fields (photo CDN hosts are on
 // bookingenginecdn.hostaway.com), so the seoPages arm scans reader-visible
 // strings only and skips URLs.
-const NON_READER_SEO_FIELDS = new Set(["slug", "canonical", "image", "ogImage", "url", "ctaPath", "benchmarkUrl", "sourceUrl"]);
-function readerVisibleSeoText(entry) {
-  const parts = [];
-  const walk = (key, value) => {
-    if (typeof value === "string") {
-      if (NON_READER_SEO_FIELDS.has(key)) return;
-      if (/^(https?:)?\/\//i.test(value.trim())) return;
-      parts.push(value);
-      return;
-    }
-    if (Array.isArray(value)) {
-      value.forEach((item) => walk(key, item));
-      return;
-    }
-    if (value && typeof value === "object") {
-      for (const [k, v] of Object.entries(value)) walk(k, v);
-    }
-  };
-  walk("", entry);
-  return parts.join("\n");
-}
+const { readerVisibleSeoText } = require("./reader-visible-seo-text");
 
 const INTERNAL_PROCESS_PATTERNS = [
   /\bapproved benchmark\b/i,
