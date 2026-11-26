@@ -2,6 +2,7 @@
 // seascape-hub context/owner-offer.md has no such service claim, and Sawyer
 // replaced the answers that did: Longboat Key and Siesta Key (agent-issues #102,
 // 2026-11-25), the Florida new-owner guide and the condo page (#105,
+// 2026-11-25), and the condo page's guest-rules answer (#1083,
 // 2026-11-25). The association or agency has the final word; owner copy says so.
 const test = require("node:test");
 const assert = require("node:assert/strict");
@@ -12,7 +13,7 @@ const SEO_PAGES = path.join(__dirname, "..", "..", "src", "_data", "seoPages.jso
 
 const COMPLIANCE_PROMISE_PATTERNS = [
   /\b(?:full|complete|total)\s+(?:legal\s+)?compliance\b/i,
-  /\bensur\w*\b[^.]{0,60}?\bcomplian\w*/i,
+  /\bensur\w*\b[^.]{0,60}?\b(?:complian|comply)\w*/i,
   /\bcomply\s+fully\b/i,
   /\bhandles?\s+all\s+(?:licens|regulat|permit)\w*/i,
   /\bHOA\s+(?:rules?\s+)?compliance\b/i
@@ -60,10 +61,11 @@ test("compliance guard catches the wording Sawyer replaced", () => {
     { slug: "x-siesta", faqs: [{ a: "Seascape Vacations ensures full compliance with all applicable regulations and manages any HOA coordination required." }] },
     { slug: "x-condo", faqs: [{ a: "We position your rental to comply fully while maximizing revenue." }] },
     { slug: "x-guide", faqs: [{ a: "Seascape Vacations handles all licensing and regulatory requirements." }] },
-    { slug: "x-condo-service", description: "Vacation rental management for Florida condos. HOA compliance, marketing, guest services.", benefits: ["HOA rules compliance"] }
+    { slug: "x-condo-service", description: "Vacation rental management for Florida condos. HOA compliance, marketing, guest services.", benefits: ["HOA rules compliance"] },
+    { slug: "x-condo-guests", faqs: [{ a: "This proactive communication sets expectations, reduces misunderstandings, and ensures guests understand and comply with HOA rules without feeling restricted." }] }
   ];
   const found = complianceViolations(replaced).map((v) => v.split("::")[0]);
-  assert.deepEqual([...new Set(found)].sort(), ["x-condo", "x-condo-service", "x-guide", "x-longboat", "x-siesta"]);
+  assert.deepEqual([...new Set(found)].sort(), ["x-condo", "x-condo-guests", "x-condo-service", "x-guide", "x-longboat", "x-siesta"]);
 });
 
 test("compliance guard leaves the approved answers alone", () => {
