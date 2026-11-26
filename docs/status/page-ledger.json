@@ -32,20 +32,6 @@
       "sources": [
         "src/guides/anna-maria-island-vs-siesta-key.html"
       ],
-      "change": "Restored the pre-#607 title and meta description (Gate 0 rescue)",
-      "pr": 807,
-      "shipped": "2026-10-26",
-      "targetQuery": "anna maria island vs siesta key",
-      "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md",
-      "kind": "search-text",
-      "verdict": "replaced",
-      "verdictNote": "Replaced by #984 on the same route (one verdict per page); its 28-day window after publication includes #984's publish on 2026-11-19."
-    },
-    {
-      "route": "/guides/anna-maria-island-vs-siesta-key/",
-      "sources": [
-        "src/guides/anna-maria-island-vs-siesta-key.html"
-      ],
       "change": "Rewrote the search description for comparison-query CTR; title and body unchanged",
       "pr": 984,
       "shipped": "2026-11-19",
@@ -298,10 +284,10 @@
   ],
   "liveChecks": [
     {"pr": 1010, "kind": "fact-fix", "change": "Airport travel times and removed guarantees across ten guides", "live": "2026-11-19", "brief": "docs/briefs/2026-11-guide-airport-and-safety-facts.md", "baseline": "Search Console clicks and impressions for the ten routes, 2026-10-22 to 2026-11-18 (brief)", "verdictDue": "2026-12-21", "verdict": null, "note": "Accuracy repair: the Dec traffic read is for information; a drop leads to rewording, never restoring old claims."},
-    {"pr": 1014, "kind": "fact-fix", "change": "llms.txt home count corrected to eight", "live": "2026-11-19", "brief": "docs/briefs/2026-11-llms-home-count.md", "baseline": "Live /llms.txt read 2026-11-18T21:18Z said 'manages seven homes' (brief)", "verdict": "keep", "verdictNote": "Live https://seascape-vacations.com/llms.txt read 2026-11-20 says 'manages eight homes'."},
     {"pr": 1067, "kind": "markup-fix", "change": "Dropped FAQPage markup whose questions never appear on the page from 13 guides (site #1016); no visible change", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-parity.md", "baseline": "Search Console 2026-10-25..11-21 per route, frozen in the brief's Gate 0 table (result d60302d8-0227-4ffa-bc75-ead53856f0a0): srq-airport 24 clicks/2,873 impressions, holmes-beach-vs-bradenton-beach 11/400, things-to-do-bradenton-fl 8/1,285, others 0-2 clicks", "verdictDue": "2026-12-28", "verdict": null, "note": "Keep unless a route loses 30%+ impressions while the guides as a group do not. A harm verdict never restores hidden markup: show the questions on the page and mark up only what is shown. verdictDue assumes a publish by 2026-11-30."},
     {"pr": 1068, "kind": "markup-fix", "change": "FAQPage markup on fourteen guides matched to the visible questions and answers; unshown questions dropped (site #1016)", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-align.md", "baseline": "Search Console clicks and impressions for the fourteen routes, 2026-10-25 to 2026-11-21 (brief)", "verdictDue": "2026-12-28", "verdict": null, "note": "Markup-only accuracy repair: a drop leads to showing the question on the page, never restoring unmatched markup."},
     {"pr": 1066, "kind": "fact-fix", "change": "About page names Bradenton and Sarasota as where the homes are; Anna Maria Island and Siesta Key appear only as beaches guests drive to (site #1016)", "live": null, "brief": "docs/briefs/2026-11-owner-service-area-truth.md", "baseline": "origin/main 55f773e5 and the live page (before screenshots in PR #1066) said Seascape offers rentals 'across Anna Maria Island, Bradenton, Sarasota, and Siesta Key'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing PR #1066, fetch https://seascape-vacations.com/about-us/ and confirm it says 'manages vacation homes in Bradenton and Sarasota'. Set live to that publish date."},
-    {"pr": 1082, "kind": "fact-fix", "change": "Florida new-owner guide permits answer no longer says Seascape handles all licensing and ensures full legal compliance; it names the separate checks and offers the one-page review (agent-issues #105)", "live": null, "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md", "baseline": "origin/main 1286a95f said 'Seascape Vacations handles all licensing and regulatory requirements, ensuring your property operates in full legal compliance from launch.'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing this PR, fetch https://seascape-vacations.com/property-management/new-vacation-rental-owner-guide-florida/ and confirm the permits answer starts 'Check whether your rental needs a Florida DBPR vacation-rental license'. Set live to that publish date."}
+    {"pr": 1082, "kind": "fact-fix", "change": "Florida new-owner guide permits answer no longer says Seascape handles all licensing and ensures full legal compliance; it names the separate checks and offers the one-page review (agent-issues #105)", "live": null, "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md", "baseline": "origin/main 1286a95f said 'Seascape Vacations handles all licensing and regulatory requirements, ensuring your property operates in full legal compliance from launch.'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing this PR, fetch https://seascape-vacations.com/property-management/new-vacation-rental-owner-guide-florida/ and confirm the permits answer starts 'Check whether your rental needs a Florida DBPR vacation-rental license'. Set live to that publish date."},
+    {"pr": 1088, "kind": "fact-fix", "change": "New-owner guide and condo page drop unbacked claims (client count, returns, condo specialty, immediate response, guests comply with HOA rules); 'betters' typo fixed (site #1083)", "live": null, "brief": "docs/briefs/2026-11-owner-unbacked-claims-1083.md", "baseline": "origin/main cae4f656 text, quoted in the brief's task scope", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish with this PR, fetch both live pages; confirm 'helped hundreds', 'returns you anticipated', 'We specialize in condo management', 'respond immediately' and 'comply with HOA rules' are absent and 'professional cleaners' is present. Set live to that date."}
   ]
 }
