@@ -193,6 +193,10 @@ or next-move line of its own.
 Sawyer approved 2026-11-17 9:04 PM ET: ship `/stays/bradenton-vacation-rentals/`
 for `bradenton vacation rentals`. Other expansion URLs stay held.
 
+## Founder Exception — Bradenton Owner Page Refresh
+
+Sawyer approved 2026-11-26 9:04 AM ET: activate `docs/briefs/2026-11-bradenton-owner-page-refresh.md` for `/property-management/vacation-rental-management-bradenton/`. Gate stays held. Service-area brief parked.
+
 ## Corrected SEO Decision Notes
 
 - Authority order for this dispute: enforcement tests, rendered build output, live GSC/analytics, then agent opinion. `scripts/enforcement/owner-proof-clean.test.js` settles the AMI income guide: keep `src/guides/vacation-rental-income-anna-maria.html` noindexed and keep owner-income intent routed to `/research/owner-fee-revenue-leak-benchmark-2026/`.

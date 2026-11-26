@@ -1,8 +1,9 @@
 # Brief: Owner service-area truth (2026-11-24)
 
-- lifecycle: active
+- lifecycle: draft
+- parked: 2026-11-26. Sawyer approved swapping the one active-brief slot to `docs/briefs/2026-11-bradenton-owner-page-refresh.md`. This file is parked, not deleted. Source already merged in PR #1066. Readback stays in `docs/status/page-ledger.json`. Resume only if Sawyer reopens it.
 - task scope: site #1016, items 1 and 2, as Sawyer set them on 2026-11-18. Make three existing pages say where Seascape manages homes today: `/about-us/` (description, the who-we-are sentence, the area tiles), and the owner entries `vacation-rental-management-anna-maria-island` and `vacation-rental-management-longboat-key` in `src/_data/seoPages.json`. No new URL, no layout, CSS, template, form, tracking or redirect change. Titles and H1s stay. No fee, price or legal wording is added or changed.
-- completion or successor: this PR. FAQ markup parity (#1016 item 3) ships in its own PRs; item 4 ("Never crowded") was verified and recorded on #1016.
+- completion or successor: source merged in PR #1066. Active-slot successor: `docs/briefs/2026-11-bradenton-owner-page-refresh.md`. FAQ markup parity (#1016 item 3) shipped in its own PRs; item 4 ("Never crowded") was verified and recorded on #1016.
 
 ## Content Gate Inputs
 

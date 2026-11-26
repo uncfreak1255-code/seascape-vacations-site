@@ -18,8 +18,14 @@ context, not new task authority. Behavior-only fixes still follow `AGENTS.md`
 and the affected source/tests; this directory does not create a new content
 gate for them.
 
+The one active SEO-batch slot is [Bradenton owner page refresh](2026-11-bradenton-owner-page-refresh.md)
+(Sawyer approved the swap 2026-11-26). Parked work stays in tree as `draft`;
+do not delete it.
+
 | Need | Start here | Role |
 | --- | --- | --- |
+| Bradenton owner page refresh | [Bradenton owner page refresh](2026-11-bradenton-owner-page-refresh.md) | Active slot; Sawyer-approved 2026-11-26; copy is a later PR |
+| Owner service-area truth | [Owner service-area truth](2026-11-owner-service-area-truth.md) | Parked 2026-11-26 (`draft`); source merged in #1066 |
 | Guest journey, header destinations and trip continuation | [Guest decision journey](2026-09-04-guest-decision-journey.md) | Reference; inspect the latest dated decision and current source |
 | September homepage trip-state repair | [Trip continuity release](2026-09-functionality-trip-continuity.md) | Completed source change; retain its regression proof |
 | Vacation-cost guide planning frame | [Cost-guide frame](2026-10-02-cost-guide-planning-frame.md) | Completed source change; a future edit needs its own approved scope |
@@ -31,7 +37,9 @@ queue or a list of authorized next work.
 
 Record `lifecycle` near the top when creating or reopening a brief:
 
-- `draft`: proposed scope, not approved implementation.
+- `draft`: proposed scope, not approved implementation. Also used when an
+  approved brief is parked so another brief can hold the one active SEO-batch
+  slot; keep the file and name the successor.
 - `active`: the named approved scope has work remaining; record that scope.
 - `completed`: the scoped source change is finished; cite its merged PR or
   commit. Set it in the PR that lands the change and cite that PR's number
