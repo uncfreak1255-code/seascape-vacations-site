@@ -178,6 +178,23 @@
       "verdictDue": "2026-12-28",
       "verdict": null,
       "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer was replaced separately (Sawyer approved it on agent-issues #102, 2026-11-25; brief docs/briefs/2026-11-owner-compliance-wording.md). That change does not touch the title, description or H1 and is not judged as a ranking change."
+    },
+    {
+      "route": "/property-management/condo-rental-management-florida/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Meta description and first benefit say 'HOA rule review' instead of 'HOA compliance'; HOA restrictions answer rewritten without the compliance promise or the '3-7 days' figure; track-record sentence removed; title and H1 unchanged (agent-issues #105)",
+      "pr": 1082,
+      "shipped": null,
+      "targetQuery": "condo rental management florida",
+      "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md",
+      "kind": "search-text",
+      "live": null,
+      "baseline": "GSC 2026-08-23..11-23: 0 clicks, 44 impressions, average position 11.3; top query 'vacation property management in sarasota fl' 15 impressions at position 5.9 (OpenSEO result 6d192cfa-bde9-4f0a-92d3-d08e2c928a9b, e3a3593c-7be9-4c5e-b0a6-88c90b8ec3e9)",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains this PR. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or 'vacation property management in sarasota fl' down 5+ positions; a harm verdict reverts only the description wording, never back to a compliance promise."
     }
   ],
   "liveChecks": [
@@ -185,6 +202,7 @@
     {"pr": 1014, "kind": "fact-fix", "change": "llms.txt home count corrected to eight", "live": "2026-11-19", "brief": "docs/briefs/2026-11-llms-home-count.md", "baseline": "Live /llms.txt read 2026-11-18T21:18Z said 'manages seven homes' (brief)", "verdict": "keep", "verdictNote": "Live https://seascape-vacations.com/llms.txt read 2026-11-20 says 'manages eight homes'."},
     {"pr": 1067, "kind": "markup-fix", "change": "Dropped FAQPage markup whose questions never appear on the page from 13 guides (site #1016); no visible change", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-parity.md", "baseline": "Search Console 2026-10-25..11-21 per route, frozen in the brief's Gate 0 table (result d60302d8-0227-4ffa-bc75-ead53856f0a0): srq-airport 24 clicks/2,873 impressions, holmes-beach-vs-bradenton-beach 11/400, things-to-do-bradenton-fl 8/1,285, others 0-2 clicks", "verdictDue": "2026-12-28", "verdict": null, "note": "Keep unless a route loses 30%+ impressions while the guides as a group do not. A harm verdict never restores hidden markup: show the questions on the page and mark up only what is shown. verdictDue assumes a publish by 2026-11-30."},
     {"pr": 1068, "kind": "markup-fix", "change": "FAQPage markup on fourteen guides matched to the visible questions and answers; unshown questions dropped (site #1016)", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-align.md", "baseline": "Search Console clicks and impressions for the fourteen routes, 2026-10-25 to 2026-11-21 (brief)", "verdictDue": "2026-12-28", "verdict": null, "note": "Markup-only accuracy repair: a drop leads to showing the question on the page, never restoring unmatched markup."},
-    {"pr": 1066, "kind": "fact-fix", "change": "About page names Bradenton and Sarasota as where the homes are; Anna Maria Island and Siesta Key appear only as beaches guests drive to (site #1016)", "live": null, "brief": "docs/briefs/2026-11-owner-service-area-truth.md", "baseline": "origin/main 55f773e5 and the live page (before screenshots in PR #1066) said Seascape offers rentals 'across Anna Maria Island, Bradenton, Sarasota, and Siesta Key'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing PR #1066, fetch https://seascape-vacations.com/about-us/ and confirm it says 'manages vacation homes in Bradenton and Sarasota'. Set live to that publish date."}
+    {"pr": 1066, "kind": "fact-fix", "change": "About page names Bradenton and Sarasota as where the homes are; Anna Maria Island and Siesta Key appear only as beaches guests drive to (site #1016)", "live": null, "brief": "docs/briefs/2026-11-owner-service-area-truth.md", "baseline": "origin/main 55f773e5 and the live page (before screenshots in PR #1066) said Seascape offers rentals 'across Anna Maria Island, Bradenton, Sarasota, and Siesta Key'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing PR #1066, fetch https://seascape-vacations.com/about-us/ and confirm it says 'manages vacation homes in Bradenton and Sarasota'. Set live to that publish date."},
+    {"pr": 1082, "kind": "fact-fix", "change": "Florida new-owner guide permits answer no longer says Seascape handles all licensing and ensures full legal compliance; it names the separate checks and offers the one-page review (agent-issues #105)", "live": null, "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md", "baseline": "origin/main 1286a95f said 'Seascape Vacations handles all licensing and regulatory requirements, ensuring your property operates in full legal compliance from launch.'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing this PR, fetch https://seascape-vacations.com/property-management/new-vacation-rental-owner-guide-florida/ and confirm the permits answer starts 'Check whether your rental needs a Florida DBPR vacation-rental license'. Set live to that publish date."}
   ]
 }
