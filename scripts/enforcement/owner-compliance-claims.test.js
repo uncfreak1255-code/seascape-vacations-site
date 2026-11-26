@@ -2,7 +2,7 @@
 // seascape-hub context/owner-offer.md has no such service claim, and Sawyer
 // replaced the answers that did: Longboat Key and Siesta Key (agent-issues #102,
 // 2026-11-25), the Florida new-owner guide and the condo page (#105,
-// 2026-11-26). The association or agency has the final word; owner copy says so.
+// 2026-11-25). The association or agency has the final word; owner copy says so.
 const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");

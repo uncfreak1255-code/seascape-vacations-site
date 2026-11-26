@@ -1,4 +1,4 @@
-# Brief: Florida new-owner guide and condo page without a compliance promise (2026-11-26)
+# Brief: Florida new-owner guide and condo page without a compliance promise (2026-11-25)
 
 - lifecycle: completed — source change finished in this PR (agent-issues #105). Finishing the source change does not prove it is live.
 - task scope: owner entries in `src/_data/seoPages.json`, and nothing else on them:
@@ -10,7 +10,7 @@
 
 ## Approval
 
-Legal wording is Sawyer's call (AGENTS.md, Business Priorities). He answered agent-issues #105 in Claude Code session chat on 2026-11-26: "option 1, which applies all the proposed fixes." That covers:
+Legal wording is Sawyer's call (AGENTS.md, Business Priorities). He answered agent-issues #105 in Claude Code session chat on 2026-11-25: "option 1, which applies all the proposed fixes." That covers:
 
 - the three changes in the issue body;
 - the condo benefit and description wording proposed in the issue's follow-up comment.
@@ -33,7 +33,7 @@ The shipped text matches the proposals word for word.
   - no unsourced rental-length figure;
   - no track-record or reputation claim;
   - no legal advice;
-  - no review count, response time, revenue or occupancy figure
+  - no review count, response time, revenue or occupancy figure, beyond the review's "usually within 48 hours" from owner-offer section 7
 
 ## Why This Batch
 
@@ -45,7 +45,7 @@ The shipped text matches the proposals word for word.
 
   Owner-offer has no compliance service claim.
 - Why now: Sawyer ruled on #105, and owner growth sends owners to these pages.
-- What should wait: the guide's "helped hundreds of new vacation rental owners" claim and the condo page's "respond immediately to complaints". Both are unbacked, and both are noted as follow-ups outside this ruling.
+- What should wait: unbacked claims outside this ruling, tracked as a follow-up issue: the guide's "helped hundreds of new vacation rental owners" and "ensuring … the returns you anticipated"; the condo page's "respond immediately to complaints", "ensures guests understand and comply with HOA rules", "We specialize in condo management." and the "professional betters" typo.
 
 ## Experiment And Readback Contract
 
@@ -57,6 +57,7 @@ The shipped text matches the proposals word for word.
 - decision rule:
   - revert only the condo description wording, and only if impressions fall 30% or more while the site does not, or if "vacation property management in sarasota fl" drops 5 or more positions;
   - never restore a compliance promise;
+  - the ledger's targetQuery is the page's head term; the revert rule watches "vacation property management in sarasota fl" because it is the page's only query with enough impressions to judge;
   - otherwise keep.
 
 ## Gate 0 Search And Attack Receipt
@@ -66,8 +67,8 @@ The shipped text matches the proposals word for word.
 | Target query family | "condo rental management florida", "florida vacation rental license", "new vacation rental owner florida" |
 | Searcher intent | Commercial: an owner choosing a manager or learning what launch needs |
 | Current Seascape URL | `/property-management/condo-rental-management-florida/`, `/property-management/new-vacation-rental-owner-guide-florida/` |
-| SERP observed date | 2026-11-26 |
-| SERP stale after | 2026-12-03 |
+| SERP observed date | 2026-11-25 |
+| SERP stale after | 2026-12-02 |
 | Current proof | Search Console for the condo page, 2026-08-23 to 11-23: 0 clicks, 44 impressions, position 11.3. The top query is "vacation property management in sarasota fl" (15 impressions, position 5.9). No owner lead is attributed to either page |
 | Top visible competitors | Not read for this batch |
 | Competitor angle | Not read for this batch |
@@ -79,7 +80,7 @@ The shipped text matches the proposals word for word.
 | Recommendation | Apply Sawyer's #105 ruling; drop the guard's pending exemptions |
 | Attack status | none found after named checks |
 | Query variants inspected | Search Console condo-page query rows (OpenSEO results `6d192cfa-bde9-4f0a-92d3-d08e2c928a9b`, `e3a3593c-7be9-4c5e-b0a6-88c90b8ec3e9`) |
-| SERP source | No paid SERP lookup, under the `docs/process/openseo.md` Cost Boundary. This is a claim fix; the one description change swaps a single phrase and keeps the page's terms. Observed 2026-11-26 from Search Console. |
+| SERP source | No paid SERP lookup, under the `docs/process/openseo.md` Cost Boundary. This is a claim fix; the one description change swaps a single phrase and keeps the page's terms. Observed 2026-11-25 from Search Console. |
 | Competitor URLs inspected | Named checks: current source (hub `context/owner-offer.md`; Site `origin/main` 1286a95f owner entries). SERP check skipped under the Cost Boundary; the Search Console rows above are used instead. Competitor pages were not fetched, because the decision rests on Seascape's own offer |
 | Content gap and Seascape answer | The pages promised compliance. The new copy names what associations and agencies decide, sends the owner to them for the final word, and offers the one-page review |
 | Design/format strategy | No layout, template or CSS change |
@@ -101,7 +102,7 @@ The shipped text matches the proposals word for word.
 
 ## Boundary Proof
 
-The check comes from a source other than the new copy: `scripts/enforcement/owner-compliance-claims.test.js`, whose patterns are written from the replaced wording and owner-offer. Observed on 2026-11-26 against the `origin/main` 1286a95f copy, it fails with seven violations:
+The check comes from a source other than the new copy: `scripts/enforcement/owner-compliance-claims.test.js`, whose patterns are written from the replaced wording and owner-offer. Observed on 2026-11-25 against the `origin/main` 1286a95f copy, it fails with seven violations:
 
 - Condo page: "comply fully", "HOA compliance" (twice) and "HOA rules compliance".
 - Guide: "full legal compliance", "ensuring your property operates in full legal compliance" and "handles all licensing".
@@ -110,4 +111,4 @@ Against the shipped copy it reports none.
 
 ## Voice and specificity pass
 
-Pending: the independent Voice Editor pass on the shipped strings.
+Independent Voice Editor, 2026-11-25, one round, verdict "Approved". It confirmed no banned pattern, no compliance promise, no HOA compliance offered as a service, no legal advice and no unsourced figure, and that the complaints answer reads cleanly after the deletion. Its low notes are kept as Sawyer approved the text: "HOA rule review" stays a reading of the rules, not a ruling; "each of them" in the permits answer has a loose antecedent; the one-page-review sentence frame repeats across owner pages. The older claims it found outside this ruling are listed under What should wait.
