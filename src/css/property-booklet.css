@@ -47,8 +47,10 @@
 .contact-lead>span{color:var(--g-muted);font-size:12px}
 .contact-sheet{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 16px;padding:0 4px 8px}
 .g-photo-dialog .contact-tile{display:flex;flex-direction:column;align-items:stretch;min-width:0;text-align:left;background:var(--g-paper);color:var(--g-ink);border:1px solid var(--g-rule);border-radius:4px;padding:4px;cursor:pointer}
-.contact-tile img{width:100%;aspect-ratio:1.75;display:block;object-fit:cover}
-.contact-tile>span{display:flex;justify-content:space-between;gap:8px;min-height:calc(2lh + 12px);padding:8px 4px 4px;font-size:12px;line-height:1.35}
+.contact-tile img,.contact-thumb-unavailable{width:100%;aspect-ratio:1.75}
+.contact-tile img{display:block;object-fit:cover}
+.contact-thumb-unavailable{display:grid;place-items:center;background:var(--g-soft);color:var(--g-muted);font-size:12px}
+.contact-caption{display:flex;justify-content:space-between;gap:8px;min-height:calc(2lh + 12px);padding:8px 4px 4px;font-size:12px;line-height:1.35}
 .contact-tile b{color:var(--g-muted);font-variant-numeric:tabular-nums;font-weight:500}
 .g-photo-dialog .contact-back{margin:0 0 8px;min-height:44px;border-radius:4px}
 .contact-stage{display:grid;grid-template-columns:52px minmax(0,1fr) 52px;align-items:center;gap:12px}

@@ -14,10 +14,17 @@ export function installContactSheet(desktop) {
  function buildSheet(){
   if(built)return;built=true;
   photos.forEach((photo,n)=>{
-   const tile=document.createElement('button');tile.type='button';tile.className='contact-tile';tile.dataset.photo=String(n);tile.setAttribute('aria-label',`Photo ${n+1} of ${photos.length}: ${photo.label}`);
+   const name=`Photo ${n+1} of ${photos.length}: ${photo.label}`;
+   const tile=document.createElement('button');tile.type='button';tile.className='contact-tile';tile.dataset.photo=String(n);tile.setAttribute('aria-label',name);
    const thumb=document.createElement('img');thumb.alt=photo.alt;thumb.src=photo.src.replace(/\.webp$/, '-800.webp');thumb.loading='lazy';thumb.decoding='async';
-   thumb.addEventListener('error',()=>{thumb.style.visibility='hidden';},{once:true});
-   const row=document.createElement('span'),count=document.createElement('b');row.textContent=photo.label;count.textContent=number(n);row.append(count);tile.append(thumb,row);
+   thumb.addEventListener('error',()=>{
+    const missing=document.createElement('span');
+    missing.className='contact-thumb-unavailable';
+    missing.textContent='Thumbnail unavailable';
+    tile.setAttribute('aria-label',`${name}. ${missing.textContent}`);
+    thumb.replaceWith(missing);
+   },{once:true});
+   const row=document.createElement('span'),count=document.createElement('b');row.className='contact-caption';row.textContent=photo.label;count.textContent=number(n);row.append(count);tile.append(thumb,row);
    tile.addEventListener('click',()=>{index=n;detailOpen=true;render();dialog.scrollTop=0;back.focus({preventScroll:true});});sheet.append(tile);
   });
  }
@@ -74,5 +81,6 @@ export function installContactSheet(desktop) {
   close.focus({preventScroll:true});
  });
  grid.after(pane);
+ if(dialog.open)render();
  return {open};
 }

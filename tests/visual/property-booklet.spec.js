@@ -76,6 +76,44 @@ test('open viewer crosses the desktop boundary without trapping hidden focus',as
  await page.keyboard.press('Escape');await expect(page.locator('[data-open-gallery]')).toBeFocused();
 });
 
+test('an open phone grid becomes the contact sheet when desktop first loads', async ({ page }) => {
+  await registerStableNetwork(page);
+  await page.setViewportSize({ width: 899, height: 900 });
+  await page.goto('/properties/dockside-dreams/');
+  const opener = page.locator('[data-open-gallery]');
+  const dialog = page.locator('.g-photo-dialog');
+  await opener.click();
+  await expect(dialog.locator('.g-photo-grid')).toBeVisible();
+  await expect(page.locator('.inpage-book')).toHaveCount(0);
+  await page.setViewportSize({ width: 900, height: 900 });
+  await expect(page.locator('.inpage-book')).toBeVisible();
+  await expect(dialog.locator('.contact-sheet')).toBeVisible({ timeout: 1500 });
+  await expect(dialog.locator('.g-photo-grid')).toBeHidden();
+  await page.keyboard.press('Escape');
+  await expect(opener).toBeFocused();
+});
+
+test('an unavailable thumbnail keeps its tile and exact full-size photo', async ({ page }) => {
+  const photo = homes.find(home => home.slug === 'dockside-dreams').photography.photos.at(-1);
+  const thumbnail = photo.src.replace(/\.webp$/, '-800.webp');
+  await registerStableNetwork(page);
+  await page.route(url => url.pathname === thumbnail, route => route.abort());
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/properties/dockside-dreams/');
+  await expect(page.locator('.inpage-book')).toBeVisible();
+  await page.locator('[data-open-gallery]').click();
+  const tile = page.locator('.contact-tile').last();
+  await tile.scrollIntoViewIfNeeded();
+  await expect(tile.getByText('Thumbnail unavailable')).toBeVisible({ timeout: 1500 });
+  await expect(tile).toHaveAccessibleName(/thumbnail unavailable/i);
+  const detail = page.locator('.contact-photo img');
+  await expect(detail).not.toHaveAttribute('src', /.+/);
+  await tile.click();
+  await expect(detail).toHaveAttribute('alt', photo.alt);
+  await expect(detail).toBeVisible();
+  expect(await detail.evaluate(img => new URL(img.currentSrc).pathname)).toBe(photo.src);
+});
+
  test('direct booklet opener falls back to View all photos if resize replaces it',async({page})=>{
  await page.setViewportSize({width:1440,height:900});await page.goto('/properties/dockside-dreams/');
  await page.locator('.inpage-book .spread > .page .photo-button').first().click();
