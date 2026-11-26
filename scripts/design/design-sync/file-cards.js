@@ -103,7 +103,11 @@ function fileCard(bundleHtml, publishedHeader) {
 // Site-relative paths (images/...) of the photos a filed card shows.
 function cardImages(html) {
   const found = new Set();
-  for (const m of html.matchAll(/\.\.\/\.\.\/(images\/[^"'\s),?#]+)/g)) found.add(m[1]);
+  for (const m of html.matchAll(/\.\.\/\.\.\/(images\/[^"'\s),?#&]+)/g)) {
+    // A photo is copied from the built site; a ".." segment would reach outside it.
+    if (m[1].split("/").includes("..")) throw new Error(`Photo path leaves images/: ${m[1]}`);
+    found.add(m[1]);
+  }
   return [...found].sort();
 }
 

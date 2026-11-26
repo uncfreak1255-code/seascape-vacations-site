@@ -164,6 +164,9 @@ test('fileCard points live-site photos at the copies published beside the cards'
   assert.match(filed, /src="\.\.\/\.\.\/images\/homes\/a\/01\.webp"/);
   assert.match(filed, /href="https:\/\/seascape-vacations\.com\/homes\/a\/"/, 'page links stay on the live site');
   assert.deepEqual(cardImages(filed), ['images/homes/a/01-800.webp', 'images/homes/a/01.webp']);
+  assert.deepEqual(cardImages('<i style="background:url(&quot;../../images/b/c.jpg&quot;)" data-src="../../images/d.webp"></i>'),
+    ['images/b/c.jpg', 'images/d.webp']);
+  assert.throws(() => cardImages('<img src="../../images/../../x.txt">'), /leaves images/);
 });
 
 test('main copies the photos of written cards from the built site and fails on a missing one', (t) => {
