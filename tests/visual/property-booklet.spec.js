@@ -82,7 +82,8 @@ test('an open phone grid becomes the contact sheet when desktop first loads', as
   await page.goto('/properties/dockside-dreams/');
   const opener = page.locator('[data-open-gallery]');
   const dialog = page.locator('.g-photo-dialog');
-  await opener.click();
+  // Pointer activation in WebKit does not have to focus the button first.
+  await opener.evaluate(button => button.click());
   await expect(dialog.locator('.g-photo-grid')).toBeVisible();
   await expect(page.locator('.inpage-book')).toHaveCount(0);
   await page.setViewportSize({ width: 900, height: 900 });

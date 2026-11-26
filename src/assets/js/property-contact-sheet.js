@@ -81,6 +81,9 @@ export function installContactSheet(desktop) {
   close.focus({preventScroll:true});
  });
  grid.after(pane);
- if(dialog.open)render();
+ if(dialog.open){
+  lastOpener=opener;
+  render();
+ }
  return {open};
 }
