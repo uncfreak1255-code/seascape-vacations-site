@@ -88,7 +88,7 @@ function parseArgs(argv) {
   return parsed;
 }
 
-function worktreeIsDirty(cwd = process.cwd()) {
+function worktreeStatus(cwd = process.cwd()) {
   const result = spawnSync("git", ["status", "--porcelain", "--untracked-files=all"], {
     cwd,
     encoding: "utf8"
@@ -98,22 +98,44 @@ function worktreeIsDirty(cwd = process.cwd()) {
     throw new Error((result.stderr || "").trim() || "git status failed");
   }
 
-  return Boolean((result.stdout || "").trim());
+  const lines = (result.stdout || "").split("\n").filter(Boolean);
+  return {
+    dirty: lines.length > 0,
+    untracked: lines.filter((line) => line.startsWith("?? ")).map((line) => line.slice(3))
+  };
+}
+
+function mergeBaseWithOriginMain(cwd = process.cwd()) {
+  const result = spawnSync("git", ["merge-base", "origin/main", "HEAD"], { cwd, encoding: "utf8" });
+  const sha = (result.stdout || "").trim();
+  if (result.status !== 0 || !sha) {
+    throw new Error((result.stderr || "").trim() || "verify-release: git merge-base origin/main HEAD failed");
+  }
+  return sha;
+}
+
+function worktreeIsDirty(cwd = process.cwd()) {
+  return worktreeStatus(cwd).dirty;
 }
 
 function resolveReleaseRange(parsed, options = {}) {
-  const dirty = Object.prototype.hasOwnProperty.call(options, "dirty")
-    ? Boolean(options.dirty)
-    : worktreeIsDirty();
+  const status = Object.prototype.hasOwnProperty.call(options, "dirty")
+    ? { dirty: Boolean(options.dirty), untracked: options.untracked || [] }
+    : worktreeStatus();
   const range = String(parsed.range || "").trim();
 
   if (!parsed.rangeProvided) {
-    if (dirty) {
+    if (!status.dirty) {
+      return "origin/main...HEAD";
+    }
+    if (status.untracked.length) {
       throw new Error(
-        "verify-release: --range is required on a dirty worktree. Without it, git diff origin/main...HEAD can return no files and the gate passes while uncommitted edits exist."
+        `verify-release: untracked files on a dirty worktree would be skipped by the diff. Stage them with git add, then rerun: ${status.untracked.join(", ")}`
       );
     }
-    return "origin/main...HEAD";
+    // Dirty with every change tracked: diff the working tree against the commit where
+    // this branch left origin/main, so main's later commits never read as this branch's.
+    return options.mergeBase || mergeBaseWithOriginMain();
   }
 
   if (!range) {
@@ -336,7 +358,9 @@ function main() {
       assertNoNetAssertionRemoval({ range: args.range })
     );
     recordAssertion(pathAssertions, "settling page edits", () =>
-      assertNoSettlingPageEdits({ range: args.range })
+      // origin/main's ledger always applies, so a hold added after this branch
+      // split still blocks the dirty-tree default (a merge-base range).
+      assertNoSettlingPageEdits({ range: args.range, ledgerRevs: ["origin/main"] })
     );
     recordAssertion(pathAssertions, "valid figma brief handoffs", () =>
       assertValidFigmaBriefs(args.range)
@@ -406,6 +430,7 @@ module.exports = {
   buildCommandSteps,
   resolveReleaseRange,
   worktreeIsDirty,
+  worktreeStatus,
   getChangedFiles,
   assertNoForbiddenSourceChanges
 };

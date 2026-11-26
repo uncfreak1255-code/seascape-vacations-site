@@ -64,13 +64,21 @@ function settlingEntries(ledger, now) {
     .filter((entry) => now < entry.until);
 }
 
-function assertNoSettlingPageEdits({ range, cwd = process.cwd(), env = process.env, now = new Date() } = {}) {
+// ledgerRevs: extra revisions whose ledger holds also apply, such as the target
+// branch when range starts at an older merge base.
+function assertNoSettlingPageEdits({
+  range,
+  ledgerRevs = [],
+  cwd = process.cwd(),
+  env = process.env,
+  now = new Date()
+} = {}) {
   if (!range) {
     throw new Error("page settle gate requires a non-empty range");
   }
 
   const seen = new Set();
-  const settling = baseRevsFor(range, cwd, env)
+  const settling = [...new Set([...baseRevsFor(range, cwd, env), ...ledgerRevs])]
     .flatMap((rev) => settlingEntries(readLedgerAt(rev, cwd, env), now))
     .filter((entry) => {
       const key = `${entry.route}|${entry.shipped}`;

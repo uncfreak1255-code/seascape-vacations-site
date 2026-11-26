@@ -426,5 +426,13 @@ test("guides do not describe Seascape homes as pet-friendly or label the no-pets
         assert.doesNotMatch(section[0], /Book a Pet-Friendly|dog-friendly stays|Pet-Friendly Homes/i, `${rel} CTA invites booking a pet-friendly Seascape rental`);
       }
     }
+    for (const card of text.matchAll(/<a\b[^>]*href="\/guides\/pet-friendly-anna-maria-island\/?"[^>]*class="related-card"[^>]*>[\s\S]*?<\/a>/gi)) {
+      assert.doesNotMatch(card[0], /rentals/i, `${rel} pet-guide card promises rentals`);
+    }
   }
+});
+
+test("properties catalog offers no pet filter while no home permits ordinary pets", () => {
+  const catalog = fs.readFileSync(path.join(__dirname, "../../src/properties/index.njk"), "utf8");
+  assert.doesNotMatch(catalog, /data-filter="pet-friendly"|Ask about pets/);
 });

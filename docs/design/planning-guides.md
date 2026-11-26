@@ -12,3 +12,18 @@ A planning guide finishes one trip-planning task: when to come, how to get there
 - **Booking box and close.** The guide booking box keeps its position, content and tracking through a conversion. Sawyer approved the Waterline restyle of the box on October 24, 2026: same words, links and tracking, with an ink top rule, ruled rows, ink buttons and no old-palette surfaces (no gradient, shadow, gold or radius above 4px). The closing band is solid ink with the paper button and ink text guides already use there (10.62:1 against the band, so it needs no hairline). Citron stays reserved for the surfaces listed under `button-on-dark`.
 - **Floors.** A converted guide is held to F1, F2 and F3 across the whole page; see the scope note under Floors.
 - **Measurement.** A guide inside an open readback window converts after that window is read.
+
+## Two guide looks
+
+Sawyer chose these on November 22, 2026 from still pictures of the beaches guide ("I like the map", then "Yes to both", agent-issues #90 and #91). On November 23, 2026 he approved building the first one on the beaches guide, to be shown to him before it merges (agent-issues #92). Spec: site issue #1043. Picture: PR #1042. Each guide's conversion is still its own approval, and the weather, best time to visit, Anna Maria vs Siesta Key and shelling guides stay untouched until their measurement ends.
+
+**Place look (map with toggle).** For a guide whose main sections are each one place a reader could find on a map, each opening with labelled fact lines. Today that is the beaches guide only. It uses three catalog pieces, defined once in [the component catalog](component-patterns.md): Island locator, Fact strip and Disclosure. Four written exceptions to the frame above:
+
+1. *Map under the answer.* The `islandMap` key map is this guide's Instrument: one static, labelled figure under the quick answer (from 1050px it sits beside the title and answer, the study's view a). It is drawn from OpenStreetMap data and carries its credit.
+2. *Comparison moved up.* The guide's comparison table sits under the map as the chooser and drops its section numeral; the rail lists it first, unnumbered.
+3. *Folded paragraphs.* In each place section, everything after the fact lines sits inside one Disclosure row labelled for the place type ("More about this beach"). The heading and the fact lines stay outside it. The quick answer, every heading, the topic sections, the FAQ and the comparison stay open.
+4. *Repeated small figure.* Each place section opens with a Fact strip panel: the `islandInset` with this place lit, beside its fact lines.
+
+The map, insets and folded text are in the built HTML, and no script moves content. No pattern motion ships beyond the press and hover feedback each piece already has: the markers' explored entrance and the row's explored opening stay unbuilt until Sawyer selects them from a working preview ([pattern motion](pattern-motion.md)).
+
+**Fact-strip look.** For a guide not about places: each section opens with its labelled facts as a `factStrip`, and the rest of the section sits behind the same Disclosure row. No map. No guide qualifies without a copy change today, so the first one comes back as a picture and a brief (site issue #1047).

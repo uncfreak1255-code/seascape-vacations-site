@@ -14,7 +14,8 @@
       "live": "2026-11-19",
       "baseline": "None: no Search Console rows before launch (brief)",
       "verdictDue": "2026-12-07",
-      "verdict": null,
+      "verdict": "replaced",
+      "verdictNote": "Replaced by #1035 on the same route (one verdict per page); #1035 published 2026-11-22.",
       "note": "shipped stays null: the source is the shared src/_data/seoPages.json, so a settle hold would freeze every stay page. New page: a harm verdict goes to Sawyer."
     },
     {
@@ -25,20 +26,6 @@
       "shipped": "2026-11-17",
       "targetQuery": "Bradenton Sarasota private-pool vacation homes",
       "brief": "docs/briefs/2026-11-magister-home-opening.md"
-    },
-    {
-      "route": "/guides/anna-maria-island-vs-siesta-key/",
-      "sources": [
-        "src/guides/anna-maria-island-vs-siesta-key.html"
-      ],
-      "change": "Restored the pre-#607 title and meta description (Gate 0 rescue)",
-      "pr": 807,
-      "shipped": "2026-10-26",
-      "targetQuery": "anna maria island vs siesta key",
-      "brief": "docs/briefs/2026-10-ami-vs-siesta-key-rescue.md",
-      "kind": "search-text",
-      "verdict": "replaced",
-      "verdictNote": "Replaced by #984 on the same route (one verdict per page); its 28-day window after publication includes #984's publish on 2026-11-19."
     },
     {
       "route": "/guides/anna-maria-island-vs-siesta-key/",
@@ -128,10 +115,179 @@
       "finalVerdictDue": "2026-12-21",
       "verdict": null,
       "note": "Held guide (AGENTS.md): a harm verdict goes to Sawyer as a proposal, no automatic revert."
+    },
+    {
+      "route": "/guides/anna-maria-island-beaches/",
+      "sources": [
+        "src/guides/anna-maria-island-beaches.html"
+      ],
+      "change": "Rebuilt as the place look: island map, comparison chooser under it, five folded beach sections (#1045)",
+      "pr": 1056,
+      "shipped": "2026-11-24",
+      "targetQuery": "anna maria island beaches",
+      "brief": "docs/briefs/2026-11-beaches-guide-place-look.md",
+      "kind": "layout",
+      "baseline": "GSC 2026-10-23..11-19: 1 click, 371 impressions, 0.27% CTR, position 16.3; GA4 organic 10 sessions, 0 key events; no AI-answer citation (site #1046)",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "Revert rule on site #1046: clicks down 30%+ not sitewide, or impressions down 30%+ not sitewide (agent's call, reversible there). Keep-or-revert date 2026-12-22, judged on the next Monday. The chooser partial and stylesheets are left out of sources so the pending layout fixes (PR #1063) are not held by the settle gate; a copy change in the partial still counts as a change to this page."
+    },
+    {
+      "route": "/property-management/vacation-rental-management-anna-maria-island/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Says the homes are in Bradenton and Sarasota and none is on the island yet; new description, intro, benefits from owner-offer section 7 and a 'Not yet' first FAQ; title and H1 unchanged (site #1016)",
+      "pr": 1066,
+      "shipped": null,
+      "targetQuery": "anna maria island vacation rental management",
+      "brief": "docs/briefs/2026-11-owner-service-area-truth.md",
+      "kind": "search-text",
+      "live": null,
+      "baseline": "GSC 2026-08-22..11-22: 0 clicks, 35 impressions; 'anna maria island vacation rental management' 24 impressions at position 36.8 (brief Gate 0)",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer is unchanged and waits on agent-issues #102."
+    },
+    {
+      "route": "/property-management/vacation-rental-management-longboat-key/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Says the homes are in Bradenton and Sarasota and none is on Longboat Key yet; new description, intro, benefits and a 'Not yet' first FAQ; Old Collier, quarterly-inspection and five-star claims removed; title and H1 unchanged (site #1016)",
+      "pr": 1066,
+      "shipped": null,
+      "targetQuery": "longboat key property management",
+      "brief": "docs/briefs/2026-11-owner-service-area-truth.md",
+      "kind": "search-text",
+      "live": null,
+      "baseline": "GSC 2026-08-22..11-22: 0 clicks, about 43 impressions; 'longboat key property management' 8 impressions at position 19.4 (brief Gate 0)",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "shipped stays null: the source is the shared src/_data/seoPages.json. live is set from the first production publish that contains PR #1066. verdictDue assumes that publish lands by 2026-11-30; move it to the Monday on or after live + 28 days if it lands later. Revert rule (brief): impressions down 30%+ while the site is not, or the main query down 5+ positions; a harm verdict reverts only the description, never the location truth. The HOA FAQ answer was replaced separately (Sawyer approved it on agent-issues #102, 2026-11-25; brief docs/briefs/2026-11-owner-compliance-wording.md). That change does not touch the title, description or H1 and is not judged as a ranking change."
+    },
+    {
+      "route": "/stays/anna-maria-island-homes-with-pool/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "#967 date-panel links and #1035 heated-pool link",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "Bradenton vacation rentals with private pools",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No matching GSC window (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/sarasota-vacation-rentals-with-pool/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "#997 date-panel link and #1035 heated-pool link",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "sarasota rentals with private pools",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No matching GSC window (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/heated-pool-vacation-rentals-bradenton/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "New Bradenton heated-pool collection",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "heated pool vacation rentals Bradenton",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "new-page",
+      "live": "2026-11-22",
+      "baseline": "No GSC rows through 2026-11-22",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/vacation-rentals-near-img-academy/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "New IMG Academy stay collection",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "vacation rentals near IMG Academy",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "new-page",
+      "live": "2026-11-22",
+      "baseline": "No GSC rows through 2026-11-22",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/guides/booking-direct-vacation-rentals/",
+      "sources": ["src/guides/booking-direct-vacation-rentals.html"],
+      "change": "Book-direct guide rewrite",
+      "pr": 1035,
+      "shipped": "2026-11-22",
+      "targetQuery": "book direct vacation rentals Bradenton Sarasota",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "90-day GSC pull (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/book-direct-anna-maria-island/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "AMI book-direct body and guide link",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "book direct vacation rentals",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No GSC pull through 2026-11-22",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/stays/bradenton-vacation-rentals/",
+      "sources": ["src/_data/seoPages.json"],
+      "change": "Heated-pool, IMG, and book-direct links",
+      "pr": 1035,
+      "shipped": null,
+      "targetQuery": "bradenton vacation rentals",
+      "brief": "docs/briefs/2026-11-guest-heated-pool-img-book-direct.md",
+      "kind": "search-text",
+      "live": "2026-11-22",
+      "baseline": "No matching GSC window (see brief)",
+      "verdictDue": "2026-12-21",
+      "verdict": null
+    },
+    {
+      "route": "/property-management/condo-rental-management-florida/",
+      "sources": [
+        "src/_data/seoPages.json"
+      ],
+      "change": "Meta description and first benefit say 'HOA rule review' instead of 'HOA compliance'; HOA restrictions answer rewritten without the compliance promise or the '3-7 days' figure; track-record sentence removed; title and H1 unchanged (agent-issues #105)",
+      "pr": 1082,
+      "shipped": null,
+      "targetQuery": "condo rental management florida",
+      "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md",
+      "kind": "search-text",
+      "live": null,
+      "baseline": "GSC 2026-08-23..11-23: 0 clicks, 44 impressions, position 11.3. See brief for top query and result IDs.",
+      "verdictDue": "2026-12-28",
+      "verdict": null,
+      "note": "Set live from the first production publish with #1082. If after 2026-11-30, move verdictDue to the Monday on or after live + 28 days. Follow the brief's description-only revert rule and keep compliance promises out."
     }
   ],
   "liveChecks": [
     {"pr": 1010, "kind": "fact-fix", "change": "Airport travel times and removed guarantees across ten guides", "live": "2026-11-19", "brief": "docs/briefs/2026-11-guide-airport-and-safety-facts.md", "baseline": "Search Console clicks and impressions for the ten routes, 2026-10-22 to 2026-11-18 (brief)", "verdictDue": "2026-12-21", "verdict": null, "note": "Accuracy repair: the Dec traffic read is for information; a drop leads to rewording, never restoring old claims."},
-    {"pr": 1014, "kind": "fact-fix", "change": "llms.txt home count corrected to eight", "live": "2026-11-19", "brief": "docs/briefs/2026-11-llms-home-count.md", "baseline": "Live /llms.txt read 2026-11-18T21:18Z said 'manages seven homes' (brief)", "verdict": "keep", "verdictNote": "Live https://seascape-vacations.com/llms.txt read 2026-11-20 says 'manages eight homes'."}
+    {"pr": 1067, "kind": "markup-fix", "change": "Dropped FAQPage markup whose questions never appear on the page from 13 guides (site #1016); no visible change", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-parity.md", "baseline": "Search Console 2026-10-25..11-21 per route, frozen in the brief's Gate 0 table (result d60302d8-0227-4ffa-bc75-ead53856f0a0): srq-airport 24 clicks/2,873 impressions, holmes-beach-vs-bradenton-beach 11/400, things-to-do-bradenton-fl 8/1,285, others 0-2 clicks", "verdictDue": "2026-12-28", "verdict": null, "note": "Keep unless a route loses 30%+ impressions while the guides as a group do not. A harm verdict never restores hidden markup: show the questions on the page and mark up only what is shown. verdictDue assumes a publish by 2026-11-30."},
+    {"pr": 1068, "kind": "markup-fix", "change": "FAQPage markup on fourteen guides matched to the visible questions and answers; unshown questions dropped (site #1016)", "live": null, "brief": "docs/briefs/2026-11-guide-faq-markup-align.md", "baseline": "Search Console clicks and impressions for the fourteen routes, 2026-10-25 to 2026-11-21 (brief)", "verdictDue": "2026-12-28", "verdict": null, "note": "Markup-only accuracy repair: a drop leads to showing the question on the page, never restoring unmatched markup."},
+    {"pr": 1066, "kind": "fact-fix", "change": "About page names Bradenton and Sarasota as where the homes are; Anna Maria Island and Siesta Key appear only as beaches guests drive to (site #1016)", "live": null, "brief": "docs/briefs/2026-11-owner-service-area-truth.md", "baseline": "origin/main 55f773e5 and the live page (before screenshots in PR #1066) said Seascape offers rentals 'across Anna Maria Island, Bradenton, Sarasota, and Siesta Key'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing PR #1066, fetch https://seascape-vacations.com/about-us/ and confirm it says 'manages vacation homes in Bradenton and Sarasota'. Set live to that publish date."},
+    {"pr": 1082, "kind": "fact-fix", "change": "Florida new-owner guide permits answer no longer says Seascape handles all licensing and ensures full legal compliance; it names the separate checks and offers the one-page review (agent-issues #105)", "live": null, "brief": "docs/briefs/2026-11-owner-compliance-wording-105.md", "baseline": "origin/main 1286a95f said 'Seascape Vacations handles all licensing and regulatory requirements, ensuring your property operates in full legal compliance from launch.'", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish containing this PR, fetch https://seascape-vacations.com/property-management/new-vacation-rental-owner-guide-florida/ and confirm the permits answer starts 'Check whether your rental needs a Florida DBPR vacation-rental license'. Set live to that publish date."},
+    {"pr": 1088, "kind": "fact-fix", "change": "New-owner guide and condo page drop unbacked claims (client count, returns, condo specialty, immediate response, guests comply with HOA rules); 'betters' typo fixed (site #1083)", "live": null, "brief": "docs/briefs/2026-11-owner-unbacked-claims-1083.md", "baseline": "origin/main cae4f656 text, quoted in the brief's task scope", "verdict": null, "verdictDue": "2026-11-30", "note": "Readback: after the first publish with this PR, fetch both live pages; confirm 'helped hundreds', 'returns you anticipated', 'We specialize in condo management', 'respond immediately' and 'comply with HOA rules' are absent and 'professional cleaners' is present. Set live to that date."}
   ]
 }

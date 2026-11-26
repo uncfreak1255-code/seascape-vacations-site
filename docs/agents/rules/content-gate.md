@@ -47,3 +47,9 @@ For any PR that changes public copy in `src/`, read in order:
   PR, or merge; both run the same content checks against fresh rendered output
 - when a required source is stale, refresh the affected evidence before scaling
   a measured batch or making an impact claim
+- a PR that changes visible copy on a smoke-asserted route (homepage,
+  `/properties/`, `/property-management/`, `/stays/`) updates
+  `scripts/recovery/assert-live-smoke.js` in the same PR; otherwise the daily
+  live-smoke workflow goes red on a healthy site
+- `npm run check:brief -- <brief.md>` lists every content-gate and Gate 0
+  problem at once, without a build

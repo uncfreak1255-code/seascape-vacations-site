@@ -26,8 +26,11 @@ test('near-island accommodation copy and schema do not promise blanket lower pri
   assert.match(s, /complete checkout totals for the same dates and guest count/i);
   const schemas = [...s.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => JSON.parse(m[1]));
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
-  const stay = faq.mainEntity.find((question) => question.name === 'Is it better to stay on Anna Maria Island or nearby?');
-  assert.match(stay.acceptedAnswer.text, /complete checkout totals for the same dates and guest count/i);
+  // The page shows this question only as "...or nearby on the mainland?", so its old markup is gone (site #1016).
+  assert.equal(faq.mainEntity.find((question) => question.name === 'Is it better to stay on Anna Maria Island or nearby?'), undefined);
+  for (const question of faq.mainEntity) {
+    assert.doesNotMatch(question.acceptedAnswer.text, /for less money|at lower prices|cheaper|significantly more expensive|best vacation rental value/i);
+  }
 });
 
 test('booking report and its feeder withhold numbers without reviewed underlying evidence', () => {
@@ -49,7 +52,9 @@ test('withdrawn benchmark does not claim a verified sample or available method i
   const article = schemas.find((schema) => schema['@type'] === 'Article');
   const faq = schemas.find((schema) => schema['@type'] === 'FAQPage');
   assert.match(article.description, /findings are withheld/i);
-  assert.doesNotMatch(JSON.stringify(faq), /from five|figures describe|verified (?:sample|dataset)/i);
+  // Site #1016: the FAQPage questions never appeared on the page, so the markup was dropped.
+  assert.equal(faq, undefined, 'no FAQPage markup for questions the page does not show');
+  assert.doesNotMatch(s, /from five|figures describe|verified (?:sample|dataset)/i);
   assert.doesNotMatch(s, /value of this small dataset|records the fixed dataset and method|Historical portfolio signals/i);
   assert.match(s, /explains why earlier numeric findings are withheld/i);
 });
