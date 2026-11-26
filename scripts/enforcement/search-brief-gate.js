@@ -213,10 +213,23 @@ function extractAuthorizedSourceSectionText(briefContent) {
   // top-level bullets count. A bullet such as "- source files likely to
   // change:" owns only its indented children.
   let collectingHeadingSection = false;
+  let inCodeFence = false;
 
   for (const line of lines) {
     const trimmed = line.trim();
-    const isHeading = /^#{1,6}\s+/.test(trimmed);
+    if (/^(?:```|~~~)/.test(trimmed)) {
+      inCodeFence = !inCodeFence;
+    }
+    // A "# comment" inside a code fence is not a heading.
+    const isHeading = !inCodeFence && /^#{1,6}\s+/.test(trimmed);
+
+    // Inside a heading section every line up to the next heading counts, even
+    // a nested "- source files likely to change:" bullet.
+    if (collecting && collectingHeadingSection && !isHeading) {
+      collectedLines.push(line);
+      continue;
+    }
+
     if (AUTHORIZED_SOURCE_SECTION_PATTERN.test(trimmed)) {
       collectedLines.push(line);
       collecting = true;
@@ -230,11 +243,6 @@ function extractAuthorizedSourceSectionText(briefContent) {
 
     if (isHeading) {
       collecting = false;
-      continue;
-    }
-
-    if (collectingHeadingSection) {
-      collectedLines.push(line);
       continue;
     }
 

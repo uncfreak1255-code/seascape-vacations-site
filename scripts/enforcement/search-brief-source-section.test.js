@@ -43,3 +43,28 @@ test("a source-files bullet still counts only its indented children", () => {
   assert.equal(section.includes("src/index.njk"), true);
   assert.equal(section.includes("src/guides/example.html"), false);
 });
+
+test("a nested source-files bullet does not end its heading section", () => {
+  const brief = "## Source Files Changed\n\n- source files likely to change:\n  - `src/a.njk`\n- `src/b.njk`\n\n## Next\n\n- `src/c.njk`\n";
+  const section = extractAuthorizedSourceSectionText(brief);
+
+  assert.equal(section.includes("src/a.njk"), true);
+  assert.equal(section.includes("src/b.njk"), true);
+  assert.equal(section.includes("src/c.njk"), false);
+});
+
+test("a # line inside a code fence does not end the section", () => {
+  const brief = "## Source Files Changed\n\n```sh\n# build first\nnpm run build\n```\n\n- `src/b.njk`\n\n## Next\n\n- `src/c.njk`\n";
+  const section = extractAuthorizedSourceSectionText(brief);
+
+  assert.equal(section.includes("src/b.njk"), true);
+  assert.equal(section.includes("src/c.njk"), false);
+});
+
+test("a matching subheading owns its section and prose under it", () => {
+  const brief = "## Tasks\n\n### Source files changed\n\nThe hero copy lives in `src/index.njk`.\n\n### Notes\n\n- `src/c.njk`\n";
+  const section = extractAuthorizedSourceSectionText(brief);
+
+  assert.equal(section.includes("src/index.njk"), true);
+  assert.equal(section.includes("src/c.njk"), false);
+});
