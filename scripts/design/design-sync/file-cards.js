@@ -16,16 +16,23 @@
  *     --live  a folder holding the published project's components/<Name>/preview.html
  *             (read them back from the artifact first)
  *     --dest  where changed cards are written, as components/<Name>/preview.html
+ *     --site  the built site (default _site) that holds the photos the cards show
  *     --new   also file mapped cards the artifact does not have yet; each gets a header
  *             built from its bundle @dsCard line (group, subtitle, viewport size).
  *             Without it a missing live copy is an error, so a forgotten read-back
  *             never looks like a new card.
+ *   The artifact's preview frame loads no image from another site, so photos the bundle
+ *   links on seascape-vacations.com/images/ are rewritten to ../../images/ and copied from
+ *   the built site to <dest>/images/, to be published beside the cards.
  *   Prints which cards changed, which were created, which were unchanged and which
  *   bundle cards are not filed.
  */
 
 const fs = require("fs");
 const path = require("path");
+const { LIVE } = require("./markup");
+
+const LIVE_IMAGES = `${LIVE}/images/`;
 
 // Bundle card file stem -> published component name.
 const CARD_MAP = Object.freeze({
@@ -86,7 +93,18 @@ function fileCard(bundleHtml, publishedHeader) {
   if (kept.length !== lines.length - 1) {
     throw new Error(`Bundle card must carry exactly one @dsCard line; found ${lines.length - kept.length}`);
   }
-  return [publishedHeader, ...kept].join("\n").replace(/(?<!\.\.\/)\.\.\/waterline\//g, "../../waterline/");
+  return [publishedHeader, ...kept]
+    .join("\n")
+    .replace(/(?<!\.\.\/)\.\.\/waterline\//g, "../../waterline/")
+    .split(LIVE_IMAGES)
+    .join("../../images/");
+}
+
+// Site-relative paths (images/...) of the photos a filed card shows.
+function cardImages(html) {
+  const found = new Set();
+  for (const m of html.matchAll(/\.\.\/\.\.\/(images\/[^"'\s),?#]+)/g)) found.add(m[1]);
+  return [...found].sort();
 }
 
 // The opening-synced stamp changes on every build; a card with no other change is not republished.
@@ -156,8 +174,9 @@ function main(argv) {
   const out = path.resolve(root, value("--out") || ".design-sync/out");
   const liveDir = value("--live");
   const dest = value("--dest");
+  const site = path.resolve(root, value("--site") || "_site");
   if (!liveDir || !dest) {
-    throw new Error("Usage: file-cards.js --live <dir> --dest <dir> [--out .design-sync/out] [--new]");
+    throw new Error("Usage: file-cards.js --live <dir> --dest <dir> [--out .design-sync/out] [--site _site] [--new]");
   }
   // A leftover card from an earlier run would be published as if it had changed.
   if (fs.existsSync(dest) && fs.readdirSync(dest).length > 0) {
@@ -180,13 +199,25 @@ function main(argv) {
     throw new Error(`--live ${liveDir} holds no components/<Name>/preview.html; read the cards back from the artifact first`);
   }
   const plan = planFiling(bundle, live, { allowNew: argv.includes("--new") });
-  for (const { path: rel, html } of [...plan.changed, ...plan.created]) {
+  const written = [...plan.changed, ...plan.created];
+  const images = [...new Set(written.flatMap(({ html }) => cardImages(html)))].sort();
+  const missing = images.filter((rel) => !fs.existsSync(path.join(site, rel)));
+  if (missing.length > 0) {
+    throw new Error(`Photos missing from ${site} (run npm run build first): ${missing.join(", ")}`);
+  }
+  for (const { path: rel, html } of written) {
     const file = path.join(dest, rel);
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, html);
   }
+  for (const rel of images) {
+    fs.mkdirSync(path.dirname(path.join(dest, rel)), { recursive: true });
+    fs.copyFileSync(path.join(site, rel), path.join(dest, rel));
+  }
+  plan.images = images;
   console.log(`Changed (written to ${dest}): ${plan.changed.map((c) => c.path).join(", ") || "none"}`);
   console.log(`Created (new components, written to ${dest}): ${plan.created.map((c) => c.path).join(", ") || "none"}`);
+  console.log(`Photos copied to ${path.join(dest, "images")}: ${images.length}`);
   console.log(`Unchanged: ${plan.unchanged.length}`);
   console.log(`Not filed (no published component): ${plan.notFiled.join(", ") || "none"}`);
   return plan;
@@ -201,4 +232,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { CARD_MAP, NOT_FILED, publishedPath, fileCard, headerForNewCard, differsOnlyBySyncStamp, planFiling, main };
+module.exports = { CARD_MAP, NOT_FILED, publishedPath, fileCard, cardImages, headerForNewCard, differsOnlyBySyncStamp, planFiling, main };
