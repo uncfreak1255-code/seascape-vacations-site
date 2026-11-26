@@ -285,7 +285,7 @@
       "route": "/property-management/vacation-rental-management-bradenton/",
       "sources": ["src/_data/seoPages.json"],
       "change": "Named Bradenton homes, quote-basis, compare-managers, Airbnb, areas, and FAQ; title and H1 unchanged",
-      "pr": null,
+      "pr": 1095,
       "shipped": null,
       "targetQuery": "vacation rental management bradenton",
       "brief": "docs/briefs/2026-11-bradenton-owner-page-refresh.md",
