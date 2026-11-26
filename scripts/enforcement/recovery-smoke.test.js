@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("node:fs");
 const test = require("node:test");
 const assert = require("node:assert/strict");
 
@@ -57,28 +58,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
 
   assert.notEqual(target, undefined, "expected /properties/ to stay in the smoke target list");
 
-  const currentPropertiesBody = `
-    <main data-catalog-version="waterline-v3">
-      <h1>Find the house.<br>Bring your people.</h1>
-      <form id="catalog-trip-form"></form><dialog id="catalog-comparison"></dialog>
-      <button type="button" data-trip-sheet-open>Dates and guests</button>
-      <p class="g-card-source">Ratings from Airbnb</p>
-      <button id="reset-filter" type="button">Show all stays</button>
-      <span class="g-card-rating" aria-hidden="true">★ 5.0 (112)</span>
-      <p>Boat size, trailer parking, or who sleeps where. Ask us about the home you’re considering before you book.</p>
-      <p>Full price, fees and cancellation terms on the booking page.</p>
-      <article><a href="/properties/dockside-dreams/">Dockside Dreams</a></article>
-      <article><a href="/properties/the-oasis/">The Oasis</a></article>
-      <article><a href="/properties/sarasota-luxe/">Sarasota Luxe</a></article>
-      <article><a href="/properties/river-house/">River House</a></article>
-      <article><a href="/properties/bradenton-pool-home/">Bradenton Pool Home</a></article>
-      <article data-property="blue-house" data-max-guests="11"><a href="/properties/blue-house/">Pickleball Pool Home Retreat</a><p>Up to 11 guests</p></article>
-      <article><a href="/properties/coastal-stay/">The Coastal</a></article>
-      <article><a href="/properties/relaxing-oasis/">Relaxing Oasis</a></article>
-      <a class="catalog-check-dates" href="https://book.seascape-vacations.com">Check dates</a>
-      <a class="g-header-owners" href="/property-management/">Owners</a>
-    </main>
-  `;
+  const currentPropertiesBody = fs.readFileSync(path.join(projectRoot, "_site/properties/index.html"), "utf8");
 
   assert.doesNotThrow(() => {
     smoke.validateTargetResponse(target, {
@@ -118,7 +98,7 @@ test("properties smoke checks durable property detail hrefs instead of old CTA c
   assert.throws(() => smoke.validateTargetResponse(target, {
     statusCode: 200,
     location: null,
-    body: currentPropertiesBody.replace('<article><a href="/properties/coastal-stay/">The Coastal</a></article>', "")
+    body: currentPropertiesBody.replaceAll("/properties/coastal-stay/", "/missing/")
   }), /properties page is missing stable property detail links/);
   for (const staleBody of [
     currentPropertiesBody.replace('data-max-guests="11"', 'data-max-guests="10"'),
@@ -463,7 +443,7 @@ test("live smoke rejects stale SRQ airport freshness copy", () => {
 });
 
 test("homepage smoke validates the rendered home journey and rejects missing trip controls", () => {
-  const fs=require("fs");const smoke=loadSmokeModule();const target=smoke.targets.find(entry=>entry.path==="/");
+  const smoke=loadSmokeModule();const target=smoke.targets.find(entry=>entry.path==="/");
   const body=fs.readFileSync(path.join(projectRoot,"_site/index.html"),"utf8");
   assert.doesNotThrow(()=>smoke.validateTargetResponse(target,{statusCode:200,body}));
   assert.throws(()=>smoke.validateTargetResponse(target,{statusCode:200,body:body.replace(/data-guest-trip-form/g,"removed-control")}));

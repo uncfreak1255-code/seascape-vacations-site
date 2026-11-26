@@ -11,25 +11,15 @@ const { airbnbRatingLabel } = require("./airbnb-rating");
 
 const projectRoot = path.resolve(__dirname, "../..");
 
-function renderStayPhoto(property) {
+function renderStayPhoto(property, snapshot) {
   const env = new nunjucks.Environment(new nunjucks.FileSystemLoader(path.join(projectRoot, "src/_includes")), { autoescape: true });
   env.addFilter("imgProxy", (url) => url);
-  env.addFilter("airbnbRating", (listingId) => airbnbRatingLabel(listingId));
+  env.addFilter("airbnbRating", (listingId) => airbnbRatingLabel(listingId, snapshot));
   return env.renderString('{% from "partials/ui-icon.njk" import uiIcon %}{% include "partials/stay-property-photo.njk" %}', {
     property,
     loop: { index: 1 },
   });
 }
-
-// Stay cards take their stars from the Airbnb snapshot, like the home cards.
-// A home still "New" on Airbnb (under the minimum review count) shows none.
-const unratedSlugs = fallbackProperties
-  .filter((property) => { const label = airbnbRatingLabel(property.listingId); return !label || label.isNew; })
-  .map((property) => property.slug);
-
-test("the snapshot still holds a home that is New on Airbnb, so this test guards something", () => {
-  assert.ok(unratedSlugs.length > 0, "expected at least one home under the Airbnb review minimum");
-});
 
 test("an unrated home keeps a null rating through property normalization", () => {
   for (const rating of [0, null, undefined, "", "0", -1, 6, "n/a"]) {
@@ -40,17 +30,17 @@ test("an unrated home keeps a null rating through property normalization", () =>
   assert.equal(rated.rating, 4.86);
 });
 
-test("homes New on Airbnb render no stars on stay cards; rated homes show their Airbnb rating", () => {
-  for (const home of normalizeProperties(fallbackProperties)) {
-    const html = renderStayPhoto(home);
-    if (unratedSlugs.includes(home.slug)) {
-      assert.ok(!html.includes("stay-star-rating"), `${home.slug} is New on Airbnb and must not show stars`);
-    } else {
-      const label = airbnbRatingLabel(home.listingId);
-      assert.ok(html.includes(`aria-label="${label.spoken}"`), `${home.slug} should show its Airbnb rating`);
-      assert.ok(html.includes(`--stay-rating: ${label.rating * 20}%`), `${home.slug} star fill should match ${label.rating}`);
-    }
-  }
+test("stay cards show Airbnb stars only when the home reaches the review minimum", () => {
+  const [home] = normalizeProperties([{ ...fallbackProperties[0], rating: 5 }]);
+  const row = { rating: 4.8, reviews: 2 };
+  const snapshot = { minimumReviews: 3, homes: { [home.listingId]: row } };
+
+  assert.doesNotMatch(renderStayPhoto(home, snapshot), /class="stay-star-rating"/);
+  row.reviews = 3;
+  const rated = renderStayPhoto(home, snapshot);
+  assert.match(rated, /class="stay-star-rating"/);
+  assert.match(rated, /aria-label="Rated 4\.8 out of 5 from 3 Airbnb reviews"/);
+  assert.match(rated, /--stay-rating: 96%/);
 });
 
 test("Hostaway averageReviewRating is a 10-point score converted to 5 stars", () => {
@@ -61,19 +51,23 @@ test("Hostaway averageReviewRating is a 10-point score converted to 5 stars", ()
   }
 });
 
-test("built stays page shows no stars on unrated homes' cards", { skip: !fs.existsSync(path.join(projectRoot, "_site/stays/vacation-rentals-with-pool-and-hot-tub/index.html")) && "run npm run build first" }, () => {
+test("built stays cards show the Airbnb snapshot's rating state for each home", { skip: !fs.existsSync(path.join(projectRoot, "_site/stays/vacation-rentals-with-pool-and-hot-tub/index.html")) && "run npm run build first" }, () => {
   const html = fs.readFileSync(path.join(projectRoot, "_site/stays/vacation-rentals-with-pool-and-hot-tub/index.html"), "utf8");
-  const unrated = fallbackProperties.filter((property) => unratedSlugs.includes(property.slug));
-  let checked = 0;
-  for (const property of unrated) {
-    const href = `/properties/${property.slug}/`;
-    const at = html.indexOf(`href="${href}"`);
-    if (at === -1) continue;
-    const cardStart = html.lastIndexOf("<article", at);
-    const cardEnd = html.indexOf("</article>", at);
-    assert.ok(cardStart !== -1 && cardEnd !== -1, `${property.slug} card markup not found`);
-    assert.ok(!html.slice(cardStart, cardEnd).includes("stay-star-rating"), `${property.slug} card must not show stars`);
-    checked += 1;
+  const cards = [...html.matchAll(/<article class="property-card">[\s\S]*?<\/article>/g)];
+  assert.ok(cards.length > 0, "expected home cards on the pool and hot tub stays page");
+
+  for (const [card] of cards) {
+    const slug = card.match(/href="\/properties\/([^"/]+)\/"/)?.[1];
+    const home = fallbackProperties.find((property) => property.slug === slug);
+    assert.ok(home, `could not identify the home for stays card ${slug}`);
+    const label = airbnbRatingLabel(home.listingId);
+
+    if (!label || label.isNew) {
+      assert.doesNotMatch(card, /class="stay-star-rating"/, `${slug} must not show stars`);
+    } else {
+      assert.match(card, /class="stay-star-rating"/, `${slug} must show stars`);
+      assert.ok(card.includes(`aria-label="${label.spoken}"`), `${slug} must show its Airbnb rating and review count`);
+      assert.ok(card.includes(`--stay-rating: ${label.rating * 20}%`), `${slug} must show its Airbnb star fill`);
+    }
   }
-  assert.ok(checked > 0, "expected at least one unrated home on the pool and hot tub stays page");
 });

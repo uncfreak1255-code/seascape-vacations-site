@@ -8,6 +8,7 @@ const {
   validateRenderedCheckout
 } = require("./live-smoke-rendered-checks");
 const validateOwnerLiveSurface = require("./validate-owner-live-surface");
+const validateCardAirbnbRatings = require("./validate-card-airbnb-ratings");
 const {
   FEE_PASSAGE_INCLUDES,
   FEE_PASSAGE_EXCLUDES,
@@ -114,6 +115,7 @@ function validateTargetResponse(target, response) {
     // Manual hero controls keep their scene-list-derived counter and real home imagery.
     requireIncludes(target.path, response.body, ['data-guest-version="waterline-v3"', 'id="home-heading"', 'href="/properties/" data-trip-link>Find your home</a>', "Your people.", "Your place.", "Our homes", 'data-guest-trip-form', '/images/homes/the-oasis/01.webp', 'href="/guest-support/"', 'href="/terms/#booking-and-confirmation"', 'Explore', 'Where we are', 'href="/guides/anna-maria-island-area-guide/"', 'id="email-signup"', 'data-inline-email-capture="true"', 'data-placement="home_owner_section"', 'Home 1 of ', 'data-scene-step="-1"', 'data-scene-step="1"', '/images/homes/the-oasis/hero-clarity.webp', 'data-home-deck', 'data-deck-step="-1"', 'data-deck-step="1"', 'See all homes', 'Back to focused deck', 'data-trip-sheet-open', 'Dates and guests', '<p class="g-card-source">Ratings from Airbnb</p>', '<span class="g-card-rating" aria-hidden="true">★ ', 'class="g-header-owners"']);
     requireExcludes(target.path, response.body, ["Best rates guaranteed", "Best Price Guaranteed", "save up to 20%", "Swipe to explore the collection."]);
+    validateCardAirbnbRatings(target.path, response.body);
   }
 
   if (target.path === "/properties/") {
@@ -160,7 +162,7 @@ function validateTargetResponse(target, response) {
     ) {
       throw new Error("properties page still exposes the old utility/catalog-copy surface");
     }
-
+    validateCardAirbnbRatings(target.path, response.body);
   }
 
   if (target.path === "/property-management/") {
