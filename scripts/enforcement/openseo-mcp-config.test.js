@@ -11,6 +11,8 @@ const expectedTools = [
   "list_projects",
   "list_saved_keywords",
   "get_rank_tracker",
+  "get_rank_history",
+  "estimate_rank_tracker_cost",
   "get_search_console_performance",
   "inspect_urls",
   "get_project_context",
@@ -85,5 +87,32 @@ test("OpenSEO MCP config is optional, local, approval-gated, and bounded", () =>
 
   for (const tool of blockedTools) {
     assert.equal(tools.includes(tool), false, `${tool} must remain outside the allowlist`);
+  }
+});
+
+test("Search Operator can read saved growth evidence without write or spend authority", () => {
+  const agent = fs.readFileSync(path.join(projectRoot, ".claude", "agents", "search-operator.md"), "utf8");
+  const toolsLine = agent.split("\n").find((line) => line.startsWith("tools: "));
+  assert.ok(toolsLine);
+  const tools = [...toolsLine.matchAll(/mcp__openseo__([a-z_]+)/g)].map((match) => match[1]);
+  const required = [
+    "get_rank_history",
+    "get_ai_visibility_tracker",
+    "get_ai_visibility_run",
+    "get_ai_visibility_results",
+    "get_ai_visibility_answer",
+    "get_ai_visibility_sources",
+    "get_ai_visibility_trend",
+    "estimate_ai_visibility_cost",
+    "estimate_rank_tracker_cost",
+    "get_google_analytics_organic_landing_pages",
+    "get_google_analytics_page_performance",
+    "get_google_analytics_key_events",
+    "get_search_opportunities"
+  ];
+  for (const tool of required) assert.ok(tools.includes(tool), `missing saved read: ${tool}`);
+  for (const tool of tools) assert.ok(expectedTools.includes(tool), `unexpected role tool: ${tool}`);
+  for (const tool of [...blockedTools, "save_report", "update_project_context"]) {
+    assert.ok(!tools.includes(tool), `role must stay read-only: ${tool}`);
   }
 });
