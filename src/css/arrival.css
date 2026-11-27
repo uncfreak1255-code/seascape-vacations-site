@@ -16,7 +16,7 @@
 .g-local>div>p:not(.g-label){max-width:470px}
 .g-guide-list{align-self:center}
 .g-guide-list a{display:block;text-decoration:none;padding:18px 0;border-bottom:1px solid var(--g-rule);font:26px/1.2 'Instrument Serif',serif}
-.g-guide-list span{display:block;font:12px Poppins,sans-serif;color:var(--g-muted);margin-top:12px}
+.g-guide-list span{display:block;font:12px Inter,sans-serif;color:var(--g-muted);margin-top:12px}
 .g-return{max-width:800px;border-top:1px solid var(--g-rule);padding-top:36px}
 .g-return h2{font-size:34px}
 .g-return p{max-width:650px}
@@ -208,9 +208,9 @@
 /* Selected homepage candidate: fonts and native form remain Waterline. */
 .g-scene-picker[hidden],.g-scene-controls[hidden]{display:none}
 .g-scene picture{display:contents}
-.g-scene-controls{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:150px;font-family:Poppins,sans-serif}
+.g-scene-controls{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:150px;font-family:Inter,sans-serif}
 .g-scene-controls>span{grid-column:1/-1;font-size:12px;text-align:center;line-height:1.4}
-.g-scene-controls button{font:500 13px Poppins,sans-serif;min-height:44px;min-width:44px;padding:8px;color:white;border:1px solid color-mix(in srgb,currentColor 50%,transparent);border-radius:4px;background:#173d4266;cursor:pointer}
+.g-scene-controls button{font:500 13px Inter,sans-serif;min-height:44px;min-width:44px;padding:8px;color:white;border:1px solid color-mix(in srgb,currentColor 50%,transparent);border-radius:4px;background:#173d4266;cursor:pointer}
 .g-scene-controls button:hover{background:var(--g-ink)}
 .g-scene-controls button:focus-visible{outline:3px solid var(--g-citron);outline-offset:3px}
 .g-arrival-copy>p:last-child{font-size:16px;line-height:1.55}

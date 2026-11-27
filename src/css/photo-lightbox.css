@@ -13,7 +13,7 @@
 .plb {
   position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
   margin: 0; padding: 0; border: 0; overflow: hidden; overscroll-behavior: contain;
-  background: #F6F3EB; color: #173D42; font: 400 15px/1.55 Poppins, system-ui, sans-serif;
+  background: #F6F3EB; color: #173D42; font: 400 15px/1.55 Inter, system-ui, sans-serif;
 }
 .plb, .plb * { box-sizing: border-box; }
 
@@ -24,7 +24,7 @@
 }
 
 .plb .plb-head { grid-area: head; min-width: 0; padding: 24px 24px 16px; }
-.plb .plb-eyebrow { margin: 0 0 4px; color: #52676A; font: 500 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+.plb .plb-eyebrow { margin: 0 0 4px; color: #52676A; font: 500 12px/1.4 Inter, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
 .plb .plb-title { margin: 0; color: #173D42; font: 400 clamp(28px, 3vw, 42px)/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
 
 /* --plb-hover is what a fine pointer's hover gives a control: a button its fill, a room its border. */
@@ -33,7 +33,7 @@
   --plb-hover: #52676A;
   appearance: none; display: inline-flex; align-items: center; justify-content: center;
   min-height: 48px; margin: 0; padding: 14px 24px; border: 1px solid #173D42; border-radius: 4px;
-  background: #173D42; color: white; font: 500 14px/1.35 Poppins, system-ui, sans-serif;
+  background: #173D42; color: white; font: 500 14px/1.35 Inter, system-ui, sans-serif;
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 
@@ -43,7 +43,7 @@
   --plb-hover: #173D42;
   appearance: none; position: relative; display: inline-flex; align-items: center; gap: 8px;
   min-height: 44px; margin: 0; padding: 0 16px; border: 1px solid #CAD4CF; border-radius: 4px;
-  background: transparent; color: #173D42; font: 500 13px/1.4 Poppins, system-ui, sans-serif;
+  background: transparent; color: #173D42; font: 500 13px/1.4 Inter, system-ui, sans-serif;
   cursor: pointer; -webkit-tap-highlight-color: transparent;
 }
 .plb .plb-room-count { color: #52676A; font-weight: 400; }
@@ -60,7 +60,7 @@
 .plb .plb-photos { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
 .plb .plb-photo { display: block; background: #F0F3EE; color: inherit; }
 .plb .plb-photo img { display: block; width: 100%; max-width: none; height: auto; }
-.plb .plb-caption { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 8px 0 0; color: #173D42; font: 500 15px/1.55 Poppins, system-ui, sans-serif; }
+.plb .plb-caption { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 8px 0 0; color: #173D42; font: 500 15px/1.55 Inter, system-ui, sans-serif; }
 .plb .plb-count { margin-left: auto; color: #52676A; font-weight: 400; font-size: 13px; white-space: nowrap; }
 
 .plb .plb-next { grid-area: next; padding: 12px 24px 24px; border-top: 1px solid #CAD4CF; }

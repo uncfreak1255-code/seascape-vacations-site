@@ -10,6 +10,8 @@ const {
   loadBaseline,
   evaluate,
   buildPaletteAllowlist,
+  sanctionedHexesFromDesignMd,
+  RETIRED_HEX,
   lintSource,
   lintFile,
   resolveBaseRef,
@@ -295,15 +297,24 @@ test("guide corpus has no design-law violations outside the grandfathered baseli
   );
 });
 
-test("the recreated AMI vs Siesta guide passes design-lint on merit (not grandfathered)", () => {
+test("AMI vs Siesta gold-foil hex is retired debt; fonts and emoji still pass on merit", () => {
   const allowlist = buildPaletteAllowlist();
   const v = lintFile(AMI_GUIDE, allowlist);
-  assert.equal(v.offBrandHex.length, 0, `expected no off-brand hex, found ${v.offBrandHex.join(", ")}`);
+  const goldFoil = new Set(["#e3c47a", "#c9a962", "#8e6d28", "#2a2014"]);
+  assert.ok(v.offBrandHex.length > 0, "gold-foil hex must still be flagged");
+  for (const hex of v.offBrandHex) {
+    assert.ok(goldFoil.has(hex), `unexpected off-brand hex ${hex}`);
+  }
   assert.equal(v.googleFonts, false, "expected self-hosted fonts, not Google Fonts in-page");
   assert.equal(v.emoji, false, "expected SVG icons, not emoji");
 
   const baseline = loadBaseline();
-  for (const check of ["offBrandHex", "googleFonts", "emoji"]) {
+  assert.equal(
+    (baseline.offBrandHex || []).includes(AMI_GUIDE),
+    true,
+    "gold-foil stays grandfathered here; the GSC PR owns the guide restyle"
+  );
+  for (const check of ["googleFonts", "emoji"]) {
     assert.equal(
       (baseline[check] || []).includes(AMI_GUIDE),
       false,
@@ -359,20 +370,39 @@ test("JSON design-lint reports preserve palette failures as parseable output", (
 test("palette integrity audits changed shared partials as rendered usage sites", () => {
   const partial = "src/_includes/partials/guide-conversion-kit.njk";
   const touched = new Set([partial]);
-  const usageFiles = paletteUsageFiles([], touched, [partial]);
+  const usageFiles = paletteUsageFiles([partial], touched, ["DESIGN.md"]);
   const used = paletteUsesAddedHexes("<style>.new-chip { color: #123456; }</style>", new Set(["#123456"]));
 
   assert.ok(usageFiles.includes(partial));
   assert.deepEqual(used, ["#123456"]);
 });
 
+test("empty DESIGN.md system.colors does not legalize any brand hex", () => {
+  assert.deepEqual(sanctionedHexesFromDesignMd(""), []);
+  assert.deepEqual(sanctionedHexesFromDesignMd("---\nsystem:\n  colors: {}\n---\n"), []);
+});
+
+test("retired citron, clay, gold and cream are flagged for new style contexts", () => {
+  const allowlist = buildPaletteAllowlist();
+  for (const hex of RETIRED_HEX) {
+    assert.equal(allowlist.has(hex), false, `${hex} must not be sanctioned for new code`);
+  }
+  const retired = lintSource(
+    "<style>.x{color:#d6eb85;background:#a4533e;border-color:#c9a962;background:#f5eed6}</style>",
+    allowlist,
+    "src/css/new-surface.css"
+  );
+  assert.ok(retired.offBrandHex.includes("#d6eb85"), "citron must fail");
+  assert.ok(retired.offBrandHex.includes("#a4533e"), "clay must fail");
+  assert.ok(retired.offBrandHex.includes("#c9a962"), "gold must fail");
+  assert.ok(retired.offBrandHex.includes("#f5eed6"), "cream must fail");
+});
+
 test("design-lint does not false-positive on sanctioned tokens, palette hex, or non-style hex", () => {
   const allowlist = buildPaletteAllowlist();
 
-  // Tokens + rgba + the DESIGN.md-approved gold-foil hexes used by .btn-gold and the VS badge.
   const clean = lintSource(
-    '<style>.x{color:var(--brand-dark);background:rgba(20,34,35,0.9)}' +
-      ".vs{background:linear-gradient(135deg,#E3C47A 0%,#C9A962 42%,#8E6D28 66%,#C9A962 100%);color:#2A2014}</style>",
+    "<style>.x{color:var(--g-ink);background:#173d42;color:#1e2324;border-color:#e6e6e6;background:#222222}</style>",
     allowlist
   );
   assert.deepEqual(clean.offBrandHex, [], `sanctioned palette hex must not be flagged, got ${clean.offBrandHex.join(", ")}`);

@@ -46,7 +46,7 @@ module.exports = function paneManifest({ OUT, tokensCss, cards, today, commit, w
         fonts: [],
         brandFonts: [
           { family: "Instrument Serif", status: "ok", tokens: ["--wl-font-display"], path: "waterline/tokens.css" },
-          { family: "Poppins", status: "ok", tokens: ["--wl-font-body"], path: "waterline/tokens.css" },
+          { family: "Inter", status: "ok", tokens: ["--wl-font-body"], path: "waterline/tokens.css" },
         ],
         source: "design-sync",
         syncedAt: today,

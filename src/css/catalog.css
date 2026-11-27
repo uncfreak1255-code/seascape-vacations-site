@@ -170,7 +170,7 @@
   #share-status:empty { display:none; }
 }
 
-.property-trip-context { background:var(--cream-light,#FAF7EE); color:var(--stone,#3A3A3A); max-width:1100px; margin:16px auto; padding:16px 24px; border:1px solid var(--brand-dark,#3D5C5D); border-radius:12px; font:13px/1.7 Poppins,sans-serif; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 24px; }
+.property-trip-context { background:var(--cream-light,#FAF7EE); color:var(--stone,#3A3A3A); max-width:1100px; margin:16px auto; padding:16px 24px; border:1px solid var(--brand-dark,#3D5C5D); border-radius:12px; font:13px/1.7 Inter,sans-serif; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 24px; }
 .property-trip-context p { margin:0; }
 .property-trip-context a { color:var(--brand-dark,#3D5C5D); text-decoration:underline; text-underline-offset:4px; padding:8px 0; }
 @media(max-width:767px) { .property-trip-context { margin:12px 16px; padding:12px 16px; } }
