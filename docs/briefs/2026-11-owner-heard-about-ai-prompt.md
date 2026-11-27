@@ -12,8 +12,8 @@
 - audience pattern: owners who arrived from search, maps, an AI assistant, a referral, Airbnb or Vrbo, or social media
 - proof source: current origin/main owner hub form and shared evaluation partial; Netlify form `owner-revenue-teardown`; contact store and Graph internal notify
 - offer claim: unchanged; `seascape-hub/context/owner-offer.md` 48-hour one-page review
-- required internal links: none added
-- CTA target: existing `/property-management/` and generated owner-lander review forms
+- required internal links: /property-management/, /research/owner-fee-revenue-leak-benchmark-2026/
+- CTA target: /property-management/#owner-cta
 - anti-claims: no management-fee percent or range; no minimum; never name the business partner; do not change other form fields or validation
 
 ## Why This Batch
