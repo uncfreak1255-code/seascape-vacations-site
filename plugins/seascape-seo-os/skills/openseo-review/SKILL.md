@@ -1,6 +1,6 @@
 ---
 name: openseo-review
-description: Use when a Seascape page drops in Google rank or clicks, and for SEO loops, OpenSEO audits, keyword, competitor, AI-citation or rank-tracking review; reads Search Console evidence first, cost-checks paid lookups.
+description: Use for Seascape indexing issues, Google rank or click drops, SEO loops, OpenSEO audits, keyword, competitor, AI-citation or rank-tracking review; reads Search Console evidence first, cost-checks paid lookups.
 ---
 
 # OpenSEO Opportunity Review
@@ -64,9 +64,25 @@ For Seascape, default to `seascape-vacations.com`, United States, and the curren
 1. Confirm the current OpenSEO project, domain, country, device, and data timestamp.
 2. Use the local `openseo` MCP tools.
 3. Do not add the OpenSEO connector, change global MCP settings, sign in, or spend credits outside the paid-lookup rule (improvement loop, step 3).
-4. Name the proof gate: verified query export, verified cited-source export, current rank configuration readback, and an opportunity table tied to source rows.
+4. For a full opportunity review, name the proof gate: verified query export, verified cited-source export, current rank configuration readback, and an opportunity table tied to source rows. For indexing or a saved AI-visibility run, use the evidence lane below.
 
 ## Select the evidence lane
+
+For indexing questions, search the Site source for actual links to the target
+path and check built `_site/` when available. Run the free `inspect_urls`
+read for the exact URL. Report the links and the indexing verdict separately.
+Search Console's `referringUrls` is a partial sample. If either check is
+unavailable, state what link coverage is unverified. Name an indexing cause
+only when the evidence establishes it.
+
+For a saved AI-visibility run, start with `get_ai_visibility_run` for status
+and coverage, or `get_ai_visibility_trend` for a comparison across periods.
+For row-level evidence, use the existing verified export or save a private
+file with `export_ai_visibility_data` and summarize it locally. Use
+observation IDs to open only the individual answers needed to verify a
+finding. Follow this read sequence in place of the upstream AI-visibility
+audit's run-wide `get_ai_visibility_results` step. State any gaps when the
+saved run or export is incomplete.
 
 For Seascape rank-opportunity or regression triage on already-tracked queries,
 read the Site-owned OpenSEO preflight first: `docs/process/openseo.md` in
