@@ -18,6 +18,10 @@ const {
 } = require("./git-kit-fallback");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
+// Preflight checks Node against .nvmrc; pin it so these tests do not depend
+// on the Node that runs them.
+const pinnedNode = fs.readFileSync(path.join(projectRoot, ".nvmrc"), "utf8").trim().replace(/^v/, "");
+const matchingNode = { nodeVersion: pinnedNode, env: {} };
 
 function makeTempDir(prefix) {
   return fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -51,7 +55,8 @@ test("missing Mac git kit falls through to repo pre-commit.js for preflight only
   const kitDir = makeTempDir("site-4-no-kit-");
   const status = runGitKitFallback("preflight", [], {
     kitDir,
-    spawn: { stdio: "pipe", cwd: makeCommitRepo() }
+    spawn: { stdio: "pipe", cwd: makeCommitRepo() },
+    nodeRuntime: matchingNode
   });
   assert.equal(status, 0);
 });
@@ -63,7 +68,8 @@ test("present Mac git kit is used instead of pre-commit.js", () => {
 
   const status = runGitKitFallback("preflight", [], {
     kitDir,
-    spawn: { stdio: "pipe" }
+    spawn: { stdio: "pipe" },
+    nodeRuntime: matchingNode
   });
   assert.equal(status, 7);
 });
@@ -84,10 +90,41 @@ test("npm run git:preflight reaches repo checks when the Mac binary is missing",
     env: {
       ...process.env,
       GIT_DIR: path.join(makeCommitRepo(), ".git"),
-      SEASCAPE_GIT_KIT_DIR: makeTempDir("site-4-npm-kit-")
+      SEASCAPE_GIT_KIT_DIR: makeTempDir("site-4-npm-kit-"),
+      // A Node other than .nvmrc only warns under CI; this test checks the fallback route.
+      CI: "1"
     }
   });
   assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
+test("preflight stops on a Node major that differs from .nvmrc before running the kit", () => {
+  const kitDir = makeTempDir("site-preflight-node-kit-");
+  const marker = path.join(kitDir, "ran");
+  const kitBin = path.join(kitDir, "guardrail-preflight");
+  fs.writeFileSync(kitBin, `#!/bin/sh\ntouch "${marker}"\nexit 0\n`);
+  fs.chmodSync(kitBin, 0o755);
+  const pinned = pinnedNode;
+  const otherMajor = `${Number(pinned.split(".")[0]) - 2}.0.0`;
+
+  assert.throws(
+    () =>
+      runGitKitFallback("preflight", [], {
+        kitDir,
+        spawn: { stdio: "pipe" },
+        nodeRuntime: { nodeVersion: otherMajor, env: {} }
+      }),
+    (error) => /node-runtime-preflight/.test(error.message) && error.message.includes(pinned)
+  );
+  assert.equal(fs.existsSync(marker), false, "the kit must not run after a Node mismatch");
+
+  const status = runGitKitFallback("preflight", [], {
+    kitDir,
+    spawn: { stdio: "pipe" },
+    nodeRuntime: { nodeVersion: pinned, env: {} }
+  });
+  assert.equal(status, 0);
+  assert.equal(fs.existsSync(marker), true);
 });
 
 test("missing Mac kit merge-check fails instead of skip-as-pass", () => {

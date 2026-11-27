@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { refuseSkip } = require("./fail-closed");
+const { assertNodeRuntime } = require("./node-runtime-preflight");
 
 const COMMANDS = {
   preflight: "guardrail-preflight",
@@ -152,6 +153,12 @@ function runGitKitFallback(command, args = [], options = {}) {
     stdio: "inherit",
     ...options.spawn
   };
+
+  if (command === "preflight") {
+    // Catch a Node that differs from .nvmrc here, at the first step in a
+    // worktree, before `npm ci` misreports it as an out-of-sync lockfile.
+    assertNodeRuntime({ ...options.nodeRuntime, requireDependencies: false });
+  }
 
   if (fs.existsSync(macBin)) {
     const result = spawnSync(macBin, args, spawnOptions);

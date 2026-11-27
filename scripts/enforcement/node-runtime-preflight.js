@@ -10,6 +10,8 @@ const ELEVENTY_CLI = "node_modules/@11ty/eleventy/cmd.cjs";
 // registry lookup and the build sat silent; a Node major that differs from
 // .nvmrc makes `npm ci` reject the lockfile (2026-11-20, Node 22 vs 24).
 // CI and Netlify pick Node themselves, so there a version mismatch only warns.
+// `npm run git:preflight` runs the version half (requireDependencies: false)
+// because a fresh worktree has no node_modules until its first `npm ci`.
 function isSet(value) {
   return Boolean(value) && !["0", "false"].includes(String(value).toLowerCase());
 }
@@ -17,7 +19,8 @@ function isSet(value) {
 function checkNodeRuntime({
   projectRootDir = PROJECT_ROOT,
   nodeVersion = process.versions.node,
-  env = process.env
+  env = process.env,
+  requireDependencies = true
 } = {}) {
   const errors = [];
   const warnings = [];
@@ -37,7 +40,7 @@ function checkNodeRuntime({
     }
   }
 
-  if (!fs.existsSync(path.join(projectRootDir, ELEVENTY_CLI))) {
+  if (requireDependencies && !fs.existsSync(path.join(projectRootDir, ELEVENTY_CLI))) {
     errors.push(
       `node_modules is missing or incomplete (no ${ELEVENTY_CLI}). ` +
         `Run \`npm ci\`${pinned ? ` with Node ${pinned}` : ""} first.`
