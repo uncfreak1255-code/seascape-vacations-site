@@ -58,6 +58,25 @@ test("missing node_modules fails everywhere instead of letting npx fetch elevent
   }
 });
 
+test("the version-only check passes a fresh worktree with no node_modules yet", () => {
+  const dir = fixtureRepo({ withEleventy: false });
+  const result = checkNodeRuntime({
+    projectRootDir: dir,
+    nodeVersion: "24.22.2",
+    env: {},
+    requireDependencies: false
+  });
+  assert.deepEqual(result, { errors: [], warnings: [] });
+  const mismatch = checkNodeRuntime({
+    projectRootDir: dir,
+    nodeVersion: "22.22.0",
+    env: {},
+    requireDependencies: false
+  });
+  assert.equal(mismatch.errors.length, 1);
+  assert.match(mismatch.errors[0], /24\.22\.2/);
+});
+
 test("a missing .nvmrc skips the version check", () => {
   const dir = fixtureRepo({ nvmrc: null });
   const result = checkNodeRuntime({ projectRootDir: dir, nodeVersion: "22.22.0", env: {} });
@@ -72,9 +91,13 @@ test("assertNodeRuntime throws one message listing every error", () => {
   );
 });
 
-test("this repo's build and proof chain run the preflight before any work", () => {
+test("this repo's build, proof chain and git preflight run the Node preflight before any work", () => {
   const root = path.resolve(__dirname, "..", "..");
-  for (const file of ["scripts/enforcement/build-site.js", "scripts/enforcement/run-proof-chain.js"]) {
+  for (const file of [
+    "scripts/enforcement/build-site.js",
+    "scripts/enforcement/run-proof-chain.js",
+    "scripts/enforcement/git-kit-fallback.js"
+  ]) {
     const source = fs.readFileSync(path.join(root, file), "utf8");
     assert.match(source, /assertNodeRuntime\(/, `${file} must call assertNodeRuntime`);
   }
