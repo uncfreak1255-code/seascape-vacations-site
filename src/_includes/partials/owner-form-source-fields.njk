@@ -1,6 +1,6 @@
 {#- Shared by both owner form UIs: first-touch source fields (#826) filled by
     owner-first-touch.js, the Netlify honeypot, and the heard-about prompt toggle. -#}
-<script>document.documentElement.classList.add("sv-js");</script>
+<script>if (document.documentElement) document.documentElement.classList.add("sv-js");</script>
 <input type="hidden" name="referrer" value="">
 <input type="hidden" name="utm_source" value="">
 <input type="hidden" name="utm_medium" value="">

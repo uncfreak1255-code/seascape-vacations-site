@@ -87,6 +87,7 @@ test("both owner form UIs share the optional heard-about partial", () => {
   const sourceFields = read("_includes", "partials", "owner-form-source-fields.njk");
   assert.ok(sourceFields.includes('src="/assets/js/owner-heard-about.js"'));
   assert.ok(sourceFields.includes('document.documentElement.classList.add("sv-js")'));
+  assert.ok(sourceFields.includes("if (document.documentElement)"));
   for (const value of HEARD_ABOUT_VALUES) {
     assert.ok(partial.includes(`value="${value}"`), `missing option ${value}`);
     assert.ok(partial.includes(`>${OPTION_LABELS[value]}<`), `missing label for ${value}`);
