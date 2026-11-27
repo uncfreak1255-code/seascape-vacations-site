@@ -19,7 +19,12 @@
   <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{{ pageTitle }}">
   <meta name="twitter:description" content="{{ pageDescription }}"><meta name="twitter:image" content="{{ pageImage or site.url + '/images/homes/the-oasis/01.webp' }}">
   <link rel="icon" href="/logo-optimized.png" type="image/png">
+  {% if pageStylesheet and 'owner.css' in pageStylesheet %}
+  {% set localFontDisplay = "swap" %}
+  {% include "partials/local-font-head.njk" %}
+  {% else %}
   <link rel="preload" href="/assets/fonts/guest/inter-latin-wght-3100e775e861.woff2" as="font" type="font/woff2" crossorigin>
+  {% endif %}
   <link rel="preload" href="/assets/fonts/guest/instrument-serif-core-107d55de3480.woff2" as="font" type="font/woff2" crossorigin>
   {% if (pageScript and 'trip-sheet.js' in pageScript) or (headExtra and 'trip-sheet.js' in headExtra) %}{% include "partials/trip-sheet-early.njk" %}{% endif %}
   {% include "partials/organization-schema.njk" %}

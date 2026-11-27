@@ -83,3 +83,10 @@ test("Inter is self-hosted with font-display swap and no heading italics", () =>
   assert.doesNotMatch(fonts, /Instrument Serif[\s\S]{0,80}font-style:italic/);
   assert.match(fonts, /inter-latin-wght-3100e775e861\.woff2/);
 });
+
+test("guest pages preload Inter; owner hub pages keep Poppins", () => {
+  const layout = read("src/_includes/layouts/guest.njk");
+  assert.match(layout, /pageStylesheet and 'owner\.css'/);
+  assert.match(layout, /partials\/local-font-head\.njk/);
+  assert.match(layout, /inter-latin-wght-3100e775e861\.woff2/);
+});
