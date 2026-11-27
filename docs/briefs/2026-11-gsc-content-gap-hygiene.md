@@ -5,11 +5,6 @@
 - completion or successor: draft PR only; do not merge
 - link map: enforced
 
-## Figma Handoff
-
-- Figma capture: none
-- Figma frames: none
-
 ## Content Gate Inputs
 
 - persona: a guest who landed from Search Console queries this scan named, or a crawler still hitting a dead owner URL
