@@ -1,8 +1,8 @@
 # Brief: Bradenton owner page refresh (2026-11-26)
 
 - lifecycle: active
-- task scope: refresh reader copy on `/property-management/vacation-rental-management-bradenton/` (one `seoPages.owner` entry). No new URL, no title or H1 change, no layout, CSS, template, form, tracking or redirect change unless the shared owner lander already renders named-home photos. This PR activates the brief only; it changes no live page content.
-- completion or successor: this PR makes the brief the one active slot. Page copy ships in a later PR. `docs/briefs/2026-11-owner-service-area-truth.md` is parked, not deleted.
+- task scope: ship reader copy on `/property-management/vacation-rental-management-bradenton/` (one `seoPages.owner` entry). No new URL, no title or H1 change, no layout, CSS, template, form, tracking, homepage or redirect change. Named-home photos stay on the existing lander caption. Parked for later PRs: Sarasota/Longboat wrong-city titles; fees-page “what a fee covers”.
+- completion or successor: copy PR lands this contract. `docs/briefs/2026-11-owner-service-area-truth.md` stays parked (`draft`).
 
 ## Gate exception
 
@@ -38,7 +38,7 @@ Founder exception, not a gate open. Reread stays held. No GBP edits. Paid resear
 
 - What changed: nothing in the portfolio. Bradenton is where most of our homes are. Google already treats Seascape as relevant to the primary term (avg #3.2 at 15 of 25 points near the GBP pin), but the page is weak: last crawled 2026-09-24, 2 impressions in 28 days, abstract copy, no named homes beyond a caption, no FAQ for AI fan-out questions.
 - Why this page: Bradenton owner money destination in `docs/portfolio/owner-acquisition.md`. The AMI owner page is "Crawled – currently not indexed" and we manage no island homes, so AMI is the wrong page to push first.
-- What should wait: GBP pin move (Sawyer's call; we make no GBP edits); AMI owner-page push; any fee number; owner testimonials (hub: reopen only when Manny or Grettel agree in writing); title/meta tests (`serp-ctr-title-rewrite` only); in-link donors until `npm run seo:links:plan` on the copy PR.
+- What should wait: GBP pin move (Sawyer's call; no GBP edits); AMI owner-page push; any fee number; owner testimonials; title/meta tests (`serp-ctr-title-rewrite` only); Sarasota/Longboat title fixes; fees-page “what a fee covers”; in-link donors until `npm run seo:links:plan`.
 
 GBP pin is in east Sarasota (27.296,-82.489). Owner searches in Bradenton and on AMI are lost on distance (0 of 25 grid points in both; 15 of 25 near the pin). Moving it to 6103 Riverview Blvd, Bradenton, if that meets Google's service-area rules, is Sawyer's call and can trigger re-verification.
 
@@ -80,12 +80,14 @@ Optional ninth if space: "Who keeps the Airbnb/Vrbo listing and reviews if I lea
 
 - **H1** "Bradenton Vacation Rental Management" — Keep (titles/H1 unchanged; title/meta ideas go to `serp-ctr-title-rewrite` only).
 - **Intro (first 40 words)** — Modified: opening receipt replaces "If your Bradenton home has the right size, pool, and group appeal…".
-- **H2 What we do for a Bradenton home** — New (answer #1). Name The Oasis and Dockside Dreams with links to `/properties/the-oasis/` and `/properties/dockside-dreams/`. Use existing nearby-home photo treatment if it already renders; do not add a new card layout.
-- **H2 How a management quote is built** — New (answer #2). No number.
-- **H2 Where our homes are** — New (answer #3), one paragraph, mainland vs island.
-- **H2 "Why Bradenton owners start looking elsewhere"** — Keep, trimmed to the three existing sub-points.
-- **H2 How we review a Bradenton home** — Modified: keep the three-step review but align step 1 with the 48-hour one-page review (what looks right, what deserves a second look, what we'd check next). Drop "90-day takeover plan" wording unless Sawyer confirms it [NEEDS PROOF].
-- **H2 Bradenton owner questions** — New FAQ, answers #4–#8, FAQPage markup parity with visible text (`2026-11-guide-faq-markup-parity` pattern).
+- **H2 What we do for a Bradenton home** — New (answer #1). Name The Oasis and Dockside Dreams with property links. Existing lander caption only; no new card layout.
+- **H2 How a management quote is built** — New (answer #2). Basis only; no number; no quote-driver list until Sawyer confirms it.
+- **H2 Areas we serve** — New (answer #3 plus 2026-11-26 competitor gap). Name only hub/repo-verified areas: Bradenton and Sarasota. No AMI inventory claim. Omit Palmetto and Parrish.
+- **H2 How to compare Bradenton vacation rental managers** — New (2026-11-26). Neutral criteria only: what the fee covers, guest screening, cleaning and maintenance coordination, pricing approach, owner reporting, contract terms. No competitor names; no fee %, range or minimum.
+- **H2 Airbnb management in Bradenton** — New (2026-11-26). Target `airbnb management bradenton` on this URL. Do not retitle the Sarasota Airbnb page in this PR.
+- **H2 "Why Bradenton owners start looking elsewhere"** — Keep, trimmed.
+- **H2 How we review a Bradenton home** — Modified: 48-hour one-page review steps. Drop "90-day takeover plan" [NEEDS PROOF].
+- **H2 FAQ** — Answers #5–#8 (and #3–#4 with only verified facts). FAQPage from `seoPage.faqs`.
 - **CTA** — Keep the existing owner evaluation form. Anchor: "Send us your listing or last statement and we'll send back a one-page review within 48 hours."
 
 Word count: 1,300–1,700 (current page ~1,550).
@@ -115,8 +117,8 @@ Word count: 1,300–1,700 (current page ~1,550).
 | Design/format strategy | Text in existing owner-lander fields only. No new layout, CSS or template unless the shared lander already renders named-home photos. Titles and H1 stay. |
 | Seascape proof available | Hub property list and owner-offer sections 1–7; Site specs for The Oasis and Dockside Dreams. Unverified items stay behind `[NEEDS PROOF]`. |
 | Tools/plugins used | Search Console / URL Inspection (free) and the 2026-11-26 SERP plus AI Mode read. Paid lookups about $1.06 expected, $1.67 worst case, inside the $10 Sawyer approved 2026-11-26 at 8:27 AM ET. No Hostaway call. |
-| Decision and reason | Activate this existing-page refresh as the one active brief under Sawyer's 2026-11-26 approval. Copy is a later PR. Reversible: park this brief and restore the service-area slot. |
-| Recommendation | Keep this brief active; implement the copy in a follow-on PR from this contract; request indexing after that merge. |
+| Decision and reason | Ship this refresh under Sawyer's 2026-11-26 approvals. Reversible: revert intro and FAQ if the decision rule fires. |
+| Recommendation | Keep this brief active; ship copy on this URL; request indexing after merge and production publish. |
 
 ## Cluster, source, and copy-PR tasks
 
@@ -124,9 +126,9 @@ Word count: 1,300–1,700 (current page ~1,550).
 - feeders to confirm on the copy PR after `npm run seo:links:plan`: `/guides/bradenton-area-guide/`, `/stays/bradenton-vacation-rentals/` footer owner line, `/property-management/` owner hub card
 - money destination: existing owner evaluation form; event `owner_primary_cta_click`
 - active lane: owner acquisition
-- source files likely to change: `src/_data/seoPages.json` (`vacation-rental-management-bradenton` only); `docs/status/page-ledger.json` on the copy PR
-- property truth: re-read hub `context/seascape-properties.md` and Site `properties-fallback.json` the day the copy PR is cut (owner-offer is stale after 2026-12-17)
-- Compound Writing (`cw-draft`, `cw-line-edit`) is not used on this PR: there is no reader copy
+- source files likely to change: `src/_data/seoPages.json` (`vacation-rental-management-bradenton` only); `docs/status/page-ledger.json`; `docs/status/page-ledger.md`; this brief
+- property truth: `properties-fallback.json` 2026-11-26 (Oasis 5BR/3BA sleeps 16 pool; Dockside Dreams 4BR/3BA sleeps 12 waterfront private dock; seven Bradenton homes + Sarasota Luxe). No Palmetto, Parrish, or AMI homes.
+- Compound Writing skipped: skill not installed here. Native prose plus Voice Editor.
 
 Off-site after publish: one 5x5/2 km grid for the primary term at the pin and in west Bradenton (~$0.06) and two owner AI prompts (~$0.50), 4–6 weeks after publish.
 
@@ -148,8 +150,8 @@ Keep every `[NEEDS PROOF]` marker until the named person supplies the fact. Do n
 ## Voice, release, and done
 
 - Voice risks: brochure "we handle everything"; selling a fee number; island-operator voice; "full-service", "maximize", "booming market"
-- Copy PR checks: named homes match property truth; every `[NEEDS PROOF]` still visible; no partner name; no fee percentage, range or minimum; FAQPage matches visible FAQ; title/H1 and form/tracking unchanged
-- Commands: `npm run check:brief -- docs/briefs/2026-11-bradenton-owner-page-refresh.md --gate0`; copy PR also runs `npm run lint:content` and `npm run verify:release`
-- AEO (advisory, rubric not executed): answer in first 40 words; 5 of 7 sections question-led; 3 brand-named blocks; 2 named homes; 6 unverified items flagged
-- This PR is done when the brief holds the active slot, the service-area brief is parked, and checks are green. No live page copy.
-- Not in scope: live copy, title/meta, GBP edits, fee numbers, new URLs, AMI/LBK rewrites, guest pages, partner name, testimonials, layout redesign, Hostaway writes
+- Copy PR checks: named homes match property truth; every `[NEEDS PROOF]` stays in this brief, never in live copy; no partner name (say “we”); no fee percentage, range or minimum; FAQPage matches visible FAQ; title/H1 and form/tracking unchanged
+- Commands: `npm run check:brief -- docs/briefs/2026-11-bradenton-owner-page-refresh.md --gate0`; `npm run lint:content`; `npm run verify:release`
+- AEO (advisory): answer in first 40 words; question-led sections; 2 named homes; unverified items omitted from live copy
+- This PR is done when live Bradenton copy matches this contract, ledger row exists, and checks are green. Do not merge until Sawyer says so.
+- Not in scope: title/meta tests, GBP edits, fee numbers, new URLs, AMI/LBK title rewrites, fees-page “what a fee covers”, guest pages, partner name, testimonials, layout redesign, homepage, Hostaway writes
