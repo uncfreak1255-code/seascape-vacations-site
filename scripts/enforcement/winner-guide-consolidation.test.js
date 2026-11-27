@@ -20,7 +20,7 @@ test("winner-guide consolidation keeps duplicate .html aliases on direct canonic
       const rule = redirects.find((redirect) => redirect.from === alias);
 
       assert.ok(rule, `Expected redirects to include ${alias}`);
-      assert.equal(rule.code, "301", `${alias} should be a permanent redirect`);
+      assert.match(String(rule.code), /^301!?$/, `${alias} should be a permanent redirect`);
       assert.equal(
         normalizeComparablePath(rule.to),
         normalizeComparablePath(entry.winnerUrl),
