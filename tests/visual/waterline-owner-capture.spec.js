@@ -39,7 +39,7 @@ test('owners have a navigation path and a homepage path to the existing review f
   await expect(form).toBeVisible();
   await expect(form).toHaveAttribute('method', /post/i);
   await expect(form).toHaveAttribute('action', '/property-management/revenue-review-requested/');
-  for (const name of ['property_address', 'owner_statement', 'what_feels_off', 'name', 'email', 'phone']) {
+  for (const name of ['property_address', 'owner_statement', 'what_feels_off', 'name', 'email', 'phone', 'heard_about', 'heard_about_prompt']) {
     await expect(form.locator('[name="' + name + '"]')).toHaveCount(1);
   }
   // The existing first step is the listing field; retain the flow into the owner context step.
@@ -133,6 +133,9 @@ test('generated owner pages require the same submitter authority before the revi
   await expect(authority).toHaveAttribute('required', '');
   await expect(authority).toHaveAttribute('value', 'owner_or_authorized_representative');
   await expect(form.locator('[name="owner_statement"]')).not.toHaveAttribute('required', '');
+  await expect(form.locator('[name="heard_about"]')).toHaveCount(1);
+  await expect(form.locator('[name="heard_about_prompt"]')).toHaveCount(1);
+  await expect(form.locator('[name="heard_about"]')).not.toHaveAttribute('required', '');
 
   await form.locator('[name="name"]').fill('Test Owner');
   await form.locator('[name="email"]').fill('test-owner@example.com');

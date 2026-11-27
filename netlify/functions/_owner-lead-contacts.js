@@ -16,6 +16,32 @@ function normalizeText(value) {
   return value.trim();
 }
 
+// Optional "How did you hear about us?" answer. Stable values; anything else
+// (missing, blank, tampered) is stored as "" and never rejects the lead.
+const HEARD_ABOUT_VALUES = [
+  "google",
+  "google_maps",
+  "chatgpt",
+  "google_ai",
+  "other_ai",
+  "referral",
+  "airbnb_vrbo",
+  "social",
+  "other"
+];
+const HEARD_ABOUT_AI_VALUES = ["chatgpt", "google_ai", "other_ai"];
+const HEARD_ABOUT_PROMPT_MAX = 500;
+
+function normalizeHeardAbout(value) {
+  const text = normalizeText(value).toLowerCase();
+  return HEARD_ABOUT_VALUES.includes(text) ? text : "";
+}
+
+function normalizeHeardAboutPrompt(heardAbout, value) {
+  if (!HEARD_ABOUT_AI_VALUES.includes(heardAbout)) return "";
+  return normalizeText(value).slice(0, HEARD_ABOUT_PROMPT_MAX);
+}
+
 function readSubmissionPayload(rawPayload) {
   if (!rawPayload || typeof rawPayload !== "object") return {};
   return rawPayload.payload && typeof rawPayload.payload === "object"
@@ -59,6 +85,7 @@ function buildOwnerLeadContact(rawPayload) {
   const email = normalizeText(data.email);
   const phone = normalizeText(data.phone);
   const originalTouch = firstTouch(data);
+  const heardAbout = normalizeHeardAbout(data.heard_about);
   const propertyAddress = normalizeText(data.property_address);
   const listingUrl = normalizeText(data.listing_url);
   const combinedListing = /^(?:www\.)?(?:airbnb\.com|vrbo\.com)\//i.test(propertyAddress)
@@ -79,6 +106,8 @@ function buildOwnerLeadContact(rawPayload) {
     sourceTimestampVerified: Boolean(normalizeText(payload.created_at || payload.createdAt)),
     submitterAuthority: normalizeText(data.submitter_authority),
     proofLabel: normalizeText(data.proof_label),
+    heardAbout,
+    heardAboutPrompt: normalizeHeardAboutPrompt(heardAbout, data.heard_about_prompt),
     ...(originalTouch === undefined ? {} : { firstTouch: originalTouch }),
     name,
     email,
@@ -380,6 +409,10 @@ async function stampOwnerLeadConfirmationOnContact(store, submissionId, result) 
 module.exports = {
   OWNER_LEAD_CONTACT_STORE_NAME,
   OWNER_LEAD_CONTACTS_KEY,
+  HEARD_ABOUT_VALUES,
+  HEARD_ABOUT_AI_VALUES,
+  normalizeHeardAbout,
+  normalizeHeardAboutPrompt,
   buildOwnerLeadContact,
   mergeOwnerLeadContacts,
   getOwnerLeadContactBlobsConfig,
