@@ -26,6 +26,13 @@
     };
   }
 
+  function syncCount(form) {
+    var prompt = form && form.querySelector('[name="heard_about_prompt"]');
+    var count = form && form.querySelector("[data-heard-about-count]");
+    if (!prompt || !count) return;
+    count.textContent = String(prompt.value.length) + "/500";
+  }
+
   function syncPrompt(form) {
     if (!form || typeof form.querySelector !== "function") return;
     var promptField = form.querySelector(".owner-heard-about-prompt");
@@ -35,6 +42,7 @@
     promptField.classList.toggle("is-open", open);
     if (open) promptField.removeAttribute("hidden");
     else promptField.setAttribute("hidden", "");
+    syncCount(form);
   }
 
   function ownerForm(win) {
@@ -89,6 +97,13 @@
           syncPrompt(form);
         });
         select._heardAboutBound = true;
+      }
+      var prompt = form.querySelector('[name="heard_about_prompt"]');
+      if (prompt && !prompt._heardAboutCountBound) {
+        prompt.addEventListener("input", function () {
+          syncCount(form);
+        });
+        prompt._heardAboutCountBound = true;
       }
       syncPrompt(form);
     });

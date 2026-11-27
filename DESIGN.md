@@ -14,6 +14,10 @@ waterline:
     clay: "#A4533E"
     rule: "#CAD4CF"
     soft: "#F0F3EE"
+    # Owner evaluation form only (Direction A, Sawyer 2026-11-27).
+    formInk: "#222222"
+    formRule: "#DDDDDD"
+    formPaper: "#FFFFFF"
   typography:
     display:
       fontFamily: "Instrument Serif"
@@ -35,10 +39,15 @@ waterline:
       fontFamily: "Poppins"
       fontSize: "12px"
       letterSpacing: "0.13em"
+    form:
+      fontFamily: "Inter"
+      fontSize: "16px"
+      lineHeight: "1.4"
   rounded:
     none: "0"
     button: "4px"
     control: "4px"
+    form: "12px"
   # Spacing steps the Waterline CSS already uses. New rules pick from this list.
   space:
     "1": "4px"
@@ -221,7 +230,7 @@ Help a group choose one of the real homes, understand the details that could cha
 The homepage, catalog, property details, owner hub, guide index and About page use the scoped `guest-site` theme in `src/css/guest.css` and `src/css/motion.css`, plus `src/css/arrival.css` (homepage scenes) and `src/css/about.css` (About sections). Stay collections use the shared Waterline body and stylesheet described below. Field-journal guides and two homepage comparison guides share the guest header and footer. Those unmigrated guide bodies keep their existing typography, except a guide converted to the planning-guide frame below and one long-read exception: on the older field-journal guides, body paragraphs and list items read at 17px over 1.75 line height with a 68ch measure, set once in `guest.css` on `article.article-text` (October 2026; the inline guide styles stay as written). Generated owner landers use `guest-site` since November 2026 ([rules](docs/design/owner-landers.md)); other legacy routes keep the tokens above until redesigned.
 
 - Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper. Phones use a white canvas (same file).
-- Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable. Body reads 15px over 1.55. Sections use 60px desktop / 36px phone so phones keep more of the page in view.
+- Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face, except the owner evaluation form, which uses Inter (Direction A, Sawyer 2026-11-27). Large, compact display lines are deliberate; factual text stays readable. Body reads 15px over 1.55. Sections use 60px desktop / 36px phone so phones keep more of the page in view.
 - The photographic homepage names the pictured home on every width. Manual scenes, direct home links and the native trip form follow [the homepage contract](docs/design/homepage-controls.md). Never auto-rotate scenes. Navigation jumps directly to the form.
 - Homepage cards use Sawyer’s [focused desktop deck and vertical phone list](docs/design/home-focused-deck.md). Desktop shows one landscape postcard with photo-only neighbors and manual selection. Phones open the full list; each card retains its photo strip. Filters, trip links, reduced motion and no-JavaScript property links are preserved.
 - Carry expressive type, photographic scale, calm rules and marine/paper contrast through the catalog and property pages. Catalog card and phone surface rules: [cards and phone surfaces](docs/design/cards-and-phone-surfaces.md). Keep the working comparison table and conventional booking panel. Property photos remain real rectangles, not simulated rooms or a fictitious floor plan.

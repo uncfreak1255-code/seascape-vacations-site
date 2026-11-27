@@ -62,7 +62,7 @@ function fakeForm({ heard = "", prompt = "best vacation rental manager in Braden
     }
   };
   const select = { value: heard, addEventListener() {} };
-  const promptInput = { value: prompt };
+  const promptInput = { value: prompt, addEventListener() {} };
   return {
     promptField,
     select,
@@ -82,6 +82,7 @@ test("both owner form UIs share the optional heard-about partial", () => {
   assert.match(partial, /How did you hear about us\? \(optional\)/);
   assert.match(partial, /What did you ask it\? \(optional\)/);
   assert.match(partial, /e\.g\. best vacation rental manager in Bradenton/);
+  assert.match(partial, /data-heard-about-count/);
   assert.doesNotMatch(partial, /\brequired\b/);
   assert.doesNotMatch(partial, /owner-heard-about-prompt"[^>]*\bhidden\b/);
   const sourceFields = read("_includes", "partials", "owner-form-source-fields.njk");

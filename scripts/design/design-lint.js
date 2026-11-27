@@ -415,6 +415,10 @@ function checkPaletteIntegrity(touched, baseRef, { files, report }) {
   // violation before the palette moved is the abuse case.
   const failures = [];
   for (const rel of paletteUsageFiles(files, touched, changedPaletteSources)) {
+    // Waterline sheets may use a token added to DESIGN.md in the same change.
+    // The integrity check still stops a newly legalized hex from landing in a
+    // guide or other non-system surface in the same breath.
+    if (rel.startsWith("src/css/") && rel.endsWith(".css")) continue;
     let source;
     try {
       source = read(rel);

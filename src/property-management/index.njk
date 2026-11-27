@@ -10,7 +10,7 @@ navActive: "owners"
 navButtonHref: "#owner-cta"
 navButtonLabel: "Revenue Review"
 navButtonAttributes: 'data-track-event="owner_primary_cta_click" data-page-slug="property-management"'
-pageStylesheet: "/css/owner.css?v=waterline-v3"
+pageStylesheet: "/css/owner.css?v=form-a"
 headExtra: |
   <script type="application/ld+json">
   {
@@ -517,7 +517,7 @@ headExtra: |
       dots.forEach(function (dot, index) {
         dot.classList.toggle("is-active", index === step);
         dot.classList.toggle("is-complete", index < step);
-        dot.textContent = index < step ? "✓" : String(index + 1);
+        dot.textContent = String(index + 1);
       });
       lines.forEach(function (line, index) {
         line.classList.toggle("is-complete", index < step);

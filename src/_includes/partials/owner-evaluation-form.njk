@@ -50,6 +50,7 @@
     <div class="owner-form-fieldset">
   {% endif %}
       <div class="owner-form-grid{% if options.gridClassName %} {{ options.gridClassName }}{% endif %}">
+        <div class="owner-form-contact-group">
         <label class="owner-form-field">
           <span>Your Name</span>
           <input type="text" name="name" autocomplete="name" placeholder="First and last name" required>
@@ -62,6 +63,7 @@
           <span>Phone (optional)</span>
           <input type="tel" name="phone" autocomplete="tel" placeholder="Best number for text updates">
         </label>
+        </div>
         <label class="owner-form-field owner-form-field--wide">
           <span>{{ options.propertyFieldLabel or "Listing URL or property address" }}</span>
           <input type="text" name="property_address" autocomplete="street-address" placeholder="{{ options.propertyFieldPlaceholder or 'airbnb.com/h/your-listing, vrbo.com/..., or 123 Palm Ave' }}" data-owner-context-field>
