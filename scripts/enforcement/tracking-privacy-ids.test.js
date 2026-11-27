@@ -92,6 +92,19 @@ test("a public query cannot inject a phone number through a UUID-shaped tracking
   assert.equal(id.includes("9415550123"), false);
 });
 
+test("GA4 sanitizer drops heard_about_prompt even when the text is not email, phone, or address", () => {
+  const sanitize = loadRuntime("analytics-ga4.njk").seascapeSanitizeAnalyticsPayload;
+  const payload = sanitize({
+    heard_about: "chatgpt",
+    heard_about_prompt: "Ask Jane Smith for the best manager in Bradenton",
+    page_slug: "property-management"
+  });
+  assert.equal(payload.heard_about, "chatgpt");
+  assert.equal(payload.page_slug, "property-management");
+  assert.equal(payload.heard_about_prompt, undefined);
+  assert.equal(sanitize({ heard_about_prompt: "" }).heard_about_prompt, undefined);
+});
+
 test("legacy generation without randomUUID also survives the privacy filter", () => {
   const window = loadRuntime("conversion-tracking.js", { randomUUID: undefined });
   window.crypto.randomUUID = undefined;

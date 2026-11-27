@@ -208,15 +208,17 @@ test("production script order puts heard-about on owner_form_submit", () => {
   win.document._submit({ target: form });
   assert.equal(events[0].eventName, "owner_form_submit");
   assert.equal(events[0].payload.heard_about, "other_ai");
-  assert.equal(events[0].payload.heard_about_prompt, "Bradenton property manager");
+  assert.equal("heard_about_prompt" in events[0].payload, false);
 
   form.dataset.skipGlobalSubmitTrack = "true";
   events.length = 0;
   win.SeascapeConversionTracking.trackEvent("owner_form_submit", { page_slug: "property-management" });
   assert.equal(events[0].payload.heard_about, "other_ai");
+  assert.equal("heard_about_prompt" in events[0].payload, false);
 
   win.SeascapeConversionTracking.trackEvent("owner_form_start", { page_slug: "property-management" });
   assert.equal(events[1].payload.heard_about, undefined);
+  assert.equal("heard_about_prompt" in events[1].payload, false);
 
   const lateForm = fakeForm({ heard: "chatgpt" });
   lateForm.dataset = { formSubmitEvent: "owner_form_submit", pageSlug: "property-management" };
@@ -230,4 +232,25 @@ test("production script order puts heard-about on owner_form_submit", () => {
   installClosedOverTracking(late.win);
   late.win.document._submit({ target: lateForm });
   assert.equal(late.events[0].payload.heard_about, "chatgpt");
+  assert.equal("heard_about_prompt" in late.events[0].payload, false);
+
+  const piiForm = fakeForm({ heard: "chatgpt", prompt: "Ask Jane Smith in Bradenton" });
+  piiForm.dataset = { formSubmitEvent: "owner_form_submit", pageSlug: "property-management" };
+  const pii = trackingWindow(piiForm);
+  heardAboutJs.bind(pii.win);
+  installClosedOverTracking(pii.win);
+  pii.win.document._submit({ target: piiForm });
+  assert.equal(pii.events[0].payload.heard_about, "chatgpt");
+  assert.equal("heard_about_prompt" in pii.events[0].payload, false);
+
+  const tamperedForm = fakeForm({ heard: "not-a-source", prompt: "Ask Jane Smith" });
+  tamperedForm.dataset = { formSubmitEvent: "owner_form_submit", pageSlug: "property-management" };
+  const tampered = trackingWindow(tamperedForm);
+  heardAboutJs.bind(tampered.win);
+  installClosedOverTracking(tampered.win);
+  tampered.win.document._submit({ target: tamperedForm });
+  assert.equal(tampered.events[0].payload.heard_about, undefined);
+
+  const source = fs.readFileSync(path.join(projectRoot, "src", "assets", "js", "owner-heard-about.js"), "utf8");
+  assert.doesNotMatch(source, /next\.heard_about_prompt/);
 });

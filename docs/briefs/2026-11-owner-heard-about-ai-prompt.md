@@ -25,11 +25,11 @@
 ## Experiment And Readback Contract
 
 - hypothesis: none; intake instrumentation, not a ranking experiment
-- primary event: existing `owner_form_submit` with optional `heard_about` and `heard_about_prompt` params
+- primary event: existing `owner_form_submit` with optional allowlisted `heard_about` param; the free-text prompt stays off GA4
 - guardrail event: owner form still submits without these fields; required name, email, and authority are unchanged
 - entry criteria: Sawyer's 2026-11-26 approval
 - readback window: none; no lift claim
-- decision rule: ship when the fields post to Netlify, the contact store, the internal notify email, and `owner_form_submit`
+- decision rule: ship when the fields post to Netlify, the contact store, and the internal notify email; `owner_form_submit` carries allowlisted `heard_about` only
 
 ## Gate 0 Search And Attack Receipt
 
@@ -88,4 +88,4 @@ Required because `src/property-management/index.njk` is search-facing. This is n
   - `netlify/functions/_owner-lead-confirmation.js`
 - redirect or schema work: none
 - internal-link or CTA work: none added
-- money CTA and downstream tracking event to verify: `owner_form_submit` with optional `heard_about` and `heard_about_prompt`
+- money CTA and downstream tracking event to verify: `owner_form_submit` with optional allowlisted `heard_about`; `heard_about_prompt` is Netlify/contact/email only

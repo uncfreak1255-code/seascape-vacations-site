@@ -8,6 +8,17 @@
     google_ai: true,
     other_ai: true
   };
+  var ALLOWED_HEARD_ABOUT = {
+    google: true,
+    google_maps: true,
+    chatgpt: true,
+    google_ai: true,
+    other_ai: true,
+    referral: true,
+    airbnb_vrbo: true,
+    social: true,
+    other: true
+  };
 
   function isAi(value) {
     return Boolean(AI_VALUES[String(value || "")]);
@@ -22,8 +33,8 @@
     var heard = select && typeof select.value === "string" ? select.value.trim() : "";
     var asked = prompt && typeof prompt.value === "string" ? prompt.value.trim() : "";
     return {
-      heard_about: heard,
-      heard_about_prompt: isAi(heard) && asked ? asked.slice(0, 160) : ""
+      heard_about: ALLOWED_HEARD_ABOUT[heard] ? heard : "",
+      heard_about_prompt: isAi(heard) && asked ? asked : ""
     };
   }
 
@@ -44,12 +55,14 @@
     return doc.querySelector('form[data-track-form="owner"]');
   }
 
+  // Allowlisted source only. The free-text prompt stays on Netlify / the
+  // contact blob / Graph email. Google forbids PII in Analytics, and the
+  // sanitizer runs before this wrap, so the prompt must never be attached here.
   function enrichSubmitPayload(win, eventName, payload) {
     if (eventName !== "owner_form_submit") return payload;
     var extra = readHeardAbout(ownerForm(win));
     var next = Object.assign({}, payload || {});
     if (extra.heard_about) next.heard_about = extra.heard_about;
-    if (extra.heard_about_prompt) next.heard_about_prompt = extra.heard_about_prompt;
     return next;
   }
 
