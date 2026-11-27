@@ -141,7 +141,43 @@ test("internal notify email carries heard-about and the AI prompt", () => {
   assert.match(none.text, /What they asked: \(none\)/);
 });
 
-test("JS shows the prompt only for AI sources and adds GA4 params on owner_form_submit", () => {
+function trackingWindow(form) {
+  const events = [];
+  const ready = [];
+  const win = {
+    seascapeTrackEvent(eventName, payload) {
+      events.push({ eventName, payload });
+    },
+    document: {
+      documentElement: { classList: { add() {} } },
+      querySelector: (selector) => (
+        selector === 'form[data-track-form="owner"]' ? form : form.querySelector(selector)
+      ),
+      querySelectorAll: (selector) => (
+        selector === 'form[data-track-form="owner"]' ? [form] : []
+      ),
+      addEventListener(type, handler) {
+        if (type === "DOMContentLoaded") ready.push(handler);
+        if (type === "submit") this._submit = handler;
+      }
+    }
+  };
+  return { win, events, ready };
+}
+
+function installClosedOverTracking(win) {
+  function trackEvent(eventName, payload) {
+    win.seascapeTrackEvent(eventName, payload);
+  }
+  win.document.addEventListener("submit", function (event) {
+    const form = event.target;
+    if (!form || (form.dataset && form.dataset.skipGlobalSubmitTrack === "true")) return;
+    trackEvent(form.dataset.formSubmitEvent, { page_slug: form.dataset.pageSlug });
+  });
+  win.SeascapeConversionTracking = { trackEvent };
+}
+
+test("JS shows the prompt only for AI sources", () => {
   const aiForm = fakeForm({ heard: "chatgpt" });
   heardAboutJs.syncPrompt(aiForm);
   assert.equal(aiForm.promptField.hidden, false);
@@ -157,23 +193,41 @@ test("JS shows the prompt only for AI sources and adds GA4 params on owner_form_
   assert.equal(heardAboutJs.readHeardAbout(mapsForm).heard_about_prompt, "");
   assert.equal(heardAboutJs.isAi("google"), false);
   assert.equal(heardAboutJs.isAi("google_ai"), true);
+});
 
-  const events = [];
+test("production script order puts heard-about on owner_form_submit", () => {
   const form = fakeForm({ heard: "other_ai", prompt: "Bradenton property manager" });
-  const win = {
-    SeascapeConversionTracking: {
-      trackEvent(eventName, payload) {
-        events.push({ eventName, payload });
-      }
-    },
-    document: {
-      documentElement: { classList: { add() {} } },
-      querySelector: () => form,
-      querySelectorAll: () => [form]
-    }
+  form.dataset = {
+    formSubmitEvent: "owner_form_submit",
+    pageSlug: "property-management"
   };
+  const { win, events, ready } = trackingWindow(form);
+
   heardAboutJs.bind(win);
-  win.SeascapeConversionTracking.trackEvent("owner_form_submit", { page_slug: "property-management" });
+  installClosedOverTracking(win);
+  win.document._submit({ target: form });
+  assert.equal(events[0].eventName, "owner_form_submit");
   assert.equal(events[0].payload.heard_about, "other_ai");
   assert.equal(events[0].payload.heard_about_prompt, "Bradenton property manager");
+
+  form.dataset.skipGlobalSubmitTrack = "true";
+  events.length = 0;
+  win.SeascapeConversionTracking.trackEvent("owner_form_submit", { page_slug: "property-management" });
+  assert.equal(events[0].payload.heard_about, "other_ai");
+
+  win.SeascapeConversionTracking.trackEvent("owner_form_start", { page_slug: "property-management" });
+  assert.equal(events[1].payload.heard_about, undefined);
+
+  const lateForm = fakeForm({ heard: "chatgpt" });
+  lateForm.dataset = { formSubmitEvent: "owner_form_submit", pageSlug: "property-management" };
+  const late = trackingWindow(lateForm);
+  delete late.win.seascapeTrackEvent;
+  heardAboutJs.bind(late.win);
+  late.win.seascapeTrackEvent = function (eventName, payload) {
+    late.events.push({ eventName, payload });
+  };
+  late.ready.forEach((handler) => handler());
+  installClosedOverTracking(late.win);
+  late.win.document._submit({ target: lateForm });
+  assert.equal(late.events[0].payload.heard_about, "chatgpt");
 });

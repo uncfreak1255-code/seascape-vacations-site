@@ -38,24 +38,45 @@
     else promptField.setAttribute("hidden", "");
   }
 
-  function attachTracking(win) {
-    var api = win.SeascapeConversionTracking;
-    if (!api || typeof api.trackEvent !== "function" || api.trackEvent._heardAboutWrapped) return;
-    var original = api.trackEvent;
-    function wrapped(eventName, payload, options) {
-      if (eventName === "owner_form_submit") {
-        var form = win.document && typeof win.document.querySelector === "function"
-          ? win.document.querySelector('form[data-track-form="owner"]')
-          : null;
-        var extra = readHeardAbout(form);
-        payload = Object.assign({}, payload || {});
-        if (extra.heard_about) payload.heard_about = extra.heard_about;
-        if (extra.heard_about_prompt) payload.heard_about_prompt = extra.heard_about_prompt;
+  function ownerForm(win) {
+    var doc = win && win.document;
+    if (!doc || typeof doc.querySelector !== "function") return null;
+    return doc.querySelector('form[data-track-form="owner"]');
+  }
+
+  function enrichSubmitPayload(win, eventName, payload) {
+    if (eventName !== "owner_form_submit") return payload;
+    var extra = readHeardAbout(ownerForm(win));
+    var next = Object.assign({}, payload || {});
+    if (extra.heard_about) next.heard_about = extra.heard_about;
+    if (extra.heard_about_prompt) next.heard_about_prompt = extra.heard_about_prompt;
+    return next;
+  }
+
+  // conversion-tracking.js's submit listener calls a closed-over trackEvent, not
+  // the exported property. That closed-over function looks up seascapeTrackEvent
+  // (then gtag) at send time, so wrapping those is the live submit path.
+  function wrapTrackSender(win) {
+    if (!win) return;
+    var original = win.seascapeTrackEvent;
+    if (typeof original === "function" && !original._heardAboutWrapped) {
+      function wrapped(eventName, params) {
+        return original.call(win, eventName, enrichSubmitPayload(win, eventName, params));
       }
-      return original.call(api, eventName, payload, options);
+      wrapped._heardAboutWrapped = true;
+      win.seascapeTrackEvent = wrapped;
+      return;
     }
-    wrapped._heardAboutWrapped = true;
-    api.trackEvent = wrapped;
+    var gtag = win.gtag;
+    if (typeof gtag !== "function" || gtag._heardAboutWrapped) return;
+    function wrappedGtag(command, eventName, params) {
+      if (command === "event") {
+        return gtag.call(win, command, eventName, enrichSubmitPayload(win, eventName, params));
+      }
+      return gtag.apply(win, arguments);
+    }
+    wrappedGtag._heardAboutWrapped = true;
+    win.gtag = wrappedGtag;
   }
 
   function bind(win) {
@@ -73,7 +94,12 @@
       }
       syncPrompt(form);
     });
-    attachTracking(win);
+    wrapTrackSender(win);
+    if (typeof doc.addEventListener === "function") {
+      doc.addEventListener("DOMContentLoaded", function () {
+        wrapTrackSender(win);
+      }, { once: true });
+    }
   }
 
   var api = {
