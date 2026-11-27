@@ -193,6 +193,9 @@ test("JS shows the prompt only for AI sources", () => {
   assert.equal(heardAboutJs.readHeardAbout(mapsForm).heard_about_prompt, "");
   assert.equal(heardAboutJs.isAi("google"), false);
   assert.equal(heardAboutJs.isAi("google_ai"), true);
+  for (const value of HEARD_ABOUT_VALUES) {
+    assert.equal(heardAboutJs.readHeardAbout(fakeForm({ heard: value })).heard_about, value);
+  }
 });
 
 test("production script order puts heard-about on owner_form_submit", () => {

@@ -1,5 +1,3 @@
-// Owner-form "how did you hear about us" (#heard-about): show the AI prompt
-// when an AI source is picked. Without JS the prompt stays visible and optional.
 (function (root) {
   "use strict";
 
@@ -8,17 +6,7 @@
     google_ai: true,
     other_ai: true
   };
-  var ALLOWED_HEARD_ABOUT = {
-    google: true,
-    google_maps: true,
-    chatgpt: true,
-    google_ai: true,
-    other_ai: true,
-    referral: true,
-    airbnb_vrbo: true,
-    social: true,
-    other: true
-  };
+  var ALLOWED_HEARD_ABOUT = /^(google(_maps|_ai)?|chatgpt|other_ai|referral|airbnb_vrbo|social|other)$/;
 
   function isAi(value) {
     return Boolean(AI_VALUES[String(value || "")]);
@@ -33,7 +21,7 @@
     var heard = select && typeof select.value === "string" ? select.value.trim() : "";
     var asked = prompt && typeof prompt.value === "string" ? prompt.value.trim() : "";
     return {
-      heard_about: ALLOWED_HEARD_ABOUT[heard] ? heard : "",
+      heard_about: ALLOWED_HEARD_ABOUT.test(heard) ? heard : "",
       heard_about_prompt: isAi(heard) && asked ? asked : ""
     };
   }
@@ -55,9 +43,6 @@
     return doc.querySelector('form[data-track-form="owner"]');
   }
 
-  // Allowlisted source only. The free-text prompt stays on Netlify / the
-  // contact blob / Graph email. Google forbids PII in Analytics, and the
-  // sanitizer runs before this wrap, so the prompt must never be attached here.
   function enrichSubmitPayload(win, eventName, payload) {
     if (eventName !== "owner_form_submit") return payload;
     var extra = readHeardAbout(ownerForm(win));

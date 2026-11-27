@@ -11,7 +11,7 @@
             "client_secret",
             "redirect_status"
         ];
-        var SENSITIVE_ANALYTICS_KEY_PATTERN = /(^|[-_])(email|e-mail|phone|tel|mobile|first-name|last-name|full-name|guest-name|name|address|property-address|street|zip|postal|message|comment|note|concern|concerns|details|description|what-feels-off|free-text|prompt)($|[-_])/i;
+        var SENSITIVE_ANALYTICS_KEY_PATTERN = /(^|[-_])(email|e-mail|phone|tel|mobile|first-name|last-name|full-name|guest-name|name|address|property-address|street|zip|postal|message|comment|note|concern|concerns|details|description|what-feels-off|free-text)($|[-_])/i;
         var EMAIL_VALUE_PATTERN = /[^\s@]+@[^\s@]+\.[^\s@]+/;
         var PHONE_VALUE_PATTERN = /(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}/;
         var ADDRESS_VALUE_PATTERN = /\d{2,6}\s+[a-z0-9 .'-]+\s+(street|st|avenue|ave|road|rd|drive|dr|lane|ln|court|ct|boulevard|blvd|way|place|pl)\b/i;
