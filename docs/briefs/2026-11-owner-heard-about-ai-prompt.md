@@ -86,7 +86,6 @@ Required because `src/property-management/index.njk` is search-facing. This is n
   - `src/assets/js/owner-heard-about.js`
   - `netlify/functions/_owner-lead-contacts.js`
   - `netlify/functions/_owner-lead-confirmation.js`
-  - `scripts/recovery/validate-owner-live-surface.js`
 - redirect or schema work: none
 - internal-link or CTA work: none added
 - money CTA and downstream tracking event to verify: `owner_form_submit` with optional allowlisted `heard_about`; `heard_about_prompt` is Netlify/contact/email only

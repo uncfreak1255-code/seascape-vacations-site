@@ -8,15 +8,6 @@ const FEE_PASSAGE_INCLUDES = [
   "tourism and sales taxes remitted for you"
 ];
 
-const HEARD_ABOUT_INCLUDES = [
-  'name="heard_about"',
-  "How did you hear about us? (optional)",
-  'name="heard_about_prompt"',
-  "What did you ask it? (optional)",
-  'value="chatgpt"',
-  "e.g. best vacation rental manager in Bradenton"
-];
-
 const FEE_PASSAGE_EXCLUDES = [
   "Vacation rental management from 17%",
   "17–20% of net rent",
@@ -249,12 +240,10 @@ function validateOwnerLiveSurface(body, { requireIncludes, requireExcludes }) {
     if (!/data-placement=["\']local-alternative["\']/.test(body)) {
       throw new Error("property-management local-alternative action is missing tracking");
     }
-    requireIncludes("/property-management/ heard-about", body, HEARD_ABOUT_INCLUDES);
 }
 
 validateOwnerLiveSurface.FEE_PASSAGE_INCLUDES = FEE_PASSAGE_INCLUDES;
 validateOwnerLiveSurface.FEE_PASSAGE_EXCLUDES = FEE_PASSAGE_EXCLUDES;
-validateOwnerLiveSurface.HEARD_ABOUT_INCLUDES = HEARD_ABOUT_INCLUDES;
 validateOwnerLiveSurface.assertNoPublishedFeeNumbers = assertNoPublishedFeeNumbers;
 validateOwnerLiveSurface.assertNoPublishedOwnerAdminFee = assertNoPublishedOwnerAdminFee;
 

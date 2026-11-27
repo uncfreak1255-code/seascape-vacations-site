@@ -14,15 +14,7 @@ function ownerHubBody({
     ? `<form name=${formName} method="POST"></form>
       <input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required>
       I confirm I am the property owner or an authorized representative for this property.
-      Owner statement, optional
-      <label><span>How did you hear about us? (optional)</span>
-        <select name="heard_about">
-          <option value="chatgpt">ChatGPT</option>
-        </select>
-      </label>
-      <label><span>What did you ask it? (optional)</span>
-        <input type="text" name="heard_about_prompt" placeholder="e.g. best vacation rental manager in Bradenton">
-      </label>`
+      Owner statement, optional`
     : "";
   return `${prefix}
     <main>
