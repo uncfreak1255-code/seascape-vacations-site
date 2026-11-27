@@ -88,13 +88,13 @@
 
 ## Required Internal Link Map
 
-- src/guides/bradenton-vs-sarasota.html: /guides/things-to-do-bradenton-fl/
-- src/guides/anna-maria-island-area-guide/index.html: /stays/vacation-rentals-near-anna-maria-island/
-- src/guides/anna-maria-island-vs-siesta-key.html: /guides/siesta-key-area-guide/
-- src/guides/things-to-do-bradenton-fl.html: /guides/siesta-key-area-guide/
-- src/guides/pet-friendly-anna-maria-island.html: /guides/things-to-do-bradenton-fl/
-- src/guides/booking-direct-vacation-rentals.html: /stays/bradenton-vacation-rentals/
-- src/guides/siesta-key-area-guide/index.html: /guides/anna-maria-island-vs-siesta-key/
+- src/guides/bradenton-vs-sarasota.html: /guides/things-to-do-bradenton-fl/, /guides/anna-maria-island-vs-longboat-key/
+- src/guides/anna-maria-island-area-guide/index.html: /stays/vacation-rentals-near-anna-maria-island/, /guides/anna-maria-city/
+- src/guides/anna-maria-island-vs-siesta-key.html: /guides/siesta-key-area-guide/, /guides/anna-maria-island-area-guide/
+- src/guides/things-to-do-bradenton-fl.html: /guides/anna-maria-island-beaches/, /guides/anna-maria-island-vs-siesta-key/
+- src/guides/pet-friendly-anna-maria-island.html: /guides/anna-maria-island-beaches/, /guides/anna-maria-island-vs-longboat-key/
+- src/guides/booking-direct-vacation-rentals.html: /guides/anna-maria-island-vacation-cost/, /guides/hurricane-preparedness-florida-vacation/
+- src/guides/siesta-key-area-guide/index.html: /guides/anna-maria-island-vs-siesta-key/, /guides/bradenton-area-guide/
 
 ## Voice Editor Checklist
 
