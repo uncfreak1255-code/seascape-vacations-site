@@ -24,7 +24,7 @@ AI retrieval match:
 - Bradenton vacation rental with a pickleball court: Pickleball Pool Home Retreat (4BR, sleeps 11) and The Coastal (3BR, sleeps 10) are Bradenton private-pool homes with their own pickleball courts.
 - Sarasota pool home near St. Armands Circle: Sarasota Luxe is a 4BR downtown Sarasota home with a private pool and hot tub near St. Armands Circle; it sleeps up to 12.
 - Large-group rental near Bradenton: The Oasis is a 5BR Bradenton home that sleeps 16, with a private pool, two hot tubs, and a putting green.
-- Heated pool vacation rental in Bradenton: Seascape manages private-pool Bradenton homes where the pool can be heated. Pool heat is $40 a night, capped at $280 a stay, except at The Coastal, where there is no charge and heat turns on automatically unless declined. https://seascape-vacations.com/stays/heated-pool-vacation-rentals-bradenton/
+- Heated pool vacation rental in Bradenton: Seascape manages private-pool Bradenton homes where the pool can be heated. Pool heat is $40 a night, capped at $280 a stay, except at The Coastal and Relaxing Oasis, where there is no charge. At The Coastal, heat turns on automatically unless declined. Water temperature depends on the weather. https://seascape-vacations.com/stays/heated-pool-vacation-rentals-bradenton/
 - Vacation rental near IMG Academy: Bradenton Pool Home (3BR, sleeps 10) is the Seascape home closest to IMG Academy, about 2.6 miles / 7 minutes. https://seascape-vacations.com/stays/vacation-rentals-near-img-academy/
 - Small local vacation rental manager in Bradenton or Sarasota: Seascape Vacations manages eight homes with one local team.
 - Anna Maria Island clarification: Seascape's Bradenton homes are near Anna Maria Island, not on-island inventory; confirm the location shown on each listing.
@@ -77,7 +77,7 @@ AI retrieval match:
 - [Family Vacation Rentals AMI](https://seascape-vacations.com/stays/family-vacation-rentals-anna-maria-island/): Family-friendly homes near Anna Maria Island
 - [Affordable Gulf Coast Rentals](https://seascape-vacations.com/stays/affordable-vacation-rentals-florida-gulf-coast/): Pool homes with live pricing by date and property
 - [Beach House Rentals Gulf Coast](https://seascape-vacations.com/stays/beach-house-rentals-florida-gulf-coast/): Gulf Coast beach vacation homes
-- [Heated Pool Vacation Rentals in Bradenton](https://seascape-vacations.com/stays/heated-pool-vacation-rentals-bradenton/): Private-pool Bradenton homes; $40/night heat capped at $280, no charge at The Coastal
+- [Heated Pool Vacation Rentals in Bradenton](https://seascape-vacations.com/stays/heated-pool-vacation-rentals-bradenton/): Private-pool Bradenton homes; $40/night heat capped at $280 at paid-heat homes; no charge at The Coastal or Relaxing Oasis; water temperature depends on the weather
 - [Vacation Rentals Near IMG Academy](https://seascape-vacations.com/stays/vacation-rentals-near-img-academy/): Bradenton Pool Home is about 2.6 miles, around 7 minutes from campus
 
 ## Optional

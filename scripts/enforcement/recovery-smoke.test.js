@@ -40,7 +40,7 @@ test("live smoke script exposes reusable helpers for unit coverage", () => {
 test("pool-heat smoke requires the cap in page copy, not just FAQ schema", () => {
   const smoke = loadSmokeModule();
   const cap = "$40 per night, capped at $280 per stay";
-  const exceptions = "There is no charge for pool heat at The Coastal. Approved long-stay flat rates still apply.";
+  const exceptions = "There is no charge for pool heat at The Coastal. At Relaxing Oasis, pool heat comes with every stay at no extra charge. Approved long-stay flat rates still apply.";
   for (const route of ["/properties/dockside-dreams/", "/stays/vacation-rentals-with-pool-and-hot-tub/"]) {
     const target = smoke.targets.find((entry) => entry.path === route);
     assert.ok(target);
@@ -49,6 +49,19 @@ test("pool-heat smoke requires the cap in page copy, not just FAQ schema", () =>
     assert.throws(() => smoke.validateTargetResponse(target, {
       statusCode: 200, body: `${pets}<script type="application/ld+json">"${cap}"</script><p>${exceptions}</p>`
     }), /missing current live marker/);
+  }
+});
+
+test("Relaxing Oasis smoke rejects stale charges and inclusion confined to schema", () => {
+  const smoke = loadSmokeModule();
+  const target = smoke.targets.find((entry) => entry.path === "/properties/relaxing-oasis/");
+  assert.ok(target);
+  const policy = "Pool heat is included with every stay at Relaxing Oasis, at no extra charge. Water temperature depends on the weather and is not guaranteed.";
+  const validate = (body) => smoke.validateTargetResponse(target, { statusCode: 200, body });
+  assert.doesNotThrow(() => validate(`<p>${policy}</p>`));
+  assert.throws(() => validate(`<script type="application/ld+json">${JSON.stringify(policy)}</script>`), /missing current live marker/);
+  for (const stale of ["$40", "$280", "For new bookings", "Already-confirmed heat-included", "Optional extras, such as pool heat"]) {
+    assert.throws(() => validate(`<p>${policy}</p><p>${stale}</p>`), /stale live marker/);
   }
 });
 

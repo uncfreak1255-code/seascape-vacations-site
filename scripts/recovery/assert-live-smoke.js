@@ -1,3 +1,4 @@
+const validateIncludedPoolHeat = require("./validate-included-pool-heat");
 const {
   request,
   validateLiveAvailabilityMarkup,
@@ -23,6 +24,7 @@ const targets = [
   { path: "/properties/river-house/", status: 200 },
   { path: "/properties/sarasota-luxe/", status: 200 },
   { path: "/properties/dockside-dreams/", status: 200 },
+  { path: "/properties/relaxing-oasis/", status: 200 },
   { path: "/property-management/", status: 200 },
   { path: "/guides/", status: 200 },
   { path: "/stays/", status: 200 },
@@ -93,6 +95,7 @@ function validateTargetResponse(target, response) {
     requireIncludes(target.path, response.body, ["Pets are not permitted at this home.", "Service animals are welcome without a pet fee"]);
     requireExcludes(target.path, response.body, ["One dog under 30 lb may stay", "Ask us to confirm pet approval", "Dog approval, boat size", 'value="pet approval"']);
   }
+  validateIncludedPoolHeat(target.path, response.body, requireIncludes, requireExcludes);
 
   if (target.path === "/") {
     requireIncludes(target.path, response.body, ['Private-Pool Vacation Homes in Bradenton &amp; Sarasota | Seascape Vacations', 'Private-pool vacation homes in Bradenton and Sarasota.', 'Private-pool vacation homes in Bradenton &amp; Sarasota.']);
