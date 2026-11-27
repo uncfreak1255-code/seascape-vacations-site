@@ -84,6 +84,32 @@ test("Inter is self-hosted with font-display swap and no heading italics", () =>
   assert.match(fonts, /inter-latin-wght-3100e775e861\.woff2/);
 });
 
+test("guest-fonts.css ships live v4 colors without unused scale tokens", () => {
+  const fonts = read("src/css/guest-fonts.css");
+  assert.match(fonts, /--g-bg:#fff/);
+  assert.match(fonts, /--g-ink:#1e2324/);
+  assert.match(fonts, /--g-line:#e6e6e6/);
+  assert.match(fonts, /--g-line-control:#ddd/);
+  assert.match(fonts, /--g-accent:#173d42/);
+  assert.doesNotMatch(fonts, /--g-space-1|--g-fs-display|--g-radius-card|--g-dur-press|--g-font-ui/);
+});
+
+test("concatenated guest.css stays at or under origin/main (stylesheet ratchet)", () => {
+  const concatNow =
+    read("src/css/guest-fonts.css") + "\n" + read("src/css/guest.css") + "\n" + read("src/css/motion.css");
+  const show = (file) =>
+    execFileSync("git", ["show", `origin/main:${file}`], {
+      cwd: projectRoot,
+      encoding: "utf8",
+    });
+  const concatMain =
+    show("src/css/guest-fonts.css") + "\n" + show("src/css/guest.css") + "\n" + show("src/css/motion.css");
+  assert.ok(
+    concatNow.length <= concatMain.length,
+    `concat guest.css grew from ${concatMain.length} to ${concatNow.length}; stylesheet ratchet forbids this`
+  );
+});
+
 test("guest pages preload Inter; owner hub pages keep Poppins", () => {
   const layout = read("src/_includes/layouts/guest.njk");
   assert.match(layout, /pageStylesheet and 'owner\.css'/);
