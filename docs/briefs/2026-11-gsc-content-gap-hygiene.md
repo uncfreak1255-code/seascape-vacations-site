@@ -3,6 +3,7 @@
 - lifecycle: active
 - task scope: existing-page SEO hygiene from the 2026-11-26 Search Console content-gap scan; no new guest pages
 - completion or successor: draft PR only; do not merge
+- link map: enforced
 
 ## Figma Handoff
 
@@ -84,6 +85,16 @@
 - redirect or schema work: 301 the Bradenton Beach owner 404 to the AMI owner page; 301 Bradenton vs Sarasota `index.html` to the trailing-slash canonical; FAQPage entries only for new visible questions
 - internal-link or CTA work: comparison → things-to-do guide; AMI area guide → near-island collection; comparison → Siesta Key area guide
 - money CTA and downstream tracking event to verify: existing `guide_book_direct_click` on the new near-island block
+
+## Required Internal Link Map
+
+- src/guides/bradenton-vs-sarasota.html: /guides/things-to-do-bradenton-fl/
+- src/guides/anna-maria-island-area-guide/index.html: /stays/vacation-rentals-near-anna-maria-island/
+- src/guides/anna-maria-island-vs-siesta-key.html: /guides/siesta-key-area-guide/
+- src/guides/things-to-do-bradenton-fl.html: /guides/siesta-key-area-guide/
+- src/guides/pet-friendly-anna-maria-island.html: /guides/things-to-do-bradenton-fl/
+- src/guides/booking-direct-vacation-rentals.html: /stays/bradenton-vacation-rentals/
+- src/guides/siesta-key-area-guide/index.html: /guides/anna-maria-island-vs-siesta-key/
 
 ## Voice Editor Checklist
 
