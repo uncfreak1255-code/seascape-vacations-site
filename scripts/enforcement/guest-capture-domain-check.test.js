@@ -4,6 +4,7 @@ const { checkEmailDomain, emailDomain, setDomainResolver } = require("../../netl
 const { handleGuestEmailCapture, CAPTURE_STATES } = require("../../netlify/functions/guest-email-capture");
 const { createMemoryStore } = require("./fixtures/guest-capture-store");
 const { useAcceptAllDomains } = require("./fixtures/accept-all-dns");
+const { GUEST_CAPTURE_REJECTIONS_KEY } = require("../../netlify/functions/_guest-capture-rejection-metrics");
 
 function dnsError(code) {
   const error = new Error(code);
@@ -32,7 +33,7 @@ test("a domain with MX records is deliverable", async () => {
   assert.equal((await check("a@gmail.com", { mx: [{ exchange: "gmail-smtp-in.l.google.com", priority: 5 }] })).deliverable, true);
 });
 
-test("a domain that does not exist is refused", async () => {
+test("a domain with no MX and no address record is refused", async () => {
   const result = await check("a@gmial.com", { mx: "ENODATA", a: "ENOTFOUND", aaaa: "ENODATA" });
   assert.deepEqual(result, { deliverable: false, reason: "no_mail_records" });
 });
@@ -88,4 +89,7 @@ test("the capture function refuses an undeliverable domain before Mailchimp and 
   assert.equal(JSON.parse(response.body).captureState, CAPTURE_STATES.REJECTED);
   assert.equal(JSON.parse(response.body).reason, "rejected");
   assert.equal(mailchimpCalls, 0);
+  const record = JSON.parse(store.values.get(GUEST_CAPTURE_REJECTIONS_KEY));
+  assert.deepEqual(record.byReason, { undeliverable_domain: 1 });
+  assert.deepEqual(record.byPlacement, { home_inline: 1 });
 });
