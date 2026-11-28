@@ -111,6 +111,58 @@ test("normalizeAvailability derives the next bookable card range from Hostaway c
   assert.equal(availability.weekendsLeft, 1);
 });
 
+const checkoutDayFixture = [
+  { date: "2026-05-03", isAvailable: 1, minimumStay: 2, price: 360 },
+  { date: "2026-05-04", isAvailable: 1, minimumStay: 2, price: 380 }
+];
+const checkoutDayOptions = { preferredNights: 2, windowStart: "2026-05-03" };
+
+test("normalizeAvailability skips a checkout-closed date and considers later starts", () => {
+  const blockedDeparture = { date: "2026-05-05", isAvailable: 0, closedOnDeparture: "true" };
+  assert.equal(normalizeAvailability(
+    [...checkoutDayFixture, blockedDeparture], checkoutDayOptions
+  ).nextAvailable, null);
+
+  const availability = normalizeAvailability([
+    ...checkoutDayFixture,
+    blockedDeparture,
+    { date: "2026-05-07", isAvailable: 1, minimumStay: 2 },
+    { date: "2026-05-08", isAvailable: 1 },
+    { date: "2026-05-09", isAvailable: 0 }
+  ], checkoutDayOptions);
+  assert.equal(availability.nextAvailable.startDate, "2026-05-07");
+  assert.equal(availability.nextAvailable.endDate, "2026-05-09");
+});
+
+test("normalizeAvailability does not infer an unobserved checkout day", () => {
+  assert.equal(normalizeAvailability([
+    ...checkoutDayFixture,
+    { date: "2026-05-06", isAvailable: 0 }
+  ], checkoutDayOptions).nextAvailable, null);
+});
+
+test("normalizeAvailability allows checkout on a reserved night and excludes its rate", () => {
+  const availability = normalizeAvailability([
+    ...checkoutDayFixture,
+    { date: "2026-05-05", status: "reserved", isAvailable: 0, closedOnDeparture: "0", price: 900 }
+  ], checkoutDayOptions);
+  assert.equal(availability.nextAvailable.startDate, "2026-05-03");
+  assert.equal(availability.nextAvailable.endDate, "2026-05-05");
+  assert.equal(availability.nextAvailable.nights, 2);
+  assert.equal(availability.nextAvailable.nightlyRate, 370);
+});
+
+test("normalizeAvailability can shorten a preferred range without dropping below the arrival minimum", () => {
+  const availability = normalizeAvailability([
+    ...checkoutDayFixture,
+    { date: "2026-05-05", isAvailable: 1 },
+    { date: "2026-05-06", isAvailable: 0, closedOnDeparture: 1 }
+  ], { ...checkoutDayOptions, preferredNights: 3 });
+  assert.equal(availability.nextAvailable.startDate, "2026-05-03");
+  assert.equal(availability.nextAvailable.endDate, "2026-05-05");
+  assert.equal(availability.nextAvailable.nights, 2);
+});
+
 test("normalizeAvailability refuses to invent next dates when available runs miss minimum stay", () => {
   const availability = normalizeAvailability(
     [
