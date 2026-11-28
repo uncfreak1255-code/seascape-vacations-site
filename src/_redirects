@@ -437,6 +437,7 @@
 /guides/anna-maria-island-weather  /guides/anna-maria-island-weather/  301
 /guides/bradenton-vs-sarasota  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota.html  /guides/bradenton-vs-sarasota/  301
+/guides/bradenton-vs-sarasota/index.html  /guides/bradenton-vs-sarasota/  301!
 /guides/bradenton-vs-sarasota-vacation-rental-comparison  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota-vacation-rental-comparison/  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota-vacation-rental-comparison.html  /guides/bradenton-vs-sarasota/  301
@@ -451,13 +452,9 @@
 /guides/anna-maria-island-area-guide.html  /guides/anna-maria-island-area-guide/  301
 /guides/anna-maria-island-beaches.html  /guides/anna-maria-island-beaches/  301
 /guides/anna-maria-island-noise-ordinance-guide.html  /guides/anna-maria-island-noise-ordinance-guide/  301
-/guides/anna-maria-island-vacation-cost.html  /guides/anna-maria-island-vacation-cost/  301
 /guides/anna-maria-island-vs-clearwater-beach.html  /guides/anna-maria-island-vs-clearwater-beach/  301
 /guides/anna-maria-island-vs-longboat-key.html  /guides/anna-maria-island-vs-longboat-key/  301
-/guides/anna-maria-island-vs-siesta-key.html  /guides/anna-maria-island-vs-siesta-key/  301
-/guides/anna-maria-island-weather.html  /guides/anna-maria-island-weather/  301
 /guides/best-restaurants-anna-maria-island.html  /guides/best-restaurants-anna-maria-island/  301
-/guides/best-time-visit-anna-maria-island.html  /guides/best-time-visit-anna-maria-island/  301
 /guides/best-vacation-rental-companies-ami.html  /guides/best-vacation-rental-companies-ami/  301
 /guides/best-waterfront-restaurants-with-boat-dock.html  /guides/best-waterfront-restaurants-with-boat-dock/  301
 /guides/booking-direct-vacation-rentals.html  /guides/booking-direct-vacation-rentals/  301
@@ -466,11 +463,9 @@
 /guides/bradenton-beach.html  /guides/bradenton-beach/  301
 /guides/bradenton-insider-guide.html  /guides/bradenton-insider-guide/  301
 /guides/bradenton-vs-sarasota-beaches.html  /guides/bradenton-vs-sarasota-beaches/  301
-/guides/bradenton-vs-sarasota-cost-of-living.html  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-sarasota-for-families.html  /guides/bradenton-vs-sarasota-for-families/  301
 /guides/bradenton-vs-sarasota-restaurants.html  /guides/bradenton-vs-sarasota-restaurants/  301
 /guides/bradenton-vs-sarasota-retirement.html  /guides/bradenton-vs-sarasota-retirement/  301
-/guides/bradenton-vs-sarasota.html  /guides/bradenton-vs-sarasota/  301
 /guides/bradenton-vs-tampa-vacation-rentals.html  /guides/bradenton-vs-tampa-vacation-rentals/  301
 /guides/do-you-need-a-car-anna-maria-island.html  /guides/do-you-need-a-car-anna-maria-island/  301
 /guides/dolphins-manatees-bradenton.html  /guides/dolphins-manatees-bradenton/  301
@@ -491,7 +486,6 @@
 /guides/shelling-guide-florida.html  /guides/shelling-guide-florida/  301
 /guides/siesta-key-area-guide.html  /guides/siesta-key-area-guide/  301
 /guides/siesta-key-beach-guide.html  /guides/siesta-key-beach-guide/  301
-/guides/siesta-key-vs-anna-maria-island-families.html  /guides/siesta-key-vs-anna-maria-island-families/  301
 /guides/snowbirds-guide-extended-stays-florida.html  /guides/snowbirds-guide-extended-stays-florida/  301
 /guides/spring-break-activities-bradenton-anna-maria-island.html  /guides/spring-break-activities-bradenton-anna-maria-island/  301
 /guides/things-to-do-bradenton-fl.html  /guides/things-to-do-bradenton-fl/  301
@@ -509,6 +503,8 @@
 # Netlify Pretty URLs + the slashless rule below; missing /guides/{slug}/ must 404.
 /guides/:slug  /guides/:slug/  301
 
+/property-management/vacation-rental-management-bradenton-beach  /property-management/vacation-rental-management-anna-maria-island/  301
+/property-management/vacation-rental-management-bradenton-beach/  /property-management/vacation-rental-management-anna-maria-island/  301
 /property-management/vacation-rental-management-licensing-florida  /property-management/vacation-rental-licensing-florida/  301
 /property-management/vacation-rental-management-licensing-florida/  /property-management/vacation-rental-licensing-florida/  301
 

@@ -50,7 +50,7 @@ test("documented portfolio aliases redirect directly to their winner URL", () =>
     for (const alias of entry.aliases) {
       const rule = redirectFor(alias);
       assert.ok(rule, `${entry.winnerUrl} documents alias ${alias}, but src/_redirects has no rule`);
-      assert.equal(rule.code, "301", `${alias} should be a permanent redirect`);
+      assert.match(String(rule.code), /^301!?$/, `${alias} should be a permanent redirect`);
       assert.equal(
         normalizeComparablePath(rule.to),
         normalizeComparablePath(entry.winnerUrl),

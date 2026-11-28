@@ -49,17 +49,13 @@ const path = require("path");
 const { execFileSync } = require("child_process");
 
 const { listSourceFiles, isStylesheet } = require("./design-lint-sources");
+const { createV4Palette, RETIRED_HEX } = require("./v4-palette");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const baselinePath = path.join(__dirname, "design-lint-baseline.json");
 
-// Files whose hex values define the sanctioned palette. Any hex used here is allowed.
-const PALETTE_SOURCE_FILES = [
-  "DESIGN.md",
-  "src/css/base.css",
-  "src/css/guide-field-journal.css",
-  "src/_includes/partials/guide-conversion-kit.njk",
-];
+// Palette source is DESIGN.md system.colors only.
+const PALETTE_SOURCE_FILES = ["DESIGN.md"];
 
 // Universally safe values that need no palette membership.
 const ALWAYS_ALLOWED_HEX = new Set([
@@ -95,21 +91,18 @@ function normalizeHex(hex) {
   return lower;
 }
 
-function buildPaletteAllowlist() {
-  const allowed = new Set([...ALWAYS_ALLOWED_HEX].map(normalizeHex));
-  for (const rel of PALETTE_SOURCE_FILES) {
-    let content;
-    try {
-      content = read(rel);
-    } catch {
-      continue;
-    }
-    for (const match of content.match(HEX_RE) || []) {
-      allowed.add(normalizeHex(match));
-    }
-  }
-  return allowed;
-}
+const v4Palette = createV4Palette({
+  HEX_RE,
+  ALWAYS_ALLOWED_HEX,
+  normalizeHex,
+  read,
+});
+const {
+  sanctionedHexesFromDesignMd,
+  paletteHexesFromSource,
+  buildPaletteAllowlist,
+  skipPaletteConsumer,
+} = v4Palette;
 
 // Extract only the CSS/style contexts so we never flag hex inside JSON-LD, URLs,
 // SVG path data, or tracking IDs.
@@ -147,17 +140,6 @@ function stripToVisibleText(source) {
 const styleContextOf = (source, rel) =>
   (rel && isStylesheet(rel) ? source : extractStyleContexts(source)).replace(/\/\*[\s\S]*?\*\//g, "");
 
-const { paletteUsageFiles, paletteUsesAddedHexes, checkPaletteIntegrity } = require("./design-lint-palette").createPaletteIntegrity({
-  PALETTE_SOURCE_FILES,
-  ALWAYS_ALLOWED_HEX,
-  HEX_RE,
-  normalizeHex,
-  read,
-  readSourceAtRef,
-  resolveMergeBase,
-  styleContextOf,
-});
-
 function lintSource(source, allowlist, rel) {
   // counts back the per-check ratchet: hexCounts maps each off-brand hex to how
   // many times it appears in style contexts, so migrate-on-touch can tell "same
@@ -171,7 +153,7 @@ function lintSource(source, allowlist, rel) {
 
   for (const match of styleContextOf(source, rel).match(HEX_RE) || []) {
     const norm = normalizeHex(match);
-    if (!allowlist.has(norm)) {
+    if (!allowlist.has(norm) || RETIRED_HEX.has(norm)) {
       if (!(norm in violations.counts.hex)) {
         violations.offBrandHex.push(norm);
       }
@@ -354,6 +336,98 @@ function checkCoverage({ files, report }, baseline) {
   return failures;
 }
 
+// Fails when this branch both WIDENS the palette and USES a newly-legalized hex
+// in a touched guide. Editing the palette alone stays allowed (real palette work
+// happens); using a color you legalized in the same breath does not.
+function paletteUsageFiles(files, touched, changedPaletteSources) {
+  return [
+    ...new Set([
+      ...files.filter((rel) => touched.has(rel)),
+      // Shared style partials and CSS files are consumers too. Once any
+      // palette source changes, audit every shared consumer: a branch can
+      // widen the allowlist in DESIGN.md while an unchanged partial already
+      // uses the newly legalized color.
+      ...(changedPaletteSources.length ? PALETTE_SOURCE_FILES.filter((rel) => rel !== "DESIGN.md") : []),
+    ]),
+  ];
+}
+
+function paletteUsesAddedHexes(source, addedHexes, rel) {
+  const used = new Set((styleContextOf(source, rel).match(HEX_RE) || []).map(normalizeHex));
+  return [...addedHexes].filter((hex) => used.has(hex));
+}
+
+function checkPaletteIntegrity(touched, baseRef, { files, report }) {
+  const changedPaletteSources = PALETTE_SOURCE_FILES.filter((rel) => touched.has(rel));
+  if (!changedPaletteSources.length) {
+    return [];
+  }
+
+  const mergeBase = resolveMergeBase(baseRef);
+  if (!mergeBase) {
+    return [
+      `palette source(s) changed (${changedPaletteSources.join(", ")}) but the merge base ` +
+        `against ${baseRef} could not be resolved, so the widening cannot be audited.`,
+    ];
+  }
+
+    const baseAllowed = new Set([...ALWAYS_ALLOWED_HEX].map(normalizeHex));
+    for (const rel of PALETTE_SOURCE_FILES) {
+      const source = readSourceAtRef(mergeBase, rel);
+      if (!source) {
+        continue;
+      }
+      for (const match of paletteHexesFromSource(rel, source)) {
+        baseAllowed.add(normalizeHex(match));
+      }
+    }
+
+    const addedHexes = new Set();
+    for (const rel of PALETTE_SOURCE_FILES) {
+      let source;
+      try {
+        source = read(rel);
+      } catch {
+        continue;
+      }
+      for (const match of paletteHexesFromSource(rel, source)) {
+        const norm = normalizeHex(match);
+        if (!baseAllowed.has(norm)) {
+          addedHexes.add(norm);
+        }
+      }
+    }
+
+  if (!addedHexes.size) {
+    return [];
+  }
+
+  // A newly-legalized hex is only a problem if this branch also puts it into a
+  // rendered design surface. Re-lint each touched guide and changed shared
+  // style source against the BASE allowlist: anything that would have been a
+  // violation before the palette moved is the abuse case.
+  const failures = [];
+  for (const rel of paletteUsageFiles(files, touched, changedPaletteSources)) {
+    if (skipPaletteConsumer(rel)) continue;
+    let source;
+    try {
+      source = read(rel);
+    } catch {
+      continue;
+    }
+    const abused = paletteUsesAddedHexes(source, addedHexes, rel);
+    if (abused.length) {
+      failures.push(
+        `${rel} uses ${abused.join(", ")}, legalized in this same branch by ` +
+          `${changedPaletteSources.join(", ")}. Use an existing palette value, or land the ` +
+          "palette change on its own and let it be reviewed as a design decision."
+      );
+    }
+  }
+
+  return failures;
+}
+
 function run() {
   const allowlist = buildPaletteAllowlist();
   const files = listSourceFiles(projectRoot);
@@ -529,6 +603,8 @@ module.exports = {
   evaluate,
   loadBaseline,
   buildPaletteAllowlist,
+  sanctionedHexesFromDesignMd,
+  RETIRED_HEX,
   lintFile,
   lintSource,
   listSourceFiles,

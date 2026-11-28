@@ -2,14 +2,14 @@
 .city-homes{--g-ink:#173d42;--g-accent:#a4533e;--g-rule:#cad4cf;--g-muted:#52676a;max-width:1180px;margin:0 auto 60px;padding:0 24px;color:var(--g-ink,#173D42);scroll-margin-top:112px}
 .city-homes-intro{display:grid;grid-template-columns:1fr 1fr;gap:8px 56px;margin:0 0 24px}
 .city-homes-label{grid-column:1/-1;margin:0;color:var(--g-accent,#A4533E);font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
-.city-homes h2{margin:0;font-family:"Instrument Serif",Georgia,serif;font-weight:400;font-size:clamp(32px,3vw,42px);line-height:1.08;letter-spacing:-.03em}
+.city-homes h2{margin:0;font-family:Inter,sans-serif;font-weight:600;font-style:normal;font-size:clamp(32px,3vw,42px);line-height:1.08;letter-spacing:-.03em}
 .city-homes-intro>p:last-child{margin:0;align-self:end;font-size:15px;line-height:1.55;max-width:50ch}
 .city-home-list{border-top:1px solid var(--g-rule,#CAD4CF)}
 .city-home{display:grid;grid-template-columns:184px minmax(0,1fr) 220px;gap:32px;align-items:center;padding:24px 0;border-bottom:1px solid var(--g-rule,#CAD4CF)}
 .city-home-photo{display:block;width:184px;height:136px;object-fit:cover;object-position:center;border-radius:0}
 .city-home-copy{min-width:0}
 .city-home-city{margin:0 0 4px;color:var(--g-accent,#A4533E);font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase}
-.city-homes h3{margin:0 0 8px;font-family:"Instrument Serif",Georgia,serif;font-size:30px;font-weight:400;line-height:1.08;letter-spacing:-.03em}
+.city-homes h3{margin:0 0 8px;font-family:Inter,sans-serif;font-size:30px;font-weight:600;font-style:normal;line-height:1.08;letter-spacing:-.03em}
 .city-home-copy>p:not(.city-home-city){margin:0 0 8px;font-size:15px;line-height:1.55}
 .city-home-copy>p:last-child{margin-bottom:0}
 .city-home-facts{font-weight:500}

@@ -1,5 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 
 const fallbackProperties = require("../../src/_data/properties-fallback.json");
 const seoPages = require("../../src/_data/seoPages.json");
@@ -30,7 +32,8 @@ function assertPoolHeatPolicy(text, name) {
 }
 
 // The owner of The Coastal stopped charging for pool heat (Sawyer, 2026-11-11), and its heat turns on
-// automatically unless the guest declines (Sawyer, 2026-11-12). Every other home keeps the $40 rule.
+// automatically unless the guest declines (Sawyer, 2026-11-12). Relaxing Oasis heat is included
+// for every guest (Sawyer, 2026-11-25, Hub #1141). The remaining homes keep the $40 rule.
 function assertCoastalPoolHeatPolicy(text) {
   assert.match(text, /no charge for pool heat at The Coastal/i, "coastal-stay: no pool-heat charge");
   assert.match(text, /heat turns on automatically for your stay unless you tell us you don't want it/i, "coastal-stay: automatic unless declined");
@@ -55,13 +58,14 @@ function assertPoolHeatClaims(strings, name) {
   }
 }
 
-test("pool heat follows the same nightly and arrival rules at every home and stay entry", () => {
+test("pool heat preserves included-home exceptions and paid-home nightly and arrival rules", () => {
   for (const property of fallbackProperties) {
     const policy = property.guestFacts?.poolHeat || "";
     if (property.slug === "relaxing-oasis") {
-      // Its existing, separately approved reservation terms are retained during catalog onboarding.
-      assert.match(policy, /Already-confirmed heat-included reservations keep that inclusion/);
-      assert.match(policy, /optional for the whole stay at \$40 per night, capped at \$280 per stay/);
+      assert.equal(property.id, "607228", "keep Relaxing Oasis distinct from The Oasis");
+      assert.match(policy, /pool heat is included with every stay at Relaxing Oasis, at no extra charge/i);
+      assert.match(policy, /water temperature depends on the weather and is not guaranteed/i);
+      assert.doesNotMatch(policy, /\$|optional|new bookings|already-confirmed|before arrival|after arrival|request|automatically|already on|\d+\s*(?:°|degrees?|hours?)/i);
       continue;
     }
     if (property.slug === "coastal-stay") {
@@ -81,9 +85,46 @@ test("pool heat follows the same nightly and arrival rules at every home and sta
     const strings = stringLeaves(rendered);
     assertPoolHeatPolicy(strings.join(" "), page.slug);
     assert.match(strings.join(" "), /There is no charge for pool heat at The Coastal\./, `${page.slug}: preserve The Coastal exception`);
+    assert.match(strings.join(" "), /At Relaxing Oasis, pool heat comes with every stay at no extra charge\./, `${page.slug}: preserve Relaxing Oasis exception`);
     for (const text of strings) {
       assert.doesNotMatch(text, /every managed home(?! except The Coastal)/i, `${page.slug}: "every managed home" must not cover The Coastal`);
     }
     assertPoolHeatClaims(strings, page.slug);
   }
+});
+
+test("Relaxing Oasis fee and booking-cohort wording cannot return in shared website copy", () => {
+  const page = allSeoPages().find((page) => page.slug === "heated-pool-vacation-rentals-bradenton");
+  const rendered = applyStayFacts(structuredClone(page), fallbackProperties);
+  for (const text of [rendered.description, rendered.intro, rendered.geoIntro,
+    rendered.faqs.find((faq) => /how much does pool heat cost/i.test(faq.question)).answer]) {
+    assert.match(text, /Relaxing Oasis/);
+    assert.match(text, /no (?:extra )?charge/);
+    assert.doesNotMatch(text, /new bookings|already-confirmed heat-included|no-charge rule is only for The Coastal/i);
+  }
+});
+
+test("built Relaxing Oasis FAQ, cost answer and AI discovery agree on included pool heat", () => {
+  const built = (file) => fs.readFileSync(path.resolve(__dirname, "../../_site", file), "utf8");
+  const policy = fallbackProperties.find((property) => property.slug === "relaxing-oasis").guestFacts.poolHeat;
+  const html = built("properties/relaxing-oasis/index.html");
+  const visible = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
+  assert.ok(visible.includes(policy), "visible FAQ must use the current property policy");
+  assert.doesNotMatch(visible, /\$40|\$280|For new bookings|Already-confirmed heat-included|Optional extras, such as pool heat/);
+  const schemas = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)].map((match) => JSON.parse(match[1]));
+  const faq = schemas.find((schema) => schema["@type"] === "FAQPage");
+  assert.equal(faq.mainEntity.find((item) => item.name === "Is pool heating included?").acceptedAnswer.text, policy);
+  const discovery = JSON.parse(built("ai-discovery.json"));
+  for (const property of fallbackProperties) {
+    assert.equal(discovery.properties.find((item) => item.slug === property.slug).pool_heating, property.guestFacts.poolHeat, property.slug);
+  }
+  const summary = JSON.parse(built("ai/summary.json"));
+  const answer = summary.guest_intents.find((intent) => intent.intent === "heated pool vacation rental in Bradenton").answer;
+  assert.match(answer, /except at The Coastal and Relaxing Oasis, where there is no charge/);
+  assert.match(answer, /At The Coastal, heat turns on automatically unless declined/);
+  assert.match(answer, /Water temperature depends on the weather/);
+  assert.ok(built("llms.txt").includes(answer), "LLM answer and AI summary must stay consistent");
+  const paid = built("properties/the-oasis/index.html");
+  assert.match(paid, /Optional extras, such as pool heat, need confirmation/);
+  assert.match(paid, /\$40 per night, capped at \$280 per stay/);
 });

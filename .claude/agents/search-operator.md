@@ -1,7 +1,7 @@
 ---
 name: search-operator
 description: Read-only operator for choosing the next SEO batch. Use at the start of a batch cycle to run the proof lane (GSC/GA4/analytics) and attack lane (SERP/competitor evidence) and recommend one cluster with an attack receipt. Does not edit site source.
-tools: Read, Glob, Grep, Bash, WebFetch, WebSearch, mcp__openseo__whoami, mcp__openseo__list_projects, mcp__openseo__list_saved_keywords, mcp__openseo__get_rank_tracker, mcp__openseo__get_search_console_performance, mcp__openseo__inspect_urls, mcp__openseo__get_project_context, mcp__openseo__list_reports, mcp__openseo__get_report, mcp__openseo__list_report_templates
+tools: Read, Glob, Grep, Bash, WebFetch, WebSearch, mcp__openseo__whoami, mcp__openseo__list_projects, mcp__openseo__list_saved_keywords, mcp__openseo__get_rank_tracker, mcp__openseo__get_search_console_performance, mcp__openseo__inspect_urls, mcp__openseo__get_project_context, mcp__openseo__list_reports, mcp__openseo__get_report, mcp__openseo__list_report_templates, mcp__openseo__get_rank_history, mcp__openseo__get_ai_visibility_tracker, mcp__openseo__get_ai_visibility_run, mcp__openseo__get_ai_visibility_results, mcp__openseo__get_ai_visibility_answer, mcp__openseo__get_ai_visibility_sources, mcp__openseo__get_ai_visibility_trend, mcp__openseo__estimate_ai_visibility_cost, mcp__openseo__estimate_rank_tracker_cost, mcp__openseo__get_google_analytics_organic_landing_pages, mcp__openseo__get_google_analytics_page_performance, mcp__openseo__get_google_analytics_key_events, mcp__openseo__get_search_opportunities
 model: sonnet
 ---
 
@@ -44,7 +44,9 @@ Start from local OpenSEO, as `docs/process/openseo.md` requires:
    for the proof lane, existing `get_rank_tracker` history for tracked queries,
    `list_saved_keywords`, `get_project_context`, and prior `list_reports` /
    `get_report` output. Record observation time, query, current and prior
-   position, and landing URL.
+   position, and landing URL. Check the run’s checked count before treating a
+   stale or empty rank as a loss. For AEO, read results and sources from the
+   same explicit saved run ID.
 3. Use only the local `openseo` server. Never use the hosted OpenSEO connector
    or another paid provider. Off this Mac, or when the app is stopped, report
    local OpenSEO unavailable and continue with the remaining sources.
@@ -59,6 +61,10 @@ For the attack lane, follow the matching upstream skill's method:
 for query families, `openseo-local-ai-visibility-audit` and
 `openseo-local-ai-prompt-research` for AI-answer evidence. The Site skills
 `next-batch-gate` and `openseo-review` govern the verdict and report shape.
+Use the Growth Decision section in `docs/process/seo-competitor-operating-loop.md` to hand off one
+booking, owner-acquisition, or partner-distribution move. Finish the due
+readback first; a thin outcome cannot authorize copy or block an independent,
+verified, in-scope action.
 
 ## Regression Rescue
 

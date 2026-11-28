@@ -23,7 +23,7 @@
 .g-about-pair>div+div{padding:28px 0 8px 40px;border-left:1px solid var(--g-rule)}
 .guest-site .g-about-pair h3{font-size:30px;margin:0 0 4px}
 .g-about-four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px;border-top:1px solid var(--g-ink);padding-top:28px}
-.g-about-four .g-about-n{font:500 12px/1 Poppins,sans-serif;letter-spacing:.13em;color:var(--g-accent);display:block;margin-bottom:12px}
+.g-about-four .g-about-n{font:500 12px/1 Inter,sans-serif;letter-spacing:.13em;color:var(--g-accent);display:block;margin-bottom:12px}
 .guest-site .g-about-four p{font-size:14px;color:var(--g-muted);margin:10px 0 0}
 .g-about-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}
 .g-about-tiles a{display:block;border-top:1px solid var(--g-ink);padding-top:18px;text-decoration:none}

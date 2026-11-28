@@ -4,7 +4,7 @@ const { moneyRoutes } = require("./routes");
 const { gotoMarketingRoute } = require("./test-helpers");
 
 const ownerHub = moneyRoutes.find((route) => route.slug === "property-management");
-const FORM_INK = "rgb(34, 34, 34)";
+const FORM_ACCENT = "rgb(23, 61, 66)";
 const FORM_RULE = "rgb(221, 221, 221)";
 
 async function readSegment(locator) {
@@ -31,7 +31,7 @@ test("owner form step controls use a thin four-segment bar and keep hit area uns
 
   const active = page.locator(".g-owner-step-dot.is-active");
   const activeColors = await readSegment(active);
-  assert.equal(activeColors.background, FORM_INK);
+  assert.equal(activeColors.background, FORM_ACCENT);
   assert.equal(activeColors.height, "4px");
   assert.equal(activeColors.transform, "none");
 
@@ -40,10 +40,10 @@ test("owner form step controls use a thin four-segment bar and keep hit area uns
   await expect(page.locator(".g-owner-step-dot.is-active")).toHaveAttribute("aria-label", "Go to step 2");
 
   const completeColors = await readSegment(page.locator(".g-owner-step-dot.is-complete"));
-  assert.equal(completeColors.background, FORM_INK);
+  assert.equal(completeColors.background, FORM_ACCENT);
 
   const nextActive = await readSegment(page.locator(".g-owner-step-dot.is-active"));
-  assert.equal(nextActive.background, FORM_INK);
+  assert.equal(nextActive.background, FORM_ACCENT);
 
   const idle = page.locator(".g-owner-step-dot").nth(2);
   const idleColors = await readSegment(idle);

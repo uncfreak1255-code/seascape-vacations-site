@@ -1,7 +1,7 @@
 # Brief: Pool-heat billing correction
 
 - lifecycle: active
-- scope approved: Sawyer requested the shared nightly-rate and stay-cap copy correction on 2026-11-13. Existing pages only; no change to payments, heater controls, or quoted exceptions.
+- scope approved: Sawyer requested the Relaxing Oasis included-heat website correction on 2026-11-27, following the 2026-11-25 decision recorded and verified in Hub #1141. The earlier shared nightly-rate and stay-cap correction was approved on 2026-11-13. Existing pages only; no change to payments, heater controls, or quoted exceptions.
 - persona: Guest comparing pool homes and the complete cost before booking.
 - primary keyword: vacation rentals with heated pool
 - secondary keywords: Anna Maria Island pool heat fee, Bradenton heated pool rental, Sarasota pool home
@@ -9,9 +9,71 @@
 - proof source: Hub main `73bb60b135c0e947aa615b4353368f9d80a9446f`, verified against its remote on 2026-10-20; `decisions/2026-10-10-pool-heat-whole-stay-only.md`, `decisions/2026-10-11-pool-heat-mid-stay-remaining-nights.md`, `decisions/2026-10-13-pool-heat-every-managed-home.md`, and `context/seascape-properties.md` Portfolio Amenity Billing Baseline. Site base `41ecf4faeda5faccd4bfbee79434eac5e0254321`.
 - required internal links: /properties/sarasota-luxe/, /properties/the-oasis/
 - CTA target: Existing property and direct-booking links, unchanged.
-- anti-claims: No free or included pool heat at any home except The Coastal, which has no pool-heat charge (Sawyer, 2026-11-11), daily pricing, five-home billing restriction, selected heated nights, automatic activation, guaranteed temperature or heat-up time. Preserve approved long-stay flat rates. Hot-tub/spa terms remain distinct from pool billing.
+- anti-claims: No free or included pool heat at paid-heat homes. The Coastal has no pool-heat charge (Sawyer, 2026-11-11); Relaxing Oasis includes heat for every guest (Sawyer, 2026-11-25, Hub #1141). No daily pricing, five-home billing restriction, selected heated nights, automatic activation, guaranteed temperature or heat-up time. Preserve approved long-stay flat rates. Hot-tub/spa terms remain distinct from pool billing.
 
-## Approved correction
+## Current correction — 2026-11-27
+
+Mutation owner: this Codex session. Prepare source and regression proof only;
+no merge, website publication, Hostaway edits, sends, payment activity or heater
+commands. Hub #1141 is complete; Pool Heat Kit #5 merged on November 25 ET.
+Neither workstream is duplicated.
+
+The [November 25 decision](https://github.com/uncfreak1255-code/seascape-hub/issues/1141)
+replaces every Relaxing Oasis (607228) booking-cohort charge. It is a different
+home from The Oasis (189511). Current property answer:
+
+> Pool heat is included with every stay at Relaxing Oasis, at no extra charge.
+> Water temperature depends on the weather and is not guaranteed.
+
+Preserve the other seven property records byte for byte. The Coastal retains
+automatic heat unless declined; do not transfer that operational claim to
+Relaxing Oasis. Paid homes retain $40/night, the $280 cap, approved flat rates,
+confirmed reservation inclusions, whole-stay/remaining-night rules and contact
+requirements. The historical sections below describe their dated work, not
+current authority to restore a charge at Relaxing Oasis.
+
+Audit found the superseded fee/cohort paragraph in property data, the shared
+property cost FAQ, the heated-pool stay page's explicit new-booking charge and
+Coastal-only exception, plus generic stay, snowbird and LLM fee summaries that
+omit Relaxing Oasis. The property FAQ, FAQPage and AI-discovery policy share
+fallback data and need no separate template change for the heat answer.
+
+Source Files Changed in this correction:
+
+- `src/_data/properties-fallback.json`: Relaxing Oasis poolHeat only.
+- `src/_includes/layouts/property.njk`: exclude Relaxing Oasis from the paid-heat optional-extra example, alongside The Coastal.
+- `src/_data/seoPages.json`: replace the explicit new-booking charge and name Relaxing Oasis in shared no-charge exceptions; existing links and intent stay unchanged.
+- `src/guides/snowbirds-guide-extended-stays-florida.html`: name both no-charge homes.
+- `src/ai/summary.json.njk`: name both no-charge homes in the heated-pool answer.
+- `src/llms.txt`: correct both heated-pool answer and collection fee summary; property inventory is regenerated from fallback without drift.
+- `scripts/enforcement/property-pool-heat-invariants.test.js`: included policy, paid-home controls, shared copy and built FAQ/schema/AI parity.
+- `scripts/recovery/assert-live-smoke.js`, `scripts/recovery/validate-included-pool-heat.js` and `scripts/enforcement/recovery-smoke.test.js`: add Relaxing Oasis and protect visible inclusion against stale charges and schema-only proof.
+- `docs/plans/2026-11-content-priorities.md`: supersede the active cohort instruction.
+
+Overlap checked November 27 against all 12 live open PRs, their complete file
+lists and the 100 most recently updated PRs. No existing implementation of this
+decision found. #1095 and #1099 share seoPages.json but edit other fields/pages;
+#1034 shares llms.txt and live smoke for reviews work. Preserve those edits on
+integration and repeat the read before any push or PR. Base: Site
+`43c90e6fe17ef751140c64bb69a63350bbd3aab0`, fetched from origin/main.
+
+Draft the copy: put the every-stay, no-extra-charge benefit first, followed by
+the weather qualification. Remove internal wording: no decision dates, billing
+cohorts, heater setpoints, sensor state or repair language in reader copy.
+Check voice and specificity: retain the home name and direct booking benefit;
+no temperature, heat-up-time, automatic-on or already-on promise.
+
+Tools/plugins used: connected GitHub reads, current source, Git, property-truth
+regeneration and Node checks. Research and Compound Writing skipped: this is
+an exact approved policy correction, not search-intent selection or substantial
+drafting; the dated Gate 0 below remains historical research, not a fresh SERP
+or new justification. No search, citation or booking improvement is claimed.
+
+## Required Internal Link Map
+
+- src/guides/snowbirds-guide-extended-stays-florida.html: /stays/heated-pool-vacation-rentals-bradenton/, /stays/snowbird-rentals-florida-gulf-coast/
+
+## Approved correction — November 13 (historical where superseded)
 
 November 13 follow-up: state "$40 per night, capped at $280 per stay" in the
 shared stay copy and paid property copy. The cap is supported by the Hub's

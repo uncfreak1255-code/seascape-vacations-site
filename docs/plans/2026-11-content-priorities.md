@@ -49,7 +49,9 @@ Before arrival it covers the whole stay; after arrival it covers all remaining
 nights, not individual selected nights. Preserve approved long-stay flat rates,
 already-confirmed reservation inclusions, and property-specific exceptions.
 The Coastal has no charge: heat turns on automatically unless the guest declines.
-Relaxing Oasis keeps its already-confirmed heat-included reservations.
+Relaxing Oasis includes pool heat for every guest, at no extra charge (Sawyer,
+2026-11-25; Hub #1141). This supersedes its booking-cohort distinction; do not
+restore a charge for new reservations. Water temperature remains weather-dependent.
 
 The old defect list below this heading was a pre-repair snapshot, not a current
 instruction to overwrite exceptions. Source fixes are merged; this does not

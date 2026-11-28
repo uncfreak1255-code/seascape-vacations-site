@@ -11,9 +11,9 @@
    without container queries keeps the phone layout. */
 
 .fs-list { margin: 0; }
-.fs-fact { padding: 16px 0; border-top: 1px solid #CAD4CF; color: #173D42; font: 400 15px/1.55 Poppins, system-ui, sans-serif; }
+.fs-fact { padding: 16px 0; border-top: 1px solid #CAD4CF; color: #173D42; font: 400 15px/1.55 Inter, system-ui, sans-serif; }
 .fs-fact:first-child { border-top: 0; }
-.fs-fact dt { margin: 0 0 4px; font: 500 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+.fs-fact dt { margin: 0 0 4px; font: 500 12px/1.4 Inter, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
 .fs-fact dd { max-width: 68ch; margin: 0; }
 .fs-fact a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 

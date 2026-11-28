@@ -139,12 +139,11 @@ eleventyComputed:
     
     <link rel="icon" href="/logo-optimized.png" type="image/png">
 
-    {% include "partials/local-font-head.njk" %}
-    <link rel="preload" href="/assets/fonts/guest/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+    {% include "partials/guest-font-preloads.njk" %}
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
-    <link rel="stylesheet" href="/css/owner.css?v=form-a">
-    <link rel="stylesheet" href="/css/owner-lander.css?v=form-a">
+    <link rel="stylesheet" href="/css/owner.css?v=form-v4">
+    <link rel="stylesheet" href="/css/owner-lander.css?v=form-v4">
 </head>
 {#- Waterline owner lander (November 2026). Shares tokens and section rules with
     the owner hub (owner.css); lander-only rules live in owner-lander.css. -#}

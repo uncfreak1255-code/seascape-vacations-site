@@ -81,7 +81,7 @@ test("built catalog, property, and owner routes keep the named region semantics"
 
 test("owner form step controls use Direction A segments, and no gold anywhere", () => {
   const ownerCss = fs.readFileSync(path.join(projectRoot, "src", "css", "owner.css"), "utf8");
-  assert.match(ownerCss, /\.g-owner-step-dot\.is-active::after,\.g-owner-step-dot\.is-complete::after\{background:#222222\}/);
+  assert.match(ownerCss, /\.g-owner-step-dot\.is-active::after,\.g-owner-step-dot\.is-complete::after\{background:var\(--g-accent\)\}/);
   assert.match(ownerCss, /\.g-owner-step-line\{display:none\}/);
   assert.doesNotMatch(ownerCss, /--gold|#c9a962|#C9A962/);
   assert.doesNotMatch(ownerCss, /transform:\s*scale/);

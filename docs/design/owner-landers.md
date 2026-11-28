@@ -6,9 +6,10 @@ Rules for the generated owner pages under `/property-management/<slug>/`.
 - Source: `src/property-management/property-management.njk`, styled by
   `src/css/owner-lander.css` on top of `guest.css` and `owner.css`. Copy comes
   from `src/_data/seoPages.json`.
-- Page chrome uses the Waterline tokens. The owner evaluation form is Direction A
-  (Sawyer 2026-11-27): white card, `#222222` text and primary button, `#DDDDDD`
-  12px fields, Inter on form text. The authority checkbox is the native control.
+- Page chrome uses live v4 aliases. The owner evaluation form is Direction A on
+  v4 tokens: `var(--g-bg)` card, `var(--g-ink)` text, `var(--g-accent)` button
+  and focus, `var(--g-line-control)` 12px fields, site-wide Inter. The authority
+  checkbox is the native control.
 - The hero is the owner hub's photo hero (`.g-owner-hero` in `owner.css`): a
   real managed home under the ink scrim, paper type, a citron CTA. Sawyer chose
   this over the review-sheet and ink-band heroes on 2026-11-11.
