@@ -43,7 +43,11 @@ jobs:
         shell: bash
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "RANGE=${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" >> "$GITHUB_ENV"
+            # Use the live base ref, not pull_request.base.sha. GitHub leaves
+            # that SHA at the original merge-base after main moves, so a palette
+            # PR would re-lint unrelated main commits as new design debt.
+            git fetch --no-tags origin "${{ github.event.pull_request.base.ref }}"
+            echo "RANGE=origin/${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.sha }}" >> "$GITHUB_ENV"
           elif [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
             echo "RANGE=HEAD^..HEAD" >> "$GITHUB_ENV"
           else
