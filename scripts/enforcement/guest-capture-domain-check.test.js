@@ -3,6 +3,7 @@ const assert = require("node:assert/strict");
 const { checkEmailDomain, emailDomain, setDomainResolver } = require("../../netlify/functions/_guest-capture-domain-check");
 const { handleGuestEmailCapture, CAPTURE_STATES } = require("../../netlify/functions/guest-email-capture");
 const { createMemoryStore } = require("./fixtures/guest-capture-store");
+const { useAcceptAllDomains } = require("./fixtures/accept-all-dns");
 
 function dnsError(code) {
   const error = new Error(code);
@@ -32,8 +33,18 @@ test("a domain with MX records is deliverable", async () => {
 });
 
 test("a domain that does not exist is refused", async () => {
-  const result = await check("a@gmial.com", { mx: "ENOTFOUND", a: "ENOTFOUND", aaaa: "ENOTFOUND" });
+  const result = await check("a@gmial.com", { mx: "ENODATA", a: "ENOTFOUND", aaaa: "ENODATA" });
   assert.deepEqual(result, { deliverable: false, reason: "no_mail_records" });
+});
+
+test("a domain that does not exist is refused without address lookups", async () => {
+  let addressLookups = 0;
+  const result = await checkEmailDomain("a@gmial-nope.com", {
+    resolver: { resolveMx: () => Promise.reject(dnsError("ENOTFOUND")), resolve4: async () => { addressLookups++; return []; }, resolve6: async () => { addressLookups++; return []; } },
+    timeoutMs: 50
+  });
+  assert.deepEqual(result, { deliverable: false, reason: "no_such_domain" });
+  assert.equal(addressLookups, 0);
 });
 
 test("a null MX (RFC 7505) is refused", async () => {
@@ -69,7 +80,7 @@ function captureEvent(email) {
 
 test("the capture function refuses an undeliverable domain before Mailchimp and counts it", async (t) => {
   setDomainResolver(resolver({ mx: "ENOTFOUND", a: "ENOTFOUND", aaaa: "ENOTFOUND" }));
-  t.after(() => setDomainResolver(null));
+  t.after(useAcceptAllDomains);
   const store = createMemoryStore();
   let mailchimpCalls = 0;
   const response = await handleGuestEmailCapture(captureEvent("maria@gmial.com"), undefined, store, async () => { mailchimpCalls++; throw new Error("must not call"); });

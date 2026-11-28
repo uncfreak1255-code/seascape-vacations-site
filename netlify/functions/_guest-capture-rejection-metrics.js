@@ -1,4 +1,7 @@
-// Private counts of which bot-screen rule rejected a guest capture. The 422
+// Private counts of which screen rule rejected a guest capture: the bot-screen
+// rules, plus undeliverable_domain for an email domain DNS says cannot take mail
+// (usually a real guest's typo, not a bot; read byReason before calling it bot
+// volume). The 422
 // reply stays a plain "rejected" so a bot cannot learn which rule it tripped;
 // this record is read only through the token-protected metrics endpoint.
 // It lives under its own key so a rejection write can never overwrite the

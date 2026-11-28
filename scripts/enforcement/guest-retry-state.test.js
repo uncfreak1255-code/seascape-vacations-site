@@ -1,8 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { processGuestCaptureRetryRecord } = require('../../netlify/functions/guest-email-capture-retry');
-// These tests must never reach real DNS: accept every domain.
-require("../../netlify/functions/_guest-capture-domain-check").setDomainResolver({ resolveMx: async () => [{ exchange: "mx.test", priority: 10 }], resolve4: async () => [], resolve6: async () => [] });
+require("./fixtures/accept-all-dns");
 const { CAPTURE_STATES } = require('../../netlify/functions/guest-email-capture');
 const key = 'guest_capture_state_v1/retry/fixture.json';
 function fixture(t, options = {}) {
