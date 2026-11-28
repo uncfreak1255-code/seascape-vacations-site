@@ -215,19 +215,19 @@ ${swatch("#3D5C5D", "Teal dark", "retired", true)}
 ${swatch("#C9A962", "Gold", "retired CTA", false)}
 ${swatch("#F5EED6", "Cream", "retired canvas", false)}
 ${swatch("#3A3A3A", "Stone", "retired text", true)}
-<div class="ds-sw" style="background:#fff"><small>Playfair Display</small><div><b style="font-family:Georgia,serif">Aa</b><small>retired display face; Instrument Serif replaces it</small></div></div>
+<div class="ds-sw" style="background:#fff"><small>Playfair Display</small><div><b style="font-family:Georgia,serif">Aa</b><small>retired display face; Inter 600 replaces it</small></div></div>
 </div>`,
 });
 
 card({
   file: "type-display.html",
   group: "Type",
-  name: "Type — Display (Instrument Serif)",
+  name: "Type — Display (Inter 600)",
   subtitle: "h1 clamp(44px,5vw,72px) · h2 · h3 · caption · quote",
   viewport: [900, 760],
   css: [...GUEST, arrivalCss],
-  title: "Instrument Serif, regular only, set large and tight",
-  note: `Weight 400, letter-spacing -0.03em, line-height 1.08. Italic carries emphasis and takes clay through <code>em</code>. Large, compact display lines are deliberate; factual text stays readable.`,
+  title: "Inter semibold, tight tracking, one color, no italics",
+  note: `Weight 600, letter-spacing -0.03em, line-height 1.08, font-style normal. Heading <code>em</code> stays the same color. Large, compact display lines are deliberate; factual text stays readable. Instrument Serif remains only on the wordmark.`,
   body: `<div class="ds-line"><div class="ds-spec">h1 · clamp(44,5vw,72)<br>homepage arrival goes to 166px</div><h1 style="margin:0">Make yourself <em>at home.</em></h1></div>
 <div class="ds-line"><div class="ds-spec">h2 · clamp(28,3vw,42)</div><h2 style="margin:0">${HomeCount} real homes. One phone number.</h2></div>
 <div class="ds-line"><div class="ds-spec">h3 · 26px<br>postcard title 30px</div><h3 style="margin:0">Dockside Dreams</h3></div>
@@ -243,7 +243,7 @@ card({
   viewport: [900, 560],
   css: GUEST,
   title: "Inter does the practical work",
-  note: `Body is Inter. Live size is still 15px / 1.55 until a later PR consumes the v4 scale. No text renders below 12px anywhere (floor F1). Headings stay Instrument Serif, roman, one color.`,
+  note: `Body is Inter. Live size is still 15px / 1.55 until a later PR consumes the v4 scale. No text renders below 12px anywhere (floor F1). Headings are Inter 600, tight tracking, one color, no italics.`,
   body: `<div class="ds-line"><div class="ds-spec">.g-label · eyebrow</div><p class="g-label" style="margin:0">Your time on the coast</p></div>
 <div class="ds-line"><div class="ds-spec">body · 15/1.55</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
 <div class="ds-line"><div class="ds-spec">.g-small · 13/1.55 muted</div><p class="g-small" style="margin:0">Choose your dates and group size. You’ll see the full price before you pay.</p></div>

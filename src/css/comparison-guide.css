@@ -9,7 +9,7 @@ body.comparison-guide{--wl-paper:#f6f3eb;--wl-ink:#173d42;--wl-muted:#52676a;--w
 .comparison-guide main a{color:var(--wl-ink);text-underline-offset:4px;text-decoration-thickness:1px}
 .comparison-guide a:hover{color:var(--wl-clay)}
 .comparison-guide :is(a,button,input,summary):focus-visible{outline:3px solid var(--wl-clay);outline-offset:4px}
-.comparison-guide main h1,.comparison-guide main h2,.comparison-guide main h3{font-family:var(--wl-serif);font-weight:400;letter-spacing:-.025em;line-height:1.12;color:var(--wl-ink)}
+.comparison-guide main h1,.comparison-guide main h2,.comparison-guide main h3{font-family:Inter,sans-serif;font-weight:600;font-style:normal;letter-spacing:-.025em;line-height:1.12;color:var(--wl-ink)}
 .comparison-guide main h2{font-size:44px;margin:0 0 24px}
 .comparison-guide main h3{font-size:28px;margin:24px 0 12px}
 .comparison-guide main p{margin:0 0 20px}
@@ -73,7 +73,7 @@ body.comparison-guide{--wl-paper:#f6f3eb;--wl-ink:#173d42;--wl-muted:#52676a;--w
 .comparison-guide .related-guides li{border-top:1px solid var(--wl-rule);margin:0}
 .comparison-guide .related-guides a{display:block;padding:14px 0;font-size:14px;min-height:48px;text-decoration:none}
 .comparison-guide .guide-conversion-shell{margin:44px 0}
-.comparison-guide .guide-conversion-shell :is(h2,h3){letter-spacing:-.02em}
+.comparison-guide .guide-conversion-shell :is(h2,h3){font-family:Inter,sans-serif;font-weight:600;font-style:normal;letter-spacing:-.02em}
 .comparison-guide .guide-conversion-shell a.guide-cta-btn,.comparison-guide .guide-conversion-shell a.guide-save50-cta{color:var(--wl-paper)}
 .comparison-guide .guide-conversion-shell :is(input,button,a.guide-cta-btn){min-height:44px}
 @media(max-width:900px){

@@ -25,7 +25,7 @@
 
 .plb .plb-head { grid-area: head; min-width: 0; padding: 24px 24px 16px; }
 .plb .plb-eyebrow { margin: 0 0 4px; color: #52676A; font: 500 12px/1.4 Inter, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
-.plb .plb-title { margin: 0; color: #173D42; font: 400 clamp(28px, 3vw, 42px)/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
+.plb .plb-title { margin: 0; color: #173D42; font: 600 clamp(28px, 3vw, 42px)/1.08 Inter, sans-serif; letter-spacing: -.03em; }
 
 /* --plb-hover is what a fine pointer's hover gives a control: a button its fill, a room its border. */
 .plb .plb-close { grid-area: close; align-self: start; margin: 0; padding: 24px 24px 16px 0; }
@@ -99,7 +99,7 @@
   .plb .plb-rooms { display: block; margin: 24px 32px 0 40px; padding: 0; border-top: 1px solid #CAD4CF; }
   .plb .plb-room { display: flex; align-items: baseline; justify-content: space-between; width: 100%; min-height: 56px; padding: 12px 0; border: 0; border-bottom: 1px solid #CAD4CF; border-radius: 0; text-align: left; }
   .plb .plb-room[aria-pressed="true"] { --plb-hover: #CAD4CF; border-color: #CAD4CF; background: transparent; color: #173D42; }
-  .plb .plb-room-name { font: 400 26px/1.08 "Instrument Serif", Georgia, serif; letter-spacing: -.03em; }
+  .plb .plb-room-name { font: 600 26px/1.08 Inter, sans-serif; letter-spacing: -.03em; }
   .plb .plb-room[aria-pressed="true"] .plb-room-name { color: #A4533E; font-style: italic; }
   .plb .plb-room-count, .plb .plb-room[aria-pressed="true"] .plb-room-count { color: #52676A; font-size: 13px; }
   .plb .plb-room:active { transform: scale(.99); }

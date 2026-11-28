@@ -1,7 +1,7 @@
-/* v4 tokens + live guest typography, navigation, catalog and property details. */
+/* v4 tokens + live guest type, nav, catalog and property details. */
 .guest-site{--g-paper:var(--g-bg);--g-citron:#d6eb85;--g-rule:var(--g-line);--g-soft:var(--g-surface);--brand-dark:var(--g-accent);--brand-darker:var(--g-accent);--brand:var(--g-accent);--cream:var(--g-paper);--cream-light:var(--g-paper);--cream-dark:var(--g-soft);--stone:var(--g-ink);--stone-light:var(--g-muted);background:var(--g-paper);color:var(--g-ink);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.55;margin:0}
 .guest-site *{box-sizing:border-box}
-.guest-site h1,.guest-site h2,.guest-site h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;color:var(--g-ink);letter-spacing:-.03em;line-height:1.08}
+.guest-site :is(h1,h2,h3),.guest-site :is(h1,h2,h3) em{font-family:Inter,sans-serif;font-weight:600;font-style:normal;color:var(--g-ink);letter-spacing:-.03em;line-height:1.08}
 .guest-site h1{font-size:clamp(44px,5vw,72px)}
 .guest-site h2{font-size:clamp(28px,3vw,42px)}
 .guest-site h3{font-size:26px}
@@ -279,7 +279,7 @@
 .g-footer-grid{gap:56px}
 .g-footer-bottom{margin-top:44px}
 .guest-site .catalog-intro{padding:32px 0 36px;gap:72px}
-.guest-site .catalog-intro h1{font-size:clamp(62px,5.6vw,86px);line-height:.94;font-weight:400}
+.guest-site .catalog-intro h1{font-size:clamp(62px,5.6vw,86px);line-height:.94;font-weight:600}
 .guest-site .catalog-intro-photo{background:#fffcf4;padding:12px 12px 20px;transform:rotate(3deg);box-shadow:0 20px 40px #173d421f;max-width:500px;justify-self:end;overflow:visible}
 .guest-site .catalog-intro-photo img{height:350px}
 .guest-site .catalog-intro-photo figcaption{padding:18px 8px 0;font-size:12px;display:block;background:none;border:0;color:var(--g-ink)}

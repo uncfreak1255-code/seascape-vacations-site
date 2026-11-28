@@ -145,8 +145,8 @@ body:has(.ts-dialog[open]){overflow:hidden}
   .g-home .g-postcard>a{display:contents}
   .g-home .g-postcard-photo{aspect-ratio:1/1;margin-bottom:12px}
   .g-home .g-postcard-photo .ts-strip,.g-home .g-postcard-photo img,.g-home .g-postcard-photo .ts-extra{height:100%}
-  /* Card type: serif name, plain sans tagline (italic serif read poorly at phone size), small muted facts line (Instrument Serif is already loaded) */
-  .g-home .g-postcard h3{order:1;margin:0;font:400 24px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.01em;color:var(--g-ink)}
+  /* Card type: Inter 600 name, plain sans tagline, small muted facts line */
+  .g-home .g-postcard h3{order:1;margin:0;font:600 24px/1.1 Inter,sans-serif;letter-spacing:-.01em;color:var(--g-ink)}
   .g-home .g-postcard>p{order:2;margin:4px 0 0;font:400 15px/1.45 Inter,sans-serif;color:var(--g-ink)}
   .g-home .g-postcard .g-label{order:3;margin:6px 0 0;font:400 13px/1.4 Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--g-muted)}
   .g-home .g-postcard:has(a:focus-visible){outline:2px solid var(--g-ink);outline-offset:4px}
@@ -187,7 +187,7 @@ body:has(.ts-dialog[open]){overflow:hidden}
   .g-home-signup{border-top:0;background:var(--g-soft);padding:24px 20px;margin-block:24px}
   html .guest-site .catalog-help{border-top:0}
   /* /properties/ card names match the homepage cards */
-  html .guest-site .catalog-page .catalog-card h3{font:400 26px/1.1 'Instrument Serif',Georgia,serif;letter-spacing:-.01em;margin:0}
+  html .guest-site .catalog-page .catalog-card h3{font:600 26px/1.1 Inter,sans-serif;letter-spacing:-.01em;margin:0}
   /* /properties/ phone cards: the same facts in less height. The photo and name already open the home, so the second details link goes; the price note and fit note stay. */
   html .guest-site .catalog-page .catalog-card-body{padding-top:12px}
   html .guest-site .catalog-page .catalog-title-link{display:inline-flex;align-items:center;min-height:44px}

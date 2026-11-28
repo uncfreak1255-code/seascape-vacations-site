@@ -32,14 +32,15 @@
   margin:0 0 22px;
   color:var(--sv-muted)}
 .sv-copy h1 {
-  font:400 clamp(44px,5.3vw,72px)/1.02 'Instrument Serif',serif!important;
+  font:600 clamp(44px,5.3vw,72px)/1.02 Inter,sans-serif!important;
   letter-spacing:-.035em!important;
   color:var(--sv-ink)!important;
   margin:0 0 24px!important;
   max-width:550px!important}
 .sv-copy h1 em {
-  color:#A4533E;
-  font-weight:400}
+  color:var(--sv-ink);
+  font-style:normal;
+  font-weight:600}
 .sv-lede {
   font:400 15px/1.75 Inter,sans-serif;
   color:var(--sv-muted);
@@ -120,7 +121,7 @@
   right:24px;
   color:white}
 .sv-photo-bottom h2 {
-  font:400 38px/1.1 'Instrument Serif',serif;
+  font:600 38px/1.1 Inter,sans-serif;
   margin:0 0 8px;
   color:white!important;
   letter-spacing:-.02em}
@@ -198,7 +199,7 @@
   align-items:start;
   gap:16px}
 .sv-dialog h2 {
-  font:400 34px/1.1 'Instrument Serif',serif;
+  font:600 34px/1.1 Inter,sans-serif;
   margin:8px 0 12px}
 .sv-dialog p {
   font:400 12px/1.7 Inter,sans-serif}

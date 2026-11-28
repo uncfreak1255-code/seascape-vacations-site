@@ -1,7 +1,7 @@
 ---
 version: "v4"
 name: "Seascape Vacations Marketing Site"
-status: "v4 2026-11-27 (ET), Sawyer approved PR 1 (tokens). Replaces the Waterline block."
+status: "v4 2026-11-28 (ET), Sawyer picked ALL-SANS: Inter headings. Replaces the Waterline block."
 description: "Photo-first, near-neutral system for direct booking, owner acquisition and Gulf Coast guides. Code: src/css/guest-fonts.css + src/css/guest.css."
 
 # CURRENT SYSTEM — v4. New surfaces use system.colors only. system.live hexes
@@ -50,8 +50,9 @@ system:
     stone-mid: "#595959"
   typography:
     display:
-      fontFamily: "Instrument Serif"
-      fontWeight: 400
+      fontFamily: "Inter"
+      fontWeight: 600
+      fontStyle: "normal"
       lineHeight: "1.08"
       letterSpacing: "-0.03em"
       h1: "clamp(44px,5vw,72px)"
@@ -69,7 +70,7 @@ system:
       fontFamily: "Inter"
       fontSize: "12px"
       letterSpacing: "0.13em"
-    ui: "Inter (self-hosted variable woff2), system-ui fallback"
+    ui: "Inter (self-hosted variable woff2), system-ui fallback. Headings 600, tight tracking, one color, no italics. Instrument Serif remains only on the wordmark."
   space:
     "1": "4px"
     "2": "8px"
@@ -139,14 +140,14 @@ system:
 # Seascape design direction (v4)
 
 ## The rule in one line
-**Airbnb is the default for every component on every page** (search pill, chips, cards, listing layout, booking card, forms, nav, reviews, map, sticky bars), including owner and guide pages. Seascape adds only its tokens: white canvas, Inter UI, Instrument Serif display headings (roman, one color), and dark teal `#173D42` as the single action color. **The booklet gallery is the single sanctioned exception, on desktop property pages only.** The phone homepage keeps its live layout because it already follows the Airbnb pattern. Component specs: [v4 components](docs/design/v4-components.md).
+**Airbnb is the default for every component on every page** (search pill, chips, cards, listing layout, booking card, forms, nav, reviews, map, sticky bars), including owner and guide pages. Seascape adds only its tokens: white canvas, Inter for UI and headings (semibold, tight tracking, one color, no italics), and dark teal `#173D42` as the single action color. Instrument Serif remains only on the wordmark. **The booklet gallery is the single sanctioned exception, on desktop property pages only.** The phone homepage keeps its live layout because it already follows the Airbnb pattern. Component specs: [v4 components](docs/design/v4-components.md).
 
 ## What changed from v3 (Sawyer, 2026-11-27 9:51 and 9:54 AM ET)
-- Desktop homepage: v3 layout with serif display headings. “Flip through homes” becomes a manual hero scene control (prev/next, “1 of 8”, 250ms crossfade). The homes grid stays visible.
+- Desktop homepage: v3 layout with Inter 600 display headings. “Flip through homes” becomes a manual hero scene control (prev/next, “1 of 8”, 250ms crossfade). The homes grid stays visible.
 - Desktop property page: keep the booklet. Everything around it follows the Airbnb listing pattern.
 - Phone homepage: live layout, token harmony only.
 - Phone property page: Airbnb listing pattern with a sticky “Check dates” bar.
-- Fonts and accent: Instrument Serif headings, Inter body, `#173D42` accent.
+- Fonts and accent: Inter headings and body (ALL-SANS, Sawyer 2026-11-28 6:57 AM ET), `#173D42` accent. Instrument Serif stays on the wordmark only.
 
 ## This PR (tokens only)
 PR 1 lands the law, CSS custom properties, Inter, and the lint palette. It does **not** restyle header, homepage, property, owner or guide layouts. Live type sizes, radii and section padding stay until later PRs consume the v4 scale. Visual baselines will change at every step; refresh them on a `codex/*` or `claude/*` branch (Mac-only workflow).
@@ -165,7 +166,7 @@ Current routes still use the guest theme in `src/css/guest.css`, `src/css/motion
 
 [homepage controls](docs/design/homepage-controls.md) · [home deck](docs/design/home-focused-deck.md) · [cards](docs/design/cards-and-phone-surfaces.md) · [stay collections](docs/design/stay-collections.md) · [planning guides](docs/design/planning-guides.md) · [activity guides](docs/design/activity-guides.md) · [component patterns](docs/design/component-patterns.md) · [iconography](docs/design/iconography.md) · [guide figures](docs/design/guide-figures.md) · [chart patterns](docs/design/chart-patterns.md)
 
-Display type is self-hosted Instrument Serif, regular only (SIL OFL). Inter is the body and control face (self-hosted variable woff2, `font-display: swap`). Do not italicize headings. Body italics are for real emphasis in copy only. Never auto-rotate homepage scenes. Controls stay at least 44px tall. No animation may delay booking or be required to reveal essential information.
+Display type is Inter 600, tight tracking, one color, no italics (self-hosted variable woff2, `font-display: swap`). Instrument Serif remains only on the wordmark (SIL OFL). Body italics are for real emphasis in copy only. Never auto-rotate homepage scenes. Controls stay at least 44px tall. No animation may delay booking or be required to reveal essential information.
 
 - Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page; a catalog pattern Sawyer selected adds [its recorded motion](docs/design/pattern-motion.md). Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete. v4 also: opacity and transform only; no tilt, rotate, parallax; reduced motion is instant; motion never hides the homes grid or booking controls.
 

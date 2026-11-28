@@ -60,6 +60,8 @@ test('the DESIGN.md system block defines every scale', () => {
   assert.ok(Object.keys(wl.motion.duration).length && Object.keys(wl.motion.easing).length, 'system.motion is missing');
   assert.equal(wl.colors.accent, '#173D42');
   assert.equal(wl.typography.body.fontFamily, 'Inter');
+  assert.equal(wl.typography.display.fontFamily, 'Inter');
+  assert.equal(wl.typography.display.fontWeight, 600);
 });
 
 // Off-scale literals counted on 2026-10-25. Lower a number when a change removes

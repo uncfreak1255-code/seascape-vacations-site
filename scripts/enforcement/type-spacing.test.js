@@ -26,6 +26,7 @@ test("empty or missing v4 type tokens fail the gate", () => {
   const emptyColors = systemBlock("---\nsystem:\n  colors: {}\n---\n");
   assert.ok(emptyColors);
   assert.equal(Object.keys(emptyColors.colors || {}).length, 0);
+  assert.equal(systemBlock("---\nsystem:\n  typography:\n    display:\n      fontFamily: \"\"\n---\n").typography.display.fontFamily, "");
 });
 
 test("DESIGN.md v4 type tokens and live guest.css sizes stay in lockstep this PR", () => {
@@ -38,8 +39,9 @@ test("DESIGN.md v4 type tokens and live guest.css sizes stay in lockstep this PR
   assert.equal(body.fontFamily, "Inter");
   assert.equal(body.fontSize, "15px");
   assert.equal(body.lineHeight, "1.55");
-  assert.equal(display.fontFamily, "Instrument Serif");
-  assert.equal(display.fontWeight, 400);
+  assert.equal(display.fontFamily, "Inter");
+  assert.equal(display.fontWeight, 600);
+  assert.equal(display.fontStyle, "normal");
   assert.equal(display.lineHeight, "1.08");
   assert.equal(display.letterSpacing, "-0.03em");
   assert.equal(display.h1, "clamp(44px,5vw,72px)");
@@ -55,6 +57,8 @@ test("DESIGN.md v4 type tokens and live guest.css sizes stay in lockstep this PR
   assert.match(css, /\.g-section\{padding:36px 0\}/);
   assert.doesNotMatch(css, /font-size:1[01]px/);
   assert.match(css, /font-family:Inter,system-ui,sans-serif/);
+  assert.match(css, /\.guest-site :is\(h1,h2,h3\),.guest-site :is\(h1,h2,h3\) em\{font-family:Inter,sans-serif;font-weight:600;font-style:normal/);
+  assert.doesNotMatch(css, /h1,h2,h3\{[^}]*Instrument Serif/);
 });
 
 test("button shape stays locked while type tokens change", () => {

@@ -26,7 +26,7 @@ Header: 80px white, 1px line bottom. Wordmark left (Instrument Serif logotype, a
 
 Search pill: Desktop white 76px pill, float shadow, overlapping the hero by 44px: Arrival | Departure | Guests segments (13/600 label, 15 muted value) + 56px accent pill “Find my home”. Phone: one 56px pill “Dates and guests / Flexible dates” that opens a full-screen sheet.
 
-Hero (desktop home): Inset 16px-radius photo of a named home, white serif H1 bottom-left over a left+bottom scrim, home name + tagline bottom-right with a manual scene control (round 36px prev/next + “1 of 8”). Optional motion: 250ms crossfade on manual change only. Never autoplay; never hides the homes grid.
+Hero (desktop home): Inset 16px-radius photo of a named home, white Inter 600 H1 bottom-left over a left+bottom scrim, home name + tagline bottom-right with a manual scene control (round 36px prev/next + “1 of 8”). Optional motion: 250ms crossfade on manual change only. Never autoplay; never hides the homes grid.
 
 Chips: 40px pills, 1px line, 14/500, horizontal scroll on phone (no wrap). Selected = ink fill, white text.
 
