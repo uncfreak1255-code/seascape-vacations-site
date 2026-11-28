@@ -1,4 +1,6 @@
 const { GUEST_EMAIL_CAPTURE_METRICS_KEY } = require("../../../netlify/functions/_guest-email-capture-metrics");
+// Loading this fixture keeps capture tests off real DNS: every domain accepts mail.
+require("../../../netlify/functions/_guest-capture-domain-check").setDomainResolver({ resolveMx: async () => [{ exchange: "mx.test", priority: 10 }], resolve4: async () => [], resolve6: async () => [] });
 function createMemoryStore(options = {}) {
   const values = new Map();
   const versions = new Map();

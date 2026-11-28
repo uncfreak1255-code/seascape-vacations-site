@@ -5,6 +5,8 @@ const path = require("path");
 
 const { assessGuestCaptureBotSignals, MIN_FORM_DWELL_MS } = require("../../netlify/functions/_guest-capture-bot-guard");
 const { handleGuestEmailCapture, CAPTURE_STATES } = require("../../netlify/functions/guest-email-capture");
+// These tests must never reach real DNS: accept every domain.
+require("../../netlify/functions/_guest-capture-domain-check").setDomainResolver({ resolveMx: async () => [{ exchange: "mx.test", priority: 10 }], resolve4: async () => [], resolve6: async () => [] });
 const {
   GUEST_CAPTURE_REJECTIONS_KEY,
   readGuestCaptureRejections

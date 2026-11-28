@@ -168,7 +168,7 @@ is authoritative until archive/delete completes.
 
 | From | Event/guard | To/action |
 | --- | --- | --- |
-| incoming | method/malformed/bot rejection |405/400/422; no marketing call |
+| incoming | method/malformed/bot or undeliverable-domain rejection |405/400/422; no marketing call |
 | absent | member upsert fails | visible_failure502 |
 | accepted member | tags succeed | tagged200; metrics best effort |
 | accepted member | tags fail, queue persists | queued202, attempts 1 |
