@@ -18,7 +18,7 @@ The committed allowlist contains the original saved-state reads:
 - `whoami`
 - `list_projects`
 - `list_saved_keywords`
-- `get_rank_tracker`
+- `get_rank_tracker`, `get_rank_history`, and `estimate_rank_tracker_cost`
 - `get_search_console_performance`
 - `inspect_urls`
 
@@ -89,6 +89,10 @@ source work; they may not use hosted OpenSEO or an alternate paid provider as
 a silent fallback. No public tunnel, Google reconnect or authentication change
 is part of this rollout. Regular cloud chat/Cowork connections are not local
 Code sessions and do not acquire this Mac's endpoint from these settings.
+
+For direct bookings, owner acquisition and outreach, use the existing
+[Growth Decision gate](seo-competitor-operating-loop.md#growth-decision-one-move-per-run)
+before any page edit.
 
 ## Local Authentication Boundary
 
