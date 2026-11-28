@@ -140,8 +140,7 @@ eleventyComputed:
     <link rel="icon" href="/logo-optimized.png" type="image/png">
 
     {% include "partials/local-font-head.njk" %}
-    <link rel="preload" href="/assets/fonts/guest/inter-latin-wght-3100e775e861.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/assets/fonts/guest/instrument-serif.woff2" as="font" type="font/woff2" crossorigin>
+    {% include "partials/guest-font-preloads.njk" %}
     <link rel="stylesheet" href="/css/base.css">
     <link rel="stylesheet" href="/css/guest.css?v=waterline-v3">
     <link rel="stylesheet" href="/css/owner.css?v=waterline-v3">

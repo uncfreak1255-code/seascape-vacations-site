@@ -123,6 +123,8 @@ test("guest pages preload Inter; owner hub pages keep Poppins", () => {
 
 test("owner landers preload Inter for ALL-SANS headings", () => {
   const lander = read("src/property-management/property-management.njk");
+  const preloads = read("src/_includes/partials/guest-font-preloads.njk");
   assert.match(lander, /partials\/local-font-head\.njk/);
-  assert.match(lander, /inter-latin-wght-3100e775e861\.woff2/);
+  assert.match(lander, /partials\/guest-font-preloads\.njk/);
+  assert.match(preloads, /inter-latin-wght-3100e775e861\.woff2/);
 });
