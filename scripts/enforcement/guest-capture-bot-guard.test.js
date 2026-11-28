@@ -5,6 +5,7 @@ const path = require("path");
 
 const { assessGuestCaptureBotSignals, MIN_FORM_DWELL_MS } = require("../../netlify/functions/_guest-capture-bot-guard");
 const { handleGuestEmailCapture, CAPTURE_STATES } = require("../../netlify/functions/guest-email-capture");
+require("./fixtures/accept-all-dns");
 const {
   GUEST_CAPTURE_REJECTIONS_KEY,
   readGuestCaptureRejections

@@ -1,4 +1,5 @@
 const { GUEST_EMAIL_CAPTURE_METRICS_KEY } = require("../../../netlify/functions/_guest-email-capture-metrics");
+require("./accept-all-dns");
 function createMemoryStore(options = {}) {
   const values = new Map();
   const versions = new Map();

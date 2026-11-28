@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { processGuestCaptureRetryRecord } = require('../../netlify/functions/guest-email-capture-retry');
+require("./fixtures/accept-all-dns");
 const { CAPTURE_STATES } = require('../../netlify/functions/guest-email-capture');
 const key = 'guest_capture_state_v1/retry/fixture.json';
 function fixture(t, options = {}) {
