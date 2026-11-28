@@ -79,6 +79,10 @@ That includes:
   accessibility, performance, responsive behavior, or source constraints.
 - If a new pattern, visual direction, or design-system rule is needed, update `DESIGN.md` first.
 
+## Review interactive variants on one private link
+
+For changes Sawyer needs to click or feel, use the [private preview picker](private-design-preview.md) in the existing specialist/critic lane. It replaces screenshot-only selection, not rendered evidence, design approval, testing, or PR gates. Keep prototypes and their review manifest out of the guest build.
+
 ## Required Execution Loop
 
 1. Work on a `codex/<task>` branch in a worktree, not root `main`.

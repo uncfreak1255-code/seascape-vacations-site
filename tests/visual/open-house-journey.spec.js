@@ -55,9 +55,25 @@ for (const p of properties) test(p.name+': identity, sleeping, reviews, real pho
   expect(schema.filter(n=>n['@type']==='Review')).toHaveLength(0);
   await page.locator('[data-open-gallery]').click();
   const dialog=page.locator('.g-photo-dialog');await expect(dialog).toBeVisible();
-  await expect(dialog.locator('img')).toHaveCount(p.photography.photos.length);
-  await page.waitForFunction(()=>[...document.querySelectorAll('.g-photo-dialog img')].every(img=>img.complete&&img.naturalWidth>0));
-  expect(await dialog.locator('img').evaluateAll(nodes=>nodes.map(n=>({src:new URL(n.currentSrc).pathname,slug:n.dataset.propertyPhoto})))).toEqual(p.photography.photos.map(photo=>({src:photo.src,slug:p.slug})));
+  const desktop = await page.evaluate(() => matchMedia('(min-width:900px)').matches);
+  const visiblePhotos = dialog.locator(desktop ? '.contact-sheet img' : '.g-photo-grid img');
+  await expect(visiblePhotos).toHaveCount(p.photography.photos.length);
+  for (const [index, photo] of p.photography.photos.entries()) {
+    const image = visiblePhotos.nth(index);
+    await image.scrollIntoViewIfNeeded();
+    await expect(image).toHaveJSProperty('complete', true);
+    await expect.poll(() => image.evaluate(el => el.naturalWidth)).toBeGreaterThan(0);
+    await expect(image).toHaveAttribute('alt', photo.alt);
+    const path = await image.evaluate(el => new URL(el.currentSrc).pathname);
+    expect(path).toBe(desktop ? photo.src.replace(/\.webp$/, '-800.webp') : photo.src);
+    if (!desktop) await expect(image).toHaveAttribute('data-property-photo', p.slug);
+  }
+  if (desktop) {
+    await dialog.locator('.contact-tile').first().click();
+    const detail = dialog.locator('.contact-detail img');
+    await expect(detail).toBeVisible();
+    await expect(detail).toHaveAttribute('src', p.photography.photos[0].src);
+  }
   await page.keyboard.press('Escape');await expect(dialog).toBeHidden();await expect(page.locator('[data-open-gallery]')).toBeFocused();
   await page.getByLabel('Arrival',{exact:true}).fill('2026-12-05');
   await page.getByLabel('Departure',{exact:true}).fill('2026-12-12');

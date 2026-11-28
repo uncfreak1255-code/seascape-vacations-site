@@ -14,6 +14,7 @@
     "git:safe-commit": "node scripts/enforcement/git-kit-fallback.js safe-commit",
     "git:merge-check": "node scripts/enforcement/git-kit-fallback.js merge-check",
     "design:lane": "./scripts/design/codex-seascape-design",
+    "design:preview": "node scripts/design/review-preview.js",
     "design:donors": "node scripts/design/design-donor-router.js",
     "design:sync": "node scripts/design/design-sync/build.js",
     "design:sync:check": "node scripts/design/design-sync/render-check.js",
