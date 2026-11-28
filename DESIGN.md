@@ -200,7 +200,7 @@ Floors (the contract every change to these routes must leave true, enforced in `
 F1 and F2 apply to the whole page on guest routes (`body.guest-site`, including stay collections) and, on every other route, to the shared header, mobile menu and footer only. A converted planning guide (`body.planning-guide`) joins the whole-page scope. Other pages carry the shared shell but keep legacy body typography until redesigned.
 
 ## Scales, states and forms
-The `space`, `motion`, `shadow` and `breakpoints` keys in the `system:` block are the scales. How they are used, plus state rules and form patterns, live in `docs/design/scales-states-forms.md`. Owner evaluation form Direction A ships in a separate PR; v4 uses the same Airbnb host-onboarding pattern with the accent button.
+The `space`, `motion`, `shadow` and `breakpoints` keys in the `system:` block are the scales. How they are used, plus state rules and form patterns, live in `docs/design/scales-states-forms.md`. The owner evaluation form is Direction A on v4 tokens (`--g-bg`, `--g-ink`, `--g-line-control`, accent button and focus, site-wide Inter).
 
 ## How this direction changes
 This file records current choices, not proof they are good. How to revise it lives in `docs/design/direction-changes.md`.

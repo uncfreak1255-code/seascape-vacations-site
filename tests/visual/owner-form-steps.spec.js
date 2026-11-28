@@ -4,21 +4,21 @@ const { moneyRoutes } = require("./routes");
 const { gotoMarketingRoute } = require("./test-helpers");
 
 const ownerHub = moneyRoutes.find((route) => route.slug === "property-management");
-const INK = "rgb(23, 61, 66)";
-const WHITE = "rgb(255, 255, 255)";
+const FORM_ACCENT = "rgb(23, 61, 66)";
+const FORM_RULE = "rgb(221, 221, 221)";
 
-async function readColors(locator) {
+async function readSegment(locator) {
   return locator.evaluate((node) => {
-    const styles = getComputedStyle(node);
+    const bar = getComputedStyle(node, "::after");
     return {
-      color: styles.color,
-      background: styles.backgroundColor,
-      transform: styles.transform
+      background: bar.backgroundColor,
+      height: bar.height,
+      transform: getComputedStyle(node).transform
     };
   });
 }
 
-test("owner form step controls use high-contrast ink and keep the progress line decorative", async ({ page }) => {
+test("owner form step controls use a thin four-segment bar and keep hit area unscaled", async ({ page }) => {
   // Pixel baselines for this route live in the macOS visual gate. This spec
   // asserts computed contrast and reduced-motion so Linux CI cannot land
   // Mac-incompatible goldens.
@@ -27,29 +27,27 @@ test("owner form step controls use high-contrast ink and keep the progress line 
   const steps = page.locator(".g-owner-steps");
   await steps.scrollIntoViewIfNeeded();
   await expect(steps).toBeVisible();
+  await expect(page.locator(".g-owner-step-dot")).toHaveCount(4);
 
   const active = page.locator(".g-owner-step-dot.is-active");
-  const activeColors = await readColors(active);
-  assert.equal(activeColors.color, WHITE);
-  assert.equal(activeColors.background, INK);
+  const activeColors = await readSegment(active);
+  assert.equal(activeColors.background, FORM_ACCENT);
+  assert.equal(activeColors.height, "4px");
   assert.equal(activeColors.transform, "none");
 
   await page.locator("[data-form-next]").first().click();
   await expect(page.locator(".g-owner-step-dot.is-complete")).toHaveCount(1);
   await expect(page.locator(".g-owner-step-dot.is-active")).toHaveAttribute("aria-label", "Go to step 2");
 
-  const completeColors = await readColors(page.locator(".g-owner-step-dot.is-complete"));
-  assert.equal(completeColors.color, WHITE);
-  assert.equal(completeColors.background, INK);
+  const completeColors = await readSegment(page.locator(".g-owner-step-dot.is-complete"));
+  assert.equal(completeColors.background, FORM_ACCENT);
 
-  const nextActive = await readColors(page.locator(".g-owner-step-dot.is-active"));
-  assert.equal(nextActive.color, WHITE);
-  assert.equal(nextActive.background, INK);
+  const nextActive = await readSegment(page.locator(".g-owner-step-dot.is-active"));
+  assert.equal(nextActive.background, FORM_ACCENT);
 
-  const completeLine = page.locator(".g-owner-step-line.is-complete").first();
-  const lineColor = await completeLine.evaluate((node) => getComputedStyle(node).backgroundColor);
-  assert.notEqual(lineColor, INK);
-  assert.notEqual(lineColor, WHITE);
+  const idle = page.locator(".g-owner-step-dot").nth(2);
+  const idleColors = await readSegment(idle);
+  assert.equal(idleColors.background, FORM_RULE);
 });
 
 test("header Revenue Review stays a same-page hash after guest.js runs", async ({ page }) => {

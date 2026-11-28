@@ -8,7 +8,7 @@ The `space`, `motion`, `shadow` and `breakpoints` keys in the `waterline:` block
 - **Shadows:** only the menu, the shortlist tray, the bottom booking bars and printed photos (postcards, the catalog intro photo) carry a shadow. Cards, buttons and fields are flat. The legacy `rgba(0,0,0,…)` shadows in `catalog.css` and `planning-guide.css` are debt, not examples.
 
 States, for every control:
-- **Focus:** 3px clay outline, 4px offset, on every focusable element; no component overrides it. Known exception: the owner-form consent checkbox still uses a 2px ink ring (`owner.css`).
+- **Focus:** 3px clay outline, 4px offset, on every focusable element; no component overrides it. Known exception: the owner evaluation form uses a 2px `var(--g-accent)` ring on the active field (`owner.css`, `owner-lander.css`; Direction A on v4 tokens).
   On ink (the footer), the ring is 3px citron `#D6EB85` instead, because clay on ink is too low-contrast to see. The same footer uses rule `#CAD4CF` for labels and tagline, paper for links, citron for link hover, and white at 15% (`#ffffff26`) for its bottom rule.
 - **Disabled:** rule background, muted text, no hover or press, `cursor:not-allowed`. Prefer removing a control to disabling it; disabled means "wait", not "no".
 - **Loading:** muted background, a 14px ring spinner, the verb in its -ing form, `aria-busy` on the control; the label stays readable. Never a skeleton on paper.
@@ -18,11 +18,12 @@ States, for every control:
 
 Forms:
 - **Field:** label above in the 12px label style; control 46px tall with a 1px muted underline and no radius; help text 13px muted below. Textareas are at least 72px.
+- **Owner evaluation form (Direction A on v4 tokens):** the `/property-management/` revenue-review form and owner-lander `owner-revenue-teardown` forms only. `var(--g-bg)` surfaces, `var(--g-ink)` text, one `var(--g-accent)` primary button, 1px `var(--g-line-control)` borders, 12px radius, ~56px fields with a floating label inside the box, name/email/phone in one grouped box, a 2px `var(--g-accent)` focus outline, a thin 4-segment progress bar (44px hit area), site-wide Inter. No champagne, tints, gradients or icons. Page chrome outside the form stays on live v4 aliases.
 - **Field error:** the error state above, linked to the field with `aria-describedby`.
 - **Error summary:** a 1px clay frame at the top of the step with `role="alert"` and one link per field in error. The form status line stays `aria-live="polite"`.
-- **Checkbox:** 18px native with an ink accent and the shared focus ring.
-- **Choice chip:** 44px tall, 4px radius, ink fill when selected, `aria-pressed`.
-- **Step indicator:** 44px squares; done and current steps are ink; the connector turns to a 2px citron line once a step is done.
+- **Checkbox:** 18px native with an ink accent and the shared focus ring. On the owner evaluation form the accent is `var(--g-accent)`.
+- **Choice chip:** 44px tall, 4px radius, ink fill when selected, `aria-pressed`. On the owner evaluation form: 12px radius, `var(--g-accent)` fill when selected.
+- **Step indicator:** 44px squares; done and current steps are ink; the connector turns to a 2px citron line once a step is done. Owner evaluation form: four 4px segments, `var(--g-accent)` for current and complete.
 - **File input:** a dashed muted frame 44px tall with a verb label; the native input is visually hidden.
 - **Text button:** underlined 14px weight 500 with a 44px hit area, never a border.
 - Never use a placeholder as the only label. Never disable a submit button: validate on submit and point to the field.

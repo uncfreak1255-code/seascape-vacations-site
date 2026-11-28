@@ -10,7 +10,7 @@ navActive: "owners"
 navButtonHref: "#owner-cta"
 navButtonLabel: "Revenue Review"
 navButtonAttributes: 'data-track-event="owner_primary_cta_click" data-page-slug="property-management"'
-pageStylesheet: "/css/owner.css?v=waterline-v3"
+pageStylesheet: "/css/owner.css?v=form-v4"
 headExtra: |
   <script type="application/ld+json">
   {
@@ -129,6 +129,8 @@ headExtra: |
               <label class="g-owner-field"><span>Your name</span><input type="text" name="name" autocomplete="name" placeholder="First and last name" required></label>
               <label class="g-owner-field"><span>Email</span><input type="email" name="email" autocomplete="email" placeholder="Where the review should go" required></label>
               <label class="g-owner-field g-owner-field-full"><span>Phone, optional</span><input type="tel" name="phone" autocomplete="tel" placeholder="For a text when it is ready"></label>
+              {% set heardAboutFieldClass = "g-owner-field g-owner-field-full" %}
+              {% include "partials/owner-heard-about-field.njk" %}
               <label class="g-owner-field"><span>Current manager</span><input type="text" name="current_manager" placeholder="Manager name, or self-managed"></label>
               <label class="g-owner-field"><span>Fee quote, if known</span><input type="text" name="current_fee_quote" placeholder="Current rate or fee terms"></label>
               <label class="g-owner-authority g-owner-field-full"><input type="checkbox" name="submitter_authority" value="owner_or_authorized_representative" required data-owner-authority><span>I confirm I am the property owner or an authorized representative for this property.</span></label>
@@ -163,12 +165,7 @@ headExtra: |
     </div>
   </section>
 
-  {% if bandHome and bandHome.photography and bandHome.photography.photos[0] %}
-  <figure class="g-owner-band">
-    <img src="{{ bandHome.photography.photos[0].src }}" srcset="{{ bandHome.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ bandHome.photography.photos[0].src }} 1400w" sizes="100vw" width="{{ bandHome.photography.photos[0].width }}" height="{{ bandHome.photography.photos[0].height }}" alt="{{ bandHome.photography.photos[0].alt }}" loading="lazy" decoding="async">
-    <figcaption class="g-wrap">{{ bandHome.name }}, {{ bandHome.city }}. One of the {{ homeCountWord }} homes Seascape manages.</figcaption>
-  </figure>
-  {% endif %}
+  {% include "partials/owner-band-image.njk" %}
 
   <section class="g-owner-section" id="what-we-do" aria-labelledby="what-we-do-title">
     <div class="g-wrap">
@@ -520,7 +517,7 @@ headExtra: |
       dots.forEach(function (dot, index) {
         dot.classList.toggle("is-active", index === step);
         dot.classList.toggle("is-complete", index < step);
-        dot.textContent = index < step ? "✓" : String(index + 1);
+        dot.textContent = String(index + 1);
       });
       lines.forEach(function (line, index) {
         line.classList.toggle("is-complete", index < step);

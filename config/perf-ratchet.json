@@ -1,36 +1,36 @@
 {
   "routes": {
     "/": {
-      "script": 94182,
-      "stylesheet": 89475
+      "script": 93431,
+      "stylesheet": 89468
     },
     "/properties/": {
-      "script": 108639,
-      "stylesheet": 85522
+      "script": 107888,
+      "stylesheet": 85515
     },
     "/property-management/": {
-      "script": 91543,
-      "stylesheet": 62009
+      "script": 95475,
+      "stylesheet": 64235
     },
     "/property-management/vacation-rental-licensing-florida/": {
-      "script": 61354,
-      "stylesheet": 73114
+      "script": 65307,
+      "stylesheet": 76011
     },
     "/property-management/vacation-rental-management-fees-florida/": {
-      "script": 61354,
-      "stylesheet": 73114
+      "script": 65307,
+      "stylesheet": 76011
     },
     "/property-management/vrbo-management-services-florida/": {
-      "script": 61354,
-      "stylesheet": 73114
+      "script": 65307,
+      "stylesheet": 76011
     },
     "/stays/anna-maria-island-beachfront-rentals/": {
-      "script": 59380,
-      "stylesheet": 53619
+      "script": 58629,
+      "stylesheet": 53614
     },
     "/stays/anna-maria-island-vacation-rentals/": {
-      "script": 59380,
-      "stylesheet": 53619
+      "script": 58629,
+      "stylesheet": 53614
     }
   },
   "raises": [
@@ -1769,6 +1769,134 @@
       "to": 85522,
       "reason": "Defer ts-extra photos until a card strip is swiped, so later covers load first and the 800 KB image budget can be enforced.",
       "date": "2026-11-18"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 91543,
+      "to": 95041,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 62009,
+      "to": 62230,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 61354,
+      "to": 64852,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 73114,
+      "to": 73206,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 61354,
+      "to": 64852,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 73114,
+      "to": 73206,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 61354,
+      "to": 64852,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 73114,
+      "to": 73206,
+      "reason": "optional owner heard-about select and AI prompt field: new deferred JS on owner forms plus matching select/prompt CSS",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "script",
+      "from": 95041,
+      "to": 95475,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/",
+      "metric": "stylesheet",
+      "from": 62230,
+      "to": 64235,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "script",
+      "from": 64852,
+      "to": 65307,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-management-fees-florida/",
+      "metric": "stylesheet",
+      "from": 73206,
+      "to": 76011,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "script",
+      "from": 64852,
+      "to": 65307,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vacation-rental-licensing-florida/",
+      "metric": "stylesheet",
+      "from": 73206,
+      "to": 76011,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "script",
+      "from": 64852,
+      "to": 65307,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
+    },
+    {
+      "route": "/property-management/vrbo-management-services-florida/",
+      "metric": "stylesheet",
+      "from": 73206,
+      "to": 76011,
+      "reason": "Direction A owner-form restyle (Sawyer 2026-11-27): Inter latin @font-face + floating-label/grouped-field CSS; heard-about character counter. Lighthouse ceilings unchanged.",
+      "date": "2026-11-27"
     }
   ]
 }

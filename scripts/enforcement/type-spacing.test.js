@@ -114,17 +114,16 @@ test("concatenated guest.css stays at or under origin/main (stylesheet ratchet)"
   );
 });
 
-test("guest pages preload Inter; owner hub pages keep Poppins", () => {
+test("guest pages preload Inter, including the owner hub", () => {
   const layout = read("src/_includes/layouts/guest.njk");
-  assert.match(layout, /pageStylesheet and 'owner\.css'/);
-  assert.match(layout, /partials\/local-font-head\.njk/);
   assert.match(layout, /inter-latin-wght-3100e775e861\.woff2/);
+  assert.doesNotMatch(layout, /pageStylesheet and 'owner\.css'/);
 });
 
 test("owner landers preload Inter for ALL-SANS headings", () => {
   const lander = read("src/property-management/property-management.njk");
   const preloads = read("src/_includes/partials/guest-font-preloads.njk");
-  assert.match(lander, /partials\/local-font-head\.njk/);
+  assert.doesNotMatch(lander, /partials\/local-font-head\.njk/);
   assert.match(lander, /partials\/guest-font-preloads\.njk/);
   assert.match(preloads, /inter-latin-wght-3100e775e861\.woff2/);
 });

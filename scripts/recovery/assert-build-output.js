@@ -404,7 +404,7 @@ if (phase === "remediation") {
   expectContains("_site/property-management/index.html", "images/seascape-og-default.jpg");
   expectContains(
     "_site/property-management/index.html",
-    require("../fonts/manifest.json")["poppins-400-latin.woff2"].parts.core.path.replace(/^src\//, "")
+    "assets/fonts/guest/inter-latin-wght-3100e775e861.woff2"
   );
   expectContains(
     "_site/guides/bradenton-vs-sarasota/index.html",
@@ -416,7 +416,7 @@ if (phase === "remediation") {
   expectContains("_site/stays/anna-maria-island-vacation-rentals/index.html", 'fetchpriority="high"');
   expectContains(
     "_site/property-management/vacation-rental-management-sarasota/index.html",
-    "font-display: block"
+    "assets/fonts/guest/inter-latin-wght-3100e775e861.woff2"
   );
   expectContains(
     "_site/property-management/index.html",

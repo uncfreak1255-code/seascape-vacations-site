@@ -1,0 +1,7 @@
+{#- Unchanged owner-hub band photo. Extracted so index.njk can take the heard-about fields without growing past the file-size gate. -#}
+{% if bandHome and bandHome.photography and bandHome.photography.photos[0] %}
+<figure class="g-owner-band">
+  <img src="{{ bandHome.photography.photos[0].src }}" srcset="{{ bandHome.photography.photos[0].src | replace('.webp', '-800.webp') }} 800w, {{ bandHome.photography.photos[0].src }} 1400w" sizes="100vw" width="{{ bandHome.photography.photos[0].width }}" height="{{ bandHome.photography.photos[0].height }}" alt="{{ bandHome.photography.photos[0].alt }}" loading="lazy" decoding="async">
+  <figcaption class="g-wrap">{{ bandHome.name }}, {{ bandHome.city }}. One of the {{ homeCountWord }} homes Seascape manages.</figcaption>
+</figure>
+{% endif %}

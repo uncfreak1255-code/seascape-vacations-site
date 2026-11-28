@@ -79,13 +79,10 @@ test("built catalog, property, and owner routes keep the named region semantics"
   assert.match(ownerHtml, /<aside class="g-owner-review" id="owner-cta" aria-labelledby="owner-review-title">/);
 });
 
-test("owner form step controls use Waterline ink on white, and no gold anywhere", () => {
+test("owner form step controls use Direction A segments, and no gold anywhere", () => {
   const ownerCss = fs.readFileSync(path.join(projectRoot, "src", "css", "owner.css"), "utf8");
-  assert.match(
-    ownerCss,
-    /\.g-owner-step-dot\.is-active,\.g-owner-step-dot\.is-complete\{background:var\(--g-ink\);color:#fff;border-color:var\(--g-ink\)\}/
-  );
-  assert.match(ownerCss, /\.g-owner-step-line\.is-complete\{background:var\(--g-citron\)\}/);
+  assert.match(ownerCss, /\.g-owner-step-dot\.is-active::after,\.g-owner-step-dot\.is-complete::after\{background:var\(--g-accent\)\}/);
+  assert.match(ownerCss, /\.g-owner-step-line\{display:none\}/);
   assert.doesNotMatch(ownerCss, /--gold|#c9a962|#C9A962/);
   assert.doesNotMatch(ownerCss, /transform:\s*scale/);
   assert.doesNotMatch(ownerLanding, /--gold|#c9a962|#C9A962|<style/i);

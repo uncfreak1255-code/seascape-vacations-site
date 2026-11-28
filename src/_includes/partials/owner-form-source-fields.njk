@@ -1,8 +1,10 @@
 {#- Shared by both owner form UIs: first-touch source fields (#826) filled by
-    owner-first-touch.js, plus the Netlify honeypot. -#}
+    owner-first-touch.js, the Netlify honeypot, and the heard-about prompt toggle. -#}
+<script>if (document.documentElement) document.documentElement.classList.add("sv-js");</script>
 <input type="hidden" name="referrer" value="">
 <input type="hidden" name="utm_source" value="">
 <input type="hidden" name="utm_medium" value="">
 <input type="hidden" name="utm_campaign" value="">
 <div hidden aria-hidden="true"><input type="text" name="bot-field" tabindex="-1" autocomplete="off"></div>
 <script defer src="/assets/js/owner-first-touch.js"></script>
+<script defer src="/assets/js/owner-heard-about.js"></script>
