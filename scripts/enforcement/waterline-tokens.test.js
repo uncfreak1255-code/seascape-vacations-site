@@ -1,4 +1,4 @@
-// Holds the Waterline stylesheets to the scales in DESIGN.md's `waterline:` block.
+// Holds guest stylesheets to the scales in DESIGN.md's `system:` block.
 // guest.css may not grow (property-gallery.test.js), so the sheets keep literal
 // values; this test checks each literal belongs to a scale. Off-scale values that
 // already existed are counted debt, and each count may only fall.
@@ -10,12 +10,14 @@ const yaml = require('js-yaml');
 
 const root = path.resolve(__dirname, '../..');
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
-const wl = yaml.load(read('DESIGN.md').match(/^---\n([\s\S]*?)\n---/)[1]).waterline;
+const wl = yaml.load(read('DESIGN.md').match(/^---\n([\s\S]*?)\n---/)[1]).system;
 
 const toMs = (t) => (t.endsWith('ms') ? Number(t.slice(0, -2)) : Number(t.slice(0, -1)) * 1000);
 const squash = (v) => String(v).toLowerCase().replace(/\s+/g, '');
 
-const palette = new Set(Object.values(wl.colors).map(squash));
+const palette = new Set(
+  [...Object.values(wl.colors || {}), ...Object.values(wl.live || {})].map(squash)
+);
 const durations = new Set(Object.values(wl.motion.duration).map(toMs));
 const easings = new Set(Object.values(wl.motion.easing).map(squash));
 const shadows = new Set(Object.values(wl.shadow).map(squash));
@@ -50,11 +52,16 @@ function offScale(css) {
   return misses;
 }
 
-test('the DESIGN.md waterline block defines every scale', () => {
+test('the DESIGN.md system block defines every scale', () => {
+  assert.ok(wl, 'DESIGN.md system block is missing');
   for (const key of ['colors', 'space', 'rounded', 'shadow', 'breakpoints']) {
-    assert.ok(wl[key] && Object.keys(wl[key]).length, `waterline.${key} is missing`);
+    assert.ok(wl[key] && Object.keys(wl[key]).length, `system.${key} is missing`);
   }
-  assert.ok(Object.keys(wl.motion.duration).length && Object.keys(wl.motion.easing).length, 'waterline.motion is missing');
+  assert.ok(Object.keys(wl.motion.duration).length && Object.keys(wl.motion.easing).length, 'system.motion is missing');
+  assert.equal(wl.colors.accent, '#173D42');
+  assert.equal(wl.typography.body.fontFamily, 'Inter');
+  assert.equal(wl.typography.display.fontFamily, 'Inter');
+  assert.equal(wl.typography.display.fontWeight, 600);
 });
 
 // Off-scale literals counted on 2026-10-25. Lower a number when a change removes

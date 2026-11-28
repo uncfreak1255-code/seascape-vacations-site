@@ -12,7 +12,7 @@ test("stay-family-pool — Waterline type and surfaces cannot fall back to the l
     faqRadius: getComputedStyle(document.querySelector(".faq-item")).borderRadius,
   }));
   // Existing DESIGN.md's Waterline type, paper and open FAQ treatment.
-  assert.match(styles.heading, /Instrument Serif/);
+  assert.match(styles.heading, /Inter/);
   assert.equal(styles.paper, "rgb(246, 243, 235)");
   assert.equal(styles.faqRadius, "0px");
 });

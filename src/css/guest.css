@@ -1,7 +1,7 @@
-/* Waterline: shared guest typography, navigation, catalog and property details. */
-.guest-site{--g-paper:#f6f3eb;--g-citron:#d6eb85;--g-ink:#173d42;--g-muted:#52676a;--g-accent:#a4533e;--g-rule:#cad4cf;--g-soft:#f0f3ee;--brand-dark:var(--g-ink);--brand-darker:var(--g-ink);--brand:var(--g-ink);--cream:var(--g-paper);--cream-light:var(--g-paper);--cream-dark:var(--g-soft);--stone:var(--g-ink);--stone-light:var(--g-muted);background:var(--g-paper);color:var(--g-ink);font-family:Poppins,sans-serif;font-size:15px;line-height:1.55;margin:0}
+/* v4 tokens + live guest type, nav, catalog and property details. */
+.guest-site{--g-paper:var(--g-bg);--g-citron:#d6eb85;--g-rule:var(--g-line);--g-soft:var(--g-surface);--brand-dark:var(--g-accent);--brand-darker:var(--g-accent);--brand:var(--g-accent);--cream:var(--g-paper);--cream-light:var(--g-paper);--cream-dark:var(--g-soft);--stone:var(--g-ink);--stone-light:var(--g-muted);background:var(--g-paper);color:var(--g-ink);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.55;margin:0}
 .guest-site *{box-sizing:border-box}
-.guest-site h1,.guest-site h2,.guest-site h3{font-family:'Instrument Serif',Georgia,serif;font-weight:400;color:var(--g-ink);letter-spacing:-.03em;line-height:1.08}
+.guest-site :is(h1,h2,h3),.guest-site :is(h1,h2,h3) em{font-family:Inter,sans-serif;font-weight:600;font-style:normal;color:var(--g-ink);letter-spacing:-.03em;line-height:1.08}
 .guest-site h1{font-size:clamp(44px,5vw,72px)}
 .guest-site h2{font-size:clamp(28px,3vw,42px)}
 .guest-site h3{font-size:26px}
@@ -13,39 +13,39 @@
 .guest-site input,.guest-site select,.guest-site button{font:inherit}
 .guest-site em{font-weight:400;color:var(--g-accent)}
 .g-wrap{width:min(1280px,calc(100% - 64px));margin-inline:auto}
-.g-skip{position:fixed;left:16px;top:-80px;z-index:1000;background:var(--g-ink);color:white!important;padding:12px}
+.g-skip{position:fixed;left:16px;top:-80px;z-index:1000;background:var(--g-accent);color:white!important;padding:12px}
 .g-skip:focus{top:8px}
 .g-header{height:92px;border-bottom:1px solid var(--g-rule);padding:0 4.5vw;display:flex;align-items:center;justify-content:space-between;gap:32px;position:relative;z-index:20;background:var(--g-paper)}
 .g-wordmark{font-family:'Instrument Serif',Georgia,serif;font-size:30px;line-height:1.15;text-decoration:none}
-.g-wordmark span{display:block;font:500 12px Poppins,sans-serif;letter-spacing:.14em;margin-top:6px}
+.g-wordmark span{display:block;font:500 12px Inter,sans-serif;letter-spacing:.14em;margin-top:6px}
 .g-nav,.g-header-actions{display:flex;align-items:center;gap:32px}
 .g-nav a{text-decoration:none;font-size:14px;padding:10px 0}
 .g-inline-link:hover{color:var(--g-accent)}
 .g-nav a[aria-current="page"],.g-mobile-menu a[aria-current="page"]{color:var(--g-accent);text-decoration:underline;text-underline-offset:5px;font-weight:400}
-.g-header-phone{font:14px Poppins,sans-serif;min-height:44px;display:inline-flex;align-items:center;color:var(--g-ink);text-decoration:none}
+.g-header-phone{font:14px Inter,sans-serif;min-height:44px;display:inline-flex;align-items:center;color:var(--g-ink);text-decoration:none}
 .g-header-phone:hover{color:var(--g-accent)}
 .g-header-phone-icon{display:none}
-.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-ink);color:white;border:1px solid var(--g-ink);border-radius:4px;font:500 14px/1.35 Poppins,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;touch-action:manipulation}
+.guest-shell .g-button,.guest-site .g-button,.guest-site .btn-brand,.guest-site .btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:14px 24px;background:var(--g-accent);color:white;border:1px solid var(--g-accent);border-radius:4px;font:500 14px/1.35 Inter,sans-serif;text-decoration:none;letter-spacing:0;text-transform:none;box-shadow:none;cursor:pointer;touch-action:manipulation}
 .guest-shell .g-button::before,.guest-shell .g-button::after,.guest-site .btn::after,.guest-site .btn::before,.guest-site .g-button::after,.guest-site .g-button::before{display:none}
 @media(hover:hover) and (pointer:fine){.g-footer a[href]:hover{color:#d6eb85}}
 /* Hover, press, and interrupt: src/css/motion.css */
 .g-menu-button,.g-header-owners{display:none;background:none;border:0;padding:12px 0;color:var(--g-ink);min-height:44px;min-width:44px;text-decoration:none}
 .g-mobile-menu{position:absolute;inset:100% 0 auto;background:var(--g-paper);padding:20px;border-bottom:1px solid var(--g-rule);box-shadow:0 20px 30px #173d4214}
 .g-mobile-menu a{display:block;padding:13px 0;border-bottom:1px solid var(--g-rule);text-decoration:none}
-.g-label,.guest-site .section-tag{font:500 12px/1.4 Poppins,sans-serif;letter-spacing:.13em;text-transform:uppercase;margin:0 0 12px;color:var(--g-muted)}
+.g-label,.guest-site .section-tag{font:500 12px/1.4 Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;margin:0 0 12px;color:var(--g-muted)}
 .g-lede{font-size:17px;line-height:1.55}
 .g-inline-link{display:inline-flex;align-items:center;gap:14px;min-height:44px;font-weight:500;text-decoration:underline;text-underline-offset:5px;font-size:14px}
 .g-small,.g-form-status{font-size:13px;line-height:1.55;color:var(--g-muted)}
 .g-trip-form{display:grid;grid-template-columns:1fr 1fr .85fr auto;gap:18px;align-items:end}
 .g-trip-form label,.g-question label{display:block;font-size:12px;letter-spacing:.05em;margin-bottom:8px}
-.g-trip-form input,.g-trip-form select,.g-question select{width:100%;min-width:0;height:46px;border:0;border-bottom:1px solid var(--g-muted);background:transparent;color:var(--g-ink);border-radius:0;padding:6px 0;font:14px Poppins,sans-serif}
+.g-trip-form input,.g-trip-form select,.g-question select{width:100%;min-width:0;height:46px;border:0;border-bottom:1px solid var(--g-muted);background:transparent;color:var(--g-ink);border-radius:0;padding:6px 0;font:14px Inter,sans-serif}
 .g-trip-form input{color-scheme:light}
 .g-trip-form .g-form-status{grid-column:1/-1;margin:0}
 .g-section{padding:60px 0}
 .g-section-heading{display:flex;align-items:end;justify-content:space-between;gap:48px;margin-bottom:24px}
 .g-section-heading h2{max-width:650px}
 .g-section-heading>p{max-width:360px;color:var(--g-muted)}
-.g-footer{background:var(--g-ink);color:var(--g-paper);padding:48px 0 20px}
+.g-footer{background:var(--g-accent);color:var(--g-paper);padding:48px 0 20px}
 .g-footer-grid{display:grid;grid-template-columns:1fr 1fr .8fr .8fr;gap:40px}
 .g-footer .g-label,.g-footer-grid p{color:var(--g-rule)}
 .g-footer a{color:var(--g-paper);text-decoration:none}
@@ -60,8 +60,8 @@
    Tokens are local because .guest-shell scopes the palette to header and footer.
    Ink-on-citron (9.02:1) replaces white-on-gold (2.25:1); both controls reach 44px. */
 .guest-shell #sticky-book-bar,.guest-shell .mobile-cta-bar{--g-paper:#f6f3eb;--g-citron:#d6eb85;--g-ink:#173d42;background:var(--g-ink)!important;background-image:none!important;box-shadow:0 -1px 0 #ffffff26!important}
-.guest-shell #sticky-book-bar>span,.guest-shell .mobile-cta-bar .cta-title,.guest-shell .mobile-cta-bar .cta-subtitle{color:var(--g-paper)!important;font-family:Poppins,sans-serif!important}
-.guest-shell #sticky-book-bar a,.guest-shell .mobile-cta-bar .btn-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 20px!important;background:var(--g-citron)!important;background-image:none!important;color:var(--g-ink)!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;white-space:nowrap!important}
+.guest-shell #sticky-book-bar>span,.guest-shell .mobile-cta-bar .cta-title,.guest-shell .mobile-cta-bar .cta-subtitle{color:var(--g-paper)!important;font-family:Inter,sans-serif!important}
+.guest-shell #sticky-book-bar a,.guest-shell .mobile-cta-bar .btn-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 20px!important;background:var(--g-citron)!important;background-image:none!important;color:var(--g-ink)!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Inter,sans-serif!important;white-space:nowrap!important}
 .guest-shell .mobile-cta-bar a[href^="tel:"]{width:44px!important;height:44px!important;border-radius:4px!important;background:#ffffff1f!important;color:var(--g-paper)!important}
 /* The rest of the legacy gold CTAs. The 51 built guide routes and the owner and
    research pages ship bespoke gold buttons, some as classes and some as inline styles, so these need !important too. White on that
@@ -69,11 +69,11 @@
    7.7:1; everywhere else becomes the standard Waterline ink button, which clears
    3:1 against cream, white, the old teal and photos alike (citron would not: it is
    1.12:1 on cream). The 50px pill becomes the 4px Waterline radius. */
-.guest-shell .cta-btn,.guest-shell .cta-button,.guest-shell .hero-cta,.guest-shell .btn-gold,.guest-shell .property-card-body a,.guest-shell a[style*="background"][style*="C9A962"],.guest-shell a[style*="background"][style*="c9a962"],.guest-shell a[style*="background"][style*="var(--gold)"]{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;text-transform:none!important;letter-spacing:0!important;box-shadow:none!important}
+.guest-shell .cta-btn,.guest-shell .cta-button,.guest-shell .hero-cta,.guest-shell .btn-gold,.guest-shell .property-card-body a,.guest-shell a[style*="background"][style*="C9A962"],.guest-shell a[style*="background"][style*="c9a962"],.guest-shell a[style*="background"][style*="var(--gold)"]{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Inter,sans-serif!important;text-transform:none!important;letter-spacing:0!important;box-shadow:none!important}
 /* The research pages style a bare `.btn` as their own gold pill. Targeting the
    tracked owner CTA rather than `.btn` keeps this off the 62 other built pages
    that use that generic class for something already correct. */
-.guest-shell a.btn[data-track-event="owner_primary_cta_click"]{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important}
+.guest-shell a.btn[data-track-event="owner_primary_cta_click"]{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Inter,sans-serif!important}
 /* Dark owner surfaces, where the ink button loses its own background: the owner
    hero is near-black (#0a1a1c) and drops to 1.51:1, and the band on the 27
    generated landers is a #3d5c5d-to-#1a3a3c gradient where ink measures 1.62:1
@@ -92,7 +92,7 @@
    #FAF7EE card, where the paper fill above would land at 1.04:1. Ink on that card
    is 11:1. This rule must outrank the band rules, hence the doubled class. */
 .guest-shell .owner-form-card .btn-gold.owner-form-submit,.guest-shell .owner-form-card .owner-form-submit{background:#173d42!important;background-image:none!important;color:#fff!important;border:0!important}
-.guest-shell .btn-solid-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#d6eb85!important;background-image:none!important;color:#173d42!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Poppins,sans-serif!important;box-shadow:none!important}
+.guest-shell .btn-solid-gold{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:44px!important;padding:12px 24px!important;background:#d6eb85!important;background-image:none!important;color:#173d42!important;border:0!important;border-radius:4px!important;font:500 14px/1.35 Inter,sans-serif!important;box-shadow:none!important}
 .guest-site .catalog-page{max-width:1280px;width:calc(100% - 64px);padding:0;margin:0 auto}
 .guest-site .catalog-breadcrumb{padding:20px 0}
 .guest-site .catalog-intro{gap:56px;padding:24px 0;grid-template-columns:1fr 1fr}
@@ -163,7 +163,7 @@
 .g-photo-dialog::backdrop{background:#102c30db}
 .g-photo-dialog>div:first-child{display:flex;align-items:center;justify-content:space-between;position:sticky;top:-24px;padding:16px 0;background:var(--g-paper);z-index:1}
 .g-photo-dialog h2{font-size:28px}
-.g-photo-dialog button{min-height:44px;padding:8px 16px;background:var(--g-ink);color:white;border:0;border-radius:4px;cursor:pointer}
+.g-photo-dialog button{min-height:44px;padding:8px 16px;background:var(--g-accent);color:white;border:0;border-radius:4px;cursor:pointer}
 .g-photo-unavailable{display:flex;align-items:center;justify-content:center;min-height:200px;height:100%;padding:24px;background:var(--g-soft);color:var(--g-muted);font-size:14px;text-align:center}
 .g-mobile-booking{display:none}
 @media(max-width:1050px){.g-wrap,.guest-site .catalog-page{width:calc(100% - 40px)}
@@ -279,7 +279,7 @@
 .g-footer-grid{gap:56px}
 .g-footer-bottom{margin-top:44px}
 .guest-site .catalog-intro{padding:32px 0 36px;gap:72px}
-.guest-site .catalog-intro h1{font-size:clamp(62px,5.6vw,86px);line-height:.94;font-weight:400}
+.guest-site .catalog-intro h1{font-size:clamp(62px,5.6vw,86px);line-height:.94;font-weight:600}
 .guest-site .catalog-intro-photo{background:#fffcf4;padding:12px 12px 20px;transform:rotate(3deg);box-shadow:0 20px 40px #173d421f;max-width:500px;justify-self:end;overflow:visible}
 .guest-site .catalog-intro-photo img{height:350px}
 .guest-site .catalog-intro-photo figcaption{padding:18px 8px 0;font-size:12px;display:block;background:none;border:0;color:var(--g-ink)}
@@ -355,7 +355,7 @@
 @media(prefers-reduced-motion:no-preference){::view-transition-group(root){animation-duration:.2s}}
 
 /* The shared shell leaves guide, stay and company-page body typography intact. */
-.guest-shell .g-header,.guest-shell .g-footer{--g-paper:#f6f3eb;--g-ink:#173d42;--g-muted:#52676a;--g-accent:#a4533e;--g-rule:#cad4cf;font-family:Poppins,sans-serif;font-size:15px;line-height:1.55}
+.guest-shell .g-header,.guest-shell .g-footer{--g-paper:var(--g-bg);--g-rule:var(--g-line);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.55}
 .guest-shell .g-header{color:var(--g-ink)}
 .guest-shell .g-header *,.guest-shell .g-footer *{box-sizing:border-box}
 .guest-shell .g-header a,.guest-shell .g-footer a{color:inherit;text-decoration:none}

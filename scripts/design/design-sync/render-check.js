@@ -31,7 +31,7 @@ const i = args.indexOf("--out");
 const OUT = path.resolve(ROOT, i >= 0 && args[i + 1] ? args[i + 1] : ".design-sync/out");
 const RENDER = path.join(OUT, "_render");
 const RECEIPT = path.join(RENDER, "render-check.json");
-const FAMILIES = ["Instrument Serif", "Poppins"];
+const FAMILIES = ["Instrument Serif", "Inter"];
 
 async function probeCard(page, width) {
   return page.evaluate(

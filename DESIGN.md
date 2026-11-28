@@ -1,69 +1,99 @@
 ---
-version: "alpha"
+version: "v4"
 name: "Seascape Vacations Marketing Site"
-description: "Public Seascape Vacations website design system for owner acquisition, direct booking, and Gulf Coast SEO pages."
+status: "v4 2026-11-28 (ET), Sawyer picked ALL-SANS: Inter headings. Replaces the Waterline block."
+description: "Photo-first, near-neutral system for direct booking, owner acquisition and Gulf Coast guides. Code: src/css/guest-fonts.css + src/css/guest.css."
 
-# CURRENT SYSTEM — Waterline (September 2026). Build every new surface from this
-# block. Source of truth in code is src/css/guest.css; these values mirror it.
-waterline:
+# CURRENT SYSTEM — v4. New surfaces use system.colors only. system.live hexes
+# still appear on unmigrated pages; design-lint does not treat them as sanctioned.
+system:
   colors:
-    paper: "#F6F3EB"
-    ink: "#173D42"
+    bg: "#FFFFFF"
+    surface: "#F7F7F7"
+    ink: "#1E2324"
+    ink-ui: "#222222"
+    muted: "#6B7072"
+    line: "#E6E6E6"
+    line-strong: "#B0B0B0"
+    line-control: "#DDDDDD"
+    accent: "#173D42"
+    accent-hover: "#0F2E32"
+    error: "#B42318"
+    rating-star: "#1E2324"
+    booklet-paper: "#F6F3EB"
+    paper: "#FFFFFF"
+    rule: "#E6E6E6"
+    soft: "#F7F7F7"
+    white: "#FFFFFF"
+  live:
     citron: "#D6EB85"
-    muted: "#52676A"
     clay: "#A4533E"
-    rule: "#CAD4CF"
-    soft: "#F0F3EE"
+    paper-live: "#F6F3EB"
+    muted-live: "#52676A"
+    rule-live: "#CAD4CF"
+    soft-live: "#F0F3EE"
+    gold: "#C9A962"
+    gold-dark: "#B8943A"
+    gold-light: "#E8D5A3"
+    gold-foil-a: "#E3C47A"
+    gold-foil-b: "#8E6D28"
+    gold-ink: "#2A2014"
+    cream: "#F5EED6"
+    cream-dark: "#EBE4CC"
+    cream-light: "#FAF7EE"
+    brand: "#5F8A8B"
+    brand-light: "#7BA3A4"
+    brand-dark: "#3D5C5D"
+    brand-darker: "#2D4647"
+    stone: "#3A3A3A"
+    stone-light: "#6A6A6A"
+    stone-mid: "#595959"
   typography:
     display:
-      fontFamily: "Instrument Serif"
-      fontWeight: 400
+      fontFamily: "Inter"
+      fontWeight: 600
+      fontStyle: "normal"
       lineHeight: "1.08"
       letterSpacing: "-0.03em"
       h1: "clamp(44px,5vw,72px)"
       h2: "clamp(28px,3vw,42px)"
       h3: "26px"
     body:
-      fontFamily: "Poppins"
+      fontFamily: "Inter"
       fontSize: "15px"
       lineHeight: "1.55"
     lede:
-      fontFamily: "Poppins"
+      fontFamily: "Inter"
       fontSize: "17px"
       lineHeight: "1.55"
     label:
-      fontFamily: "Poppins"
+      fontFamily: "Inter"
       fontSize: "12px"
       letterSpacing: "0.13em"
-  rounded:
-    none: "0"
-    button: "4px"
-    control: "4px"
-  # Spacing steps the Waterline CSS already uses. New rules pick from this list.
+    ui: "Inter (self-hosted variable woff2), system-ui fallback. Headings 600, tight tracking, one color, no italics. Instrument Serif remains only on the wordmark."
   space:
     "1": "4px"
     "2": "8px"
     "3": "12px"
     "4": "16px"
+    "5": "20px"
     "6": "24px"
     "8": "32px"
+    "10": "40px"
+    "12": "48px"
+    "16": "64px"
+    "24": "96px"
     tap: "44px"
-    "14": "56px"
     section: "60px"
     section-mobile: "36px"
-  # Durations and curves, measured from the live CSS (October 2026).
-  motion:
-    duration:
-      fast: "120ms"
-      hover: "150ms"
-      move: "200ms"
-      route: "400ms"
-      drift: "650ms"
-    easing:
-      out: "cubic-bezier(.23,1,.32,1)"
-      glide: "cubic-bezier(.2,.7,.2,1)"
-  # Shadows are for things that float over the page, and for printed photos.
-  # Ink (#173D42) with an alpha byte; values are exact copies of the live CSS.
+  rounded:
+    none: "0"
+    checkbox: "4px"
+    button: "4px"
+    control: "8px"
+    card: "12px"
+    feature: "16px"
+    pill: "999px"
   shadow:
     menu: "0 20px 30px #173D4214"
     tray: "0 10px 40px #173D4226"
@@ -71,222 +101,74 @@ waterline:
     print: "0 20px 32px #173D421C"
     print-lift: "0 26px 50px #173D4233"
     photo: "0 20px 40px #173D421F"
+    float: "0 1px 2px rgba(0,0,0,.06), 0 6px 20px rgba(0,0,0,.10)"
+    booklet: "0 20px 40px rgba(23,61,66,.12)"
+  motion:
+    duration:
+      press: "120ms"
+      fast: "120ms"
+      hover: "150ms"
+      exit: "150ms"
+      move: "200ms"
+      enter: "220ms"
+      hero-scene-crossfade: "250ms"
+      max: "300ms"
+      route: "400ms"
+      drift: "650ms"
+    easing:
+      out: "cubic-bezier(.23,1,.32,1)"
+      glide: "cubic-bezier(.2,.7,.2,1)"
+      v4: "cubic-bezier(.2,0,0,1)"
   breakpoints:
-    phone: "430px"
+    phone: "600px"
+    phone-live: "430px"
+    tablet: "1024px"
+    desktop: "1025px"
     narrow: "700px"
     mid: "900px"
     wide: "1050px"
   components:
     button-primary:
-      backgroundColor: "{waterline.colors.ink}"
+      backgroundColor: "{system.colors.accent}"
       textColor: "#FFFFFF"
-      rounded: "{waterline.rounded.button}"
+      rounded: "{system.rounded.button}"
       padding: "14px 24px"
       minHeight: "48px, never below the 44px mobile floor"
-      typography: "500 14px/1.35 Poppins"
-    button-on-dark:
-      backgroundColor: "{waterline.colors.citron}"
-      textColor: "{waterline.colors.ink}"
-      rounded: "{waterline.rounded.button}"
-      usage: "only where ink loses separation from its own surface: the homepage header over the scene photo, the two sticky CTA bars, the near-black owner hero"
-
-# LEGACY — the pre-Waterline system. Kept for two reasons, neither of them
-# guidance. scripts/design/design-lint.js treats every hex in this file as the
-# sanctioned palette, and the 51 legacy guide routes still carry these colours as
-# non-clickable accents, so deleting them would flag all of that as off-brand
-# overnight. Do not build a new surface from anything below this line.
-colors:
-  primary: "#3D5C5D"
-  brand: "#5F8A8B"
-  brand-light: "#7BA3A4"
-  brand-dark: "#3D5C5D"
-  brand-darker: "#2D4647"
-  gold: "#C9A962"
-  gold-dark: "#B8943A"
-  gold-light: "#E8D5A3"
-  cream: "#F5EED6"
-  cream-dark: "#EBE4CC"
-  cream-light: "#FAF7EE"
-  stone: "#3A3A3A"
-  stone-light: "#6A6A6A"
-  stone-mid: "#595959"
-  white: "#FFFFFF"
-typography:
-  display-xl:
-    fontFamily: "Playfair Display"
-    fontSize: "56px"
-    fontWeight: 500
-    lineHeight: "1.05"
-    letterSpacing: "-0.02em"
-  display-md:
-    fontFamily: "Playfair Display"
-    fontSize: "38px"
-    fontWeight: 500
-    lineHeight: "1.15"
-    letterSpacing: "-0.02em"
-  body:
-    fontFamily: "Poppins"
-    fontSize: "16px"
-    fontWeight: 400
-    lineHeight: "1.7"
-    letterSpacing: "0em"
-  label:
-    fontFamily: "Poppins"
-    fontSize: "12px"
-    fontWeight: 600
-    lineHeight: "1.2"
-    letterSpacing: "0.2em"
-rounded:
-  sm: "12px"
-  md: "20px"
-  pill: "50px"
-spacing:
-  xs: "8px"
-  sm: "12px"
-  md: "16px"
-  lg: "24px"
-  xl: "32px"
-  section: "80px"
-components:
-  button-primary:
-    backgroundColor: "{colors.brand-dark}"
-    textColor: "{colors.white}"
-    typography: "{typography.label}"
-    rounded: "{rounded.pill}"
-    padding: "15px 32px"
-    hairline: "1px rgba(201,169,98,.45) inset 4px, hover {colors.gold}"
-  button-link:
-    backgroundColor: "transparent"
-    textColor: "{colors.brand-dark}"
-    typography: "{typography.label}"
-    underline: "1px {colors.gold} bottom"
-    padding: "8px 0"
-  button-gold:
-    retired: "2026-09-10 — see 'Legacy gold CTAs'. Recorded for provenance only. Do not apply to a new control."
-    backgroundColor: "linear-gradient(135deg,#E3C47A 0%,{colors.gold} 38%,#8E6D28 62%,{colors.gold} 100%)"
-    textColor: "#2A2014"
-    typography: "{typography.label}"
-    rounded: "{rounded.pill}"
-    padding: "15px 32px"
-    usage: "retired — overridden to the Waterline ink or citron button in guest.css"
-  button-solid-gold:
-    retired: "2026-09-10 — see 'Legacy gold CTAs'. Recorded for provenance only. Do not apply to a new control."
-    backgroundColor: "{colors.gold}"
-    textColor: "#2A2014"
-    typography: "{typography.label}"
-    rounded: "{rounded.pill}"
-    padding: "15px 32px"
-  button-outline-light:
-    backgroundColor: "transparent"
-    textColor: "{colors.white}"
-    border: "1px rgba(255,255,255,.4)"
-    typography: "{typography.label}"
-    rounded: "{rounded.pill}"
-    padding: "15px 32px"
-    usage: "over-imagery ghost; formerly paired with the retired button-solid-gold"
-  property-card:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.stone}"
-    rounded: "{rounded.md}"
-    padding: "20px"
-  section-tag:
-    textColor: "{colors.brand-dark}"
-    typography: "{typography.label}"
-  page-surface:
-    backgroundColor: "{colors.cream}"
-    textColor: "{colors.stone}"
-    typography: "{typography.body}"
-    rounded: "{rounded.sm}"
-    padding: "80px 24px"
-  nav-surface:
-    backgroundColor: "{colors.cream-light}"
-    textColor: "{colors.brand-dark}"
-    typography: "{typography.body}"
-    rounded: "{rounded.sm}"
-    padding: "16px 24px"
-  property-badge:
-    backgroundColor: "{colors.gold}"
-    textColor: "{colors.stone}"
-    typography: "{typography.label}"
-    rounded: "{rounded.pill}"
-    padding: "4px 12px"
+      typography: "500 14px/1.35 Inter"
 ---
 
-# Seascape design direction
+# Seascape design direction (v4)
+
+## The rule in one line
+**Airbnb is the default for every component on every page** (search pill, chips, cards, listing layout, booking card, forms, nav, reviews, map, sticky bars), including owner and guide pages. Seascape adds only its tokens: white canvas, Inter for UI and headings (semibold, tight tracking, one color, no italics), and dark teal `#173D42` as the single action color. Instrument Serif remains only on the wordmark. **The booklet gallery is the single sanctioned exception, on desktop property pages only.** The phone homepage keeps its live layout because it already follows the Airbnb pattern. Component specs: [v4 components](docs/design/v4-components.md).
+
+## What changed from v3 (Sawyer, 2026-11-27 9:51 and 9:54 AM ET)
+- Desktop homepage: v3 layout with Inter 600 display headings. “Flip through homes” becomes a manual hero scene control (prev/next, “1 of 8”, 250ms crossfade). The homes grid stays visible.
+- Desktop property page: keep the booklet. Everything around it follows the Airbnb listing pattern.
+- Phone homepage: live layout, token harmony only.
+- Phone property page: Airbnb listing pattern with a sticky “Check dates” bar.
+- Fonts and accent: Inter headings and body (ALL-SANS, Sawyer 2026-11-28 6:57 AM ET), `#173D42` accent. Instrument Serif stays on the wordmark only.
+
+## This PR (tokens only)
+PR 1 lands the law, CSS custom properties, Inter, and the lint palette. It does **not** restyle header, homepage, property, owner or guide layouts. Live type sizes, radii and section padding stay until later PRs consume the v4 scale. Visual baselines will change at every step; refresh them on a `codex/*` or `claude/*` branch (Mac-only workflow).
+
+## Diagnosis
+v3 (and Waterline) had title-slide sections, too many colors, skeuomorphic gimmicks (the booklet is now an intentional exception), extreme type contrast with Poppins, the legacy guide template, and inconsistent radii and spacing.
+
+## Keep
+The wordmark, the real-photography-only rule, the named pictured home, the F1–F6 floors, the trust and usability rules, no fee %, ranges or minimums, the Hostaway handoff, and the phone home list.
 
 ## Product promise
 Help a group choose one of the real homes, understand the details that could change its choice, and arrive at Hostaway with dates and guest count intact. Seascape is a small, owner-operated collection in Bradenton and Sarasota. Do not make it look like an island-wide resort or an unlimited marketplace.
 
-## Guest journey: Waterline (September 2026)
-The homepage, catalog, property details, owner hub, guide index and About page use the scoped `guest-site` theme in `src/css/guest.css` and `src/css/motion.css`, plus `src/css/arrival.css` (homepage scenes) and `src/css/about.css` (About sections). Stay collections use the shared Waterline body and stylesheet described below. Field-journal guides and two homepage comparison guides share the guest header and footer. Those unmigrated guide bodies keep their existing typography, except a guide converted to the planning-guide frame below and one long-read exception: on the older field-journal guides, body paragraphs and list items read at 17px over 1.75 line height with a 68ch measure, set once in `guest.css` on `article.article-text` (October 2026; the inline guide styles stay as written). Generated owner landers use `guest-site` since November 2026 ([rules](docs/design/owner-landers.md)); other legacy routes keep the tokens above until redesigned.
+## Live layouts until later PRs
+Current routes still use the guest theme in `src/css/guest.css`, `src/css/motion.css`, `src/css/arrival.css` and `src/css/about.css`. Stay collections, homepage controls, cards, planning/comparison/activity guides, iconography and figures keep their existing contracts until their migration step:
 
-- Canvas: sun-warmed paper `#F6F3EB`; ink and primary controls: deep marine `#173D42`; supporting text: `#52676A`; accent: clay `#A4533E`; selected scene and photographic CTA: citron `#D6EB85`; rules: `#CAD4CF`. Citron is a surface/accent, never small text on paper. Phones use a white canvas (same file).
-- Display type: self-hosted Instrument Serif, regular and italic, under its included SIL Open Font License. Poppins remains the practical body and control face. Large, compact display lines are deliberate; factual text stays readable. Body reads 15px over 1.55. Sections use 60px desktop / 36px phone so phones keep more of the page in view.
-- The photographic homepage names the pictured home on every width. Manual scenes, direct home links and the native trip form follow [the homepage contract](docs/design/homepage-controls.md). Never auto-rotate scenes. Navigation jumps directly to the form.
-- Homepage cards use Sawyer’s [focused desktop deck and vertical phone list](docs/design/home-focused-deck.md). Desktop shows one landscape postcard with photo-only neighbors and manual selection. Phones open the full list; each card retains its photo strip. Filters, trip links, reduced motion and no-JavaScript property links are preserved.
-- Carry expressive type, photographic scale, calm rules and marine/paper contrast through the catalog and property pages. Catalog card and phone surface rules: [cards and phone surfaces](docs/design/cards-and-phone-surfaces.md). Keep the working comparison table and conventional booking panel. Property photos remain real rectangles, not simulated rooms or a fictitious floor plan.
-- Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page; a catalog pattern Sawyer selected adds [its recorded motion](docs/design/pattern-motion.md). Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete.
-- Pointer and touch presses use subtle feedback (up to 3% scale, 120ms) when motion is allowed. Keyboard scene selection and horizontal selector movement are immediate. Keyboard card focus keeps the visible outline without lifting or enlarging the card. Desktop card hover movement is limited to fine pointers and 200ms; reduced-motion users keep the static layout. Guide CTA buttons, the guide email button, the sticky book-direct bar and the legacy mobile CTA bar use the same press. On fine-pointer hover, guide buttons fill with the muted ink, the sticky bar link darkens its citron (14% ink), and the guide text link's arrow moves 4px. Control hover, press, and interrupt live in `src/css/motion.css` and append onto built `guest.css` so they do not add a stylesheet request. Press uses `scale(0.97)` at 120ms with `cubic-bezier(0.23, 1, 0.32, 1)`; hover color stays behind `(hover: hover) and (pointer: fine)` at 200ms. Keyboard focus does not scale. Dialogs, the phone menu and the email overlay enter in 250ms and leave in 150ms (opacity, `scale(0.96)`); Escape closes the menu at once. Gallery zoom: fine pointers, 200ms.
-- Desktop content can reach 1280px, with a full-width opening photograph. Controls remain at least 44px tall, with visible focus, clear labels and quiet solid surfaces. No animation may delay booking or be required to reveal essential information.
+[homepage controls](docs/design/homepage-controls.md) · [home deck](docs/design/home-focused-deck.md) · [cards](docs/design/cards-and-phone-surfaces.md) · [stay collections](docs/design/stay-collections.md) · [planning guides](docs/design/planning-guides.md) · [activity guides](docs/design/activity-guides.md) · [component patterns](docs/design/component-patterns.md) · [iconography](docs/design/iconography.md) · [guide figures](docs/design/guide-figures.md) · [chart patterns](docs/design/chart-patterns.md)
 
-## Homepage controls (November 2026)
+Display type is Inter 600, tight tracking, one color, no italics (self-hosted variable woff2, `font-display: swap`). Instrument Serif remains only on the wordmark (SIL OFL). Body italics are for real emphasis in copy only. Never auto-rotate homepage scenes. Controls stay at least 44px tall. No animation may delay booking or be required to reveal essential information.
 
-See [selected homepage candidate](docs/design/homepage-controls.md).
-
-## Stay collections (October 31, 2026)
-
-See [stay collection design](docs/design/stay-collections.md).
-
-## Planning guides (October 2026)
-
-Each planning guide converts under its own approved scope. The opening,
-existing-data instrument, numbered steps, full mobile tables, booking box,
-floors and measurement rules live in [Planning guides](docs/design/planning-guides.md).
-Conversion preserves the original copy, facts, SEO and booking contracts.
-
-## Comparison guides
-
-### Comparison frame (October 27, 2026)
-
-Sawyer selected Waterline A for Bradenton vs Sarasota from full desktop/mobile
-previews. `layouts/guide-comparison.njk` and `comparison-guide.css` carry the
-split title/answer, full-width ruled comparison, open author/source treatment,
-numbered reading sections and desktop contents rail. Keep every original word,
-SEO field, source and booking link; the post-table decision aside and conversion
-kit retain their reading positions. Phones show every comparison value as a
-labeled pair without sideways scrolling. The body carries `planning-guide`
-and `comparison-guide`, bringing this frame into the whole-page F1/F2/F3 floors.
-This approval covers the named guide; no photo, chart, filter or accordion is
-part of A. Other guides convert only under their own approved scope.
-
-Sawyer selected Decision ledger A for AMI vs Clearwater on October28,2026.
-`layouts/guide-decision-ledger.njk` and `decision-ledger.css` preserve its compact
-split opening, Structured tables, right contents rail and original booking
-actions. Original reader words, SEO and rating values remain unchanged.
-
-## Activity guides
-
-Sawyer selected Rainy Day C on November 2, 2026: three rainy-day plans, real game-room photography, an early Coastal dates card, the complete Structured comparison in a disclosure, and the full article with a contents rail. `docs/design/activity-guides.md` records the scoped contract; other guides keep their existing formats.
-
-## Reusable Waterline components
-
-Use comparison tables, tabs/filters, FAQ disclosures and data figures when they
-help a guest make a trip decision. Keep Waterline's paper/ink surfaces,
-Instrument Serif headings, Poppins labels, 4px controls and F1–F6 floors.
-[Component patterns](docs/design/component-patterns.md) defines their states,
-semantics and reuse rules, with shadcn/ui as a pattern reference. Adapt to the
-existing site components; a reference does not require a new framework.
-Rainy Day uses Structured comparison. The catalog records the selected page-turn
-booklet and Studio/Amicro references. Adapt patterns to assigned pages;
-render alternatives when useful. Selection does not migrate existing pages.
-
-## Iconography
-
-See [Iconography](docs/design/iconography.md). Polished SVG icons, never emoji; reuse `src/_includes/partials/ui-icon.njk`.
-
-## Guide figures: when a guide earns a chart or diagram
-
-See [Guide figures](docs/design/guide-figures.md) for eligibility and [Chart patterns](docs/design/chart-patterns.md) for treatments, including selected weather B.
+- Motion has three jobs: identify a newly selected home, give the collection tactile depth, and connect its photo to the detail page; a catalog pattern Sawyer selected adds [its recorded motion](docs/design/pattern-motion.md). Use browser-native CSS/Web Animations and same-origin view transitions as progressive enhancements. No loader, scroll hijacking, autoplay, custom cursor, or required animation library. The static reduced-motion and no-JavaScript paths remain complete. v4 also: opacity and transform only; no tilt, rotate, parallax; reduced motion is instant; motion never hides the homes grid or booking controls.
 
 ## Photography is evidence
 Only an actual photograph of the named property may illustrate its accommodation. A destination scene may illustrate a clearly named destination, never a failed home photo.
@@ -295,7 +177,7 @@ Only an actual photograph of the named property may illustrate its accommodation
 
 If an image cannot load, show a neutral named unavailable state. Never substitute the site OG image, a guide photograph, or another home. Visual proof must fail on a missing expected property image; a fallback is not a passing design baseline.
 
-- **Editorial illustrations:** Clearly illustrated, non-location planning subjects may support guide text, as approved for the family guide on September 9, 2026. Use the existing cream/teal/gold palette, descriptive alt text, and an editorial-illustration caption. Retain real photography for property galleries, property/destination heroes, amenities, and named places; illustrations must not imply an actual rental or destination scene.
+- **Editorial illustrations:** Clearly illustrated, non-location planning subjects may support guide text, as approved for the family guide on September 9, 2026. Descriptive alt text and an editorial-illustration caption. Retain real photography for property galleries, property/destination heroes, amenities, and named places; illustrations must not imply an actual rental or destination scene.
 
 ## Trust and usability
 - Facts, room layouts and policies come from canonical property data and explicitly reviewed booking-source facts. Unknown is not false or included. Quote and cancellation terms come from the current Hostaway checkout.
@@ -305,6 +187,7 @@ If an image cannot load, show a neutral named unavailable state. Never substitut
 - Use clear labels, keyboard-operable controls, visible focus, native date inputs/dialog behavior, and reduced motion. Test 390px, a narrower 375px, tablet, and desktop.
 - A sticky action must not cover the form, navigation, or content. No unsolicited popup should interrupt the core guest journey.
 - Exception (Sawyer, 2026-10-24): the desktop-only homepage exit-intent email signup in `src/assets/js/guest.js`, shown once per 7 days when the cursor leaves the page. Audits do not flag it.
+- No fee percentages, ranges or minimums in public copy. Never name Patrick.
 
 Floors (the contract every change to these routes must leave true, enforced in `tests/visual/design-floors.spec.js`, `scripts/enforcement/shared-shell.test.js` and `scripts/enforcement/internal-link-floor.test.js`):
 - F1 — Minimum font size: no visible text renders below 12px, on desktop or mobile, including decorative eyebrows.
@@ -314,17 +197,22 @@ Floors (the contract every change to these routes must leave true, enforced in `
 - F5 — One shared shell: every built HTML page has exactly one `class="g-header"` and one `class="g-footer"`.
 - F6 — Internal-link distribution: a hub page the shared shell links to stays linked from at least 70% of built pages. Editing a shared header or footer redistributes internal links across the whole site at once, and no other gate here can see it: URLs, titles, canonicals and JSON-LD stay identical, the link validator only checks that links which exist still resolve, and the visual gate's per-route pixel tolerance absorbs a footer change without a diff.
 
-F1 and F2 apply to the whole page on the Waterline guest routes (`body.guest-site`, including stay collections, the routes under Guest journey above) and, on every other route, to the shared header, mobile menu and footer only. A converted planning guide (`body.planning-guide`) joins the whole-page scope, and `tests/visual/design-floors.spec.js` enforces it on every converted guide route (first conversion: the vacation cost guide, October 2026). The other pages carry the shared shell but keep their legacy body typography, which has not been brought to the floors yet. That narrower scope is a stopping point for one release, not a permanent rule: widening it is the work that finishes the redesign, and until then a legacy page body can still ship text below 12px without the gate objecting.
+F1 and F2 apply to the whole page on guest routes (`body.guest-site`, including stay collections) and, on every other route, to the shared header, mobile menu and footer only. A converted planning guide (`body.planning-guide`) joins the whole-page scope. Other pages carry the shared shell but keep legacy body typography until redesigned.
 
-## Scales, states and forms (October 2026)
-
-The `space`, `motion`, `shadow` and `breakpoints` keys in the `waterline:` block are the scales. How they are used and checked, plus the state rules and the nine form patterns, live in `docs/design/scales-states-forms.md`.
+## Scales, states and forms
+The `space`, `motion`, `shadow` and `breakpoints` keys in the `system:` block are the scales. How they are used, plus state rules and form patterns, live in `docs/design/scales-states-forms.md`. Owner evaluation form Direction A ships in a separate PR; v4 uses the same Airbnb host-onboarding pattern with the accent button.
 
 ## How this direction changes
-This file records current choices, not proof they are good. How to revise it, and why Waterline won in September 2026, live in `docs/design/direction-changes.md`.
+This file records current choices, not proof they are good. How to revise it lives in `docs/design/direction-changes.md`.
 
-## Legacy gold CTAs
+## Retired on new surfaces
+Do not build with citron, clay, gold, cream canvas, tinted section bands, tilted postcard decks, two-tone or italic headlines, uppercase tracked eyebrows, decorative clay numerals, centered hero badge/stats strips, or native `mm/dd/yyyy` placeholders (show “Add date” in a styled field). Gold CTA replacements for leftover legacy routes: `docs/design/legacy-gold-ctas.md`. Weekly photo-card exception: [rule](docs/design/weekly-photo-card.md).
 
-Gold is retired on every legacy route; the per-surface replacement rules (ink, citron or paper, picked by measured contrast) live in `docs/design/legacy-gold-ctas.md`.
-
-Weekly photo-card exception: [rule](docs/design/weekly-photo-card.md).
+## Migration order (later, approved PRs only)
+1. Tokens in `guest-fonts.css` / `guest.css` and the design-lint palette (this PR).
+2. Shell.
+3. Phone home token pass.
+4. Desktop homepage.
+5. Property pages: desktop booklet restyle and phone listing pattern.
+6. Owner pages and forms.
+7. Guides, one at a time.

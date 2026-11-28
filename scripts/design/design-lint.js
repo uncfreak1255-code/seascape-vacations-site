@@ -49,17 +49,13 @@ const path = require("path");
 const { execFileSync } = require("child_process");
 
 const { listSourceFiles, isStylesheet } = require("./design-lint-sources");
+const { createV4Palette, RETIRED_HEX } = require("./v4-palette");
 
 const projectRoot = path.resolve(__dirname, "..", "..");
 const baselinePath = path.join(__dirname, "design-lint-baseline.json");
 
-// Files whose hex values define the sanctioned palette. Any hex used here is allowed.
-const PALETTE_SOURCE_FILES = [
-  "DESIGN.md",
-  "src/css/base.css",
-  "src/css/guide-field-journal.css",
-  "src/_includes/partials/guide-conversion-kit.njk",
-];
+// Palette source is DESIGN.md system.colors only.
+const PALETTE_SOURCE_FILES = ["DESIGN.md"];
 
 // Universally safe values that need no palette membership.
 const ALWAYS_ALLOWED_HEX = new Set([
@@ -95,21 +91,18 @@ function normalizeHex(hex) {
   return lower;
 }
 
-function buildPaletteAllowlist() {
-  const allowed = new Set([...ALWAYS_ALLOWED_HEX].map(normalizeHex));
-  for (const rel of PALETTE_SOURCE_FILES) {
-    let content;
-    try {
-      content = read(rel);
-    } catch {
-      continue;
-    }
-    for (const match of content.match(HEX_RE) || []) {
-      allowed.add(normalizeHex(match));
-    }
-  }
-  return allowed;
-}
+const v4Palette = createV4Palette({
+  HEX_RE,
+  ALWAYS_ALLOWED_HEX,
+  normalizeHex,
+  read,
+});
+const {
+  sanctionedHexesFromDesignMd,
+  paletteHexesFromSource,
+  buildPaletteAllowlist,
+  skipPaletteConsumer,
+} = v4Palette;
 
 // Extract only the CSS/style contexts so we never flag hex inside JSON-LD, URLs,
 // SVG path data, or tracking IDs.
@@ -160,7 +153,7 @@ function lintSource(source, allowlist, rel) {
 
   for (const match of styleContextOf(source, rel).match(HEX_RE) || []) {
     const norm = normalizeHex(match);
-    if (!allowlist.has(norm)) {
+    if (!allowlist.has(norm) || RETIRED_HEX.has(norm)) {
       if (!(norm in violations.counts.hex)) {
         violations.offBrandHex.push(norm);
       }
@@ -378,32 +371,32 @@ function checkPaletteIntegrity(touched, baseRef, { files, report }) {
     ];
   }
 
-  const baseAllowed = new Set([...ALWAYS_ALLOWED_HEX].map(normalizeHex));
-  for (const rel of PALETTE_SOURCE_FILES) {
-    const source = readSourceAtRef(mergeBase, rel);
-    if (!source) {
-      continue;
-    }
-    for (const match of source.match(HEX_RE) || []) {
-      baseAllowed.add(normalizeHex(match));
-    }
-  }
-
-  const addedHexes = new Set();
-  for (const rel of PALETTE_SOURCE_FILES) {
-    let source;
-    try {
-      source = read(rel);
-    } catch {
-      continue;
-    }
-    for (const match of source.match(HEX_RE) || []) {
-      const norm = normalizeHex(match);
-      if (!baseAllowed.has(norm)) {
-        addedHexes.add(norm);
+    const baseAllowed = new Set([...ALWAYS_ALLOWED_HEX].map(normalizeHex));
+    for (const rel of PALETTE_SOURCE_FILES) {
+      const source = readSourceAtRef(mergeBase, rel);
+      if (!source) {
+        continue;
+      }
+      for (const match of paletteHexesFromSource(rel, source)) {
+        baseAllowed.add(normalizeHex(match));
       }
     }
-  }
+
+    const addedHexes = new Set();
+    for (const rel of PALETTE_SOURCE_FILES) {
+      let source;
+      try {
+        source = read(rel);
+      } catch {
+        continue;
+      }
+      for (const match of paletteHexesFromSource(rel, source)) {
+        const norm = normalizeHex(match);
+        if (!baseAllowed.has(norm)) {
+          addedHexes.add(norm);
+        }
+      }
+    }
 
   if (!addedHexes.size) {
     return [];
@@ -415,6 +408,7 @@ function checkPaletteIntegrity(touched, baseRef, { files, report }) {
   // violation before the palette moved is the abuse case.
   const failures = [];
   for (const rel of paletteUsageFiles(files, touched, changedPaletteSources)) {
+    if (skipPaletteConsumer(rel)) continue;
     let source;
     try {
       source = read(rel);
@@ -609,6 +603,8 @@ module.exports = {
   evaluate,
   loadBaseline,
   buildPaletteAllowlist,
+  sanctionedHexesFromDesignMd,
+  RETIRED_HEX,
   lintFile,
   lintSource,
   listSourceFiles,

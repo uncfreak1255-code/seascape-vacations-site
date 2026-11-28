@@ -43,7 +43,7 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 /* Opening */
 .pg-open { padding-top: 40px; }
 .pg-open-grid { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); }
-.pg-open h1 { font: 400 44px/1.1 var(--pg-serif); letter-spacing: -0.025em; margin: 16px 0; }
+.pg-open h1 { font: 600 44px/1.1 Inter, sans-serif; letter-spacing: -0.025em; margin: 16px 0; }
 .pg-sub { color: var(--pg-muted); }
 .guide-intro { border-left: 1px solid var(--pg-ink); padding: 2px 0 2px 18px; }
 .guide-intro p:first-child { font: 400 22px/1.34 var(--pg-serif); }
@@ -52,7 +52,7 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 
 /* Packing aside (family guide): editorial illustration beside a short list. */
 .guide-packing { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: center; padding: 28px 0; }
-.guide-packing h2 { font: 400 32px/1.1 var(--pg-serif); letter-spacing: -0.02em; margin: 12px 0 14px; }
+.guide-packing h2 { font: 600 32px/1.1 Inter, sans-serif; letter-spacing: -0.02em; margin: 12px 0 14px; }
 .guide-packing h2 br { display: none; }
 .guide-packing p { margin: 0 0 16px; }
 .packing-list { list-style: none; }
@@ -99,8 +99,8 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .pg-rail { display: none; }
 .pg-step { padding: 40px 0 44px; border-top: 1px solid var(--pg-rule); }
 .pg-num { margin-bottom: 10px; color: var(--pg-clay); font: 500 12px/1.4 Poppins, system-ui, sans-serif; letter-spacing: .13em; }
-.pg-step h2 { margin-bottom: 18px; font: 400 32px/1.12 var(--pg-serif); letter-spacing: -0.02em; }
-.pg-step h3 { font: 400 24px/1.2 var(--pg-serif); }
+.pg-step h2 { margin-bottom: 18px; font: 600 32px/1.12 Inter, sans-serif; letter-spacing: -0.02em; }
+.pg-step h3 { font: 600 24px/1.2 Inter, sans-serif; }
 .pg-step p + p { margin-top: 14px; }
 
 .pg-facts { list-style: none; margin: 0 0 32px; border-bottom: 1px solid var(--pg-rule); }
@@ -141,8 +141,9 @@ body.planning-guide main .guide-cta-btn:hover { color: var(--pg-paper); }
 .pg-step p a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 
 .pg-tail { max-width: 940px; margin: 0 auto; padding: 0 20px; }
+.planning-guide .guide-conversion-shell .guide-conversion-title{font-family:Inter,sans-serif;font-weight:600;font-style:normal}
 .related-guides { padding: 40px 0 76px; }
-.related-guides h2 { margin-bottom: 18px; font: 400 32px/1.12 var(--pg-serif); letter-spacing: -0.02em; }
+.related-guides h2 { margin-bottom: 18px; font: 600 32px/1.12 Inter, sans-serif; letter-spacing: -0.02em; }
 .related-grid { border-bottom: 1px solid var(--pg-rule); }
 .related-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; padding: 14px 0; border-top: 1px solid var(--pg-rule); text-decoration: none; }
 .related-card strong { display: block; font-weight: 500; }

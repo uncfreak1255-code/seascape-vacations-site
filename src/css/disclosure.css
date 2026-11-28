@@ -8,7 +8,7 @@
 .dsc > summary {
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   min-height: 56px; margin: 0 -12px; padding: 0 12px; border-radius: 4px;
-  color: #173D42; font: 500 14px/1.4 Poppins, system-ui, sans-serif;
+  color: #173D42; font: 500 14px/1.4 Inter, system-ui, sans-serif;
   cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent;
   transition: background-color 200ms cubic-bezier(.23, 1, .32, 1), transform 120ms cubic-bezier(.23, 1, .32, 1);
 }

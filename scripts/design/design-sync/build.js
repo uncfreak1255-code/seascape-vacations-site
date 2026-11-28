@@ -83,9 +83,9 @@ const cards = [];
 const designMd = read("DESIGN.md");
 const frontMatter = (designMd.match(/^---\n([\s\S]*?)\n---/) || [])[1];
 if (!frontMatter) throw new Error("DESIGN.md has no YAML front matter");
-const wl = yaml.load(frontMatter).waterline;
+const wl = yaml.load(frontMatter).system;
 if (!wl || !wl.colors || !wl.typography) {
-  throw new Error("DESIGN.md front matter has no waterline block; refusing to build from legacy tokens.");
+  throw new Error("DESIGN.md front matter has no system block; refusing to build from legacy tokens.");
 }
 const C = wl.colors;
 const T = wl.typography;
@@ -161,11 +161,13 @@ fs.mkdirSync(OUT, { recursive: true });
 const stamp = (s) => s.replace(/\{\{SYNC_DATE\}\}/g, today).replace(/\{\{COMMIT\}\}/g, commit);
 write("SKILL.md", stamp(fs.readFileSync(path.join(__dirname, "templates/SKILL.md"), "utf8")));
 write("README.md", stamp(fs.readFileSync(path.join(__dirname, "templates/README.md"), "utf8")));
-write("styles.css", `/* Design-system token entry point. Waterline is the only current system (${today}). */\n@import url("waterline/tokens.css");\n`);
+write("styles.css", `/* Design-system token entry point. v4 is the current system (${today}). */\n@import url("waterline/tokens.css");\n`);
 write("waterline/tokens.css", tokensCss);
-write("waterline/fonts.css", `/* Self-hosted faces, same files the site ships. */\n${fontFace("fonts/")}\n`);
+write("waterline/fonts.css", `/* Self-hosted faces, same files the site ships. */\n${fontFace("fonts/")}\n@font-face{font-family:Inter;font-style:normal;font-weight:100 900;font-display:swap;src:url('fonts/inter-latin-wght-3100e775e861.woff2') format('woff2');}\n`);
 for (const [src] of fonts) copy(src, `waterline/fonts/${path.basename(src)}`);
 copy("src/assets/fonts/guest/OFL.txt", "waterline/fonts/OFL-instrument-serif.txt");
+copy("src/assets/fonts/guest/inter-latin-wght-3100e775e861.woff2", "waterline/fonts/inter-latin-wght-3100e775e861.woff2");
+copy("src/assets/fonts/guest/OFL-inter.txt", "waterline/fonts/OFL-inter.txt");
 require("./copy-reference-documents")(copy, designMd);
 for (const [name, css] of Object.entries(sheets)) {
   write(`waterline/${name}.css`, name === "guest" ? `/* Verbatim src/css/guest.css minus @font-face (see fonts.css). */\n${css}` : css);
@@ -180,21 +182,21 @@ const swatch = (hex, name, role, dark) =>
 card({
   file: "colors-brand.html",
   group: "Colors",
-  name: "Colors — Waterline palette",
-  subtitle: "Paper · ink · citron · muted · clay · rule · soft",
+  name: "Colors — v4 palette",
+  subtitle: "White · surface · ink · muted · line · accent",
   viewport: [760, 520],
   css: GUEST,
   title: "Seven colours, each with one job",
-  note: `Mirrors the <strong>waterline</strong> block in DESIGN.md. Ink on paper clears 10.14:1. Citron is a surface or accent, never small text on paper. Clay is the only warm accent: <em>italic emphasis</em>, active nav, the focus ring.`,
+  note: `Mirrors the <strong>system</strong> block in DESIGN.md. White canvas, ink text, one accent. Citron, clay, gold and cream are retired from new surfaces.`,
   body: `<div class="ds-grid" style="grid-template-columns:repeat(4,1fr)">
-${swatch(C.paper, "Paper", "canvas for every guest route", false)}
-${swatch(C.ink, "Ink", "text, primary buttons, dark bands", true)}
-${swatch(C.citron, "Citron", "selected scene, CTA over photos/dark", false)}
-${swatch(C.muted, "Muted", "supporting text, button hover", true)}
-${swatch(C.clay, "Clay", "accent, em, active link, focus ring", true)}
-${swatch(C.rule, "Rule", "1px rules, borders, dividers", false)}
-${swatch(C.soft, "Soft", "quiet solid surface (booking panel)", false)}
-<div class="ds-sw" style="background:#fff"><small>White</small><div><b>#FFFFFF</b><small>button text on ink; postcard stock is #FFFCF4</small></div></div>
+${swatch(C.bg, "Bg", "every page canvas", false)}
+${swatch(C.surface, "Surface", "placeholders, one promo panel", false)}
+${swatch(C.ink, "Ink", "text, icons, selected chips", true)}
+${swatch(C.muted, "Muted", "secondary text", true)}
+${swatch(C.line, "Line", "dividers, card outlines", false)}
+${swatch(C.accent, "Accent", "the one action color", true)}
+${swatch(C["accent-hover"], "Accent hover", "pressed / hover fill", true)}
+${swatch(C.error, "Error", "invalid fields, alerts", true)}
 </div>`,
 });
 
@@ -213,19 +215,19 @@ ${swatch("#3D5C5D", "Teal dark", "retired", true)}
 ${swatch("#C9A962", "Gold", "retired CTA", false)}
 ${swatch("#F5EED6", "Cream", "retired canvas", false)}
 ${swatch("#3A3A3A", "Stone", "retired text", true)}
-<div class="ds-sw" style="background:#fff"><small>Playfair Display</small><div><b style="font-family:Georgia,serif">Aa</b><small>retired display face; Instrument Serif replaces it</small></div></div>
+<div class="ds-sw" style="background:#fff"><small>Playfair Display</small><div><b style="font-family:Georgia,serif">Aa</b><small>retired display face; Inter 600 replaces it</small></div></div>
 </div>`,
 });
 
 card({
   file: "type-display.html",
   group: "Type",
-  name: "Type — Display (Instrument Serif)",
+  name: "Type — Display (Inter 600)",
   subtitle: "h1 clamp(44px,5vw,72px) · h2 · h3 · caption · quote",
   viewport: [900, 760],
   css: [...GUEST, arrivalCss],
-  title: "Instrument Serif, regular only, set large and tight",
-  note: `Weight 400, letter-spacing -0.03em, line-height 1.08. Italic carries emphasis and takes clay through <code>em</code>. Large, compact display lines are deliberate; factual text stays readable.`,
+  title: "Inter semibold, tight tracking, one color, no italics",
+  note: `Weight 600, letter-spacing -0.03em, line-height 1.08, font-style normal. Heading <code>em</code> stays the same color. Large, compact display lines are deliberate; factual text stays readable. Instrument Serif remains only on the wordmark.`,
   body: `<div class="ds-line"><div class="ds-spec">h1 · clamp(44,5vw,72)<br>homepage arrival goes to 166px</div><h1 style="margin:0">Make yourself <em>at home.</em></h1></div>
 <div class="ds-line"><div class="ds-spec">h2 · clamp(28,3vw,42)</div><h2 style="margin:0">${HomeCount} real homes. One phone number.</h2></div>
 <div class="ds-line"><div class="ds-spec">h3 · 26px<br>postcard title 30px</div><h3 style="margin:0">Dockside Dreams</h3></div>
@@ -236,12 +238,12 @@ card({
 card({
   file: "type-body.html",
   group: "Type",
-  name: "Type — Body, labels and controls (Poppins)",
-  subtitle: "Body 15/1.55 · label 12 caps .13em · control 500 14 · small 13",
+  name: "Type — Body, labels and controls (Inter)",
+  subtitle: "Body 15/1.55 live · v4 target 16/1.6 · control 500 14 · small 13",
   viewport: [900, 560],
   css: GUEST,
-  title: "Poppins does the practical work",
-  note: `Body 15px / 1.55 in ink. Labels are 12px uppercase Poppins 500 with .13em tracking in muted; that is the eyebrow pattern and the only tracking in the system. No text renders below 12px anywhere (floor F1).`,
+  title: "Inter does the practical work",
+  note: `Body is Inter. Live size is still 15px / 1.55 until a later PR consumes the v4 scale. No text renders below 12px anywhere (floor F1). Headings are Inter 600, tight tracking, one color, no italics.`,
   body: `<div class="ds-line"><div class="ds-spec">.g-label · eyebrow</div><p class="g-label" style="margin:0">Your time on the coast</p></div>
 <div class="ds-line"><div class="ds-spec">body · 15/1.55</div><p style="margin:0;max-width:560px">Seascape is a small, owner-operated collection of homes in Bradenton and Sarasota. Choose the home, understand the details that could change your choice, and arrive at the booking page with dates and guest count intact.</p></div>
 <div class="ds-line"><div class="ds-spec">.g-small · 13/1.55 muted</div><p class="g-small" style="margin:0">Choose your dates and group size. You’ll see the full price before you pay.</p></div>
@@ -254,13 +256,13 @@ card({
   file: "buttons.html",
   group: "Components",
   name: "Buttons",
-  subtitle: "Ink primary · citron on dark · paper on legacy teal · 4px · 48px min",
+  subtitle: "Accent primary · 4px live · 48px min",
   viewport: [900, 640],
-  css: [...GUEST, `.ds-dark{background:${C.ink};padding:28px}.ds-dark .g-button{background:${C.citron};color:${C.ink};border-color:${C.citron}}.ds-dark .g-button:hover{background:#c3d97a;color:${C.ink}}
-.ds-teal{background:linear-gradient(135deg,#5F8A8B,#203F40);padding:28px}.ds-teal .g-button{background:${C.paper};color:${C.ink};border:1px solid ${C.ink}}
-.ds-hover{background:${C.muted}!important}.ds-focus{outline:3px solid ${C.clay};outline-offset:4px}`],
-  title: "One button, three measured treatments",
-  note: `Radius 4px, never a pill. 14px/24px padding, min-height 48px (44px mobile floor). Poppins 500 14px. Hover fills with muted, no lift, no shadow, no shine. Focus is a 3px clay outline offset 4px. <strong>Pick the treatment by measured contrast on its surface, not by eye.</strong>`,
+  css: [...GUEST, `.ds-dark{background:${C.ink};padding:28px}.ds-dark .g-button{background:${C.accent};color:#fff;border-color:${C.accent}}.ds-dark .g-button:hover{background:${C["accent-hover"]};color:#fff}
+.ds-teal{background:${C.surface};padding:28px}.ds-teal .g-button{background:${C.paper};color:${C.ink};border:1px solid ${C.ink}}
+.ds-hover{background:${C.muted}!important}.ds-focus{outline:3px solid ${C.accent};outline-offset:4px}`],
+  title: "One button, accent fill",
+  note: `Live radius stays 4px this PR. 14px/24px padding, min-height 48px (44px mobile floor). Inter 500 14px. Focus is a 3px accent outline offset 4px.`,
   body: `<p class="ds-caption">Ink with white text on paper, white and photos (10.14:1 on cream). Rest · hover · focus.</p>
 <div class="ds-row"><a class="g-button btn-brand" href="#">Find my home</a><a class="g-button btn-brand ds-hover" href="#">Find my home</a><a class="g-button btn-brand ds-focus" href="#">Find my home</a><button class="g-button btn-brand" type="submit">Check dates</button></div>
 <div class="ds-rule"></div>
@@ -481,7 +483,7 @@ card({
   body: `<div class="ds-v"><p class="g-label" style="margin:0">Stays</p><p style="margin:0">Five bedrooms, a private pool and room for 16, eight minutes from Coquina Beach.</p></div>
 <div class="ds-v"><p class="g-label" style="margin:0">Guide</p><p style="margin:0">Skip the tourist traps on Bridge Street and head to the Sandbar instead.</p></div>
 <div class="ds-v"><p class="g-label" style="margin:0">Owner</p><p style="margin:0">Send the listing link or address and a sentence on what feels off. A real person reads it and replies, usually within 48 hours.</p></div>
-<div class="ds-v"><p class="g-label" style="margin:0;color:${C.clay}">Banned</p><p style="margin:0"><s>A hidden gem nestled along the coast, curated for unforgettable memories.</s></p></div>`,
+<div class="ds-v"><p class="g-label" style="margin:0;color:${C.error}">Banned</p><p style="margin:0"><s>A hidden gem nestled along the coast, curated for unforgettable memories.</s></p></div>`,
 });
 
 /* ---------------------------------------------------------------- phone + pane manifest */
